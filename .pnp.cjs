@@ -26,6 +26,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@next/eslint-plugin-next", "npm:14.2.2"],\
           ["@types/node", "npm:20.12.7"],\
           ["@types/react", "npm:18.2.79"],\
           ["@types/react-dom", "npm:18.2.25"],\
@@ -1575,6 +1576,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["dreaming-star-front", "workspace:."],\
+          ["@next/eslint-plugin-next", "npm:14.2.2"],\
           ["@types/node", "npm:20.12.7"],\
           ["@types/react", "npm:18.2.79"],\
           ["@types/react-dom", "npm:18.2.25"],\

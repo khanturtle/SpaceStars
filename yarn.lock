@@ -158,7 +158,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/eslint-plugin-next@npm:14.2.2":
+"@next/eslint-plugin-next@npm:14.2.2, @next/eslint-plugin-next@npm:^14.2.2":
   version: 14.2.2
   resolution: "@next/eslint-plugin-next@npm:14.2.2"
   dependencies:
@@ -1210,6 +1210,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dreaming-star-front@workspace:."
   dependencies:
+    "@next/eslint-plugin-next": "npm:^14.2.2"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
