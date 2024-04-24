@@ -9,8 +9,7 @@
     "lint": "next lint",
     "lint:fix": "eslint ./**/*.{js,jsx,ts,tsx} --cache --fix",
     "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore .",
-    "postinstall": "husky install"
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
