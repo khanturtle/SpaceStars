@@ -1,4 +1,4 @@
-FROM node:20-alpine as builder
+FROM node:18-alpine as builder
 WORKDIR /user/src/app
 
 # 종속성 파일 복사
@@ -15,11 +15,9 @@ RUN yarn install
 # COPY --from=builder /app/public ./public
 # COPY --from=builder /app/.next ./.next
 
-COPY ./tsconfig.json ./.prettierrc.json ./.env.* ./.eslintrc.json ./next.config.mjs ./
-COPY ./src ./src
-# COPY . .
+COPY . .
 RUN yarn build 
 
 EXPOSE 3000
 
-CMD [ "yarn", "start"]
+CMD [ "yarn", "start"] 
