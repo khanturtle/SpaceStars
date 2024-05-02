@@ -15,7 +15,7 @@ RUN yarn install
 # COPY --from=builder /app/public ./public
 # COPY --from=builder /app/.next ./.next
 
-COPY ./tsconfig.json ./.prettierrc.json ./.env.* ./next-env.d.ts ./.eslintrc.json ./next.config.mjs ./
+COPY ./tsconfig.json ./.prettierrc.json ./.env.* ./.eslintrc.json ./next.config.mjs ./
 COPY ./src ./src
 # COPY . .
 RUN yarn build 
