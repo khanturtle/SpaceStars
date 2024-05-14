@@ -1,3 +1,4 @@
+import LoginButton from './LoginButton'
 import styles from './Navbar.module.css'
 
 const Navbar = () => {
@@ -17,7 +18,8 @@ const Navbar = () => {
       <div className="flex-1" />
 
       <div className={styles.nav_mode}>모드</div>
-      <button className={styles.nav_login}>로그인 / 회원가입</button>
+
+      <LoginButton styles={styles} />
     </nav>
   )
 }
