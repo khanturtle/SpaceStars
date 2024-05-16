@@ -23,13 +23,12 @@
   width: 100px;
 
   border: solid red;
+  margin-left: 16px;
+  text-align: center;
 
   &:first-child {
     margin-left: 20px;
   }
-  margin-left: 16px;
-
-  text-align: center;
 }
 
 .nav_mode {
