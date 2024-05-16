@@ -5,8 +5,8 @@ public record ResponseEntity<T>( String message, int code, T result) {
      * 필요값 : 성공여부, 메시지, 에러코드, 결과값
      */
     // 요청에 성공한 경우 -> return 객체가 필요한 경우
-    public ResponseEntity(T result) {
-        this( ResponseStatus.SUCCESS.getMessage(), ResponseStatus.SUCCESS.getCode(), result);
+    public ResponseEntity(ResponseSuccess success,T result) {
+        this( success.getMessage(),success.getCode(), result);
     }
 
     // 요청에 성공한 경우 -> return 객체가 필요 없는 경우
