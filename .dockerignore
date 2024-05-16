@@ -5,3 +5,9 @@ node_modules
 .git
 .gitignore
 .vscode
+
+.env.*
+.prettier.json
+.eslintignore
+.eslintrc.json
+README.md

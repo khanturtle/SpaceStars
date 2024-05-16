@@ -1,5 +1,5 @@
 FROM node:18-alpine as builder
-WORKDIR /user/src/app
+WORKDIR /usr/src/app
 
 # 종속성 파일 복사
 COPY ./package*.json ./.yarnrc.yml ./yarn.lock ./
@@ -12,4 +12,4 @@ RUN yarn build
 
 EXPOSE 3000
 
-CMD [ "yarn", "start"] 
+CMD [ "yarn", "start"]
