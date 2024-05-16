@@ -21,17 +21,73 @@
   ],
   "rules": {
     // 0 off, 1 warn, 2 error
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "prettier/prettier": [2, { "endOfLine": "auto" }],
     "linebreak-style": 0,
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": ["warn", { "extensions": [".ts", ".tsx"] }],
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
     "no-unused-vars": [
-      "error",
+      2,
       { "vars": "all", "args": "none", "ignoreRestSiblings": false }
     ],
-    "unused-imports/no-unused-imports-ts": ["error"],
-    "comma-spacing": ["error", { "before": false, "after": true }],
-    "react/require-default-props": "off"
-  },
-  "ignores": [".pnp.*"]
+    "unused-imports/no-unused-imports-ts": [2],
+    "comma-spacing": [2, { "before": false, "after": true }],
+    "react/require-default-props": 0,
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["sibling", "parent"],
+          "index",
+          "object",
+          "type"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "next/**",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "use*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@components/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@containers/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@utils/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@apis/**",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  }
 }
