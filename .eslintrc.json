@@ -32,5 +32,6 @@
     "unused-imports/no-unused-imports-ts": ["error"],
     "comma-spacing": ["error", { "before": false, "after": true }],
     "react/require-default-props": "off"
-  }
+  },
+  "ignores": [".pnp.*"]
 }

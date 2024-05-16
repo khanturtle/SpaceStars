@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import './globals.css'
+import '@/styles/globals.css'
+import Navbar from '@/components/Navbar'
+import AuthSession from '@/components/providers/session-provider'
 
 export const metadata: Metadata = {
   title: 'Dreaming-Stars',
@@ -13,7 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthSession>
+          <Navbar />
+          {children}
+        </AuthSession>
+      </body>
     </html>
   )
 }
