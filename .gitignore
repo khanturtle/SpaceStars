@@ -44,3 +44,5 @@ next-env.d.ts
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+AppData/
