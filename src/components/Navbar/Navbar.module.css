@@ -17,15 +17,16 @@
 .nav_item {
   display: flex;
   flex-direction: row;
-}
-.nav_item li {
-  width: 100px;
-  border: solid red;
-  margin-left: 16px;
-  text-align: center;
 
-  &:first-child {
-    margin-left: 20px;
+  & li {
+    width: 100px;
+    border: solid red;
+    margin-left: 16px;
+    text-align: center;
+
+    &:first-child {
+      margin-left: 20px;
+    }
   }
 }
 
