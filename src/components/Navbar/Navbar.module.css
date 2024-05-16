@@ -3,7 +3,6 @@
   width: 100%;
   margin: 10px 0;
   padding: 0 80px;
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -21,7 +20,6 @@
 }
 .nav_item li {
   width: 100px;
-
   border: solid red;
   margin-left: 16px;
   text-align: center;
@@ -34,7 +32,6 @@
 .nav_mode {
   width: 48px;
   height: 48px;
-
   margin-right: 16px;
   background-color: red;
 }
