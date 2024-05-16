@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "eslint src/**/*.{js,jsx,ts,tsx} --cache --fix",
-    "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "lint:fix": "next eslint src/**/*.{js,jsx,ts,tsx} --cache --fix",
+    "format": "next prettier --check --ignore-path .gitignore .",
+    "format:fix": "next prettier --write --ignore-path .gitignore .",
     "prepare": "husky install"
   },
   "lint-staged": {
