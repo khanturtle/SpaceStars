@@ -2,11 +2,11 @@ name: Code Review
 
 permissions:
   contents: read
-  pull-requests: write 
+  pull-requests: write
 
-on: 
-  pull_request: 
-    types: [ opened, reopened, synchronize ] 
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
 
 jobs:
   test:
