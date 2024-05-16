@@ -20,6 +20,6 @@ public class GameServiceImpl implements GameService {
         for (int i = 0; i < gameResVos.size(); i++) {
             gameResVos.get(i).setIndex(i);
         }
-        return new ResponseEntity<List<GameResVo>>(ResponseSuccess.SUCCESS, gameResVos);
+        return new ResponseEntity<List<GameResVo>>(ResponseSuccess.GET_GAMES_SUCCESS, gameResVos);
     }
 }
