@@ -16,7 +16,10 @@ public class GameServiceImpl implements GameService{
     private final GameRepository gameRepository;
     @Override
     public ResponseEntity<List<GameResVo>> getGames() {
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS,
-                gameRepository.findAllGameNames());
+        List<GameResVo> gameResVos = gameRepository.findAllGameNames();
+        for (int i = 0; i < gameResVos.size(); i++) {
+            gameResVos.get(i).setIndex(i);
+        }
+        return new ResponseEntity<>(ResponseSuccess.SUCCESS, gameResVos);
     }
 }
