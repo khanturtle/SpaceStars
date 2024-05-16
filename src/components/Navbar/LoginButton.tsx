@@ -6,7 +6,7 @@ type LoginButtonProps = {
   styles: { [key: string]: string }
 }
 
-const LoginButton = ({ styles }: LoginButtonProps) => {
+function LoginButton({ styles }: LoginButtonProps) {
   const { data } = useSession()
 
   console.log('data', data)
@@ -19,6 +19,7 @@ const LoginButton = ({ styles }: LoginButtonProps) => {
     return (
       <>
         <div>아바타</div>
+        {/* eslint-disable-next-line react/button-has-type */}
         <button onClick={() => signOut()}>로그아웃</button>
       </>
     )
@@ -26,6 +27,7 @@ const LoginButton = ({ styles }: LoginButtonProps) => {
 
   return (
     <div className={styles.nav_login}>
+      {/* eslint-disable-next-line react/button-has-type */}
       <button onClick={handleClick}>로그인</button>
     </div>
   )

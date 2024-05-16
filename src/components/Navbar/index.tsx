@@ -1,7 +1,7 @@
 import LoginButton from './LoginButton'
 import styles from './Navbar.module.css'
 
-const Navbar = () => {
+function Navbar() {
   return (
     <nav className={styles.nav}>
       <div className={styles.nav_logo}>

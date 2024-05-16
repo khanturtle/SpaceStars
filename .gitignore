@@ -37,12 +37,12 @@ yarn-error.log*
 next-env.d.ts
 
 ### yarn ###
+.pnp.*
 .yarn/*
 !.yarn/patches
-!.yarn/releases
 !.yarn/plugins
+!.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-.pnp.*
 
 AppData/

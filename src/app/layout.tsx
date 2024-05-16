@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
-import '@/styles/globals.css'
+
 import Navbar from '@/components/Navbar'
 import AuthSession from '@/components/providers/session-provider'
+
+import '@/styles/globals.css'
 
 export const metadata: Metadata = {
   title: 'Dreaming-Stars',
