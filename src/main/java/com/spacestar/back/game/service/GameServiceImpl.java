@@ -3,7 +3,9 @@ package com.spacestar.back.game.service;
 import com.spacestar.back.game.dto.res.GameOptionResDto;
 import com.spacestar.back.game.repository.GameRepository;
 import com.spacestar.back.game.vo.res.GameResVo;
+import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseEntity;
+import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.global.ResponseSuccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameOptionResDto getGameOption(Long gameId) {
-        return gameRepository.findGameOption(gameId);
+        return gameRepository.findGameOption(gameId).orElseThrow(
+                ()-> new GlobalException(ResponseStatus.GAME_NOT_FOUND)
+        );
     }
 }

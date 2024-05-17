@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -28,10 +29,10 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     }
 
     @Override
-    public GameOptionResDto findGameOption(Long gameId) {
+    public Optional<GameOptionResDto> findGameOption(Long gameId) {
         QGame qGame = QGame.game;
 
-        return query
+        return Optional.ofNullable(query
                 .select(Projections.constructor(
                         GameOptionResDto.class,
                         qGame.is_tier,
@@ -40,6 +41,6 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
                         qGame.is_server))
                 .from(qGame)
                 .where(qGame.id.eq(gameId))
-                .fetchOne();
+                .fetchOne());
     }
 }

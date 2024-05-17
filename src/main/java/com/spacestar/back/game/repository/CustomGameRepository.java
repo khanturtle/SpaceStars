@@ -4,10 +4,11 @@ import com.spacestar.back.game.dto.res.GameOptionResDto;
 import com.spacestar.back.game.vo.res.GameResVo;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomGameRepository {
 
     List<GameResVo> findAllGameNames();
 
-    GameOptionResDto findGameOption(Long gameId);
+    Optional<GameOptionResDto> findGameOption(Long gameId);
 }
