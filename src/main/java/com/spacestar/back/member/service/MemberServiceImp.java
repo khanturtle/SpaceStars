@@ -50,7 +50,7 @@ public class MemberServiceImp implements MemberService{
         ProfileImage profileImage = ProfileImage.builder()
                 .member(member)
                 .profileImageUrl(memberJoinReqDto.getImageUrl())
-                .isMain(true)
+                .main(true)
                 .idx(0)
                 .build();
 

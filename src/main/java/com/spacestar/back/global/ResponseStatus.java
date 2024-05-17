@@ -19,10 +19,9 @@ public enum ResponseStatus {
      * 2000: member
      **/
     TOKEN_NOT_VALID( 2002, "토큰이 유효하지 않습니다."),
-
     DUPLICATED_MEMBERS(2003, "이미 가입된 회원입니다." ),
-
-    BLACKLIST_MEMBER(2004,"영구 탈퇴된 회원입니다.");
+    BLACKLIST_MEMBER(2004,"영구 탈퇴된 회원입니다."),
+    DUPLICATED_NICKNAME(2005, "중복된 닉네임입니다.");
 //    TOKEN_NULL(false, 2003, "토큰이 존재하지 않습니다."),
 
     private final int code;

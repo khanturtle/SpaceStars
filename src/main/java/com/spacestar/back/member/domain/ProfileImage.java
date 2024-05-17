@@ -20,7 +20,7 @@ public class ProfileImage {
     private String profileImageUrl;
 
     @Column
-    private Boolean isMain;
+    private Boolean main;
 
     @Column
     private Integer idx;
