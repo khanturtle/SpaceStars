@@ -4,8 +4,10 @@ import com.spacestar.back.game.domain.Game;
 import com.spacestar.back.game.repository.GameRepository;
 import com.spacestar.back.gamedetails.domain.GameClass;
 import com.spacestar.back.gamedetails.domain.GamePosition;
+import com.spacestar.back.gamedetails.domain.GameServer;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
+import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
 import com.spacestar.back.gamedetails.repository.GameClassRepository;
 import com.spacestar.back.gamedetails.repository.GamePositionRepository;
 import com.spacestar.back.gamedetails.repository.GameServerRepository;
@@ -59,4 +61,20 @@ public class GameDetailsServiceImpl implements GameDetailsService {
         return gamePositionResDtos;
     }
 
+    @Override
+    public List<GameServerResDto> getGameServer(Long gameId) {
+        Game game = gameRepository.getReferenceById(gameId);
+        List<GameServer> gameServers = serverRepository.findByGame(game);
+        List<GameServerResDto> gameServerResDtos = new ArrayList<>();
+
+        for (int i = 0; i < gameServers.size(); i++) {
+            gameServerResDtos.add(
+                    GameServerResDto.builder()
+                            .index(i)
+                            .gameServerImage(gameServers.get(i).getGameServerImage())
+                            .gameServerNameKor(gameServers.get(i).getGameServerNameKor())
+                            .build());
+        }
+        return gameServerResDtos;
+    }
 }

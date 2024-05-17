@@ -13,7 +13,8 @@ public enum ResponseSuccess {
     GET_GAME_OPTION_SUCCESS(HttpStatus.OK.value(),"게임 옵션 조회 성공"),
 
     GET_GAME_CLASS_SUCCESS(HttpStatus.OK.value(), "게임 직업 조회 성공"),
-    GET_GAME_POSITION_SUCCESS(HttpStatus.OK.value(), "게임 포지션 조회 성공");
+    GET_GAME_POSITION_SUCCESS(HttpStatus.OK.value(), "게임 포지션 조회 성공"),
+    GET_GAME_SERVER_SUCCESS(HttpStatus.OK.value(), "게임 서버 조회 성공");
 
 
     private final int code;

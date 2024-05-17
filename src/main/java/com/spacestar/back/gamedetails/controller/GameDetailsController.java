@@ -2,9 +2,11 @@ package com.spacestar.back.gamedetails.controller;
 
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
+import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
 import com.spacestar.back.gamedetails.service.GameDetailsService;
 import com.spacestar.back.gamedetails.vo.res.GameClassResVo;
 import com.spacestar.back.gamedetails.vo.res.GamePositionResVo;
+import com.spacestar.back.gamedetails.vo.res.GameServerResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import lombok.RequiredArgsConstructor;
@@ -47,4 +49,18 @@ public class GameDetailsController {
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_POSITION_SUCCESS,gamePositionResVos);
     }
+
+    @GetMapping("/server/{gameId}")
+    public ResponseEntity<List<GameServerResVo>> getGameServer(
+            @PathVariable Long gameId){
+        List<GameServerResDto> gameServerResDtos = gameDetailsService.getGameServer(gameId);
+
+        List<GameServerResVo> gameServerResVos = gameServerResDtos.stream()
+                .map(dto -> modelMapper.map(dto, GameServerResVo.class))
+                .toList();
+
+        return new ResponseEntity<>(
+                ResponseSuccess.GET_GAME_SERVER_SUCCESS,gameServerResVos);
+    }
+
 }
