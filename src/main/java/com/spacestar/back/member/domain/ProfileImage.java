@@ -25,12 +25,4 @@ public class ProfileImage {
     @Column
     private Integer idx;
 
-//    @Builder
-//    public ProfileImage(Long id, Member member, String profileImageUrl, Boolean isMain, Integer index) {
-//        this.id = id;
-//        this.member = member;
-//        this.profileImageUrl = profileImageUrl;
-//        this.isMain = isMain;
-//        this.index = index;
-//    }
 }

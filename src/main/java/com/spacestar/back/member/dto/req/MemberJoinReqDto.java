@@ -3,15 +3,12 @@ package com.spacestar.back.member.dto.req;
 import com.spacestar.back.member.enums.GenderType;
 import com.spacestar.back.member.vo.req.MemberJoinReqVo;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

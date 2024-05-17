@@ -27,7 +27,7 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/join")
-    public ResponseEntity<?> memberInfoAdd(@RequestBody @Valid MemberJoinReqVo memberJoinReqVo) {
+    public ResponseEntity<Void> memberInfoAdd(@RequestBody @Valid MemberJoinReqVo memberJoinReqVo) {
 
         memberService.addMember(mapper.map(memberJoinReqVo, MemberJoinReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.SIGNUP_SUCCESS);
