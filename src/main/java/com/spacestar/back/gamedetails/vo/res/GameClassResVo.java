@@ -1,4 +1,4 @@
-package com.spacestar.back.gamedetails.vo;
+package com.spacestar.back.gamedetails.vo.res;
 
 import lombok.Getter;
 

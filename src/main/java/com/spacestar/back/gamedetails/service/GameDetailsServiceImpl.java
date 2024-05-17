@@ -3,7 +3,9 @@ package com.spacestar.back.gamedetails.service;
 import com.spacestar.back.game.domain.Game;
 import com.spacestar.back.game.repository.GameRepository;
 import com.spacestar.back.gamedetails.domain.GameClass;
+import com.spacestar.back.gamedetails.domain.GamePosition;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
+import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.repository.GameClassRepository;
 import com.spacestar.back.gamedetails.repository.GamePositionRepository;
 import com.spacestar.back.gamedetails.repository.GameServerRepository;
@@ -27,8 +29,8 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     public List<GameClassResDto> getGameClass(Long gameId) {
         Game game = gameRepository.getReferenceById(gameId);
         List<GameClass> gameClasses = classRepository.findByGame(game);
-
         List<GameClassResDto> gameClassResDtos = new ArrayList<>();
+
         for (int i = 0; i < gameClasses.size(); i++) {
             gameClassResDtos.add(
                     GameClassResDto.builder()
@@ -39,4 +41,22 @@ public class GameDetailsServiceImpl implements GameDetailsService {
         }
         return gameClassResDtos;
     }
+
+    @Override
+    public List<GamePositionResDto> getGamePosition(Long gameId) {
+        Game game = gameRepository.getReferenceById(gameId);
+        List<GamePosition> gamePositions = positionRepository.findByGame(game);
+        List<GamePositionResDto> gamePositionResDtos = new ArrayList<>();
+
+        for (int i = 0; i < gamePositions.size(); i++) {
+            gamePositionResDtos.add(
+                    GamePositionResDto.builder()
+                            .index(i)
+                            .gamePositionImage(gamePositions.get(i).getGamePositionImage())
+                            .gamePositionNameKor(gamePositions.get(i).getGamePositionNameKor())
+                            .build());
+        }
+        return gamePositionResDtos;
+    }
+
 }
