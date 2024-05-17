@@ -6,14 +6,13 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Class {
+public class GameServer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private Game game;
-
-    private String className;
-    private String classNameKor;
-    private String classImage;
+    private String gameServerName;
+    private String gameServerNameKor;
+    private String gameServerImage;
 }
