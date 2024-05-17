@@ -5,9 +5,11 @@ import com.spacestar.back.game.repository.GameRepository;
 import com.spacestar.back.gamedetails.domain.GameClass;
 import com.spacestar.back.gamedetails.domain.GamePosition;
 import com.spacestar.back.gamedetails.domain.GameServer;
+import com.spacestar.back.gamedetails.domain.GameTier;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
+import com.spacestar.back.gamedetails.dto.res.GameTierResDto;
 import com.spacestar.back.gamedetails.repository.GameClassRepository;
 import com.spacestar.back.gamedetails.repository.GamePositionRepository;
 import com.spacestar.back.gamedetails.repository.GameServerRepository;
@@ -76,5 +78,22 @@ public class GameDetailsServiceImpl implements GameDetailsService {
                             .build());
         }
         return gameServerResDtos;
+    }
+
+    @Override
+    public List<GameTierResDto> getGameTier(Long gameId) {
+        Game game = gameRepository.getReferenceById(gameId);
+        List<GameTier> gameTiers = tierRepository.findByGame(game);
+        List<GameTierResDto> gameTierResDtos = new ArrayList<>();
+
+        for (int i = 0; i < gameTiers.size(); i++) {
+            gameTierResDtos.add(
+                    GameTierResDto.builder()
+                            .index(i)
+                            .gameTierImage(gameTiers.get(i).getGameTierImage())
+                            .gameTierNameKor(gameTiers.get(i).getGameTierNameKor())
+                            .build());
+        }
+        return gameTierResDtos;
     }
 }

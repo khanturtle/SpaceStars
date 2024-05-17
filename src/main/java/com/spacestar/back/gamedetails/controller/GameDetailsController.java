@@ -3,7 +3,9 @@ package com.spacestar.back.gamedetails.controller;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
+import com.spacestar.back.gamedetails.dto.res.GameTierResDto;
 import com.spacestar.back.gamedetails.service.GameDetailsService;
+import com.spacestar.back.gamedetails.vo.res.GameTierResVo;
 import com.spacestar.back.gamedetails.vo.res.GameClassResVo;
 import com.spacestar.back.gamedetails.vo.res.GamePositionResVo;
 import com.spacestar.back.gamedetails.vo.res.GameServerResVo;
@@ -63,4 +65,16 @@ public class GameDetailsController {
                 ResponseSuccess.GET_GAME_SERVER_SUCCESS,gameServerResVos);
     }
 
+    @GetMapping("/tier/{gameId}")
+    public ResponseEntity<List<GameTierResVo>> getGameTier(
+            @PathVariable Long gameId){
+        List<GameTierResDto> gameTierResDtos = gameDetailsService.getGameTier(gameId);
+
+        List<GameTierResVo> gameTierResVos = gameTierResDtos.stream()
+                .map(dto -> modelMapper.map(dto, GameTierResVo.class))
+                .toList();
+
+        return new ResponseEntity<>(
+                ResponseSuccess.GET_GAME_TIER_SUCCESS,gameTierResVos);
+    }
 }
