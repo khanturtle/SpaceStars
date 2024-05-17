@@ -1,14 +1,12 @@
-package com.spacestar.back.game.vo;
+package com.spacestar.back.game.vo.res;
 
-import com.querydsl.core.annotations.QueryProjection;
-import com.spacestar.back.game.domain.Game;
 import lombok.*;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class GameResVo {
     private int index;
     private String gameName;

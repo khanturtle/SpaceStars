@@ -1,7 +1,7 @@
 package com.spacestar.back.game.service;
 
-import com.spacestar.back.game.vo.GameOptionResVo;
-import com.spacestar.back.game.vo.GameResVo;
+import com.spacestar.back.game.dto.res.GameOptionResDto;
+import com.spacestar.back.game.vo.res.GameResVo;
 import com.spacestar.back.global.ResponseEntity;
 
 import java.util.List;
@@ -9,5 +9,5 @@ import java.util.List;
 public interface GameService {
     ResponseEntity<List<GameResVo>> getGames();
 
-    ResponseEntity<GameOptionResVo> getGameOption(Long gameId);
+    GameOptionResDto getGameOption(Long gameId);
 }
