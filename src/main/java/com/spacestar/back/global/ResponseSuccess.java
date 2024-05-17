@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 public enum ResponseSuccess {
 
     GET_GAMES_SUCCESS(HttpStatus.OK.value(),"전체 게임 조회 성공"),
-    GET_GAME_OPTION_SUCCESS(HttpStatus.OK.value(),"게임 옵션 조회 성공");
+    GET_GAME_OPTION_SUCCESS(HttpStatus.OK.value(),"게임 옵션 조회 성공"),
+
+    GET_GAME_CLASS_SUCCESS(HttpStatus.OK.value(), "게임 직업 조회 성공");
 
 
     private final int code;
