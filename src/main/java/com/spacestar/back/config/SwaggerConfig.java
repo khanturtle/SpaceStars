@@ -12,12 +12,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Configuration
 @OpenAPIDefinition(
-		info = @Info(title = "API Document", description = "알림 서비스 명세서", version = "v1")
+		info = @Info(title = "API Document", description = "알림서비스 명세서", version = "v1")
 )
 public class SwaggerConfig {
 
 	@Bean
-	public OpenAPI openAPI(){
+	public OpenAPI openAPI() {
 		return new OpenAPI()
 				.addServersItem(new Server().url("/"));
 	}
