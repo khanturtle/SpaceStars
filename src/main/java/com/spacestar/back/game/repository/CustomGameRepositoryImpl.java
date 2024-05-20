@@ -5,12 +5,15 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.spacestar.back.game.domain.QGame;
 import com.spacestar.back.game.dto.res.GameOptionResDto;
+import com.spacestar.back.game.dto.res.GameResDto;
 import com.spacestar.back.game.vo.res.GameResVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 @RequiredArgsConstructor
@@ -19,13 +22,27 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public List<GameResVo> findAllGameNames() {
+    public List<GameResDto> findAllGameNames() {
         QGame qGame = QGame.game;
 
-        return query
-                .select(Projections.constructor(GameResVo.class, Expressions.constant(0), qGame.name, qGame.image))
+//        return query
+//                .select(Projections.constructor(GameResDto.class, Expressions.constant(0), qGame.name, qGame.image))
+//                .from(qGame)
+//                .fetch();
+
+        List<GameResDto> gameResDtos = query
+                .select(Projections.constructor(GameResDto.class, Expressions.constant(0), qGame.name, qGame.image))
                 .from(qGame)
                 .fetch();
+
+        return IntStream.range(0, gameResDtos.size())
+                .mapToObj(i -> GameResDto.builder()
+                        .index(i)
+                        .gameName(gameResDtos.get(i).getGameName())
+                        .gameImage(gameResDtos.get(i).getGameImage())
+                        .build())
+                .collect(Collectors.toList());
+
     }
 
     @Override
