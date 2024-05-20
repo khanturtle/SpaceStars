@@ -1,5 +1,6 @@
 package com.spacestar.back.game.controller;
 
+import com.spacestar.back.game.dto.res.GameResDto;
 import com.spacestar.back.game.service.GameService;
 import com.spacestar.back.game.vo.res.GameOptionResVo;
 import com.spacestar.back.game.vo.res.GameResVo;
@@ -23,7 +24,13 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<List<GameResVo>> getGames() {
-        return gameService.getGames();
+        List<GameResDto> gameResDtos = gameService.getGames();
+        List<GameResVo> gameResVos = gameResDtos.stream()
+                .map(dto -> modelMapper.map(dto, GameResVo.class))
+                .toList();
+
+        return new ResponseEntity<>(
+                ResponseSuccess.GET_GAMES_SUCCESS,gameResVos);
     }
 
     @GetMapping("/option/{gameId}")
