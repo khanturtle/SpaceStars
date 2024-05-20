@@ -33,6 +33,9 @@ dependencies {
 
     //eureka-client
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    // swagger
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webflux-ui', version: '2.2.0'
 }
 
 dependencyManagement {
