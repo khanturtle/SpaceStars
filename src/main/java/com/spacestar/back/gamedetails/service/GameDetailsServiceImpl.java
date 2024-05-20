@@ -47,56 +47,29 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     public List<GamePositionResDto> getGamePosition(Long gameId) {
         Game game = gameRepository.getReferenceById(gameId);
         List<GamePosition> gamePositions = positionRepository.findByGame(game);
-        List<GamePositionResDto> gamePositionResDtos = new ArrayList<>();
 
-        for (int i = 0; i < gamePositions.size(); i++) {
-            gamePositionResDtos.add(
-                    GamePositionResDto.builder()
-                            .index(i)
-                            .gamePositionId(gamePositions.get(i).getId())
-                            .gamePositionName(gamePositions.get(i).getGamePositionName())
-                            .gamePositionImage(gamePositions.get(i).getGamePositionImage())
-                            .gamePositionNameKor(gamePositions.get(i).getGamePositionNameKor())
-                            .build());
-        }
-        return gamePositionResDtos;
+        return  IntStream.range(0, gamePositions.size())
+                .mapToObj(i -> GamePositionResDto.toGamePositionResDto(i, gamePositions.get(i)))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<GameServerResDto> getGameServer(Long gameId) {
         Game game = gameRepository.getReferenceById(gameId);
         List<GameServer> gameServers = serverRepository.findByGame(game);
-        List<GameServerResDto> gameServerResDtos = new ArrayList<>();
 
-        for (int i = 0; i < gameServers.size(); i++) {
-            gameServerResDtos.add(
-                    GameServerResDto.builder()
-                            .index(i)
-                            .gameServerId(gameServers.get(i).getId())
-                            .gameServerName(gameServers.get(i).getGameServerName())
-                            .gameServerImage(gameServers.get(i).getGameServerImage())
-                            .gameServerNameKor(gameServers.get(i).getGameServerNameKor())
-                            .build());
-        }
-        return gameServerResDtos;
+        return  IntStream.range(0, gameServers.size())
+                .mapToObj(i -> GameServerResDto.toGameServerResDto(i, gameServers.get(i)))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<GameTierResDto> getGameTier(Long gameId) {
         Game game = gameRepository.getReferenceById(gameId);
         List<GameTier> gameTiers = tierRepository.findByGame(game);
-        List<GameTierResDto> gameTierResDtos = new ArrayList<>();
 
-        for (int i = 0; i < gameTiers.size(); i++) {
-            gameTierResDtos.add(
-                    GameTierResDto.builder()
-                            .index(i)
-                            .gameTierId(gameTiers.get(i).getId())
-                            .gameTierName(gameTiers.get(i).getGameTierName())
-                            .gameTierImage(gameTiers.get(i).getGameTierImage())
-                            .gameTierNameKor(gameTiers.get(i).getGameTierNameKor())
-                            .build());
-        }
-        return gameTierResDtos;
+        return IntStream.range(0, gameTiers.size())
+                .mapToObj(i -> GameTierResDto.toGameTierResDto(i, gameTiers.get(i)))
+                .collect(Collectors.toList());
     }
 }
