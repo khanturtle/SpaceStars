@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import styles from './signIn.module.css'
+import styles from './sign.module.css'
 
 interface TypeDetails {
   imageUrl: string

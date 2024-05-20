@@ -25,7 +25,7 @@ function Modal({ children }: { children: React.ReactNode }) {
       <dialog
         ref={dialogRef}
         className={`w-[90%] h-[90%] sm:w-[80%] sm:h-[80%] 
-                  md:w-[60%] md:h-[60%] lg:w-[50%] lg:h-[50%]
+                  md:w-[60%] md:h-[60%] lg:w-[50%] lg:h-[60%]
                   flex flex-col items-center justify-evenly
                   fixed inset-0 
                   bg-[url('/images/BG.svg')] bg-cover bg-center bg-no-repeat 

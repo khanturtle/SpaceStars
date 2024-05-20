@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import styles from './signIn.module.css'
+import styles from './sign.module.css'
 
 interface DescriptionBoxProps {
   text: string

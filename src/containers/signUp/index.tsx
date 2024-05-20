@@ -2,17 +2,17 @@ import KakaoButton from '@/components/buttons/kakaoButton'
 import DescriptionBox from '@/components/sign/DescriptionBox'
 import TitleContainer from '@/components/sign/TitleContainer'
 
-export default function SignInLayout() {
+export default function SignUpLayout() {
   return (
     <>
-      <TitleContainer type="signIn" />
+      <TitleContainer type="signUp" />
       <div className="h-[37px]" />
       <KakaoButton />
       <div className="h-[27px]" />
       <DescriptionBox
         text="Don't have an account?"
-        link="/sign-up"
-        linkName="Sign Up."
+        link="/"
+        linkName="도움이 필요하신가요?"
       />
     </>
   )

@@ -24,7 +24,7 @@ export default function Navbar() {
 
       <div className={styles.nav_mode}>모드</div>
 
-      <button type="button" onClick={() => router.push('/signIn')}>
+      <button type="button" onClick={() => router.push('/sign-in')}>
         로그인/회원가입
       </button>
     </nav>
