@@ -1,6 +1,9 @@
 package com.spacestar.back.global;
 
-public record ResponseEntity<T>( String message, int code, T result) {
+import io.swagger.v3.oas.models.headers.Header;
+import org.springframework.lang.Nullable;
+
+public record ResponseEntity<T>(String message, int code, T result) {
     /**
      * 필요값 : 성공여부, 메시지, 에러코드, 결과값
      */
@@ -27,6 +30,12 @@ public record ResponseEntity<T>( String message, int code, T result) {
     //요청에 실패한 경우 @Vaild annotantion error
     public ResponseEntity(Exception e, String message) {
         this( message, 3000, null);
+    }
+
+
+    // 요청 성공 시, body를 포함한 ResponseEntity 객체를 반환
+    public static <T> org.springframework.http.ResponseEntity<T> ok(@Nullable T body) {
+        return org.springframework.http.ResponseEntity.ok().body(body);
     }
 
 }
