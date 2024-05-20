@@ -5,6 +5,8 @@ import lombok.*;
 @Getter
 public class GameResVo {
     private int index;
+    private long gameId;
+    private String gameNameKor;
     private String gameName;
     private String gameImage;
 }

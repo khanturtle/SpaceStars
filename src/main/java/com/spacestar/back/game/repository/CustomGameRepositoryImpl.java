@@ -25,24 +25,24 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
     public List<GameResDto> findAllGameNames() {
         QGame qGame = QGame.game;
 
-//        return query
-//                .select(Projections.constructor(GameResDto.class, Expressions.constant(0), qGame.name, qGame.image))
-//                .from(qGame)
-//                .fetch();
-
         List<GameResDto> gameResDtos = query
-                .select(Projections.constructor(GameResDto.class, Expressions.constant(0), qGame.name, qGame.image))
+                .select(Projections.constructor(GameResDto.class,
+                        qGame.name,
+                        qGame.image,
+                        qGame.name_kor,
+                        qGame.id))
                 .from(qGame)
                 .fetch();
 
         return IntStream.range(0, gameResDtos.size())
                 .mapToObj(i -> GameResDto.builder()
                         .index(i)
+                        .gameId(gameResDtos.get(i).getGameId())
                         .gameName(gameResDtos.get(i).getGameName())
+                        .gameNameKor(gameResDtos.get(i).getGameNameKor())
                         .gameImage(gameResDtos.get(i).getGameImage())
                         .build())
-                .collect(Collectors.toList());
-
+                        .toList();
     }
 
     @Override
