@@ -16,11 +16,15 @@ import com.spacestar.back.gamedetails.repository.GameServerRepository;
 import com.spacestar.back.gamedetails.repository.GameTierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class GameDetailsServiceImpl implements GameDetailsService {
     private final GameRepository gameRepository;
@@ -33,19 +37,10 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     public List<GameClassResDto> getGameClass(Long gameId) {
         Game game = gameRepository.getReferenceById(gameId);
         List<GameClass> gameClasses = classRepository.findByGame(game);
-        List<GameClassResDto> gameClassResDtos = new ArrayList<>();
 
-        for (int i = 0; i < gameClasses.size(); i++) {
-            gameClassResDtos.add(
-                    GameClassResDto.builder()
-                            .index(i)
-                            .gameClassId(gameClasses.get(i).getId())
-                            .gameClassName(gameClasses.get(i).getGameClassName())
-                            .gameClassImage(gameClasses.get(i).getGameClassImage())
-                            .gameClassNameKor(gameClasses.get(i).getGameClassNameKor())
-                            .build());
-        }
-        return gameClassResDtos;
+        return  IntStream.range(0, gameClasses.size())
+                .mapToObj(i -> GameClassResDto.toGameClassResDto(i, gameClasses.get(i)))
+                .collect(Collectors.toList());
     }
 
     @Override
