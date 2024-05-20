@@ -1,6 +1,10 @@
-// // import SignIn from '@/app/signIn/page'
-// import Modal from '@/components/common/modal'
+import Modal from '@/components/modal/modal'
+import SignInLayout from '@/containers/signIn'
 
-// export default function page() {
-//   return <Modal>{/* <SignIn /> */}</Modal>
-// }
+export default function page() {
+  return (
+    <Modal>
+      <SignInLayout />
+    </Modal>
+  )
+}

@@ -1,22 +1,15 @@
-import SignBack from '@/containers/signIn/SignBack'
+import SignInLayout from '@/containers/signIn'
 
-import styles from './page.module.css'
-
-export default function SignPage() {
+export default function SignInPage() {
   return (
-    <section className={styles.section}>
-      <SignBack />
-
-      {/* <div>
-        <div>이미지</div>
-        <h1>Title</h1>
-        <p>Description</p>
+    <section className="w-[100vw] h-[100vh] fixed inset-0 flex items-center justify-center bg-[url('/images/BG.svg')] bg-cover bg-center bg-no-repeat overflow-hidden z-10">
+      <div
+        className={`w-[90%] h-[90%] sm:w-[80%] sm:h-[80%] 
+                  md:w-[60%] md:h-[60%] lg:w-[50%] lg:h-[50%]
+                  flex flex-col items-center justify-evenly`}
+      >
+        <SignInLayout />
       </div>
-      <div>ㅁㅅ</div>
-
-      <div>로그인 버튼</div>
-
-      <div>회원가입으로</div> */}
     </section>
   )
 }

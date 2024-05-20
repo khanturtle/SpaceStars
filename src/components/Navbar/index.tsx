@@ -1,11 +1,11 @@
 'use client'
 
-// import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import styles from './Navbar.module.css'
 
-export default function index() {
-  // const router = useRouter()
+export default function Navbar() {
+  const router = useRouter()
 
   return (
     <nav className={styles.nav}>
@@ -24,10 +24,9 @@ export default function index() {
 
       <div className={styles.nav_mode}>모드</div>
 
-      {/* <button type="button" onClick={() => router.push('/signIn')}>
+      <button type="button" onClick={() => router.push('/signIn')}>
         로그인/회원가입
-      </button> */}
-      {/* <LoginButton styles={styles} /> */}
+      </button>
     </nav>
   )
 }
