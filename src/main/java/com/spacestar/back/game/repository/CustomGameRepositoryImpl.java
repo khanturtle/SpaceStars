@@ -1,18 +1,15 @@
 package com.spacestar.back.game.repository;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.spacestar.back.game.domain.QGame;
 import com.spacestar.back.game.dto.res.GameOptionResDto;
 import com.spacestar.back.game.dto.res.GameResDto;
-import com.spacestar.back.game.vo.res.GameResVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
