@@ -39,6 +39,8 @@ public class GameDetailsServiceImpl implements GameDetailsService {
             gameClassResDtos.add(
                     GameClassResDto.builder()
                             .index(i)
+                            .gameClassId(gameClasses.get(i).getId())
+                            .gameClassName(gameClasses.get(i).getGameClassName())
                             .gameClassImage(gameClasses.get(i).getGameClassImage())
                             .gameClassNameKor(gameClasses.get(i).getGameClassNameKor())
                             .build());
@@ -56,6 +58,8 @@ public class GameDetailsServiceImpl implements GameDetailsService {
             gamePositionResDtos.add(
                     GamePositionResDto.builder()
                             .index(i)
+                            .gamePositionId(gamePositions.get(i).getId())
+                            .gamePositionName(gamePositions.get(i).getGamePositionName())
                             .gamePositionImage(gamePositions.get(i).getGamePositionImage())
                             .gamePositionNameKor(gamePositions.get(i).getGamePositionNameKor())
                             .build());
@@ -73,6 +77,8 @@ public class GameDetailsServiceImpl implements GameDetailsService {
             gameServerResDtos.add(
                     GameServerResDto.builder()
                             .index(i)
+                            .gameServerId(gameServers.get(i).getId())
+                            .gameServerName(gameServers.get(i).getGameServerName())
                             .gameServerImage(gameServers.get(i).getGameServerImage())
                             .gameServerNameKor(gameServers.get(i).getGameServerNameKor())
                             .build());
@@ -90,6 +96,8 @@ public class GameDetailsServiceImpl implements GameDetailsService {
             gameTierResDtos.add(
                     GameTierResDto.builder()
                             .index(i)
+                            .gameTierId(gameTiers.get(i).getId())
+                            .gameTierName(gameTiers.get(i).getGameTierName())
                             .gameTierImage(gameTiers.get(i).getGameTierImage())
                             .gameTierNameKor(gameTiers.get(i).getGameTierNameKor())
                             .build());

@@ -7,6 +7,8 @@ import lombok.Getter;
 @Builder
 public class GamePositionResDto {
     private int index;
+    private long gamePositionId;
+    private String gamePositionName;
     private String gamePositionNameKor;
     private String gamePositionImage;
 }

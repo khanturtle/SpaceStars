@@ -7,6 +7,8 @@ import lombok.Getter;
 @Builder
 public class GameServerResDto {
     private int index;
+    private long gameServerId;
+    private String gameServerName;
     private String gameServerNameKor;
     private String gameServerImage;
 }
