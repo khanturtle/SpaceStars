@@ -1,11 +1,13 @@
 package com.spacestar.back.gamegenre.service;
 
+import com.spacestar.back.gamegenre.domain.GameGenre;
 import com.spacestar.back.gamegenre.dto.res.GameGenreResDto;
 import com.spacestar.back.gamegenre.repository.GameGenreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -13,7 +15,10 @@ public class GameGenreServiceImpl implements GameGenreService{
     private final GameGenreRepository gameGenreRepository;
     @Override
     public List<GameGenreResDto> getGameGenres() {
+        List<GameGenre> gameGenres = gameGenreRepository.findAll();
 
-        return null;
+        return  IntStream.range(0, gameGenres.size())
+                .mapToObj(i -> GameGenreResDto.toDto(i, gameGenres.get(i)))
+                .toList();
     }
 }
