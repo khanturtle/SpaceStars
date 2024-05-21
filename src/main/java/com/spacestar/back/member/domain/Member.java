@@ -64,7 +64,6 @@ public class Member extends GlobalTime{
     private Long exp;
 
     @Builder
-
     public Member(Long id, String uuid, String email, String nickname, GenderType gender, LocalDate birth, Boolean infoAgree, UnregisterType unregister, Integer reportCount, String description, Long gamePreferenceId, Long mbtiId, Boolean swipe, Long exp) {
         this.id = id;
         this.uuid = uuid;
