@@ -1,11 +1,12 @@
 package com.spacestar.back.swipe.controller;
 
 import com.spacestar.back.global.ResponseEntity;
+import com.spacestar.back.global.ResponseSuccess;
+import com.spacestar.back.swipe.dto.SwipeReqDto;
 import com.spacestar.back.swipe.service.SwipeService;
 import com.spacestar.back.swipe.vo.SwipeReqVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/swipe")
 public class SwipeController {
     private final SwipeService swipeService;
+    private final ModelMapper mapper;
     @PostMapping("/add")
-    public ResponseEntity<?> addSwipe(
-        @RequestBody SwipeReqVo swipeReqVo
-    ){
-        swipeService.addSwipe();
-        return null;
+    public ResponseEntity<Void> addSwipe(
+            @RequestBody SwipeReqVo swipeReqVo,
+            @RequestHeader("Authorization") String uuid
+            ){
+        swipeService.addSwipe(mapper.map(swipeReqVo, SwipeReqDto.class),uuid);
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_ADD_SUCCESS);
     }
 }
