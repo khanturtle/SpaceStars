@@ -18,7 +18,7 @@ public class SwipeController {
     @PostMapping("/add")
     public ResponseEntity<Void> addSwipe(
             @RequestBody SwipeReqVo swipeReqVo,
-            @RequestHeader("Authorization") String uuid
+            @RequestHeader("uuid") String uuid
             ){
         swipeService.addSwipe(mapper.map(swipeReqVo, SwipeReqDto.class),uuid);
         return new ResponseEntity<>(ResponseSuccess.SWIPE_ADD_SUCCESS);
