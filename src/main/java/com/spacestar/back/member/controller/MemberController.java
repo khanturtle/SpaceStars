@@ -46,10 +46,8 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<HttpHeaders> login(@RequestBody MemberLoginReqVo memberLoginReqVo){
 
-        MemberLoginResDto memberLoginResDto = memberService.kakaoLogin(mapper.map(memberLoginReqVo, MemberLoginReqDto.class));
-
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, memberLoginResDto.getAccessToken());
+        headers.set(HttpHeaders.AUTHORIZATION, memberService.kakaoLogin(mapper.map(memberLoginReqVo, MemberLoginReqDto.class)).getAccessToken());
 
         return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, headers);
     }

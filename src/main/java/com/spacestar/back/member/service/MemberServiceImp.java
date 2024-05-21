@@ -90,10 +90,8 @@ public class MemberServiceImp implements MemberService{
             throw  new GlobalException(ResponseStatus.DELETE_MEMBER);
         }
 
-        String token = jwtUtil.createJwt(member.getUuid(),"ROLE_USER",3600000L);
-
         return MemberLoginResDto.builder()
-                .accessToken("Bearer" + token)
+                .accessToken("Bearer" + jwtUtil.createJwt(member.getUuid(),"ROLE_USER",3600000L))
                 .build();
 
     }
