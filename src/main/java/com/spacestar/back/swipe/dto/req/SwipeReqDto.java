@@ -1,4 +1,4 @@
-package com.spacestar.back.swipe.dto;
+package com.spacestar.back.swipe.dto.req;
 
 import lombok.Getter;
 

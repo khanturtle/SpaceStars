@@ -2,9 +2,9 @@ package com.spacestar.back.swipe.controller;
 
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
-import com.spacestar.back.swipe.dto.SwipeReqDto;
+import com.spacestar.back.swipe.dto.req.SwipeReqDto;
 import com.spacestar.back.swipe.service.SwipeService;
-import com.spacestar.back.swipe.vo.SwipeReqVo;
+import com.spacestar.back.swipe.vo.req.SwipeReqVo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;

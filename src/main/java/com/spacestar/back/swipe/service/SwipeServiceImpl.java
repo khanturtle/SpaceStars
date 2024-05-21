@@ -1,7 +1,7 @@
 package com.spacestar.back.swipe.service;
 
 import com.spacestar.back.swipe.domain.Swipe;
-import com.spacestar.back.swipe.dto.SwipeReqDto;
+import com.spacestar.back.swipe.dto.req.SwipeReqDto;
 import com.spacestar.back.swipe.repository.SwipeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

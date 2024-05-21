@@ -1,4 +1,4 @@
-package com.spacestar.back.swipe.vo;
+package com.spacestar.back.swipe.vo.req;
 
 import lombok.Getter;
 
