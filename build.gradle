@@ -41,10 +41,7 @@ dependencies {
 
 	// modelMapper
 	implementation 'org.modelmapper:modelmapper:3.0.0'
-//
-//	//SpringSecurity
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-//	testImplementation 'org.springframework.security:spring-security-test'
+
 }
 
 tasks.named('bootBuildImage') {
