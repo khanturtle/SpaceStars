@@ -2,6 +2,7 @@ package com.spacestar.back.member.service;
 
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.member.dto.req.MemberInfoReqDto;
 import com.spacestar.back.member.jwt.JWTUtil;
 import com.spacestar.back.member.domain.Member;
 import com.spacestar.back.member.domain.ProfileImage;
@@ -91,9 +92,18 @@ public class MemberServiceImp implements MemberService{
         }
 
         return MemberLoginResDto.builder()
-                .accessToken("Bearer" + jwtUtil.createJwt(member.getUuid(),"ROLE_USER",3600000L))
+                .accessToken("Bearer " + jwtUtil.createJwt(member.getUuid(),"ROLE_USER",3600000L))
                 .build();
 
+    }
+
+    @Override
+    public void updateMemberInfo(String uuid,MemberInfoReqDto memberInfoReqDto) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow( () -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        memberRepository.save(Member.updateToEntity(member, memberInfoReqDto));
     }
 
 

@@ -1,6 +1,7 @@
 package com.spacestar.back.member.domain;
 
 import com.spacestar.back.global.GlobalTime;
+import com.spacestar.back.member.dto.req.MemberInfoReqDto;
 import com.spacestar.back.member.dto.req.MemberJoinReqDto;
 import com.spacestar.back.member.enums.GenderType;
 import com.spacestar.back.member.enums.UnregisterType;
@@ -58,13 +59,13 @@ public class Member extends GlobalTime{
     private Long mbtiId;
 
     @Column
-    private Boolean swipe;
+    private boolean swipe;
 
     @Column
     private Long exp;
 
     @Builder
-    public Member(Long id, String uuid, String email, String nickname, GenderType gender, LocalDate birth, Boolean infoAgree, UnregisterType unregister, Integer reportCount, String description, Long gamePreferenceId, Long mbtiId, Boolean swipe, Long exp) {
+    public Member(Long id, String uuid, String email, String nickname, GenderType gender, LocalDate birth, Boolean infoAgree, UnregisterType unregister, Integer reportCount, String description, Long gamePreferenceId, Long mbtiId, boolean swipe, Long exp) {
         this.id = id;
         this.uuid = uuid;
         this.email = email;
@@ -100,6 +101,24 @@ public class Member extends GlobalTime{
                 .mbtiId(null)
                 .swipe(true)
                 .exp(0L)
+                .build();
+    }
+
+    public static Member updateToEntity(Member member, MemberInfoReqDto memberInfoReqDto){
+        return Member.builder()
+                .uuid(member.getUuid())
+                .email(member.getEmail())
+                .nickname(memberInfoReqDto.getNickname())
+                .gender(memberInfoReqDto.getGender())
+                .birth(memberInfoReqDto.getBirth())
+                .infoAgree(member.getInfoAgree())
+                .unregister(member.getUnregister())
+                .reportCount(member.getReportCount())
+                .description(member.getDescription())
+                .gamePreferenceId(memberInfoReqDto.getGamePreferenceId())
+                .mbtiId(memberInfoReqDto.getMbtiId())
+                .swipe(memberInfoReqDto.isSwipe())
+                .exp(member.getExp())
                 .build();
     }
 }

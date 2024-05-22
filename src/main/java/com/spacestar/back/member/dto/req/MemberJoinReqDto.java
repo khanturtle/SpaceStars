@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -20,5 +21,6 @@ public class MemberJoinReqDto {
     private GenderType gender;
     private LocalDate birth;
     private Boolean infoAgree;
+
 
 }
