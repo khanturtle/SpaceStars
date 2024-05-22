@@ -23,4 +23,9 @@ public class SwipeServiceImpl implements SwipeService{
     public List<SwipeListResDto> getSwipe(String uuid) {
         return swipeRepository.findWaitRequest(uuid);
     }
+
+    @Override
+    public void agreeSwipe(String uuid) {
+        swipeRepository.agreeRequest(uuid);
+    }
 }

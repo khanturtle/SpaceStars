@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.spacestar.back.swipe.SwipeStatus.AGREE;
 import static com.spacestar.back.swipe.SwipeStatus.WAIT;
 
 @Component
@@ -27,5 +28,14 @@ public class CustomSwipeRepositoryImpl implements CustomSwipeRepository {
                 .from(qSwipe)
                 .where(qSwipe.matchToMember.eq(uuid).and(qSwipe.status.eq(WAIT)))
                 .fetch();
+    }
+
+    @Override
+    public void agreeRequest(String uuid) {
+        QSwipe qSwipe = QSwipe.swipe;
+        query.update(qSwipe)
+                .where(qSwipe.matchToMember.eq(uuid))
+                .set(qSwipe.status, AGREE)
+                .execute();
     }
 }

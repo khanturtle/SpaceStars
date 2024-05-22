@@ -28,7 +28,7 @@ public class SwipeController {
         return new ResponseEntity<>(ResponseSuccess.SWIPE_ADD_SUCCESS);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<SwipeListResVo>> getSwipe(
             @RequestHeader("uuid") String uuid
     ){
@@ -38,5 +38,13 @@ public class SwipeController {
                 .toList();
 
         return new ResponseEntity<>(ResponseSuccess.SWIPE_GET_SUCCESS,SwipeListResVos);
+    }
+
+    @PatchMapping
+    public ResponseEntity<Void> agreeSwipe(
+            @RequestHeader("uuid") String uuid
+    ){
+        swipeService.agreeSwipe(uuid);
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_AGREE_SUCCESS);
     }
 }

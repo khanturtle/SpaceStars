@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CustomSwipeRepository {
     List<SwipeListResDto> findWaitRequest(String uuid);
+
+    void agreeRequest(String uuid);
 }
