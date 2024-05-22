@@ -29,7 +29,7 @@ public class SwipeController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<SwipeListResVo>> addSwipe(
+    public ResponseEntity<List<SwipeListResVo>> getSwipe(
             @RequestHeader("uuid") String uuid
     ){
         List<SwipeListResDto> swipeListResDtos = swipeService.getSwipe(uuid);
