@@ -28,4 +28,9 @@ public class SwipeServiceImpl implements SwipeService{
     public void agreeSwipe(String uuid) {
         swipeRepository.agreeRequest(uuid);
     }
+
+    @Override
+    public void rejectSwipe(String uuid) {
+        swipeRepository.rejectRequest(uuid);
+    }
 }

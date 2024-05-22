@@ -40,11 +40,19 @@ public class SwipeController {
         return new ResponseEntity<>(ResponseSuccess.SWIPE_GET_SUCCESS,SwipeListResVos);
     }
 
-    @PatchMapping
+    @PatchMapping("/agree")
     public ResponseEntity<Void> agreeSwipe(
             @RequestHeader("uuid") String uuid
     ){
         swipeService.agreeSwipe(uuid);
         return new ResponseEntity<>(ResponseSuccess.SWIPE_AGREE_SUCCESS);
+    }
+
+    @PatchMapping("/reject")
+    public ResponseEntity<Void> rejectSwipe(
+            @RequestHeader("uuid") String uuid
+    ){
+        swipeService.rejectSwipe(uuid);
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_REJECT_SUCCESS);
     }
 }

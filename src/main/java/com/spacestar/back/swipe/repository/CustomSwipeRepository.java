@@ -8,4 +8,6 @@ public interface CustomSwipeRepository {
     List<SwipeListResDto> findWaitRequest(String uuid);
 
     void agreeRequest(String uuid);
+
+    void rejectRequest(String uuid);
 }
