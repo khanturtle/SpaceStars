@@ -10,6 +10,7 @@ export default function Page() {
 
       <main>
         <h1>컴포넌트dd</h1>
+        <p>테스트</p>
       </main>
     </>
   )
