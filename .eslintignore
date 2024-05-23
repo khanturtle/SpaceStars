@@ -1,0 +1,14 @@
+next.config.js
+/next.config.js
+.pnp.*
+/.pnp.cjs
+*.mjs
+postcss.config.js
+tailwind.config.js
+
+dist
+node_modules
+.yarn
+.pnp.cjs
+.pnp.loager.mjs
+!.storybook

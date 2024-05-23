@@ -1,0 +1,42 @@
+.nav {
+  height: 80px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 0 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.nav_logo {
+  width: 200px;
+  height: 100%;
+  border: solid black;
+}
+
+.nav_item {
+  display: flex;
+  flex-direction: row;
+
+  & li {
+    width: 100px;
+    border: solid red;
+    margin-left: 16px;
+    text-align: center;
+
+    &:first-child {
+      margin-left: 20px;
+    }
+  }
+}
+
+.nav_mode {
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
+  background-color: red;
+}
+
+.nav_login {
+  border: solid black;
+}
