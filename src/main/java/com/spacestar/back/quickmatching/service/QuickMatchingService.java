@@ -1,4 +1,5 @@
 package com.spacestar.back.quickmatching.service;
 
-public class QuickMatchingService {
+public interface QuickMatchingService {
+    void enterQuickMatching(String uuid);
 }
