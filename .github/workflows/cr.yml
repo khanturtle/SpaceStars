@@ -19,4 +19,3 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           LANGUAGE: Korean
           MODEL: gpt-3.5-turbo
-          PROMPT: 'Next.JS v14, Typescript, TailwindCSS를 사용'
