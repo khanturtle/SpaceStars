@@ -2,10 +2,12 @@ package com.spacestar.back.member.controller;
 
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import com.spacestar.back.member.dto.req.MemberInfoReqDto;
 import com.spacestar.back.member.dto.req.MemberJoinReqDto;
 import com.spacestar.back.member.dto.req.MemberLoginReqDto;
-import com.spacestar.back.member.dto.res.MemberLoginResDto;
+import com.spacestar.back.member.jwt.JWTUtil;
 import com.spacestar.back.member.service.MemberService;
+import com.spacestar.back.member.vo.req.MemberInfoReqVo;
 import com.spacestar.back.member.vo.req.MemberJoinReqVo;
 import com.spacestar.back.member.vo.req.MemberLoginReqVo;
 import com.spacestar.back.member.vo.res.NicknameResVo;
@@ -27,6 +29,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final ModelMapper mapper;
+    private final JWTUtil jwtUtil;
 
     @Operation(summary = "회원가입")
     @PostMapping("/join")
@@ -50,5 +53,14 @@ public class MemberController {
         headers.set(HttpHeaders.AUTHORIZATION, memberService.kakaoLogin(mapper.map(memberLoginReqVo, MemberLoginReqDto.class)).getAccessToken());
 
         return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, headers);
+    }
+
+    @Operation(summary = "회원 정보 추가입력/ 회원 정보 수정")
+    @PutMapping("/info/add")
+    public ResponseEntity<Void> memberInfoAdd(@RequestHeader("UUID") String uuid,
+                                              @RequestBody MemberInfoReqVo memberInfoReqVo){
+
+        memberService.updateMemberInfo(uuid,mapper.map(memberInfoReqVo, MemberInfoReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
     }
 }

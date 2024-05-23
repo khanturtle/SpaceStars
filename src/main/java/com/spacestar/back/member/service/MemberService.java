@@ -1,5 +1,6 @@
 package com.spacestar.back.member.service;
 
+import com.spacestar.back.member.dto.req.MemberInfoReqDto;
 import com.spacestar.back.member.dto.req.MemberJoinReqDto;
 import com.spacestar.back.member.dto.req.MemberLoginReqDto;
 import com.spacestar.back.member.dto.res.MemberLoginResDto;
@@ -12,4 +13,6 @@ public interface MemberService {
     NicknameResDto duplicationNickname(String nickname);
 
     MemberLoginResDto kakaoLogin(MemberLoginReqDto memberLoginReqDto);
+
+    void updateMemberInfo(String uuid,MemberInfoReqDto memberInfoReqDto);
 }
