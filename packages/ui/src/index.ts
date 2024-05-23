@@ -1,2 +1,2 @@
-export { default as Button } from './components/Buttons/Button'
-export { default as KakaoButton } from './components/Buttons/KakaoButton'
+export { Button, KakaoButton } from './components/Buttons'
+export { Input } from './components/Inputs'
