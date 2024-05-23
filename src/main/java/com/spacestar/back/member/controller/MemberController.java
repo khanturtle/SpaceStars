@@ -56,8 +56,9 @@ public class MemberController {
     }
 
     @Operation(summary = "회원 정보 추가입력/ 회원 정보 수정")
-    @PostMapping("/info/add")
-    public ResponseEntity<Void> memberInfoAdd(@RequestHeader("UUID") String uuid, @RequestBody MemberInfoReqVo memberInfoReqVo){
+    @PutMapping("/info/add")
+    public ResponseEntity<Void> memberInfoAdd(@RequestHeader("UUID") String uuid,
+                                              @RequestBody MemberInfoReqVo memberInfoReqVo){
 
         memberService.updateMemberInfo(uuid,mapper.map(memberInfoReqVo, MemberInfoReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);

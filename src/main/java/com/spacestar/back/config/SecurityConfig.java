@@ -25,7 +25,7 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
 
     private static final String[] AUTH_WHITELIST = {
-            "/api/v1/member/**","/swagger-ui/**", "/error"
+            "/api/v1/member/**","/swagger-ui/**","/api/member/v3/api-docs/**", "/error"
     };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -38,8 +38,8 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080"));
-                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8000"));
+                        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);

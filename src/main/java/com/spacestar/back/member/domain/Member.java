@@ -106,6 +106,7 @@ public class Member extends GlobalTime{
 
     public static Member updateToEntity(Member member, MemberInfoReqDto memberInfoReqDto){
         return Member.builder()
+                .id(member.getId())
                 .uuid(member.getUuid())
                 .email(member.getEmail())
                 .nickname(memberInfoReqDto.getNickname())
