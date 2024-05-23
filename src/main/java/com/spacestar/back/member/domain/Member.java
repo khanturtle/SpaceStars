@@ -23,45 +23,32 @@ public class Member extends GlobalTime{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String uuid;
 
-    @Column
     private String email;
 
-    @Column
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    @Column
     private GenderType gender;
 
-    @Column
     private LocalDate birth;
 
-    @Column
     private Boolean infoAgree;
 
     @Enumerated(EnumType.STRING)
-    @Column
     private UnregisterType unregister;
 
-    @Column
     private Integer reportCount;
 
-    @Column
     private String description;
 
-    @Column
     private Long gamePreferenceId;
 
-    @Column
     private Long mbtiId;
 
-    @Column
     private boolean swipe;
 
-    @Column
     private Long exp;
 
     @Builder

@@ -16,13 +16,10 @@ public class ProfileImage {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @Column
     private String profileImageUrl;
 
-    @Column
     private Boolean main;
 
-    @Column
     private Integer idx;
 
 }
