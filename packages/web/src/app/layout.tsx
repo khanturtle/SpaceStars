@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import AuthSession from '../components/providers/session-provider'
 
 import '../styles/globals.css'
-import 'packages/ui/dist/index.css'
+import '@packages/ui/index.css'
 
 export const metadata: Metadata = {
   title: 'Dreaming-Stars',
