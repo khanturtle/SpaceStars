@@ -42,6 +42,8 @@ dependencies {
 	// modelMapper
 	implementation 'org.modelmapper:modelmapper:3.0.0'
 
+	//redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 }
 
 tasks.named('bootBuildImage') {
