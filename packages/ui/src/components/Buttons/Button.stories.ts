@@ -30,7 +30,6 @@ export const Secondary: Story = {
     label: 'Button',
   },
 }
-
 export const Rounded: Story = {
   args: {
     primary: true,
