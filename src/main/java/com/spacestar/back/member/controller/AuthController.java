@@ -31,7 +31,7 @@ public class AuthController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/join")
-    public ResponseEntity<Void> memberAdd(@RequestBody @Valid MemberJoinReqVo memberJoinReqVo) {
+    public ResponseEntity<Void> signUp(@RequestBody @Valid MemberJoinReqVo memberJoinReqVo) {
 
         authService.addMember(mapper.map(memberJoinReqVo, MemberJoinReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.SIGNUP_SUCCESS);
