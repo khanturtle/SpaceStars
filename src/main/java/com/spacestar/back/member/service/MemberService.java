@@ -15,4 +15,6 @@ public interface MemberService {
     void updateProfileImages(String uuid, List<ProfileImageReqDto> profileImageReqDtos);
 
     List<ProfileImageListResDto> findProfileImageList(String uuid);
+
+    ProfileImageListResDto findMainProfileImage(String uuid);
 }

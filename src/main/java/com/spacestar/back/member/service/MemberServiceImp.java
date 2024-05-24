@@ -14,6 +14,7 @@ import com.spacestar.back.member.repository.PlayGameRepository;
 import com.spacestar.back.member.repository.ProfileImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class MemberServiceImp implements MemberService{
     private final ProfileImageRepository profileImageRepository;
     private final LikedGameRepository likedGameRepository;
     private final PlayGameRepository playGameRepository;
+    private final ModelMapper mapper;
 
 
     @Transactional
@@ -132,5 +134,15 @@ public class MemberServiceImp implements MemberService{
             profileImageListResDtos.add(ProfileImageListResDto.convertToDto(profileImage));
       }
         return profileImageListResDtos;
+    }
+
+    @Override
+    public ProfileImageListResDto findMainProfileImage(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        return mapper.map(
+                profileImageRepository.findByMemberAndMain(member,true),ProfileImageListResDto.class);
     }
 }

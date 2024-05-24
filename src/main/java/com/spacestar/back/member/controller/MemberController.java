@@ -63,11 +63,22 @@ public class MemberController {
     @GetMapping("/profile/image")
     public ResponseEntity<List<ProfileImageListResVo>> profileImageList(@RequestHeader("UUID") String uuid){
 
-        List<ProfileImageListResVo> profileImageListResVos = memberService.findProfileImageList(uuid).stream()
+        return new ResponseEntity<>(
+                ResponseSuccess.PROFILE_IMAGE_SELECT_SUCCESS, memberService.findProfileImageList(uuid)
+                .stream()
                 .map(dto -> mapper.map(dto, ProfileImageListResVo.class))
-                .toList();
+                .toList());
+    }
 
-        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_SELECT_SUCCESS, profileImageListResVos);
+    @Operation(summary = "대표 프로필 사진 조회")
+    @GetMapping("/profile/image/main")
+    public ResponseEntity<ProfileImageListResVo> mainProfileImage(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(
+                ResponseSuccess.MAIN_PROFILE_IMAGE_SELECT_SUCCESS,
+                mapper.map(memberService.findMainProfileImage(uuid), ProfileImageListResVo.class)
+        );
+
     }
 
 }
