@@ -31,7 +31,7 @@ const Button = ({
     backgroundColor?.startsWith('bg-') ||
     (!backgroundColor?.includes('(') && !backgroundColor?.startsWith('#'))
   const tailwindClass = isTailwindColor ? ` ${backgroundColor}` : ''
-  const inlineStyle = isTailwindColor ? {} : { backgroundColor }
+  const inlineStyle = isTailwindColor ? undefined : { backgroundColor }
 
   return (
     <button
