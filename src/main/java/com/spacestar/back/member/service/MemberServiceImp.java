@@ -4,13 +4,10 @@ import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.member.domain.LikedGame;
 import com.spacestar.back.member.domain.PlayGame;
-import com.spacestar.back.member.dto.req.MemberInfoGameReqDto;
-import com.spacestar.back.member.dto.req.MemberInfoReqDto;
+import com.spacestar.back.member.dto.req.*;
 import com.spacestar.back.member.jwt.JWTUtil;
 import com.spacestar.back.member.domain.Member;
 import com.spacestar.back.member.domain.ProfileImage;
-import com.spacestar.back.member.dto.req.MemberJoinReqDto;
-import com.spacestar.back.member.dto.req.MemberLoginReqDto;
 import com.spacestar.back.member.dto.res.MemberLoginResDto;
 import com.spacestar.back.member.dto.res.NicknameResDto;
 import com.spacestar.back.member.repository.LikedGameRepository;
@@ -19,7 +16,6 @@ import com.spacestar.back.member.repository.PlayGameRepository;
 import com.spacestar.back.member.repository.ProfileImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -151,5 +147,45 @@ public class MemberServiceImp implements MemberService{
         }
     }
 
+    @Transactional
+    @Override
+    public void updateProfileImages(String uuid, List<ProfileImageReqDto> profileImageReqDtos) {
 
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        List<ProfileImage> profileImages = profileImageRepository.findAllByMember(member);
+
+        //사진 삭제
+        for (ProfileImage profileImage : profileImages) {
+            boolean check = false;
+            for (ProfileImageReqDto profileImageReqDto : profileImageReqDtos) {
+                if (profileImage.getProfileImageUrl().equals(profileImageReqDto.getProfileImageUrl())) {
+                    check = true;
+                    break;
+                }
+            }
+            if (!check) {
+                profileImageRepository.delete(profileImage);
+            }
+        }
+
+        // 사진 저장
+        for (ProfileImageReqDto profileImageReqDto : profileImageReqDtos) {
+            boolean check = false;
+            for (ProfileImage profileImage : profileImages) {
+                //사진 존재
+                if (profileImageReqDto.getProfileImageUrl().equals(profileImage.getProfileImageUrl())) {
+                    profileImageRepository.save(ProfileImage.updateImage(profileImage, profileImageReqDto));
+                    check = true;
+                }
+            }
+            //사진 존재하지 않음
+            if (!check){
+                profileImageRepository.save(ProfileImage.addNewImage(member, profileImageReqDto));
+            }
+        }
+
+
+    }
 }

@@ -12,7 +12,8 @@ public enum ResponseSuccess {
     SIGNUP_SUCCESS(200, "회원가입 성공"),
     DUPLICATION_NICKNAME_SUCCESS(200, "닉네임 중복 검증 성공"),
     LOGIN_SUCCESS(200, "로그인 성공"),
-    MEMBER_INFO_UPDATE_SUCCESS(200, "회원 정보 수정 성공");
+    MEMBER_INFO_UPDATE_SUCCESS(200, "회원 정보 수정 성공"),
+    PROFILE_IMAGE_UPDATE_SUCCESS(200,"프로필 사진 수정 성공" );
 
 
     private final int code;
