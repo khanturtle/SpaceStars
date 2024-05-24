@@ -3,7 +3,19 @@ import Image from 'next/image'
 import styles from './sign.module.css'
 import Button from './SignButton'
 
-const typeContents = {
+interface ContentType {
+  imageUrl: string
+  title: string
+  description: string
+  label: string
+}
+
+interface TypeContents {
+  'sign-in': ContentType
+  'sign-up': ContentType
+}
+
+const typeContents: TypeContents = {
   'sign-in': {
     imageUrl: '/images/emoji/emoji_3.png',
     title: 'Welcome Back!',
@@ -27,6 +39,7 @@ const Legend = ({
   title?: string
   description?: string
 }) => {
+  // FIXME: type이 안들어올 때 체크
   const typeContent = typeContents[type!]
 
   return (
