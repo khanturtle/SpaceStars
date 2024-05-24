@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import AuthSession from '../components/providers/session-provider'
 
 import '../styles/globals.css'
+
 import '@packages/ui/index.css'
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export default function RootLayout({
   modal: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body>
         <AuthSession>
           {children}
