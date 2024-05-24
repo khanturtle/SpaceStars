@@ -1,8 +1,7 @@
 import Image from 'next/image'
 
-import { KakaoButton } from '@packages/ui'
-
 import styles from './sign.module.css'
+import Button from './SignButton'
 
 const typeContents = {
   'sign-in': {
@@ -19,31 +18,42 @@ const typeContents = {
   },
 }
 
-const Legend = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
-  const typeContent = typeContents[type]
+const Legend = ({
+  type,
+  title,
+  description,
+}: {
+  type?: 'sign-in' | 'sign-up'
+  title?: string
+  description?: string
+}) => {
+  const typeContent = typeContents[type!]
 
   return (
     <div className={styles['title-container']}>
-      <div className="h-[165px] aspect-[1] relative">
-        <Image
-          alt={typeContent.title}
-          src={typeContent.imageUrl}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-        />
-      </div>
-
-      <h3>{typeContent.title}</h3>
-      <p>{typeContent.description}</p>
+      {type ? (
+        <>
+          <div className="h-[165px] aspect-[1] relative">
+            <Image
+              alt={typeContent.title}
+              src={typeContent.imageUrl}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+            />
+          </div>
+          <h3>{typeContent.title}</h3>
+          <p>{typeContent.description}</p>
+        </>
+      ) : (
+        <>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </>
+      )}
     </div>
   )
-}
-
-const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
-  const typeLabel = typeContents[type].label
-  return <KakaoButton label={typeLabel} />
 }
 
 const SignBox = ({ children }: { children: React.ReactNode }) => {

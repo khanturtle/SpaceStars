@@ -41,10 +41,39 @@
   & p {
     color: #626262;
     text-align: center;
-    font-family: 'BM Hanna Pro';
+    font-family: 'BM HANNA_TTF';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    white-space: pre-wrap;
+  }
+}
+
+.form-wrapper {
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .input-box {
+      height: 60px;
+      border: solid black;
+    }
+
+    .nickname {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+
+      & input {
+        flex: 1;
+      }
+    }
+
+    .input-check {
+      height: 40px;
+    }
   }
 }
