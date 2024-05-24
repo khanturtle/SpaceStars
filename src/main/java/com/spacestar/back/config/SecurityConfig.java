@@ -25,7 +25,7 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
 
     private static final String[] AUTH_WHITELIST = {
-            "/api/v1/member/**","/swagger-ui/**","/api/member/v3/api-docs/**", "/error"
+            "/api/v1/auth/**","/api/v1/member/**","/swagger-ui/**","/api/member/v3/api-docs/**", "/error"
     };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
