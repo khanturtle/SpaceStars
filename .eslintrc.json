@@ -111,7 +111,8 @@
               "caseInsensitive": true
             }
           }
-        ]
+        ],
+        "react/function-component-definition": "off"
       }
     },
     {

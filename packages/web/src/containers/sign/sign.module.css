@@ -1,0 +1,79 @@
+.sign-up {
+  & p {
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 170%;
+
+    & a {
+      padding-left: 4px;
+      color: #7d12ff; /* TODO: 컬러 변수로 수정 */
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 170%;
+    }
+  }
+}
+
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & h3 {
+    color: var(--main-color, #111);
+    text-align: center;
+    font-feature-settings:
+      'clig' off,
+      'liga' off;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 38.4px */
+    text-transform: capitalize;
+    margin-bottom: 12px;
+  }
+
+  & p {
+    color: #626262;
+    text-align: center;
+    font-family: 'BM HANNA_TTF';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    white-space: pre-wrap;
+  }
+}
+
+.form-wrapper {
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .input-box {
+      height: 60px;
+      border: solid black;
+    }
+
+    .nickname {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+
+      & input {
+        flex: 1;
+      }
+    }
+
+    .input-check {
+      height: 40px;
+    }
+  }
+}
