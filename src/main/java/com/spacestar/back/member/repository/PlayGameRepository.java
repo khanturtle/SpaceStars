@@ -12,4 +12,7 @@ public interface PlayGameRepository extends JpaRepository<PlayGame, Long> {
     @Modifying
     @Query("delete from PlayGame l where l.uuid = :uuid")
     void deleteAllByUuid(@Param("uuid") String uuid);
+
+    @Query("select p from PlayGame p where p.uuid = :uuid and p.main = :main")
+    PlayGame findByUuidAndMain(@Param("uuid") String uuid, @Param("main") boolean b);
 }

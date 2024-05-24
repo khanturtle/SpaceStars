@@ -7,6 +7,7 @@ import com.spacestar.back.member.domain.PlayGame;
 import com.spacestar.back.member.dto.req.*;
 import com.spacestar.back.member.domain.Member;
 import com.spacestar.back.member.domain.ProfileImage;
+import com.spacestar.back.member.dto.res.ProfileChattingResDto;
 import com.spacestar.back.member.dto.res.ProfileImageListResDto;
 import com.spacestar.back.member.repository.LikedGameRepository;
 import com.spacestar.back.member.repository.MemberRepository;
@@ -144,5 +145,21 @@ public class MemberServiceImp implements MemberService{
 
         return mapper.map(
                 profileImageRepository.findByMemberAndMain(member,true),ProfileImageListResDto.class);
+    }
+
+    @Override
+    public ProfileChattingResDto findChattingProfile(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        //프로필 사진
+        String mainProfileUrl = profileImageRepository.findByMemberAndMain(member,true).getProfileImageUrl();
+
+        //메인 게임
+        Long mainGameId = playGameRepository.findByUuidAndMain(uuid,true).getGameId();
+
+        return ProfileChattingResDto.toDto(member,mainProfileUrl,mainGameId);
+
     }
 }

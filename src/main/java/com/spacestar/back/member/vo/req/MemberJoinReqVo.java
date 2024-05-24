@@ -28,6 +28,6 @@ public class MemberJoinReqVo {
     private LocalDate birth;
 
     @NotNull(message = "약관에 동의해주세요.")
-    private Boolean infoAgree;
+    private boolean infoAgree;
 
 }

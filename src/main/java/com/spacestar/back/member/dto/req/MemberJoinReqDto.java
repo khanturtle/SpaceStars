@@ -20,7 +20,7 @@ public class MemberJoinReqDto {
     private String imageUrl;
     private GenderType gender;
     private LocalDate birth;
-    private Boolean infoAgree;
+    private boolean infoAgree;
 
 
 }

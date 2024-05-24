@@ -13,6 +13,7 @@ import com.spacestar.back.member.vo.req.MemberJoinReqVo;
 import com.spacestar.back.member.vo.req.MemberLoginReqVo;
 import com.spacestar.back.member.vo.req.ProfileImageReqVo;
 import com.spacestar.back.member.vo.res.NicknameResVo;
+import com.spacestar.back.member.vo.res.ProfileChattingResVo;
 import com.spacestar.back.member.vo.res.ProfileImageListResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -79,6 +80,16 @@ public class MemberController {
                 mapper.map(memberService.findMainProfileImage(uuid), ProfileImageListResVo.class)
         );
 
+    }
+
+    @Operation(summary = "채팅 프로필 조회(간단)")
+    @GetMapping("/profile/chatting")
+    public ResponseEntity<ProfileChattingResVo> chattingProfileImage(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(
+                ResponseSuccess.CHATTING_PROFILE_SELECT_SUCCESS,
+                mapper.map(memberService.findChattingProfile(uuid), ProfileChattingResVo.class)
+        );
     }
 
 }
