@@ -2,15 +2,14 @@ import './Input.css'
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  /** 추가적인 CSS 클래스를 지정 */
   className?: string
-  /** input요소의 고유 id 지정, label 요소와 연결 */
+  /** 고유 id, label 요소와 연결 */
   id: string
-  /**  input 요소에 대한 라벨 텍스트를 지정 */
+  /**  라벨 텍스트 */
   label?: string
-  /** input 요소가 필수 입력인지 여부를 지정 */
+  /** 필수 입력 여부 */
   required?: boolean
-  /** input 요소가 수정가능한지 여부를 지정 */
+  /** 수정 가능 여부 */
   disabled?: boolean
 }
 const Input = ({
