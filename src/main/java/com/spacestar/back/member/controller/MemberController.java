@@ -13,6 +13,7 @@ import com.spacestar.back.member.vo.req.MemberJoinReqVo;
 import com.spacestar.back.member.vo.req.MemberLoginReqVo;
 import com.spacestar.back.member.vo.req.ProfileImageReqVo;
 import com.spacestar.back.member.vo.res.NicknameResVo;
+import com.spacestar.back.member.vo.res.ProfileImageListResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -56,6 +57,17 @@ public class MemberController {
         memberService.updateProfileImages(uuid, profileImageReqDtos);
 
         return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_UPDATE_SUCCESS);
+    }
+
+    @Operation(summary = "프로필 사진 리스트 조회")
+    @GetMapping("/profile/image")
+    public ResponseEntity<List<ProfileImageListResVo>> profileImageList(@RequestHeader("UUID") String uuid){
+
+        List<ProfileImageListResVo> profileImageListResVos = memberService.findProfileImageList(uuid).stream()
+                .map(dto -> mapper.map(dto, ProfileImageListResVo.class))
+                .toList();
+
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_SELECT_SUCCESS, profileImageListResVos);
     }
 
 }
