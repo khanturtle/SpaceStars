@@ -109,4 +109,9 @@ public class Member extends GlobalTime{
                 .exp(member.getExp())
                 .build();
     }
+
+    public Member updateSwipe(boolean swipe) {
+        this.swipe = swipe;
+        return this;
+    }
 }

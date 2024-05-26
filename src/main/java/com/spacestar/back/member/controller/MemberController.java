@@ -6,12 +6,14 @@ import com.spacestar.back.member.dto.req.MemberInfoReqDto;
 import com.spacestar.back.member.dto.req.MemberJoinReqDto;
 import com.spacestar.back.member.dto.req.MemberLoginReqDto;
 import com.spacestar.back.member.dto.req.ProfileImageReqDto;
+import com.spacestar.back.member.dto.res.MemberSwipeResDto;
 import com.spacestar.back.member.jwt.JWTUtil;
 import com.spacestar.back.member.service.MemberService;
 import com.spacestar.back.member.vo.req.MemberInfoReqVo;
 import com.spacestar.back.member.vo.req.MemberJoinReqVo;
 import com.spacestar.back.member.vo.req.MemberLoginReqVo;
 import com.spacestar.back.member.vo.req.ProfileImageReqVo;
+import com.spacestar.back.member.vo.res.MemberSwipeResVo;
 import com.spacestar.back.member.vo.res.NicknameResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,4 +60,20 @@ public class MemberController {
         return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_UPDATE_SUCCESS);
     }
 
+    @Operation(summary = "스와이프 추천 여부 조회")
+    @GetMapping("/swipe/recommend")
+    public ResponseEntity<MemberSwipeResVo> swipeRecommend(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_SELECT_SUCCESS,
+                mapper.map(memberService.findSwipeRecommend(uuid), MemberSwipeResVo.class));
+    }
+
+    @Operation(summary = "스와이프 추천 여부 변경")
+    @PatchMapping("/swipe/recommend/update")
+    public ResponseEntity<Void> swipeRecommendUpdate(@RequestHeader("UUID") String uuid,
+                                                     @RequestBody MemberSwipeResVo memberSwipeResVo){
+
+        memberService.updateSwipeRecommend(uuid, mapper.map(memberSwipeResVo, MemberSwipeResDto.class));
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_UPDATE_SUCCESS);
+    }
 }
