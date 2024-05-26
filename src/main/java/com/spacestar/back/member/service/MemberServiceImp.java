@@ -9,6 +9,7 @@ import com.spacestar.back.member.domain.Member;
 import com.spacestar.back.member.domain.ProfileImage;
 import com.spacestar.back.member.dto.res.ProfileChattingResDto;
 import com.spacestar.back.member.dto.res.ProfileImageListResDto;
+import com.spacestar.back.member.dto.res.ProfileMatchingResDto;
 import com.spacestar.back.member.repository.LikedGameRepository;
 import com.spacestar.back.member.repository.MemberRepository;
 import com.spacestar.back.member.repository.PlayGameRepository;
@@ -160,6 +161,25 @@ public class MemberServiceImp implements MemberService{
         Long mainGameId = playGameRepository.findByUuidAndMain(uuid,true).getGameId();
 
         return ProfileChattingResDto.toDto(member,mainProfileUrl,mainGameId);
+
+    }
+
+    @Override
+    public ProfileMatchingResDto findMatchingProfile(String uuid) {
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        List<Long> likedGameIds = likedGameRepository.findAllByUuid(uuid).stream()
+                .map(LikedGame::getGameId)
+                .toList();
+
+        List<Long> playGameIds = playGameRepository.findAllByUuid(uuid).stream()
+                .map(PlayGame::getGameId)
+                .toList();
+
+        Long mainGameId = playGameRepository.findByUuidAndMain(uuid,true).getGameId();
+
+        return ProfileMatchingResDto.toDto(member,likedGameIds,playGameIds, mainGameId);
 
     }
 }

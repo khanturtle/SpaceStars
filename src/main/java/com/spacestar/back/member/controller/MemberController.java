@@ -15,6 +15,7 @@ import com.spacestar.back.member.vo.req.ProfileImageReqVo;
 import com.spacestar.back.member.vo.res.NicknameResVo;
 import com.spacestar.back.member.vo.res.ProfileChattingResVo;
 import com.spacestar.back.member.vo.res.ProfileImageListResVo;
+import com.spacestar.back.member.vo.res.ProfileMatchingResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -84,7 +85,7 @@ public class MemberController {
 
     @Operation(summary = "채팅 프로필 조회(간단)")
     @GetMapping("/profile/chatting")
-    public ResponseEntity<ProfileChattingResVo> chattingProfileImage(@RequestHeader("UUID") String uuid){
+    public ResponseEntity<ProfileChattingResVo> chattingProfileInfo(@RequestHeader("UUID") String uuid){
 
         return new ResponseEntity<>(
                 ResponseSuccess.CHATTING_PROFILE_SELECT_SUCCESS,
@@ -92,4 +93,11 @@ public class MemberController {
         );
     }
 
+    @Operation(summary = "매칭 프로필 조회(상세 포함)")
+    @GetMapping("/profile/matching")
+    public ResponseEntity<ProfileMatchingResVo> matchingProfileInfo(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.MATCHING_PROFILE_SELECT_SUCCESS,
+                mapper.map(memberService.findMatchingProfile(uuid), ProfileMatchingResVo.class));
+    }
 }

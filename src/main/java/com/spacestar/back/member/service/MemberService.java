@@ -4,6 +4,7 @@ import com.spacestar.back.member.dto.req.MemberInfoReqDto;
 import com.spacestar.back.member.dto.req.ProfileImageReqDto;
 import com.spacestar.back.member.dto.res.ProfileChattingResDto;
 import com.spacestar.back.member.dto.res.ProfileImageListResDto;
+import com.spacestar.back.member.dto.res.ProfileMatchingResDto;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface MemberService {
     ProfileImageListResDto findMainProfileImage(String uuid);
 
     ProfileChattingResDto findChattingProfile(String uuid);
+
+    ProfileMatchingResDto findMatchingProfile(String uuid);
 }

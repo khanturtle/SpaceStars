@@ -19,4 +19,6 @@ public interface LikedGameRepository extends JpaRepository<LikedGame, Long> {
     @Modifying
     @Query("delete from LikedGame l where l.uuid = :uuid")
     void deleteAllByUuid(@Param("uuid") String uuid);
+
+    List<LikedGame> findAllByUuid(String uuid);
 }
