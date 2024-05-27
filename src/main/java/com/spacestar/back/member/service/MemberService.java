@@ -2,10 +2,7 @@ package com.spacestar.back.member.service;
 
 import com.spacestar.back.member.dto.req.MemberInfoReqDto;
 import com.spacestar.back.member.dto.req.ProfileImageReqDto;
-import com.spacestar.back.member.dto.res.MemberSwipeResDto;
-import com.spacestar.back.member.dto.res.ProfileChattingResDto;
-import com.spacestar.back.member.dto.res.ProfileImageListResDto;
-import com.spacestar.back.member.dto.res.ProfileMatchingResDto;
+import com.spacestar.back.member.dto.res.*;
 
 import java.util.List;
 
@@ -17,7 +14,7 @@ public interface MemberService {
 
     List<ProfileImageListResDto> findProfileImageList(String uuid);
 
-    ProfileImageListResDto findMainProfileImage(String uuid);
+    ProfileMainImageResDto findMainProfileImage(String uuid);
 
     ProfileChattingResDto findChattingProfile(String uuid);
 

@@ -13,11 +13,7 @@ import com.spacestar.back.member.vo.req.MemberInfoReqVo;
 import com.spacestar.back.member.vo.req.MemberJoinReqVo;
 import com.spacestar.back.member.vo.req.MemberLoginReqVo;
 import com.spacestar.back.member.vo.req.ProfileImageReqVo;
-import com.spacestar.back.member.vo.res.MemberSwipeResVo;
-import com.spacestar.back.member.vo.res.NicknameResVo;
-import com.spacestar.back.member.vo.res.ProfileChattingResVo;
-import com.spacestar.back.member.vo.res.ProfileImageListResVo;
-import com.spacestar.back.member.vo.res.ProfileMatchingResVo;
+import com.spacestar.back.member.vo.res.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -76,11 +72,11 @@ public class MemberController {
 
     @Operation(summary = "대표 프로필 사진 조회")
     @GetMapping("/profile/image/main")
-    public ResponseEntity<ProfileImageListResVo> mainProfileImage(@RequestHeader("UUID") String uuid){
+    public ResponseEntity<ProfileMainImageResVo> mainProfileImage(@RequestHeader("UUID") String uuid){
 
         return new ResponseEntity<>(
                 ResponseSuccess.MAIN_PROFILE_IMAGE_SELECT_SUCCESS,
-                mapper.map(memberService.findMainProfileImage(uuid), ProfileImageListResVo.class)
+                mapper.map(memberService.findMainProfileImage(uuid), ProfileMainImageResVo.class)
         );
 
     }
