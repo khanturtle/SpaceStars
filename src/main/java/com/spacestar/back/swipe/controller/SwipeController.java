@@ -28,12 +28,22 @@ public class SwipeController {
 
     @GetMapping
     public ResponseEntity<List<SwipeListResVo>> getSwipe(@RequestHeader("UUID") String uuid){
-        List<SwipeListResDto> swipeListResDtos = swipeService.getSwipe(uuid);
+        List<SwipeListResDto> swipeListResDtos = swipeService.getReceivedSwipe(uuid);
         List<SwipeListResVo> SwipeListResVos = swipeListResDtos.stream()
                 .map(dto -> mapper.map(dto, SwipeListResVo.class))
                 .toList();
 
         return new ResponseEntity<>(ResponseSuccess.SWIPE_GET_SUCCESS,SwipeListResVos);
+    }
+
+    @GetMapping("/sent")
+    public ResponseEntity<List<SwipeListResVo>> getSentSwipe(@RequestHeader("UUID") String uuid){
+        List<SwipeListResDto> swipeListResDtos = swipeService.getSentSwipe(uuid);
+        List<SwipeListResVo> SwipeListResVos = swipeListResDtos.stream()
+                .map(dto -> mapper.map(dto, SwipeListResVo.class))
+                .toList();
+
+                return new ResponseEntity<>(ResponseSuccess.SWIPE_GET_SUCCESS,SwipeListResVos);
     }
 
     @PatchMapping("/agree")

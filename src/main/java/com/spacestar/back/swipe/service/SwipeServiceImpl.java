@@ -11,18 +11,26 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SwipeServiceImpl implements SwipeService{
+public class SwipeServiceImpl implements SwipeService {
     private final SwipeRepository swipeRepository;
 
     @Override
     public void addSwipe(SwipeReqDto swipeReqDto, String uuid) {
-        swipeRepository.save(Swipe.toEntity(swipeReqDto,uuid));
+        swipeRepository.save(Swipe.toEntity(swipeReqDto, uuid));
         //Todo 요청을 보내면 추천인 목록에서 제외 시켜야함 (거절시 처럼 Redis에 저장해야할듯?)
     }
 
     @Override
-    public List<SwipeListResDto> getSwipe(String uuid) {
+    public List<SwipeListResDto> getReceivedSwipe(String uuid) {
         return swipeRepository.findWaitRequest(uuid);
+    }
+
+    @Override
+    public List<SwipeListResDto> getSentSwipe(String uuid) {
+        return swipeRepository.findByMatchFromMember(uuid).stream().map(swipe -> SwipeListResDto.builder()
+                .matchMember(swipe.getMatchToMember())
+                .build())
+                .toList();
     }
 
     @Override
