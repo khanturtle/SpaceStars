@@ -109,4 +109,5 @@ public class Member extends GlobalTime{
                 .exp(member.getExp())
                 .build();
     }
+
 }

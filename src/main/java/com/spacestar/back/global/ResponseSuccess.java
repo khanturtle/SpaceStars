@@ -20,7 +20,9 @@ public enum ResponseSuccess {
     PROFILE_IMAGE_SELECT_SUCCESS(200,"프로필 사진 조회 성공" ),
     MAIN_PROFILE_IMAGE_SELECT_SUCCESS(200,"메인 프로필 사진 조회 성공" ),
     CHATTING_PROFILE_SELECT_SUCCESS(200,"채팅 프로필 조회 성공" ),
-    MATCHING_PROFILE_SELECT_SUCCESS(200,"매칭 프로필 조회 성공" );
+    MATCHING_PROFILE_SELECT_SUCCESS(200,"매칭 프로필 조회 성공" ),
+    SWIPE_RECOMMEND_SELECT_SUCCESS(200, "스와이프 추천 여부 조회 성공"),
+    SWIPE_RECOMMEND_UPDATE_SUCCESS(200, "스와이프 추천 여부 수정 성공");
 
 
     private final int code;

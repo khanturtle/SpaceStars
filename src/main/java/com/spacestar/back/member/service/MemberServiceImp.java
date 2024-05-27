@@ -7,6 +7,7 @@ import com.spacestar.back.member.domain.PlayGame;
 import com.spacestar.back.member.dto.req.*;
 import com.spacestar.back.member.domain.Member;
 import com.spacestar.back.member.domain.ProfileImage;
+import com.spacestar.back.member.dto.res.MemberSwipeResDto;
 import com.spacestar.back.member.dto.res.ProfileChattingResDto;
 import com.spacestar.back.member.dto.res.ProfileImageListResDto;
 import com.spacestar.back.member.dto.res.ProfileMatchingResDto;
@@ -134,7 +135,7 @@ public class MemberServiceImp implements MemberService{
 
         for (ProfileImage profileImage : profileImageRepository.findAllByMember(member)){
             profileImageListResDtos.add(ProfileImageListResDto.convertToDto(profileImage));
-      }
+        }
         return profileImageListResDtos;
     }
 
@@ -182,4 +183,27 @@ public class MemberServiceImp implements MemberService{
         return ProfileMatchingResDto.toDto(member,likedGameIds,playGameIds, mainGameId);
 
     }
+
+    @Override
+    public MemberSwipeResDto findSwipeRecommend(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        return MemberSwipeResDto.builder()
+                .swipe(member.isSwipe())
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public void updateSwipeRecommend(String uuid, MemberSwipeResDto memberSwipeResDto) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        memberRepository.updateSwipe(uuid,memberSwipeResDto.isSwipe());
+    }
+
+
 }
