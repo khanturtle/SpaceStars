@@ -31,9 +31,13 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	runtimeOnly 'com.h2database:h2'
 
-
 	//validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//mongoDB
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	//swagger
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
 
 	// WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -41,9 +45,9 @@ dependencies {
 	//modelMapper
 	implementation 'org.modelmapper:modelmapper:3.1.0'
 
-	//mongoDB
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
 }
+
 
 tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder-jammy-base:latest'
