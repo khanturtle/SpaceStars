@@ -6,4 +6,5 @@ export {
   BotIcon,
   CalendarIcon,
   ArrowIcon,
+  ThemeIcon,
 } from './components/Icons'
