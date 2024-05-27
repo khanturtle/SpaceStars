@@ -11,7 +11,7 @@ const KakaoButton = ({ className, label, ...props }: KakaoButtonProps) => {
     <button
       type="button"
       aria-label={label}
-      className={`${className} inline-flex w-[300px] h-[45px] justify-center items-center shrink-0 px-3.5 py-0 button--kakao`}
+      className={`inline-flex w-[300px] h-[45px] justify-center items-center shrink-0 px-3.5 py-0 button--kakao ${className}`}
       {...props}
     >
       <div className="flex items-center justify-center w-full gap-2">
