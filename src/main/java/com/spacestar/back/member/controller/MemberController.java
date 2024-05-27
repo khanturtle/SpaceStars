@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -118,5 +119,14 @@ public class MemberController {
 
         memberService.withdrawal(uuid);
         return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_SUCCESS);
+    }
+
+    @Transactional
+    @Operation(summary = "회원 탈퇴(영구 탈퇴)" )
+    @PatchMapping("/withdrawal/force")
+    public ResponseEntity<Void> withdrawalForce(@RequestHeader("UUID") String uuid){
+
+        memberService.withdrawalForce(uuid);
+        return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_FORCE_SUCCESS);
     }
 }

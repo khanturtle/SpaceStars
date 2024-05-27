@@ -221,5 +221,18 @@ public class MemberServiceImp implements MemberService{
         profileImageRepository.deleteAllByMember(deleteMember);
     }
 
+    @Override
+    public void withdrawalForce(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        Member deleteMember = Member.deleteForceToEntity(member);
+        memberRepository.save(deleteMember);
+
+        //프로필 사진 삭제
+        profileImageRepository.deleteAllByMember(deleteMember);
+    }
+
 
 }

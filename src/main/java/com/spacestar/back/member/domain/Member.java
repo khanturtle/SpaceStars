@@ -150,4 +150,24 @@ public class Member extends GlobalTime{
                 .exp(0L)
                 .build();
     }
+
+    public static Member deleteForceToEntity(Member member) {
+
+        return Member.builder()
+                .id(member.getId())
+                .uuid(member.getUuid())
+                .email(member.getEmail())
+                .nickname(null)
+                .gender(null)
+                .birth(null)
+                .infoAgree(false)
+                .unregister(UnregisterType.BLACKLIST)
+                .reportCount(0)
+                .description(null)
+                .gamePreferenceId(null)
+                .mbtiId(null)
+                .swipe(false)
+                .exp(0L)
+                .build();
     }
+}
