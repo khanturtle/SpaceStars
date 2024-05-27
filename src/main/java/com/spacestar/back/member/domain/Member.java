@@ -34,12 +34,12 @@ public class Member extends GlobalTime{
 
     private LocalDate birth;
 
-    private Boolean infoAgree;
+    private boolean infoAgree;
 
     @Enumerated(EnumType.STRING)
     private UnregisterType unregister;
 
-    private Integer reportCount;
+    private int reportCount;
 
     private String description;
 
@@ -52,7 +52,7 @@ public class Member extends GlobalTime{
     private Long exp;
 
     @Builder
-    public Member(Long id, String uuid, String email, String nickname, GenderType gender, LocalDate birth, Boolean infoAgree, UnregisterType unregister, Integer reportCount, String description, Long gamePreferenceId, Long mbtiId, boolean swipe, Long exp) {
+    public Member(Long id, String uuid, String email, String nickname, GenderType gender, LocalDate birth, boolean infoAgree, UnregisterType unregister, int reportCount, String description, Long gamePreferenceId, Long mbtiId, boolean swipe, Long exp) {
         this.id = id;
         this.uuid = uuid;
         this.email = email;
@@ -80,7 +80,7 @@ public class Member extends GlobalTime{
                 .nickname(memberJoinReqDto.getNickname())
                 .gender(memberJoinReqDto.getGender())
                 .birth(memberJoinReqDto.getBirth())
-                .infoAgree(memberJoinReqDto.getInfoAgree())
+                .infoAgree(memberJoinReqDto.isInfoAgree())
                 .unregister(UnregisterType.MEMBER)
                 .reportCount(0)
                 .description(null)
@@ -99,10 +99,10 @@ public class Member extends GlobalTime{
                 .nickname(memberInfoReqDto.getNickname())
                 .gender(memberInfoReqDto.getGender())
                 .birth(memberInfoReqDto.getBirth())
-                .infoAgree(member.getInfoAgree())
+                .infoAgree(member.isInfoAgree())
                 .unregister(member.getUnregister())
                 .reportCount(member.getReportCount())
-                .description(member.getDescription())
+                .description(memberInfoReqDto.getDescription())
                 .gamePreferenceId(memberInfoReqDto.getGamePreferenceId())
                 .mbtiId(memberInfoReqDto.getMbtiId())
                 .swipe(memberInfoReqDto.isSwipe())

@@ -15,6 +15,9 @@ import com.spacestar.back.member.vo.req.MemberLoginReqVo;
 import com.spacestar.back.member.vo.req.ProfileImageReqVo;
 import com.spacestar.back.member.vo.res.MemberSwipeResVo;
 import com.spacestar.back.member.vo.res.NicknameResVo;
+import com.spacestar.back.member.vo.res.ProfileChattingResVo;
+import com.spacestar.back.member.vo.res.ProfileImageListResVo;
+import com.spacestar.back.member.vo.res.ProfileMatchingResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -60,6 +63,47 @@ public class MemberController {
         return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_UPDATE_SUCCESS);
     }
 
+    @Operation(summary = "프로필 사진 리스트 조회")
+    @GetMapping("/profile/image")
+    public ResponseEntity<List<ProfileImageListResVo>> profileImageList(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(
+                ResponseSuccess.PROFILE_IMAGE_SELECT_SUCCESS, memberService.findProfileImageList(uuid)
+                .stream()
+                .map(dto -> mapper.map(dto, ProfileImageListResVo.class))
+                .toList());
+    }
+
+    @Operation(summary = "대표 프로필 사진 조회")
+    @GetMapping("/profile/image/main")
+    public ResponseEntity<ProfileImageListResVo> mainProfileImage(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(
+                ResponseSuccess.MAIN_PROFILE_IMAGE_SELECT_SUCCESS,
+                mapper.map(memberService.findMainProfileImage(uuid), ProfileImageListResVo.class)
+        );
+
+    }
+
+    @Operation(summary = "채팅 프로필 조회(간단)")
+    @GetMapping("/profile/chatting")
+    public ResponseEntity<ProfileChattingResVo> chattingProfileInfo(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(
+                ResponseSuccess.CHATTING_PROFILE_SELECT_SUCCESS,
+                mapper.map(memberService.findChattingProfile(uuid), ProfileChattingResVo.class)
+        );
+    }
+
+    @Operation(summary = "매칭 프로필 조회(상세 포함)")
+    @GetMapping("/profile/matching")
+    public ResponseEntity<ProfileMatchingResVo> matchingProfileInfo(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.MATCHING_PROFILE_SELECT_SUCCESS,
+                mapper.map(memberService.findMatchingProfile(uuid), ProfileMatchingResVo.class));
+
+    }
+
     @Operation(summary = "스와이프 추천 여부 조회")
     @GetMapping("/swipe/recommend")
     public ResponseEntity<MemberSwipeResVo> swipeRecommend(@RequestHeader("UUID") String uuid){
@@ -71,7 +115,7 @@ public class MemberController {
     @Operation(summary = "스와이프 추천 여부 변경")
     @PatchMapping("/swipe/recommend/update")
     public ResponseEntity<Void> swipeRecommendUpdate(@RequestHeader("UUID") String uuid,
-                                                     @RequestBody MemberSwipeResVo memberSwipeResVo){
+                                                     @RequestBody MemberSwipeResVo memberSwipeResVo) {
 
         memberService.updateSwipeRecommend(uuid, mapper.map(memberSwipeResVo, MemberSwipeResDto.class));
         return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_UPDATE_SUCCESS);

@@ -7,9 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.List;
+
 public interface PlayGameRepository extends JpaRepository<PlayGame, Long> {
     @Transactional
     @Modifying
     @Query("delete from PlayGame l where l.uuid = :uuid")
     void deleteAllByUuid(@Param("uuid") String uuid);
+
+    @Query("select p from PlayGame p where p.uuid = :uuid and p.main = :main")
+    PlayGame findByUuidAndMain(@Param("uuid") String uuid, @Param("main") boolean b);
+
+    List<PlayGame> findAllByUuid(String uuid);
 }
