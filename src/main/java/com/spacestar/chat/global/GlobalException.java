@@ -1,4 +1,4 @@
-package com.spacestar.back.global;
+package com.spacestar.chat.global;
 
 import lombok.Getter;
 
