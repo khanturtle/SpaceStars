@@ -139,6 +139,6 @@ public class MemberServiceImp implements MemberService{
         Member member = memberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
 
-        member.updateSwipe(memberSwipeResDto.isSwipe());
+        memberRepository.updateSwipe(uuid,memberSwipeResDto.isSwipe());
     }
 }
