@@ -31,9 +31,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	runtimeOnly 'com.h2database:h2'
 
-	// WebSocket
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
 	//validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -41,6 +38,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	//swagger
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
+
+	// WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	//modelMapper
+	implementation 'org.modelmapper:modelmapper:3.1.0'
+
 
 }
 
