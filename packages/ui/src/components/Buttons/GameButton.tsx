@@ -23,7 +23,7 @@ const GameButton = ({
   return (
     <button
       type="button"
-      className={`game-button-container ${className} ${isClicked ? 'clicked' : ''}`}
+      className={`game-button-container ${isClicked ? 'clicked' : ''} ${className}`}
       onClick={onClick}
       {...props}
     >
