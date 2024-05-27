@@ -10,7 +10,7 @@
   --dropdown-button-hover-color: #dad9d9;
 }
 
-.ui-wrapper *,
+.ui-wrapper,
 .input-wrapper input[type='text'] {
   font-family: Poppins;
   font-size: 16px;
@@ -37,58 +37,53 @@
   user-select: none;
   column-gap: 6px;
 
-  & > input {
-    appearance: none;
-    margin: 0;
-    width: 0;
-    height: 0;
-    opacity: 0;
-    position: absolute;
-    left: 9999px;
+  &:focus-within {
+    border-color: var(--border-focus-color);
+    box-shadow: 0px 2px 5px 0px var(--shadow-focus-color);
+    -webkit-box-shadow: 0px 2px 5px 0px var(--shadow-focus-color);
   }
 }
 
+.ui-wrapper > input {
+  appearance: none;
+  margin: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  position: absolute;
+  left: 9999px;
+}
 .input-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-}
 
-.input-wrapper legend {
-  label {
+  legend label {
     color: var(--secondary-text-color, #666);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: 170%;
   }
-}
 
-.input-wrapper .textfield input {
-  color: var(--main-color, #111);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 170%;
-  width: 100%;
-  outline: none;
-  border: none;
-  background: none;
+  .textfield input {
+    color: var(--main-color, #111);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 170%;
+    width: 100%;
+    outline: none;
+    border: none;
+    background: none;
+  }
 }
-
-.ui-wrapper:focus-within {
-  border-color: var(--border-focus-color);
-  box-shadow: 0px 2px 5px 0px var(--shadow-focus-color);
-  -webkit-box-shadow: 0px 2px 5px 0px var(--shadow-focus-color);
-}
-
 .required--label::after {
   content: '*';
   margin-left: 0.25rem;
 }
-
 .input--disabled {
   opacity: 0.5;
   background-color: var(--color-primary);
