@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation'
 
 import { type ElementRef, useEffect, useRef } from 'react'
 
+import { CloseIcon } from '@packages/ui'
+
 import styles from './modal.module.css'
 
 function Modal({ children }: { children: React.ReactNode }) {
@@ -41,7 +43,9 @@ function Modal({ children }: { children: React.ReactNode }) {
           aria-label="닫기"
           onClick={onDismiss}
           className={styles['close-button']}
-        />
+        >
+          <CloseIcon />
+        </button>
       </dialog>
     </div>
   )

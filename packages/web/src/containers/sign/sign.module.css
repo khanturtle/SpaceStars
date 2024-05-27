@@ -51,29 +51,29 @@
 }
 
 .form-wrapper {
-  .input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .input-box {
+    height: 60px;
+    width: 100%;
+  }
+
+  .nickname {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
     gap: 8px;
 
-    .input-box {
-      height: 60px;
-      border: solid black;
+    & input {
+      flex: 1;
     }
+  }
 
-    .nickname {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 8px;
-
-      & input {
-        flex: 1;
-      }
-    }
-
-    .input-check {
-      height: 40px;
-    }
+  .input-check {
+    height: 40px;
+    display: flex;
+    align-items: center;
   }
 }
