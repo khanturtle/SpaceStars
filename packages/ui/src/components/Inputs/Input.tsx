@@ -1,3 +1,4 @@
+import { CheckIcon } from '../Icons'
 import './Input.css'
 
 export interface InputProps
@@ -11,7 +12,12 @@ export interface InputProps
   required?: boolean
   /** 수정 가능 여부 */
   disabled?: boolean
+  value?: string
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
 }
+
 const Input = ({
   className,
   id = 'id',
@@ -45,7 +51,9 @@ const Input = ({
         </div>
       </div>
 
-      <div className="input--valid">v</div>
+      <div className="input--valid">
+        <CheckIcon fill={disabled ? 'white' : 'var(--color-primary)'} />
+      </div>
     </div>
   )
 }
