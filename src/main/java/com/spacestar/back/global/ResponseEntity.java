@@ -1,4 +1,4 @@
-package com.spacestar.chat.global;
+package com.spacestar.back.global;
 
 public record ResponseEntity<T>( String message, int code, T result) {
     /**

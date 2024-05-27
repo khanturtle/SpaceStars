@@ -1,4 +1,4 @@
-package com.spacestar.chat.config;
+package com.spacestar.back.config;
 
 public class ValidationGroups {
     public interface NotEmptyGroup {};

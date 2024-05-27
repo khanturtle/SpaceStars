@@ -1,4 +1,4 @@
-package com.spacestar.chat.global;
+package com.spacestar.back.global;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

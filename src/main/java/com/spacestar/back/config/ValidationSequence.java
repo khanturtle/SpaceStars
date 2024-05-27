@@ -1,4 +1,4 @@
-package com.spacestar.chat.config;
+package com.spacestar.back.config;
 
 import jakarta.validation.GroupSequence;
 import jakarta.validation.groups.Default;
