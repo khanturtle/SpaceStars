@@ -110,4 +110,44 @@ public class Member extends GlobalTime{
                 .build();
     }
 
+    public static Member backToEntity(Member member, MemberJoinReqDto memberJoinReqDto){ {
+
+        return Member.builder()
+                .id(member.getId())
+                .uuid(member.getUuid())
+                .email(member.getEmail())
+                .nickname(memberJoinReqDto.getNickname())
+                .gender(memberJoinReqDto.getGender())
+                .birth(memberJoinReqDto.getBirth())
+                .infoAgree(memberJoinReqDto.isInfoAgree())
+                .unregister(UnregisterType.MEMBER)
+                .reportCount(0)
+                .description(null)
+                .gamePreferenceId(null)
+                .mbtiId(null)
+                .swipe(true)
+                .exp(0L)
+                .build();
+    }
 }
+
+    public static Member deleteToEntity(Member member) {
+
+        return Member.builder()
+                .id(member.getId())
+                .uuid(member.getUuid())
+                .email(member.getEmail())
+                .nickname(null)
+                .gender(null)
+                .birth(null)
+                .infoAgree(false)
+                .unregister(UnregisterType.DELETED)
+                .reportCount(0)
+                .description(null)
+                .gamePreferenceId(null)
+                .mbtiId(null)
+                .swipe(false)
+                .exp(0L)
+                .build();
+    }
+    }

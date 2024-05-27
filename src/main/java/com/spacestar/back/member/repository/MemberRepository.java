@@ -1,6 +1,7 @@
 package com.spacestar.back.member.repository;
 
 import com.spacestar.back.member.domain.Member;
+import com.spacestar.back.member.enums.UnregisterType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Query("update Member m set m.swipe = :swipe where m.uuid = :uuid")
     void updateSwipe(@Param("uuid") String uuid, @Param("swipe") boolean swipe);
+
 }
