@@ -23,13 +23,4 @@ public class Swipe extends GlobalTime {
     @Enumerated(EnumType.STRING)
     private SwipeStatus status;
     private String memo;
-
-    public static Swipe toEntity(SwipeReqDto swipeReqDto, String uuid){
-        return Swipe.builder()
-                .matchFromMember(uuid)
-                .matchToMember(swipeReqDto.getMatchToMember())
-                .memo(swipeReqDto.getMemo())
-                .status(SwipeStatus.WAIT)
-                .build();
-    }
 }
