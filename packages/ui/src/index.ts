@@ -1,5 +1,5 @@
 export { Button, KakaoButton } from './components/Buttons'
-export { Input } from './components/Inputs'
+export { Input, Checkbox } from './components/Inputs'
 export {
   CloseIcon,
   CheckIcon,
