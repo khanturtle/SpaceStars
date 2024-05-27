@@ -1,3 +1,4 @@
+/* Input.css */
 .ui-wrapper {
   --background: rgba(255, 255, 255, 0.5);
   --text-color: rgb(73, 73, 73);
@@ -98,4 +99,82 @@
   input[type='text'] {
     color: var(--Alto-50, #f7f7f7);
   }
+}
+
+/* Checkbox.css */
+.checkbox-wrapper {
+  width: 100%;
+  /* display: flex; */
+  text-align: center;
+}
+.invisible {
+  position: absolute;
+  z-index: -1;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.checkbox-label {
+  user-select: none;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+.checkbox-label input:checked + .checkbox {
+  border-color: var(--color-primary);
+}
+.checkbox-label input:checked + .checkbox svg path {
+  fill: var(--color-primary);
+}
+.checkbox-label input:checked + .checkbox svg polyline {
+  stroke-dashoffset: 0;
+}
+.checkbox-label:hover .checkbox svg path {
+  stroke-dashoffset: 0;
+}
+.checkbox-label .checkbox {
+  position: relative;
+  top: 2px;
+  float: left;
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #c8ccd4;
+  border-radius: 3px;
+}
+.checkbox-label .checkbox svg {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+}
+.checkbox-label .checkbox svg path {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 71px;
+  stroke-dashoffset: 71px;
+  transition: all 0.6s ease;
+}
+.checkbox-label .checkbox svg polyline {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 18px;
+  stroke-dashoffset: 18px;
+  transition: all 0.3s ease;
+}
+
+.checkbox-label > span {
+  pointer-events: none;
+  vertical-align: middle;
+  color: var(--color-primary);
+  text-align: center;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 170%;
 }
