@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Arrow from '../Icons/Arrow'
 import './select.css'
 
@@ -12,7 +11,10 @@ export interface SelectProps {
   id: string
   label?: string
   required?: boolean
+  /** 선택된 옵션 */
+  selectedOption?: string
   options: Option[]
+  /** 옵션 변경 함수 */
   onChange?: (selectedOption: string) => void
 }
 
@@ -21,16 +23,14 @@ const Select = ({
   id = 'id',
   options,
   label,
+  selectedOption = options[0].value,
   required,
   onChange,
   ...props
 }: SelectProps) => {
   const isRequired = required ? 'required--label' : ''
 
-  const [selectedOption, setSelectedOption] = useState(options[0].value)
-
   const handleOptionChange = (selectedValue: string) => {
-    setSelectedOption(selectedValue)
     if (onChange) {
       onChange(selectedValue)
     }
