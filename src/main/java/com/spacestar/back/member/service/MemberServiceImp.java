@@ -7,10 +7,7 @@ import com.spacestar.back.member.domain.PlayGame;
 import com.spacestar.back.member.dto.req.*;
 import com.spacestar.back.member.domain.Member;
 import com.spacestar.back.member.domain.ProfileImage;
-import com.spacestar.back.member.dto.res.MemberSwipeResDto;
-import com.spacestar.back.member.dto.res.ProfileChattingResDto;
-import com.spacestar.back.member.dto.res.ProfileImageListResDto;
-import com.spacestar.back.member.dto.res.ProfileMatchingResDto;
+import com.spacestar.back.member.dto.res.*;
 import com.spacestar.back.member.repository.LikedGameRepository;
 import com.spacestar.back.member.repository.MemberRepository;
 import com.spacestar.back.member.repository.PlayGameRepository;
@@ -133,20 +130,22 @@ public class MemberServiceImp implements MemberService{
 
         List<ProfileImageListResDto> profileImageListResDtos = new ArrayList<>();
 
+        int i = 0;
         for (ProfileImage profileImage : profileImageRepository.findAllByMember(member)){
-            profileImageListResDtos.add(ProfileImageListResDto.convertToDto(profileImage));
+            profileImageListResDtos.add(ProfileImageListResDto.convertToDto(i,profileImage));
+            i++;
         }
         return profileImageListResDtos;
     }
 
     @Override
-    public ProfileImageListResDto findMainProfileImage(String uuid) {
+    public ProfileMainImageResDto findMainProfileImage(String uuid) {
 
         Member member = memberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
 
         return mapper.map(
-                profileImageRepository.findByMemberAndMain(member,true),ProfileImageListResDto.class);
+                profileImageRepository.findByMemberAndMain(member,true),ProfileMainImageResDto.class);
     }
 
     @Override

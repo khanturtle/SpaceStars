@@ -12,16 +12,18 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProfileImageListResDto {
 
+    private int index;
     private String profileImageUrl;
     private boolean mainImage;
-    private int idx;
+    private int imageIdx;
 
-    public static ProfileImageListResDto convertToDto(ProfileImage profileImage) {
+    public static ProfileImageListResDto convertToDto(int i, ProfileImage profileImage) {
 
         return ProfileImageListResDto.builder()
+                .index(i)
                 .profileImageUrl(profileImage.getProfileImageUrl())
                 .mainImage(profileImage.isMain())
-                .idx(profileImage.getIdx())
+                .imageIdx(profileImage.getIdx())
                 .build();
     }
 }
