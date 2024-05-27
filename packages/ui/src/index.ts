@@ -10,3 +10,4 @@ export {
 } from './components/Icons'
 
 export { default as Avatar } from './components/Avatar/Avatar'
+export { default as Badge } from './components/Badge/Badge'
