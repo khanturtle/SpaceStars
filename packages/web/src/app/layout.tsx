@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import AuthSession from '../components/providers/session-provider'
+import AuthSession from '@/components/providers/session-provider'
 
-import '../styles/globals.css'
+import '@/styles/globals.css'
 
 import '@packages/ui/index.css'
 

@@ -18,7 +18,9 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
+      "@/*": ["./src/*"]
       // "@/*": ["./packages/web/src/*"]
       // "@packages/ui": ["packages/ui/dist"]
     }
