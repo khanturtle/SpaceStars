@@ -1,5 +1,5 @@
 import Modal from '@/components/modal/modal'
-import AdditionalInfoLayout from '@/containers/sign/AdditionalInfoLayout'
+import AdditionalInfoLayout from '@/containers/Additional/AdditionalLayout'
 
 export default function Page() {
   return (
