@@ -8,6 +8,7 @@
   --background-end-rgb: 255, 255, 255;
 
   font-family: var(--font-primary);
+  --color-primary: #823bf7;
 }
 
 @media (prefers-color-scheme: dark) {

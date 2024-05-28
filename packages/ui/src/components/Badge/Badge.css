@@ -1,0 +1,42 @@
+.badge-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+
+  span {
+    color: var(--White-50, #fff);
+
+    text-align: center;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+  }
+}
+
+.badge--large {
+  padding: 8px 10px;
+
+  span {
+    font-size: 14px;
+  }
+}
+.badge--small {
+  padding: 2px 5px;
+
+  span {
+    font-size: 10px;
+  }
+}
+
+.badge--game {
+  background-color: #dab93b;
+}
+.badge--open {
+  background-color: #a589c7;
+}
+.badge--closed {
+  background-color: #0c0c0c;
+}

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import SignLayout from '../../containers/sign/SignLayout'
+import SignLayout from '@/containers/sign/SignLayout'
 
 const SignInPage = () => {
   return (

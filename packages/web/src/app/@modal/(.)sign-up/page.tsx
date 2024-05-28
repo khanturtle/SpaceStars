@@ -1,6 +1,6 @@
-import SignLayout from 'packages/web/src/containers/sign/SignLayout'
+import SignLayout from '@/containers/sign/SignLayout'
 
-import Modal from '../../../components/modal/modal'
+import Modal from '@/components/modal/modal'
 
 export default function Page() {
   return (

@@ -36,7 +36,7 @@ const Button = ({
   return (
     <button
       type="button"
-      className={`${className} ${mode} button button--${size} button--${shape} ${tailwindClass} ${isShadow}`}
+      className={`${mode} button button--${size} button--${shape} ${tailwindClass} ${isShadow} ${className}`}
       style={inlineStyle}
       {...props}
     >
