@@ -1,6 +1,7 @@
 package org.spacestar.spacestargateway.jwt;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,14 +12,18 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-	@Value("${jwt.secret}")
-	private SecretKey secretKey;
+	private final SecretKey secretKey;
 
+	public JwtUtil(@Value("${jwt.secret}") String secret){
+		this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+	}
 
 	// jwt 에서 클레임 추출
 	private Claims parseClaims(String accessToken){
