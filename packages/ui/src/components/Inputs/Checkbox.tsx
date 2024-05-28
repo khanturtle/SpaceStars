@@ -1,4 +1,4 @@
-import './input.css'
+import './Input.css'
 
 export interface CheckboxProps {
   className?: string
