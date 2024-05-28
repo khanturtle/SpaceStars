@@ -1,9 +1,9 @@
-import { ArrowIcon } from '@packages/ui'
+import DatePickerCustom from '@/components/DatePicker/DatePicker'
 
 export default function page() {
   return (
     <div>
-      <ArrowIcon />
+      <DatePickerCustom />
     </div>
   )
 }
