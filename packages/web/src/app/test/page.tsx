@@ -3,7 +3,7 @@ import DatePickerCustom from '@/components/DatePicker/DatePicker'
 export default function page() {
   return (
     <div>
-      <DatePickerCustom />
+      <DatePickerCustom id="" />
     </div>
   )
 }
