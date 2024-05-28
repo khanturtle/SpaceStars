@@ -14,7 +14,16 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
-export default function DatePickerCustom() {
+interface DatePickerCustomProps {
+  className?: string
+  id: string
+}
+
+export default function DatePickerCustom({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  className,
+  id,
+}: DatePickerCustomProps) {
   const [date, setDate] = React.useState<Date>()
 
   return (
@@ -36,6 +45,7 @@ export default function DatePickerCustom() {
 
       <PopoverContent className="w-auto p-0">
         <Calendar
+          id={id}
           mode="single"
           selected={date}
           onSelect={setDate}
