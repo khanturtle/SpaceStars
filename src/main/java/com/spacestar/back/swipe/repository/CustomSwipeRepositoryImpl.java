@@ -29,6 +29,16 @@ public class CustomSwipeRepositoryImpl implements CustomSwipeRepository {
                 .where(swipe.matchToMember.eq(uuid).and(swipe.status.eq(WAIT)))
                 .fetch();
     }
+    @Override
+    public List<SwipeListResDto> findSentRequest(String uuid) {
+
+        return query
+                .select(Projections.constructor(SwipeListResDto.class,
+                        swipe.matchToMember))
+                .from(swipe)
+                .where(swipe.matchFromMember.eq(uuid).and(swipe.status.eq(WAIT)))
+                .fetch();
+    }
 
     @Transactional
     @Override

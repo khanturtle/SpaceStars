@@ -28,10 +28,7 @@ public class SwipeServiceImpl implements SwipeService {
     //보낸 요청 조회
     @Override
     public List<SwipeListResDto> getSentSwipe(String uuid) {
-        return swipeRepository.findByMatchFromMember(uuid).stream().map(swipe -> SwipeListResDto.builder()
-                .matchMember(swipe.getMatchToMember())
-                .build())
-                .toList();
+        return swipeRepository.findSentRequest(uuid);
     }
 
     @Override

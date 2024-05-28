@@ -12,8 +12,4 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SwipeListResDto {
     private String matchMember;
-
-    public SwipeListResDto(Swipe swipe) {
-        this.matchMember = swipe.getMatchToMember();
-    }
 }
