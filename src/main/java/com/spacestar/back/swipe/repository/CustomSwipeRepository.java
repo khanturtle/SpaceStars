@@ -12,4 +12,6 @@ public interface CustomSwipeRepository {
     void agreeRequest(String uuid);
 
     void rejectRequest(String uuid);
+
+    int countSwipe(String uuid);
 }

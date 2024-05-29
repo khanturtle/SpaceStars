@@ -2,6 +2,7 @@ package com.spacestar.back.swipe.service;
 
 import com.spacestar.back.swipe.converter.SwipeConverter;
 import com.spacestar.back.swipe.dto.req.SwipeReqDto;
+import com.spacestar.back.swipe.dto.res.SwipeCountResDto;
 import com.spacestar.back.swipe.dto.res.SwipeListResDto;
 import com.spacestar.back.swipe.repository.SwipeRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,12 @@ public class SwipeServiceImpl implements SwipeService {
     public void rejectSwipe(String uuid) {
         swipeRepository.rejectRequest(uuid);
         //Todo 거절시 Redis에 해당 유저 저장해야함
+    }
+
+    @Override
+    public SwipeCountResDto countSwipe(String uuid) {
+        return SwipeCountResDto.builder()
+                .count(swipeRepository.countSwipe(uuid))
+                .build();
     }
 }

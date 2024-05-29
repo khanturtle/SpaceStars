@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class SwipeListResDto {
-    private String matchMember;
+public class SwipeCountResDto {
+    private int count;
 }
