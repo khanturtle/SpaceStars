@@ -1,6 +1,6 @@
 package com.spacestar.back.swipe.service;
 
-import com.spacestar.back.swipe.domain.Swipe;
+import com.spacestar.back.swipe.converter.SwipeConverter;
 import com.spacestar.back.swipe.dto.req.SwipeReqDto;
 import com.spacestar.back.swipe.dto.res.SwipeListResDto;
 import com.spacestar.back.swipe.repository.SwipeRepository;
@@ -11,18 +11,24 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SwipeServiceImpl implements SwipeService{
+public class SwipeServiceImpl implements SwipeService {
     private final SwipeRepository swipeRepository;
 
     @Override
     public void addSwipe(SwipeReqDto swipeReqDto, String uuid) {
-        swipeRepository.save(Swipe.toEntity(swipeReqDto,uuid));
+        swipeRepository.save(SwipeConverter.toEntity(swipeReqDto, uuid));
         //Todo 요청을 보내면 추천인 목록에서 제외 시켜야함 (거절시 처럼 Redis에 저장해야할듯?)
     }
 
+    //받은 요청 조회
     @Override
-    public List<SwipeListResDto> getSwipe(String uuid) {
+    public List<SwipeListResDto> getReceivedSwipe(String uuid) {
         return swipeRepository.findWaitRequest(uuid);
+    }
+    //보낸 요청 조회
+    @Override
+    public List<SwipeListResDto> getSentSwipe(String uuid) {
+        return swipeRepository.findSentRequest(uuid);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.spacestar.back.swipe.dto.res;
 
+import com.spacestar.back.swipe.domain.Swipe;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class SwipeListResDto {
-    private String matchFromMember;
+    private String matchMember;
 }

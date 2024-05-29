@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class SwipeListResVo {
-    private String matchFromMember;
+    private String matchMember;
 }
