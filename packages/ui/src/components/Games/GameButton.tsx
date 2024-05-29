@@ -1,5 +1,5 @@
 import Check from '../Icons/Check'
-import './button.css'
+import './game.css'
 
 type ItemType = {
   gameImage: string
