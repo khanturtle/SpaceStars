@@ -6,7 +6,7 @@ export interface ButtonProps
   primary?: boolean
   backgroundColor?: string
   fontColor?: string
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | 'full'
   label: string
   shape?: 'rect' | 'rounded' | 'oval'
   shadow?: boolean
