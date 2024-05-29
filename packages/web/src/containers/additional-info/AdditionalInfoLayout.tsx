@@ -1,6 +1,6 @@
 import AdditionalInfoForm from './AdditionalInfoForm'
 
-import FormLayout from '@/components/form/FormLayout'
+import FormLayout from '@/components/form/formLayout'
 
 export default function AdditionalInfoLayout({
   className,
