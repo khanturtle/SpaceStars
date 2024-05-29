@@ -1,7 +1,7 @@
 import Modal from '@/components/modal/modal'
 import AdditionalDetailsLayout from '@/containers/additional-details/AdditionalDetailsLayout'
 
-export default function Page({
+export default function page({
   searchParams,
 }: {
   searchParams: { [key: string]: string }
@@ -9,8 +9,7 @@ export default function Page({
   return (
     <Modal>
       <AdditionalDetailsLayout
-        className={`relative h-full pt-[90px] pb-[60px]
-                  flex flex-col items-center`}
+        className="relative h-full pt-[90px] pb-[60px] flex flex-col items-center"
         step={searchParams.step}
       />
     </Modal>
