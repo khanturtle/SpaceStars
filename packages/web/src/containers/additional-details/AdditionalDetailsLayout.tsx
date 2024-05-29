@@ -16,12 +16,19 @@ export default function AdditionalDetailsLayout({
   const handleNextStep = () => {
     const nextStep = Number(step) + 1
     if (nextStep < 3) {
-      router.push(`/additional-details/${nextStep}`)
+      router.replace(`/additional-details/${nextStep}`)
     } else {
       console.log('끝')
     }
   }
-  const handlePrevStep = () => {}
+  const handlePrevStep = () => {
+    const prevStep = Number(step) - 1
+    if (prevStep >= 0) {
+      router.replace(`/additional-details/${prevStep}`)
+    } else {
+      console.log('처음')
+    }
+  }
 
   return (
     <FormLayout className={`${className} w-[335px]`}>
