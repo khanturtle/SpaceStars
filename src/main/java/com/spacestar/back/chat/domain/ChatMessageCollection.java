@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -22,12 +23,12 @@ public class ChatMessageCollection {
     private String roomNumber;
     private String senderUuid;
     private String content;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
     @Builder
-    public ChatMessageCollection(String id, String roomNumber, String senderUuid, String content, Date createdAt, MessageType messageType) {
+    public ChatMessageCollection(String id, String roomNumber, String senderUuid, String content, LocalDateTime createdAt, MessageType messageType) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.senderUuid = senderUuid;

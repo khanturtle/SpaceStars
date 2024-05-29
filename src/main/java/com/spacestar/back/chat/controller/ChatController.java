@@ -7,6 +7,7 @@ import com.spacestar.back.chat.vo.req.ChatMessageReqVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @Tag(name = "Chat", description = "채팅")
 //@RequestMapping("/chat")
@@ -35,7 +37,7 @@ public class ChatController {
                                                @Payload ChatMessageReqVo chatMessageReqVo){
         // VO -> DTO
         MessageDto messageDto = chatMessageService.messageToDto(chatMessageReqVo, roomNumber);
-
+        log.info("messageDto: {}", messageDto.getCreatedAt());
         // 채팅 메시지 저장
         chatMessageService.addChatMessage(messageDto);
 
