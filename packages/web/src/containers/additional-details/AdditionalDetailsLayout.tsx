@@ -36,7 +36,7 @@ export default function AdditionalDetailsLayout({
   }
 
   const handleNextStep = () => {
-    const nextStep = Number(step) + 1
+    const nextStep = parseInt(step, 10) + 1
     if (nextStep <= 3) {
       router.replace(`/additional-details?step=${nextStep}`)
     } else if (nextStep === 4) {
@@ -47,7 +47,7 @@ export default function AdditionalDetailsLayout({
   }
 
   const handlePrevStep = () => {
-    const prevStep = Number(step) - 1
+    const prevStep = parseInt(step, 10) - 1
     if (prevStep > 0) {
       router.replace(`/additional-details?step=${prevStep}`)
     }
