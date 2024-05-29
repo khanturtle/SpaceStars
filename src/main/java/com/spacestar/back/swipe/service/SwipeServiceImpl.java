@@ -42,4 +42,9 @@ public class SwipeServiceImpl implements SwipeService {
         swipeRepository.rejectRequest(uuid);
         //Todo 거절시 Redis에 해당 유저 저장해야함
     }
+
+    @Override
+    public void deleteExpiredSwipe() {
+        swipeRepository.deleteExpiredSwipe();
+    }
 }

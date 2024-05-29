@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.spacestar.back.swipe.SwipeStatus.*;
@@ -55,6 +56,14 @@ public class CustomSwipeRepositoryImpl implements CustomSwipeRepository {
         query.update(swipe)
                 .where(swipe.matchToMember.eq(uuid))
                 .set(swipe.status, REJECT)
+                .execute();
+    }
+
+    @Transactional
+    @Override
+    public void deleteExpiredSwipe() {
+        query.delete(swipe)
+                .where(swipe.createdAt.before(LocalDateTime.now().minusDays(3)))
                 .execute();
     }
 }

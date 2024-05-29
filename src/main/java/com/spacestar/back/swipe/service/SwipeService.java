@@ -17,5 +17,5 @@ public interface SwipeService {
 
     void rejectSwipe(String uuid);
 
-
+    void deleteExpiredSwipe();
 }
