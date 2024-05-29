@@ -10,9 +10,9 @@ public enum ResponseSuccess {
 
     SUCCESS(200, "요청에 성공했습니다."),
 
-    INTERNAL_SERVER_ERROR(900, "Internal server error"),
+    MESSAGE_CREATE_SUCCESS(201, "메시지 생성 성공"),
 
-    TOKEN_NOT_VALID( 2002, "토큰이 유효하지 않습니다.");
+    INTERNAL_SERVER_ERROR(900, "Internal server error");
 
 
     private final int code;
