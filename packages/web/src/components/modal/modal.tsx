@@ -29,18 +29,14 @@ function Modal({
   }
 
   return (
-    <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[1000] inset-0">
+    <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[1000] inset-0 h-full">
       <dialog
         ref={dialogRef}
-        // TODO: className으로 모달 크기 프롭받기
-        className={`w-[90%] h-[90%] sm:w-[80%] sm:h-[80%] 
-                  md:w-[60%] md:h-[60%] lg:w-[50%] lg:h-[60%]
+        className={`w-[90%] sm:w-[80%] md:w-[60%] lg:w-[50%]
                   flex flex-col items-center justify-around
                   fixed inset-0 
                   bg-[url('/images/BG.svg')] bg-cover bg-center bg-no-repeat 
-                  overflow-hidden
-                  rounded-[10px]
-                  
+                  overflow-hidden rounded-[10px]
                   ${className}
                   `}
         onClose={onDismiss}
