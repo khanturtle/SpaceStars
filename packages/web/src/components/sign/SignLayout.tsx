@@ -84,7 +84,7 @@ const SignLayout = ({
   type?: 'sign-in' | 'sign-up'
 }) => {
   return (
-    <div className={className}>
+    <section className={className}>
       {type && (
         <>
           <Legend type={type} />
@@ -92,7 +92,7 @@ const SignLayout = ({
         </>
       )}
       {children}
-    </div>
+    </section>
   )
 }
 

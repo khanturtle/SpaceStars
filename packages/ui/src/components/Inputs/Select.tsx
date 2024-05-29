@@ -11,11 +11,9 @@ export interface SelectProps {
   id: string
   label?: string
   required?: boolean
-  /** 선택된 옵션 */
-  selectedOption?: string
   options: Option[]
-  /** 옵션 변경 함수 */
-  onChange?: (selectedOption: string) => void
+  selectedOption?: string
+  onChange?: (value: string) => void
 }
 
 const Select = ({
@@ -23,8 +21,8 @@ const Select = ({
   id = 'id',
   options,
   label,
-  selectedOption = options[0].value,
   required,
+  selectedOption,
   onChange,
   ...props
 }: SelectProps) => {
@@ -41,7 +39,7 @@ const Select = ({
       <div
         className="select-box__current"
         tabIndex={1}
-        onClick={() => handleOptionChange(selectedOption)}
+        onClick={() => handleOptionChange(selectedOption!)}
       >
         {label && (
           <label htmlFor={id} className={isRequired}>
@@ -57,6 +55,7 @@ const Select = ({
               value={option.value}
               name="select-box"
               checked={selectedOption === option.value}
+              onChange={() => handleOptionChange(option.value)}
               {...props}
             />
             <p className="select-box__input-text">{option.label}</p>
@@ -64,7 +63,7 @@ const Select = ({
         ))}
 
         <div className="select-box__icon">
-          <Arrow type="down" width="20" height="20" />
+          <Arrow type="down" width="14" height="14" />
         </div>
       </div>
 

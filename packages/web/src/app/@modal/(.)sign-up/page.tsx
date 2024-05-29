@@ -1,23 +1,13 @@
-import SignLayout from '@/containers/sign/SignLayout'
-
 import Modal from '@/components/modal/modal'
+import SignUpLayout from '@/containers/sign-up/SignUpLayout'
 
 export default function Page() {
   return (
-    <Modal>
-      <SignLayout
+    <Modal className="h-[480px]">
+      <SignUpLayout
         className={`h-full py-[50px]
                   flex flex-col items-center justify-around`}
-        type="sign-up"
-      >
-        <SignLayout.SignBox>
-          <div className="flex">
-            <p className="text-base not-italic font-bold leading-[170%] text-[#7d12ff]">
-              도움이 필요하신가요?
-            </p>
-          </div>
-        </SignLayout.SignBox>
-      </SignLayout>
+      />
     </Modal>
   )
 }
