@@ -16,7 +16,7 @@ export default function Page() {
         <h1>컴포넌트dd</h1>
         <p>테스트</p>
         <Link href="additional-info">모달얍</Link>|
-        <Link href="additional-details/0">모달얍2</Link>
+        <Link href="additional-details?step=1">모달얍2</Link>
       </main>
     </>
   )
