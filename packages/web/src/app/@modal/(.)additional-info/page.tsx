@@ -3,10 +3,10 @@ import AdditionalInfoLayout from '@/containers/additional-info/AdditionalInfoLay
 
 export default function Page() {
   return (
-    <Modal>
+    <Modal className="h-[700px]">
       <AdditionalInfoLayout
-        className={`h-full py-[50px]
-                  flex flex-col items-center justify-around`}
+        className={`relative h-full pt-[90px] pb-[85px]
+                  flex flex-col items-center`}
       />
     </Modal>
   )

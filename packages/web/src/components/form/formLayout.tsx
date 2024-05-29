@@ -22,12 +22,7 @@ export default function FormLayout({
   className?: string
   children?: React.ReactNode
 }) {
-  return (
-    <section className={className}>
-      <Legend />
-      {children}
-    </section>
-  )
+  return <section className={className}>{children}</section>
 }
 
 FormLayout.Legend = Legend

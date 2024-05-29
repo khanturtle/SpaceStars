@@ -57,8 +57,8 @@ export default function AdditionalInfoForm() {
   const [isChecked, setIsChecked] = useState(false)
 
   useEffect(() => {
-    console.log(gender)
-  }, [])
+    console.log(gender, birthday, isChecked)
+  }, [gender, birthday, isChecked])
 
   return (
     <form action="">
@@ -83,11 +83,14 @@ export default function AdditionalInfoForm() {
           id="gender"
           label="성별"
           options={genderOptions}
-          // selectedOption={gender}
-          // onChange={(g: string) => setGender(g)}
+          selectedOption={gender}
+          onChange={(value: string) => setGender(value)}
         />
 
-        <DatePickerCustom className={styles['input-box']} id="birthday" />
+        <DatePickerCustom
+          className={`z-10 ${styles['input-box']}`}
+          id="birthday"
+        />
 
         <Checkbox
           className={styles['input-check']}
@@ -105,7 +108,7 @@ export default function AdditionalInfoForm() {
         shape="oval"
         primary
         backgroundColor="#000"
-        size="large"
+        size="full"
         className="h-[60px] mt-2"
         label="회원가입"
       />
