@@ -1,8 +1,7 @@
 import Link from 'next/link'
 
-import SignLayout from '@/containers/sign/SignLayout'
-
 import Modal from '@/components/modal/modal'
+import SignLayout from '@/components/sign/SignLayout'
 
 export default function Page() {
   return (
