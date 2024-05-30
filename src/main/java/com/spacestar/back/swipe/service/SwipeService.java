@@ -1,6 +1,7 @@
 package com.spacestar.back.swipe.service;
 
 import com.spacestar.back.swipe.dto.req.SwipeReqDto;
+import com.spacestar.back.swipe.dto.res.SwipeCountResDto;
 import com.spacestar.back.swipe.dto.res.SwipeListResDto;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface SwipeService {
 
     void rejectSwipe(String uuid);
 
-
+    SwipeCountResDto countSwipe(String uuid);
 }
