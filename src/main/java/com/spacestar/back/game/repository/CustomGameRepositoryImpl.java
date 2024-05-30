@@ -49,10 +49,10 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
         return Optional.ofNullable(query
                 .select(Projections.constructor(
                         GameOptionResDto.class,
-                        qGame.is_tier,
-                        qGame.is_position,
-                        qGame.is_class,
-                        qGame.is_server))
+                        qGame.isTier,
+                        qGame.isPosition,
+                        qGame.isClass,
+                        qGame.isServer))
                 .from(qGame)
                 .where(qGame.id.eq(gameId))
                 .fetchOne());

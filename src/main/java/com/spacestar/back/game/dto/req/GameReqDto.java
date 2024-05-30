@@ -1,6 +1,5 @@
 package com.spacestar.back.game.dto.req;
 
-import com.spacestar.back.gamegenre.domain.GameGenre;
 import lombok.Getter;
 
 @Getter
