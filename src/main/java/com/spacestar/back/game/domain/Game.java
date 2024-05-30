@@ -19,7 +19,7 @@ public class Game {
     @NotNull
     private String name;
     @NotNull
-    private String name_kor;
+    private String nameKor;
     @NotNull
     private String image;
     @NotNull
@@ -33,10 +33,10 @@ public class Game {
 
 
     @Builder
-    public Game(GameGenre gameGenre, String name, String name_kor, String image, boolean isTier, boolean isPosition, boolean isClass, boolean isServer) {
+    public Game(GameGenre gameGenre, String name, String nameKor, String image, boolean isTier, boolean isPosition, boolean isClass, boolean isServer) {
         this.gameGenre = gameGenre;
         this.name = name;
-        this.name_kor = name_kor;
+        this.nameKor = nameKor;
         this.image = image;
         this.isTier = isTier;
         this.isPosition = isPosition;

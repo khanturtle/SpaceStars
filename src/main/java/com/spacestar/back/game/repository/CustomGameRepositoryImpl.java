@@ -26,7 +26,7 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
                 .select(Projections.constructor(GameResDto.class,
                         qGame.name,
                         qGame.image,
-                        qGame.name_kor,
+                        qGame.nameKor,
                         qGame.id))
                 .from(qGame)
                 .fetch();

@@ -43,11 +43,16 @@ private final GameGenreRepository gameGenreRepository;
                 .gameGenre(gameGenre)
                 .name(gameReqDto.getName())
                 .image(gameReqDto.getImage())
-                .name_kor(gameReqDto.getName_kor())
+                .nameKor(gameReqDto.getNameKor())
                 .isClass(gameReqDto.isClass())
                 .isPosition(gameReqDto.isPosition())
                 .isServer(gameReqDto.isServer())
                 .isTier(gameReqDto.isTier())
                 .build());
+    }
+
+    @Override
+    public void deleteGame(Long gameId) {
+
     }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class GameReqVo {
     private String name;
-    private String name_kor;
+    private String nameKor;
     private String image;
     private boolean isTier;
     private boolean isPosition;
