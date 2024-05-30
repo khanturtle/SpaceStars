@@ -18,7 +18,8 @@ public enum ResponseStatus {
 
     TOKEN_NOT_VALID( 2002, "토큰이 유효하지 않습니다."),
 
-    GAME_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 게임 ID 입니다.");
+    GAME_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 게임 ID 입니다."),
+    GAME_GENRE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 게임 장르 ID 입니다.");
 
 //    TOKEN_NULL(false, 2003, "토큰이 존재하지 않습니다."),
 
