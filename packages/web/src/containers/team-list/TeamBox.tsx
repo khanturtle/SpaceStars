@@ -46,12 +46,45 @@ const TeamCardItem = ({
   )
 }
 
-const TeamList = () => {
-  return <ul>리스트</ul>
+const TeamList = ({ children }: { children: React.ReactNode }) => {
+  return <ul className={styles['list-container']}>{children}</ul>
+}
+const TeamItem = ({
+  isFinished,
+  gameData,
+  roomType,
+  users,
+  title,
+  joinButton,
+}: {
+  isFinished?: boolean
+  gameData?: React.ReactNode
+  roomType?: React.ReactNode
+  users?: React.ReactNode
+  title?: React.ReactNode
+  joinButton?: React.ReactNode
+}) => {
+  const TYPE = isFinished ? 'finished' : 'ongoing'
+
+  return (
+    <li className={`${styles.list} ${styles[TYPE]}`}>
+      <div className="w-[380px]">{title}</div>
+      <div className="flex gap-[5px] flex-1">
+        {gameData}
+        {roomType}
+      </div>
+
+      <div className="relative flex items-center justify-between w-[228px]">
+        <div className="relative">{users}</div>
+        <div>{joinButton}</div>
+      </div>
+    </li>
+  )
 }
 
 TeamBox.TeamCardList = TeamCardList
 TeamBox.TeamCardItem = TeamCardItem
 TeamBox.TeamList = TeamList
+TeamBox.TeamItem = TeamItem
 
 export default TeamBox
