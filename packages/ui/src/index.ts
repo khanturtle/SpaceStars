@@ -8,9 +8,14 @@ export {
   ArrowIcon,
   ThemeIcon,
   CirclePlusIcon,
+  LockIcon,
 } from './components/Icons'
 
 export { default as Avatar } from './components/Avatar/Avatar'
 export { default as Badge } from './components/Badge/Badge'
 
 export { default as GameButton } from './components/Games/GameButton'
+
+export { default as TeamCardTitle } from './components/TeamCard/Title'
+export { default as TeamCardUserAvatar } from './components/TeamCard/UserAvatar'
+export { default as TeamCardJoinButton } from './components/TeamCard/JoinButton'
