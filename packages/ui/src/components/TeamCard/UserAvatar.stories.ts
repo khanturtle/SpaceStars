@@ -21,7 +21,6 @@ export const Default: Story = {
   args: {
     users: [
       {
-        index: 1,
         userId: 1,
         profileImage: 'https://via.placeholder.com/52x52',
       },
@@ -32,11 +31,10 @@ export const User2: Story = {
   args: {
     users: [
       {
-        index: 1,
         userId: 1,
         profileImage: 'https://via.placeholder.com/52x52',
       },
-      { index: 2, userId: 2, profileImage: 'https://via.placeholder.com/1x1' },
+      { userId: 2, profileImage: 'https://via.placeholder.com/1x1' },
     ],
   },
 }
@@ -45,12 +43,11 @@ export const User3: Story = {
     size: 'small',
     users: [
       {
-        index: 1,
         userId: 1,
         profileImage: 'https://via.placeholder.com/52x52',
       },
-      { index: 2, userId: 2, profileImage: 'https://via.placeholder.com/1x1' },
-      { index: 3, userId: 3, profileImage: 'https://via.placeholder.com/1x1' },
+      { userId: 2, profileImage: 'https://via.placeholder.com/1x1' },
+      { userId: 3, profileImage: 'https://via.placeholder.com/1x1' },
     ],
   },
 }
