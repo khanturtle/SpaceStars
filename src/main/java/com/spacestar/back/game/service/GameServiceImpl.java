@@ -33,6 +33,7 @@ private final GameGenreRepository gameGenreRepository;
         );
     }
 
+    @Transactional
     @Override
     public void addGame(Long gameGenreId, GameReqDto gameReqDto) {
         GameGenre gameGenre = gameGenreRepository.findById(gameGenreId).orElseThrow(

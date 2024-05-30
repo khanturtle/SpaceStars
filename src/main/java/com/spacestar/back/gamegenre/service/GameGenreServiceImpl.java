@@ -6,6 +6,7 @@ import com.spacestar.back.gamegenre.dto.res.GameGenreResDto;
 import com.spacestar.back.gamegenre.repository.GameGenreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -23,6 +24,7 @@ public class GameGenreServiceImpl implements GameGenreService{
                 .toList();
     }
 
+    @Transactional
     @Override
     public void addGameGenre(GameGenreReqDto gameGenreReqDto) {
         gameGenreRepository.save(GameGenre.builder()
@@ -30,6 +32,7 @@ public class GameGenreServiceImpl implements GameGenreService{
                 .build());
     }
 
+    @Transactional
     @Override
     public void deleteGameGenre(Long gameGenreId) {
         gameGenreRepository.deleteById(gameGenreId);
