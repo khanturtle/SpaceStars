@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,9 +20,9 @@ public class MessageDto {
     String senderUuid;
     String content;
     MessageType messageType;
-    Date createdAt;
+    LocalDateTime createdAt;
 
-    public static MessageDto toDto(ChatMessageReqVo chatMessageReqVo, String roomNumber, Date createdAt){
+    public static MessageDto chatMessageReqVoToDto(ChatMessageReqVo chatMessageReqVo, String roomNumber, LocalDateTime createdAt){
         return MessageDto.builder()
                 .roomNumber(roomNumber)
                 .senderUuid(chatMessageReqVo.getSenderUuid())
@@ -38,7 +38,17 @@ public class MessageDto {
                 .senderUuid(messageDto.getSenderUuid())
                 .content(messageDto.getContent())
                 .messageType(messageDto.getMessageType())
-                .createdAt(messageDto.getCreatedAt())
+                .createdAt(messageDto.getCreatedAt().plusHours(9))
+                .build();
+    }
+
+    public static MessageDto messageDtoFromEntity(ChatMessageCollection chatMessageCollection){
+        return MessageDto.builder()
+                .roomNumber(chatMessageCollection.getRoomNumber())
+                .senderUuid(chatMessageCollection.getSenderUuid())
+                .content(chatMessageCollection.getContent())
+                .messageType(chatMessageCollection.getMessageType())
+                .createdAt(chatMessageCollection.getCreatedAt().minusHours(9))
                 .build();
     }
 
