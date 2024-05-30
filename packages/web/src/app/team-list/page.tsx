@@ -52,17 +52,14 @@ export default function page() {
                       size="small"
                       users={[
                         {
-                          index: 1,
                           profileImage: 'https://via.placeholder.com/52x52',
                           userId: 1,
                         },
                         {
-                          index: 2,
                           profileImage: 'https://via.placeholder.com/1x1',
                           userId: 2,
                         },
                         {
-                          index: 3,
                           profileImage: 'https://via.placeholder.com/1x1',
                           userId: 3,
                         },
