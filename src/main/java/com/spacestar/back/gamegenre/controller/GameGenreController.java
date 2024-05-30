@@ -36,4 +36,10 @@ public class GameGenreController {
         gameGenreService.addGameGenre(modelMapper.map(gameGenreReqVo, GameGenreReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.GAME_GENRE_ADD_SUCCESS,null);
     }
+
+    @DeleteMapping("/{gameGenreId}")
+    public ResponseEntity<Void> deleteGameGenre(@PathVariable Long gameGenreId){
+        gameGenreService.deleteGameGenre(gameGenreId);
+        return new ResponseEntity<>(ResponseSuccess.GAME_GENRE_DELETE_SUCCESS,null);
+    }
 }

@@ -9,4 +9,6 @@ public interface GameGenreService {
     List<GameGenreResDto> getGameGenres();
 
     void addGameGenre(GameGenreReqDto gameGenreReqDto);
+
+    void deleteGameGenre(Long gameGenreId);
 }

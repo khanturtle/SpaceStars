@@ -29,4 +29,9 @@ public class GameGenreServiceImpl implements GameGenreService{
                 .genre(gameGenreReqDto.getGenre())
                 .build());
     }
+
+    @Override
+    public void deleteGameGenre(Long gameGenreId) {
+        gameGenreRepository.deleteById(gameGenreId);
+    }
 }
