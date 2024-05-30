@@ -21,6 +21,10 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set('springCloudVersion', "2022.0.5")
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -41,6 +45,7 @@ dependencies {
 
 	// modelMapper
 	implementation 'org.modelmapper:modelmapper:3.0.0'
+
 	//config
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
@@ -50,7 +55,6 @@ dependencies {
 ext {
 	set('springCloudVersion', "2022.0.5")
 }
-
 
 dependencyManagement {
 	imports {
