@@ -18,3 +18,4 @@ export { default as GameButton } from './components/Games/GameButton'
 
 export { default as TeamCardTitle } from './components/TeamCard/Title'
 export { default as TeamCardUserAvatar } from './components/TeamCard/UserAvatar'
+export { default as TeamCardJoinButton } from './components/TeamCard/JoinButton'
