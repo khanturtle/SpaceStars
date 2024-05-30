@@ -13,5 +13,9 @@ public interface CustomSwipeRepository {
 
     void rejectRequest(String uuid);
 
+
     void deleteExpiredSwipe();
+
+    int countSwipe(String uuid);
+
 }

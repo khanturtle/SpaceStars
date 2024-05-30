@@ -3,9 +3,11 @@ package com.spacestar.back.swipe.controller;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.swipe.dto.req.SwipeReqDto;
+import com.spacestar.back.swipe.dto.res.SwipeCountResDto;
 import com.spacestar.back.swipe.dto.res.SwipeListResDto;
 import com.spacestar.back.swipe.service.SwipeService;
 import com.spacestar.back.swipe.vo.req.SwipeReqVo;
+import com.spacestar.back.swipe.vo.res.SwipeCountResVo;
 import com.spacestar.back.swipe.vo.res.SwipeListResVo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -57,5 +59,11 @@ public class SwipeController {
     public ResponseEntity<Void> rejectSwipe(@RequestHeader("UUID") String uuid) {
         swipeService.rejectSwipe(uuid);
         return new ResponseEntity<>(ResponseSuccess.SWIPE_REJECT_SUCCESS);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<SwipeCountResVo> countSwipe(@RequestHeader("UUID") String uuid) {
+        SwipeCountResVo swipeCount = mapper.map(swipeService.countSwipe(uuid), SwipeCountResVo.class);
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_COUNT_SUCCESS,swipeCount);
     }
 }

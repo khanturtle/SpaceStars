@@ -2,6 +2,7 @@ package com.spacestar.back.swipe.service;
 
 import com.spacestar.back.swipe.converter.SwipeConverter;
 import com.spacestar.back.swipe.dto.req.SwipeReqDto;
+import com.spacestar.back.swipe.dto.res.SwipeCountResDto;
 import com.spacestar.back.swipe.dto.res.SwipeListResDto;
 import com.spacestar.back.swipe.repository.SwipeRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,12 @@ public class SwipeServiceImpl implements SwipeService {
     @Override
     public void deleteExpiredSwipe() {
         swipeRepository.deleteExpiredSwipe();
+    }
+  
+    @Override
+    public SwipeCountResDto countSwipe(String uuid) {
+        return SwipeCountResDto.builder()
+                .count(swipeRepository.countSwipe(uuid))
+                .build();
     }
 }
