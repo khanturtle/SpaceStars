@@ -26,9 +26,11 @@ public class ChatStompController {
         this.chatMessageService = chatMessageService;
         this.messageTemplate = messageTemplate;
     }
+
     @MessageMapping("/{roomNumber}")
-    public void addChatMessage(@DestinationVariable String roomNumber,
-                                               @Payload ChatMessageReqVo chatMessageReqVo){
+    public void addChatMessage(
+            @DestinationVariable String roomNumber,
+                               @Payload ChatMessageReqVo chatMessageReqVo) {
         // VO -> DTO
         MessageDto messageDto = chatMessageService.messageToDto(chatMessageReqVo, roomNumber);
         log.info("messageDto: {}", messageDto.getCreatedAt());
