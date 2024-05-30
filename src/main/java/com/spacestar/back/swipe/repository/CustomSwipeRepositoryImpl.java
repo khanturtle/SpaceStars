@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -62,6 +64,12 @@ public class CustomSwipeRepositoryImpl implements CustomSwipeRepository {
 
     @Transactional
     @Override
+    public void deleteExpiredSwipe() {
+        query.delete(swipe)
+                .where(swipe.createdAt.before(LocalDateTime.now().minusDays(3)))
+                .execute();
+    }
+  
     public int countSwipe(String uuid) {
         LocalDate today = LocalDate.now();
         LocalDateTime startOfDay = today.atStartOfDay();

@@ -45,6 +45,11 @@ public class SwipeServiceImpl implements SwipeService {
     }
 
     @Override
+    public void deleteExpiredSwipe() {
+        swipeRepository.deleteExpiredSwipe();
+    }
+  
+    @Override
     public SwipeCountResDto countSwipe(String uuid) {
         return SwipeCountResDto.builder()
                 .count(swipeRepository.countSwipe(uuid))
