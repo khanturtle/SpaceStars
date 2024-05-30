@@ -49,11 +49,7 @@ public class AuthController {
     public ResponseEntity<HttpHeaders> login(@RequestBody MemberLoginReqVo memberLoginReqVo){
 
         MemberLoginResDto memberLoginResDto = authService.kakaoLogin(mapper.map(memberLoginReqVo, MemberLoginReqDto.class));
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, memberLoginResDto.getAccessToken());
-        headers.set("uuid", memberLoginResDto.getUuid());
-
-        return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, headers);
+        return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, mapper.map(memberLoginResDto, MemberLoginResVo.class));
     }
 
 }
