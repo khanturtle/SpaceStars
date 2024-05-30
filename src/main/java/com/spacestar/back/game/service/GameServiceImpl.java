@@ -51,8 +51,10 @@ private final GameGenreRepository gameGenreRepository;
                 .build());
     }
 
+    @Transactional
     @Override
     public void deleteGame(Long gameId) {
 
+        gameRepository.deleteById(gameId);
     }
 }

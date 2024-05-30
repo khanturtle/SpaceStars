@@ -12,4 +12,6 @@ public interface GameService {
     GameOptionResDto getGameOption(Long gameId);
 
     void addGame(Long gameGenreId, GameReqDto gameReqDto);
+
+    void deleteGame(Long gameId);
 }

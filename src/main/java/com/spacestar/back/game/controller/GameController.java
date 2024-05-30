@@ -45,4 +45,9 @@ public class GameController {
         gameService.addGame(gameGenreId, modelMapper.map(gameReqVo, GameReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.GAME_ADD_SUCCESS, null);
     }
+    @DeleteMapping("/{gameId}")
+    public ResponseEntity<Void> deleteGame(@PathVariable Long gameId){
+        gameService.deleteGame(gameId);
+        return new ResponseEntity<>(ResponseSuccess.GAME_DELETE_SUCCESS,null);
+    }
 }
