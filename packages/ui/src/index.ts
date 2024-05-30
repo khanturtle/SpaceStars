@@ -8,6 +8,7 @@ export {
   ArrowIcon,
   ThemeIcon,
   CirclePlusIcon,
+  LockIcon,
 } from './components/Icons'
 
 export { default as Avatar } from './components/Avatar/Avatar'
