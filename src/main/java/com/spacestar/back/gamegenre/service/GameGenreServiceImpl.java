@@ -1,6 +1,7 @@
 package com.spacestar.back.gamegenre.service;
 
 import com.spacestar.back.gamegenre.domain.GameGenre;
+import com.spacestar.back.gamegenre.dto.req.GameGenreReqDto;
 import com.spacestar.back.gamegenre.dto.res.GameGenreResDto;
 import com.spacestar.back.gamegenre.repository.GameGenreRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,12 @@ public class GameGenreServiceImpl implements GameGenreService{
         return  IntStream.range(0, gameGenres.size())
                 .mapToObj(i -> GameGenreResDto.toDto(i, gameGenres.get(i)))
                 .toList();
+    }
+
+    @Override
+    public void addGameGenre(GameGenreReqDto gameGenreReqDto) {
+        gameGenreRepository.save(GameGenre.builder()
+                .genre(gameGenreReqDto.getGenre())
+                .build());
     }
 }
