@@ -20,13 +20,13 @@ import java.util.List;
 public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
+
     @RequestMapping("/chat/{roomNumber}")
     public ResponseEntity<List<MessageDto>> getChatMessage(@PathVariable String roomNumber) {
         List<MessageDto> chatMessageVos = chatMessageService.getChatMessage(roomNumber);
 
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS,chatMessageVos);
+        return new ResponseEntity<>(ResponseSuccess.SUCCESS, chatMessageVos);
     }
-
 
 
 }
