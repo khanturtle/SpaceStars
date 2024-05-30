@@ -1,7 +1,6 @@
 import './teamcard.css'
 
 type UserDataType = {
-  index: number
   userId: number
   username?: string
   profileImage?: string
@@ -16,16 +15,15 @@ export interface UserAvatarProps {
 const UserAvatar = ({ className, size = 'medium', users }: UserAvatarProps) => {
   const leftSize: number = size == 'medium' ? 20 : 14
   return (
-    <div className={`relative flex image--${size} ${className}`}>
+    <div className={`relative flex justify-start image--${size} ${className}`}>
       {users &&
-        users.map((user) => (
+        users.map((user, _index) => (
           <div
             key={user.userId}
             className={`rounded-full avatar-image`}
             style={{
-              position: 'absolute',
-              left: `${user.index * leftSize}px`,
-              zIndex: users.length - user.index,
+              left: `${_index * leftSize}px`,
+              zIndex: users.length - _index,
             }}
           >
             <img
