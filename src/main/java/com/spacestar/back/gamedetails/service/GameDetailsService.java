@@ -3,6 +3,7 @@ package com.spacestar.back.gamedetails.service;
 import com.spacestar.back.gamedetails.dto.req.GameClassReqDto;
 import com.spacestar.back.gamedetails.dto.req.GamePositionReqDto;
 import com.spacestar.back.gamedetails.dto.req.GameServerReqDto;
+import com.spacestar.back.gamedetails.dto.req.GameTierReqDto;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
@@ -30,4 +31,8 @@ public interface GameDetailsService {
     void addGameServer(Long gameId, GameServerReqDto gameServerReqDto);
 
     void deleteGameServer(Long serverId);
+
+    void addGameTier(Long gameId, GameTierReqDto gameTierReqDto);
+
+    void deleteGameTier(Long tierId);
 }

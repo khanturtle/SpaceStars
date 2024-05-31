@@ -3,6 +3,7 @@ package com.spacestar.back.gamedetails.controller;
 import com.spacestar.back.gamedetails.dto.req.GamePositionReqDto;
 import com.spacestar.back.gamedetails.dto.req.GameClassReqDto;
 import com.spacestar.back.gamedetails.dto.req.GameServerReqDto;
+import com.spacestar.back.gamedetails.dto.req.GameTierReqDto;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
@@ -11,6 +12,7 @@ import com.spacestar.back.gamedetails.service.GameDetailsService;
 import com.spacestar.back.gamedetails.vo.req.GameClassReqVo;
 import com.spacestar.back.gamedetails.vo.req.GamePositionReqVo;
 import com.spacestar.back.gamedetails.vo.req.GameServerReqVo;
+import com.spacestar.back.gamedetails.vo.req.GameTierReqVo;
 import com.spacestar.back.gamedetails.vo.res.GameTierResVo;
 import com.spacestar.back.gamedetails.vo.res.GameClassResVo;
 import com.spacestar.back.gamedetails.vo.res.GamePositionResVo;
@@ -118,5 +120,19 @@ public class GameDetailsController {
     public ResponseEntity<Void> deleteGameServer(@PathVariable Long serverId) {
         gameDetailsService.deleteGameServer(serverId);
         return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_SERVER_SUCCESS, null);
+    }
+
+    @PostMapping("/tier/{gameId}")
+    public ResponseEntity<Void> addGameTier(@PathVariable Long gameId,
+                                              @RequestBody GameTierReqVo gameTierReqVo) {
+        gameDetailsService.addGameTier(gameId, modelMapper.map(gameTierReqVo, GameTierReqDto.class));
+
+        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_TIER_SUCCESS, null);
+    }
+
+    @DeleteMapping("/tier/{tierId}")
+    public ResponseEntity<Void> deleteGameTier(@PathVariable Long tierId) {
+        gameDetailsService.deleteGameTier(tierId);
+        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_TIER_SUCCESS, null);
     }
 }

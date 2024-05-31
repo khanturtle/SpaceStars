@@ -31,7 +31,10 @@ public enum ResponseSuccess {
     ADD_GAME_POSITION_SUCCESS(HttpStatus.CREATED.value(), "게임 포지션 생성 성공"),
     DELETE_GAME_POSITION_SUCCESS(HttpStatus.OK.value(), "게임 포지션 삭제 성공"),
     ADD_GAME_SERVER_SUCCESS(HttpStatus.OK.value(), "게임 서버 생성 성공"),
-    DELETE_GAME_SERVER_SUCCESS(HttpStatus.OK.value(),"게임 서버 삭제 성공");
+    DELETE_GAME_SERVER_SUCCESS(HttpStatus.OK.value(), "게임 서버 삭제 성공"),
+    ADD_GAME_TIER_SUCCESS(HttpStatus.OK.value(), "게임 티어 생성 성공"),
+    DELETE_GAME_TIER_SUCCESS(HttpStatus.OK.value(), "게임 티어 삭제 성공");
+
 
     private final int code;
     private final String message;
