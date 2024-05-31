@@ -29,13 +29,14 @@ export default function page() {
       <div>
         <h2>카드</h2>
         <TeamBox className="w-[1100px]">
-          <TeamBox.TeamCardList>
+          <TeamBox.TeamCardList type="card">
             {Teams.map((team) => {
               const { ROOM_TYPE, TYPE_VALUE } = getRoomTypeInfo(team.isFinished)
 
               return (
                 <TeamBox.TeamCardItem
                   key={team.index}
+                  type="card"
                   isFinished={team.isFinished}
                   gameData={
                     <Badge value={team.gameName} type="game" size="small" />
@@ -90,13 +91,14 @@ export default function page() {
       <div>
         <h2>리스트</h2>
         <TeamBox className="w-[1100px]">
-          <TeamBox.TeamList>
+          <TeamBox.TeamCardList type="list">
             {Teams.map((team) => {
               const { ROOM_TYPE, TYPE_VALUE } = getRoomTypeInfo(team.isFinished)
 
               return (
-                <TeamBox.TeamItem
+                <TeamBox.TeamCardItem
                   key={team.index}
+                  type="list"
                   isFinished={team.isFinished}
                   gameData={
                     <Badge value={team.gameName} type="game" size="large" />
@@ -145,7 +147,7 @@ export default function page() {
                 />
               )
             })}
-          </TeamBox.TeamList>
+          </TeamBox.TeamCardList>
         </TeamBox>
       </div>
     </div>

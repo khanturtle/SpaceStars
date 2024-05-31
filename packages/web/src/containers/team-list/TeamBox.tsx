@@ -10,8 +10,17 @@ const TeamBox = ({
   return <section className={className}>{children}</section>
 }
 
-const TeamCardList = ({ children }: { children?: React.ReactNode }) => {
-  return <ul className={styles['team-card-container']}>{children}</ul>
+const TeamCardList = ({
+  children,
+  type = 'list',
+}: {
+  children?: React.ReactNode
+  type?: 'card' | 'list'
+}) => {
+  const className =
+    type === 'card' ? styles['card-container'] : styles['list-container']
+
+  return <ul className={className}>{children}</ul>
 }
 
 const TeamCardItem = ({
@@ -21,6 +30,7 @@ const TeamCardItem = ({
   users,
   title,
   joinButton,
+  type = 'list',
 }: {
   isFinished?: boolean
   gameData?: React.ReactNode
@@ -28,44 +38,25 @@ const TeamCardItem = ({
   users?: React.ReactNode
   title?: React.ReactNode
   joinButton?: React.ReactNode
+  type?: 'card' | 'list'
 }) => {
   const TYPE = isFinished ? 'finished' : 'ongoing'
+  const isCardVariant = type === 'card'
 
-  return (
-    <li className={`${styles['card-list']} ${styles[TYPE]}`}>
-      <div className="relative flex flex-row items-center w-full">
-        <div className="flex gap-[5px]">
-          {gameData}
-          {roomType}
+  if (isCardVariant)
+    return (
+      <li className={`${styles.card} ${styles[TYPE]}`}>
+        <div className="relative flex flex-row items-center w-full">
+          <div className="flex gap-[5px]">
+            {gameData}
+            {roomType}
+          </div>
+          {users}
         </div>
-        {users}
-      </div>
-      {title}
-      <div>{joinButton}</div>
-    </li>
-  )
-}
-
-const TeamList = ({ children }: { children: React.ReactNode }) => {
-  return <ul className={styles['list-container']}>{children}</ul>
-}
-const TeamItem = ({
-  isFinished,
-  gameData,
-  roomType,
-  users,
-  title,
-  joinButton,
-}: {
-  isFinished?: boolean
-  gameData?: React.ReactNode
-  roomType?: React.ReactNode
-  users?: React.ReactNode
-  title?: React.ReactNode
-  joinButton?: React.ReactNode
-}) => {
-  const TYPE = isFinished ? 'finished' : 'ongoing'
-
+        {title}
+        <div>{joinButton}</div>
+      </li>
+    )
   return (
     <li className={`${styles.list} ${styles[TYPE]}`}>
       <div className="w-[380px]">{title}</div>
@@ -84,7 +75,5 @@ const TeamItem = ({
 
 TeamBox.TeamCardList = TeamCardList
 TeamBox.TeamCardItem = TeamCardItem
-TeamBox.TeamList = TeamList
-TeamBox.TeamItem = TeamItem
 
 export default TeamBox
