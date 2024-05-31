@@ -46,11 +46,14 @@ dependencies {
 	// modelMapper
 	implementation 'org.modelmapper:modelmapper:3.0.0'
 
+	//config
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
 	//eureka-client
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
-	//swagger
-	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
+}
+ext {
+	set('springCloudVersion', "2022.0.5")
 }
 
 dependencyManagement {

@@ -1,17 +1,15 @@
 package com.spacestar.back.gamegenre.controller;
 
-import com.spacestar.back.game.vo.res.GameResVo;
-import com.spacestar.back.gamedetails.vo.res.GamePositionResVo;
+import com.spacestar.back.gamegenre.dto.req.GameGenreReqDto;
 import com.spacestar.back.gamegenre.dto.res.GameGenreResDto;
 import com.spacestar.back.gamegenre.service.GameGenreService;
+import com.spacestar.back.gamegenre.vo.req.GameGenreReqVo;
 import com.spacestar.back.gamegenre.vo.res.GameGenreResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +29,17 @@ public class GameGenreController {
 
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_GENRE_SUCCESS,gameGenreResVos);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addGameGenre(@RequestBody GameGenreReqVo gameGenreReqVo){
+        gameGenreService.addGameGenre(modelMapper.map(gameGenreReqVo, GameGenreReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.GAME_GENRE_ADD_SUCCESS,null);
+    }
+
+    @DeleteMapping("/{gameGenreId}")
+    public ResponseEntity<Void> deleteGameGenre(@PathVariable Long gameGenreId){
+        gameGenreService.deleteGameGenre(gameGenreId);
+        return new ResponseEntity<>(ResponseSuccess.GAME_GENRE_DELETE_SUCCESS,null);
     }
 }
