@@ -23,16 +23,11 @@ public class MemberJoinReqDto {
     private GenderType gender;
     private boolean infoAgree;
 
-    @Setter
-    private String uuid;
-    @Setter
-    private Long memberId;
 
-
-    public static Member toEntity(MemberJoinReqDto memberJoinReqDto) {
+    public static Member toEntity(String uuid, MemberJoinReqDto memberJoinReqDto) {
 
         return Member.builder()
-                .uuid(memberJoinReqDto.getUuid())
+                .uuid(uuid)
                 .email(memberJoinReqDto.getEmail())
                 .birth(memberJoinReqDto.getBirth())
                 .gender(memberJoinReqDto.getGender())
@@ -41,12 +36,12 @@ public class MemberJoinReqDto {
                 .build();
     }
 
-    public static Member updateEntity(MemberJoinReqDto memberJoinReqDto) {
+    public static Member updateEntity(String uuid, Long id, String email,MemberJoinReqDto memberJoinReqDto) {
 
         return Member.builder()
-                .id(memberJoinReqDto.getMemberId())
-                .uuid(memberJoinReqDto.getUuid())
-                .email(memberJoinReqDto.getEmail())
+                .id(id)
+                .uuid(uuid)
+                .email(email)
                 .birth(memberJoinReqDto.getBirth())
                 .gender(memberJoinReqDto.getGender())
                 .unregister(UnregisterType.MEMBER)
