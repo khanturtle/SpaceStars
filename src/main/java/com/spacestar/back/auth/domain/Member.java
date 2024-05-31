@@ -28,10 +28,8 @@ public class Member extends GlobalTime {
     @Column(length = 50)
     private String email;
 
-    @NotNull
     private LocalDate birth;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
