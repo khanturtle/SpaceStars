@@ -7,6 +7,7 @@ import com.spacestar.back.gamedetails.domain.GamePosition;
 import com.spacestar.back.gamedetails.domain.GameServer;
 import com.spacestar.back.gamedetails.domain.GameTier;
 import com.spacestar.back.gamedetails.dto.req.GameClassReqDto;
+import com.spacestar.back.gamedetails.dto.req.GamePositionReqDto;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
@@ -80,7 +81,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     public void addGameClass(Long gameId, GameClassReqDto gameClassReqDto) {
         Game game = gameRepository.getReferenceById(gameId);
         if (!game.isClass()) {
-            throw new GlobalException(ResponseStatus.TOKEN_NOT_VALID);
+            throw new GlobalException(ResponseStatus.GAME_CLASS_NOT_FOUND);
         }
         classRepository.save(GameClass.builder()
                 .game(game)
@@ -89,9 +90,31 @@ public class GameDetailsServiceImpl implements GameDetailsService {
                 .gameClassNameKor(gameClassReqDto.getGameClassNameKor())
                 .build());
     }
+
     @Transactional
     @Override
     public void deleteGameClass(Long classId) {
         classRepository.deleteById(classId);
+    }
+
+    @Transactional
+    @Override
+    public void addGamePosition(Long gameId, GamePositionReqDto gamePositionReqDto) {
+        Game game = gameRepository.getReferenceById(gameId);
+        if (!game.isPosition()) {
+            throw new GlobalException(ResponseStatus.GAME_POSITION_NOT_FOUND);
+        }
+        positionRepository.save(GamePosition.builder()
+                .game(game)
+                .gamePositionImage(gamePositionReqDto.getGamePositionImage())
+                .gamePositionName(gamePositionReqDto.getGamePositionName())
+                .gamePositionNameKor(gamePositionReqDto.getGamePositionNameKor())
+                .build());
+    }
+
+    @Transactional
+    @Override
+    public void deleteGamePosition(Long positionId) {
+        positionRepository.deleteById(positionId);
     }
 }

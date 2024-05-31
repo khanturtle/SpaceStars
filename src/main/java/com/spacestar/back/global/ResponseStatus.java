@@ -21,7 +21,8 @@ public enum ResponseStatus {
     GAME_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 게임 ID 입니다."),
     GAME_GENRE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 게임 장르 ID 입니다."),
 
-    GAME_CLASS_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "직업이 없는 게임 입니다.");
+    GAME_CLASS_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "직업이 없는 게임 입니다."),
+    GAME_POSITION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "포지션이 없는 게임 입니다.");
 
 
 

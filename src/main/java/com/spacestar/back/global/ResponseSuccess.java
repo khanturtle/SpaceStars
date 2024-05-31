@@ -27,7 +27,9 @@ public enum ResponseSuccess {
     GET_GAME_TIER_SUCCESS(HttpStatus.OK.value(), "게임 티어 조회 성공"),
 
     ADD_GAME_CLASS_SUCCESS(HttpStatus.CREATED.value(),"게임 직업 생성 성공" ),
-    DELETE_GAME_CLASS_SUCCESS(HttpStatus.OK.value(),"게임 직업 삭제 성공" );
+    DELETE_GAME_CLASS_SUCCESS(HttpStatus.OK.value(),"게임 직업 삭제 성공" ),
+    ADD_GAME_POSITION_SUCCESS(HttpStatus.CREATED.value(),"게임 포지션 생성 성공" ),
+    DELETE_GAME_POSITION_SUCCESS(HttpStatus.OK.value(),"게임 포지션 삭제 성공" );
 
 
     private final int code;
