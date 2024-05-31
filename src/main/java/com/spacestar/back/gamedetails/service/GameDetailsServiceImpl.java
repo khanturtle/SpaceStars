@@ -6,6 +6,7 @@ import com.spacestar.back.gamedetails.domain.GameClass;
 import com.spacestar.back.gamedetails.domain.GamePosition;
 import com.spacestar.back.gamedetails.domain.GameServer;
 import com.spacestar.back.gamedetails.domain.GameTier;
+import com.spacestar.back.gamedetails.dto.req.GameClassReqDto;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
@@ -18,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -38,7 +38,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
         Game game = gameRepository.getReferenceById(gameId);
         List<GameClass> gameClasses = classRepository.findByGame(game);
 
-        return  IntStream.range(0, gameClasses.size())
+        return IntStream.range(0, gameClasses.size())
                 .mapToObj(i -> GameClassResDto.toGameClassResDto(i, gameClasses.get(i)))
                 .collect(Collectors.toList());
     }
@@ -48,7 +48,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
         Game game = gameRepository.getReferenceById(gameId);
         List<GamePosition> gamePositions = positionRepository.findByGame(game);
 
-        return  IntStream.range(0, gamePositions.size())
+        return IntStream.range(0, gamePositions.size())
                 .mapToObj(i -> GamePositionResDto.toGamePositionResDto(i, gamePositions.get(i)))
                 .collect(Collectors.toList());
     }
@@ -58,7 +58,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
         Game game = gameRepository.getReferenceById(gameId);
         List<GameServer> gameServers = serverRepository.findByGame(game);
 
-        return  IntStream.range(0, gameServers.size())
+        return IntStream.range(0, gameServers.size())
                 .mapToObj(i -> GameServerResDto.toGameServerResDto(i, gameServers.get(i)))
                 .collect(Collectors.toList());
     }
@@ -71,5 +71,17 @@ public class GameDetailsServiceImpl implements GameDetailsService {
         return IntStream.range(0, gameTiers.size())
                 .mapToObj(i -> GameTierResDto.toGameTierResDto(i, gameTiers.get(i)))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public void addGameClass(Long gameId, GameClassReqDto gameClassReqDto) {
+        Game game = gameRepository.getReferenceById(gameId);
+        classRepository.save(GameClass.builder()
+                .game(game)
+                .gameClassImage(gameClassReqDto.getGameClassImage())
+                .gameClassName(gameClassReqDto.getGameClassName())
+                .gameClassNameKor(gameClassReqDto.getGameClassNameKor())
+                .build());
     }
 }
