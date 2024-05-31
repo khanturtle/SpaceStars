@@ -3,6 +3,8 @@
 const nextConfig = {
   experimental: {
     externalDir: true,
+    workerThreads: false,
+    cpus: 1,
   },
 }
 

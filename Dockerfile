@@ -41,6 +41,25 @@ COPY . .
 
 RUN yarn web build
 
+# 3단계: 실제 애플리케이션 이미지
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY --from=builder2 /app/packages/ui/package.json packages/ui/package.json
+COPY --from=builder2 /app/packages/web/package.json packages/web/package.json
+COPY --from=builder2 /app/.yarn .yarn
+COPY --from=builder2 /app/.yarnrc.yml .yarnrc.yml
+COPY --from=builder2 /app/yarn.lock yarn.lock
+COPY --from=builder2 /app/package.json package.json
+COPY --from=builder2 /app/.pnp.loader.mjs .pnp.loader.mjs
+
+COPY --from=builder2 /app/packages/web/.next packages/web/.next 
+COPY --from=builder2 /app/packages/web/public packages/web/public
+COPY --from=builder2 /app/packages/ui/dist packages/ui/dist
+
+RUN yarn install
+
 # 웹 서버를 위한 포트 열기
 EXPOSE 3000
 
