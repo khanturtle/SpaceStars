@@ -80,4 +80,10 @@ public class GameDetailsController {
 
         return new ResponseEntity<>(ResponseSuccess.ADD_GAME_CLASS_SUCCESS,null);
     }
+
+    @DeleteMapping("/class/{classId}")
+    public ResponseEntity<Void> deleteGameClass(@PathVariable Long classId){
+        gameDetailsService.deleteGameClass(classId);
+        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_CLASS_SUCCESS,null);
+    }
 }

@@ -15,6 +15,8 @@ import com.spacestar.back.gamedetails.repository.GameClassRepository;
 import com.spacestar.back.gamedetails.repository.GamePositionRepository;
 import com.spacestar.back.gamedetails.repository.GameServerRepository;
 import com.spacestar.back.gamedetails.repository.GameTierRepository;
+import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,11 +79,19 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     @Override
     public void addGameClass(Long gameId, GameClassReqDto gameClassReqDto) {
         Game game = gameRepository.getReferenceById(gameId);
+        if (!game.isClass()) {
+            throw new GlobalException(ResponseStatus.TOKEN_NOT_VALID);
+        }
         classRepository.save(GameClass.builder()
                 .game(game)
                 .gameClassImage(gameClassReqDto.getGameClassImage())
                 .gameClassName(gameClassReqDto.getGameClassName())
                 .gameClassNameKor(gameClassReqDto.getGameClassNameKor())
                 .build());
+    }
+    @Transactional
+    @Override
+    public void deleteGameClass(Long classId) {
+        classRepository.deleteById(classId);
     }
 }

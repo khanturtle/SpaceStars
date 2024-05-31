@@ -18,4 +18,6 @@ public interface GameDetailsService {
     List<GameTierResDto> getGameTier(Long gameId);
 
     void addGameClass(Long gameId, GameClassReqDto gameClassReqDto);
+
+    void deleteGameClass(Long classId);
 }
