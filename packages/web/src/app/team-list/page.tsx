@@ -12,15 +12,15 @@ import TeamBox from '@/containers/team-list/TeamBox'
 // TODO: 팀 리스트 받아오기
 
 type RoomType = {
-  ROOM_TYPE: 'closed' | 'open'
-  TYPE_VALUE: '모집완료' | '모집중'
+  roomType: 'closed' | 'open'
+  typeValue: '모집완료' | '모집중'
 }
 
 export default function page() {
   function getRoomTypeInfo(isFinished: boolean): RoomType {
     return {
-      ROOM_TYPE: isFinished ? 'closed' : 'open',
-      TYPE_VALUE: isFinished ? '모집완료' : '모집중',
+      roomType: isFinished ? 'closed' : 'open',
+      typeValue: isFinished ? '모집완료' : '모집중',
     }
   }
 
@@ -31,7 +31,7 @@ export default function page() {
         <TeamBox className="w-[1100px]">
           <TeamBox.TeamCardList type="card">
             {Teams.map((team) => {
-              const { ROOM_TYPE, TYPE_VALUE } = getRoomTypeInfo(team.isFinished)
+              const { roomType, typeValue } = getRoomTypeInfo(team.isFinished)
 
               return (
                 <TeamBox.TeamCardItem
@@ -43,8 +43,8 @@ export default function page() {
                   }
                   roomType={
                     <Badge
-                      value={`${TYPE_VALUE} ${team.memberCount}/${team.maxLimit}`}
-                      type={ROOM_TYPE}
+                      value={`${typeValue} ${team.memberCount}/${team.maxLimit}`}
+                      type={roomType}
                       size="small"
                     />
                   }
@@ -93,7 +93,7 @@ export default function page() {
         <TeamBox className="w-[1100px]">
           <TeamBox.TeamCardList type="list">
             {Teams.map((team) => {
-              const { ROOM_TYPE, TYPE_VALUE } = getRoomTypeInfo(team.isFinished)
+              const { roomType, typeValue } = getRoomTypeInfo(team.isFinished)
 
               return (
                 <TeamBox.TeamCardItem
@@ -105,8 +105,8 @@ export default function page() {
                   }
                   roomType={
                     <Badge
-                      value={`${TYPE_VALUE} ${team.memberCount}/${team.maxLimit}`}
-                      type={ROOM_TYPE}
+                      value={`${typeValue} ${team.memberCount}/${team.maxLimit}`}
+                      type={roomType}
                       size="large"
                     />
                   }
