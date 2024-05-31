@@ -34,6 +34,7 @@ public class AuthServiceImp implements AuthService{
 
         Optional<Member> memberInfo = memberRepository.findByEmail(memberJoinReqDto.getEmail());
         if (memberInfo.isPresent()){
+            memberJoinReqDto.setUuid(memberInfo.get().getUuid());
 
             //현재 가입한 회원
             if (memberInfo.get().getUnregister() == MEMBER){
@@ -45,30 +46,17 @@ public class AuthServiceImp implements AuthService{
             }
             //자발적 탈퇴 회원
             if (memberInfo.get().getUnregister() == DELETED){
-                memberRepository.save(MemberJoinReqDto.updateEntity(memberInfo.get(),memberJoinReqDto));
+                memberRepository.save(MemberJoinReqDto.updateEntity(memberJoinReqDto));
 
             }
         }
 
         else {
-            String uuid = UUID.randomUUID().toString();
-            memberRepository.save(MemberJoinReqDto.toEntity(uuid,memberJoinReqDto));
+            memberJoinReqDto.setUuid(UUID.randomUUID().toString());
+            memberJoinReqDto.setMemberId(memberInfo.get().getId());
+            memberRepository.save(MemberJoinReqDto.toEntity(memberJoinReqDto));
         }
     }
-
-//    @Override
-//    public NicknameResDto duplicationNickname(String nickname) {
-//        if (memberRepository.findByNickname(nickname).isPresent()){
-//            return NicknameResDto.builder()
-//                    .duplicated(true)
-//                    .message("닉네임이 중복되었습니다.")
-//                    .build();
-//        }
-//        return NicknameResDto.builder()
-//                .duplicated(false)
-//                .message("사용 가능한 닉네임입니다.")
-//                .build();
-//    }
 
     @Override
     public MemberLoginResDto kakaoLogin(MemberLoginReqDto memberLoginReqDto) {
@@ -91,4 +79,5 @@ public class AuthServiceImp implements AuthService{
                 .build();
 
     }
+
 }

@@ -3,10 +3,7 @@ package com.spacestar.back.auth.dto.req;
 import com.spacestar.back.auth.domain.Member;
 import com.spacestar.back.auth.enums.GenderType;
 import com.spacestar.back.auth.enums.UnregisterType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -26,11 +23,16 @@ public class MemberJoinReqDto {
     private GenderType gender;
     private boolean infoAgree;
 
+    @Setter
+    private String uuid;
+    @Setter
+    private Long memberId;
 
-    public static Member toEntity(String uuid,MemberJoinReqDto memberJoinReqDto) {
+
+    public static Member toEntity(MemberJoinReqDto memberJoinReqDto) {
 
         return Member.builder()
-                .uuid(uuid)
+                .uuid(memberJoinReqDto.getUuid())
                 .email(memberJoinReqDto.getEmail())
                 .birth(memberJoinReqDto.getBirth())
                 .gender(memberJoinReqDto.getGender())
@@ -39,10 +41,11 @@ public class MemberJoinReqDto {
                 .build();
     }
 
-    public static Member updateEntity(Member member, MemberJoinReqDto memberJoinReqDto) {
+    public static Member updateEntity(MemberJoinReqDto memberJoinReqDto) {
 
         return Member.builder()
-                .id(member.getId())
+                .id(memberJoinReqDto.getMemberId())
+                .uuid(memberJoinReqDto.getUuid())
                 .email(memberJoinReqDto.getEmail())
                 .birth(memberJoinReqDto.getBirth())
                 .gender(memberJoinReqDto.getGender())
@@ -50,4 +53,5 @@ public class MemberJoinReqDto {
                 .infoAgree(memberJoinReqDto.isInfoAgree())
                 .build();
     }
+
 }

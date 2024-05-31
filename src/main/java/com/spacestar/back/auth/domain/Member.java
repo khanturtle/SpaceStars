@@ -50,4 +50,5 @@ public class Member extends GlobalTime {
         this.unregister = unregister;
         this.infoAgree = infoAgree;
     }
+
 }

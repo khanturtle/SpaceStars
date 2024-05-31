@@ -8,8 +8,6 @@ import com.spacestar.back.auth.dto.res.NicknameResDto;
 public interface AuthService {
     void addMember(MemberJoinReqDto memberJoinReqDto);
 
-//    NicknameResDto duplicationNickname(String nickname);
-
     MemberLoginResDto kakaoLogin(MemberLoginReqDto memberLoginReqDto);
 
 }
