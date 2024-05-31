@@ -36,6 +36,7 @@
 }
 
 .avatar-image {
+  position: absolute;
   height: 100%;
   width: auto;
   aspect-ratio: 1;

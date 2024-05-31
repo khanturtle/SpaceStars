@@ -53,10 +53,10 @@ export default function AdditionalDetailsLayout({
     }
   }
 
+  //  FIXME: title 수정하기
   if (Number(step) === 1) {
     return (
       <FormLayout className={`${className} w-[335px]`}>
-        {/* FIXME: title 수정하기 */}
         <FormLayout.Legend
           title="SIGN UP?"
           description={`좋아하는 게임을\n 선택해주세요 (최대 3개)`}
