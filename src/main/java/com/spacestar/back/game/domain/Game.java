@@ -38,13 +38,13 @@ public class Game {
     @NotNull
     private boolean isServer;
 
-    @OneToMany(mappedBy = "gaeme", orphanRemoval = true)
+    @OneToMany(mappedBy = "game", orphanRemoval = true)
     private List<GameTier> gameTiers = new ArrayList<GameTier>();
-    @OneToMany(mappedBy = "gaeme", orphanRemoval = true)
+    @OneToMany(mappedBy = "game", orphanRemoval = true)
     private List<GamePosition> isPositions = new ArrayList<GamePosition>();
-    @OneToMany(mappedBy = "gaeme", orphanRemoval = true)
+    @OneToMany(mappedBy = "game", orphanRemoval = true)
     private List<GameClass> isClasses = new ArrayList<GameClass>();
-    @OneToMany(mappedBy = "gaeme", orphanRemoval = true)
+    @OneToMany(mappedBy = "game", orphanRemoval = true)
     private List<GameServer> gameServers = new ArrayList<GameServer>();
 
     @Builder
