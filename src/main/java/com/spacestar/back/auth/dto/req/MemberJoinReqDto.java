@@ -3,10 +3,7 @@ package com.spacestar.back.auth.dto.req;
 import com.spacestar.back.auth.domain.Member;
 import com.spacestar.back.auth.enums.GenderType;
 import com.spacestar.back.auth.enums.UnregisterType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -27,7 +24,7 @@ public class MemberJoinReqDto {
     private boolean infoAgree;
 
 
-    public static Member toEntity(String uuid,MemberJoinReqDto memberJoinReqDto) {
+    public static Member toEntity(String uuid, MemberJoinReqDto memberJoinReqDto) {
 
         return Member.builder()
                 .uuid(uuid)
@@ -39,15 +36,17 @@ public class MemberJoinReqDto {
                 .build();
     }
 
-    public static Member updateEntity(Member member, MemberJoinReqDto memberJoinReqDto) {
+    public static Member updateEntity(String uuid, Long id, String email,MemberJoinReqDto memberJoinReqDto) {
 
         return Member.builder()
-                .id(member.getId())
-                .email(memberJoinReqDto.getEmail())
+                .id(id)
+                .uuid(uuid)
+                .email(email)
                 .birth(memberJoinReqDto.getBirth())
                 .gender(memberJoinReqDto.getGender())
                 .unregister(UnregisterType.MEMBER)
                 .infoAgree(memberJoinReqDto.isInfoAgree())
                 .build();
     }
+
 }

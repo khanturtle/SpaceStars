@@ -32,9 +32,11 @@ public class Member extends GlobalTime {
     private LocalDate birth;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private GenderType gender;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private UnregisterType unregister;
 
     @NotNull
@@ -50,4 +52,5 @@ public class Member extends GlobalTime {
         this.unregister = unregister;
         this.infoAgree = infoAgree;
     }
+
 }

@@ -7,6 +7,7 @@ import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.service.AuthService;
 import com.spacestar.back.auth.vo.req.MemberJoinReqVo;
 import com.spacestar.back.auth.vo.req.MemberLoginReqVo;
+import com.spacestar.back.auth.vo.res.MemberLoginResVo;
 import com.spacestar.back.auth.vo.res.NicknameResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
@@ -38,18 +39,13 @@ public class AuthController {
         return new ResponseEntity<>(ResponseSuccess.SIGNUP_SUCCESS);
     }
 
-//    @Operation(summary = "닉네임 중복 검증")
-//    @GetMapping("/duplication/{nickname}")
-//    public ResponseEntity<NicknameResVo> duplicationNickname(@PathVariable("nickname") String nickname) {
-//        return new ResponseEntity<>(ResponseSuccess.DUPLICATION_NICKNAME_SUCCESS,mapper.map(authService.duplicationNickname(nickname), NicknameResVo.class));
-//    }
-
     @Operation(summary = "카카오 로그인")
     @PostMapping("/login")
-    public ResponseEntity<HttpHeaders> login(@RequestBody MemberLoginReqVo memberLoginReqVo){
+    public ResponseEntity<MemberLoginResVo> login(@RequestBody MemberLoginReqVo memberLoginReqVo) {
 
         MemberLoginResDto memberLoginResDto = authService.kakaoLogin(mapper.map(memberLoginReqVo, MemberLoginReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, mapper.map(memberLoginResDto, MemberLoginResVo.class));
     }
+
 
 }
