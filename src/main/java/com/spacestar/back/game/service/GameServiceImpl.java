@@ -1,6 +1,6 @@
 package com.spacestar.back.game.service;
 
-import com.spacestar.back.game.domain.Game;
+import com.spacestar.back.game.convertor.GameConvertor;
 import com.spacestar.back.game.dto.req.GameReqDto;
 import com.spacestar.back.game.dto.res.GameOptionResDto;
 import com.spacestar.back.game.dto.res.GameResDto;
@@ -39,22 +39,12 @@ private final GameGenreRepository gameGenreRepository;
         GameGenre gameGenre = gameGenreRepository.findById(gameGenreId).orElseThrow(
                 ()->new GlobalException(ResponseStatus.GAME_GENRE_NOT_FOUND)
         );
-        gameRepository.save(Game.builder()
-                .gameGenre(gameGenre)
-                .name(gameReqDto.getName())
-                .image(gameReqDto.getImage())
-                .nameKor(gameReqDto.getNameKor())
-                .isClass(gameReqDto.isClass())
-                .isPosition(gameReqDto.isPosition())
-                .isServer(gameReqDto.isServer())
-                .isTier(gameReqDto.isTier())
-                .build());
+        gameRepository.save(GameConvertor.toEntity(gameGenre,gameReqDto));
     }
 
     @Transactional
     @Override
     public void deleteGame(Long gameId) {
-
         gameRepository.deleteById(gameId);
     }
 }
