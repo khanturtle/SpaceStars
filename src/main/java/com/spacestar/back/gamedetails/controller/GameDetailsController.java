@@ -2,6 +2,7 @@ package com.spacestar.back.gamedetails.controller;
 
 import com.spacestar.back.gamedetails.dto.req.GamePositionReqDto;
 import com.spacestar.back.gamedetails.dto.req.GameClassReqDto;
+import com.spacestar.back.gamedetails.dto.req.GameServerReqDto;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
@@ -9,6 +10,7 @@ import com.spacestar.back.gamedetails.dto.res.GameTierResDto;
 import com.spacestar.back.gamedetails.service.GameDetailsService;
 import com.spacestar.back.gamedetails.vo.req.GameClassReqVo;
 import com.spacestar.back.gamedetails.vo.req.GamePositionReqVo;
+import com.spacestar.back.gamedetails.vo.req.GameServerReqVo;
 import com.spacestar.back.gamedetails.vo.res.GameTierResVo;
 import com.spacestar.back.gamedetails.vo.res.GameClassResVo;
 import com.spacestar.back.gamedetails.vo.res.GamePositionResVo;
@@ -102,5 +104,19 @@ public class GameDetailsController {
     public ResponseEntity<Void> deleteGamePosition(@PathVariable Long positionId) {
         gameDetailsService.deleteGamePosition(positionId);
         return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_POSITION_SUCCESS, null);
+    }
+
+    @PostMapping("/server/{gameId}")
+    public ResponseEntity<Void> addGameServer(@PathVariable Long gameId,
+                                                @RequestBody GameServerReqVo gameServerReqVo) {
+        gameDetailsService.addGameServer(gameId, modelMapper.map(gameServerReqVo, GameServerReqDto.class));
+
+        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_SERVER_SUCCESS, null);
+    }
+
+    @DeleteMapping("/server/{serverId}")
+    public ResponseEntity<Void> deleteGameServer(@PathVariable Long serverId) {
+        gameDetailsService.deleteGameServer(serverId);
+        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_SERVER_SUCCESS, null);
     }
 }

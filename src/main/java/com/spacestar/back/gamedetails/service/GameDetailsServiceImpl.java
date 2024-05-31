@@ -8,6 +8,7 @@ import com.spacestar.back.gamedetails.domain.GameServer;
 import com.spacestar.back.gamedetails.domain.GameTier;
 import com.spacestar.back.gamedetails.dto.req.GameClassReqDto;
 import com.spacestar.back.gamedetails.dto.req.GamePositionReqDto;
+import com.spacestar.back.gamedetails.dto.req.GameServerReqDto;
 import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
 import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
 import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
@@ -116,5 +117,26 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     @Override
     public void deleteGamePosition(Long positionId) {
         positionRepository.deleteById(positionId);
+    }
+
+    @Transactional
+    @Override
+    public void addGameServer(Long gameId, GameServerReqDto gameServerReqDto) {
+        Game game = gameRepository.getReferenceById(gameId);
+        if (!game.isServer()) {
+            throw new GlobalException(ResponseStatus.GAME_SERVER_NOT_FOUND);
+        }
+        serverRepository.save(GameServer.builder()
+                .game(game)
+                .gameServerImage(gameServerReqDto.getGameServerImage())
+                .gameServerName(gameServerReqDto.getGameServerName())
+                .gameServerNameKor(gameServerReqDto.getGameServerNameKor())
+                .build());
+    }
+
+    @Transactional
+    @Override
+    public void deleteGameServer(Long serverId) {
+        serverRepository.deleteById(serverId);
     }
 }
