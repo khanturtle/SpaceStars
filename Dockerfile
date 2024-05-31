@@ -1,5 +1,5 @@
 # 1단계: 빌더 이미지
-FROM node:18-alpine AS builder
+FROM node:18-alpine AS ui-builder
 
 WORKDIR /app
 
@@ -17,24 +17,22 @@ COPY . .
 
 RUN yarn ui build
 
-# 2단계: 
-FROM node:18-alpine AS builder2
+# 2단계: 실제 애플리케이션 이미지
+FROM node:18-alpine AS web-builder
 
 WORKDIR /app
 
 # 빌더 단계에서 필요한 파일만 복사
-COPY --from=builder /app/packages/ui/package.json packages/ui/package.json
-COPY --from=builder /app/packages/web/package.json packages/web/package.json
-COPY --from=builder /app/.yarn .yarn
-COPY --from=builder /app/.yarnrc.yml .yarnrc.yml
-COPY --from=builder /app/yarn.lock yarn.lock
-COPY --from=builder /app/package.json package.json
-COPY --from=builder /app/.pnp.loader.mjs .pnp.loader.mjsdocker
+COPY --from=ui-builder /app/packages/ui/package.json packages/ui/package.json
+COPY --from=ui-builder /app/packages/web/package.json packages/web/package.json
+COPY --from=ui-builder /app/.yarn .yarn
+COPY --from=ui-builder /app/.yarnrc.yml .yarnrc.yml
+COPY --from=ui-builder /app/package.json package.json
+COPY --from=ui-builder /app/.pnp.loader.mjs .pnp.loader.mjs
 
-COPY --from=builder /app/packages/ui/dist packages/ui/dist
+COPY --from=ui-builder /app/packages/ui/dist packages/ui/dist
 
 # 웹 패키지 빌드
-RUN yarn cache clean --all
 RUN yarn install
 
 COPY . . 
@@ -46,17 +44,17 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY --from=builder2 /app/packages/ui/package.json packages/ui/package.json
-COPY --from=builder2 /app/packages/web/package.json packages/web/package.json
-COPY --from=builder2 /app/.yarn .yarn
-COPY --from=builder2 /app/.yarnrc.yml .yarnrc.yml
-COPY --from=builder2 /app/yarn.lock yarn.lock
-COPY --from=builder2 /app/package.json package.json
-COPY --from=builder2 /app/.pnp.loader.mjs .pnp.loader.mjs
+COPY --from=web-builder /app/packages/ui/package.json packages/ui/package.json
+COPY --from=web-builder /app/packages/web/package.json packages/web/package.json
+COPY --from=web-builder /app/.yarn .yarn
+COPY --from=web-builder /app/.yarnrc.yml .yarnrc.yml
+COPY --from=web-builder /app/yarn.lock yarn.lock
+COPY --from=web-builder /app/package.json package.json
+COPY --from=web-builder /app/.pnp.loader.mjs .pnp.loader.mjs
 
-COPY --from=builder2 /app/packages/web/.next packages/web/.next 
-COPY --from=builder2 /app/packages/web/public packages/web/public
-COPY --from=builder2 /app/packages/ui/dist packages/ui/dist
+COPY --from=web-builder /app/packages/web/.next packages/web/.next 
+COPY --from=web-builder /app/packages/web/public packages/web/public
+COPY --from=web-builder /app/packages/ui/dist packages/ui/dist
 
 RUN yarn install
 
