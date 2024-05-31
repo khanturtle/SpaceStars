@@ -17,7 +17,13 @@ const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
     }
   }
 
-  return <KakaoButton label={typeLabel} onClick={() => handleClick(type)} />
+  return (
+    <KakaoButton
+      className="mb-[37px]"
+      label={typeLabel}
+      onClick={() => handleClick(type)}
+    />
+  )
 }
 
 export default Button
