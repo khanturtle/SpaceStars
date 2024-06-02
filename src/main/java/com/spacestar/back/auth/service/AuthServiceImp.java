@@ -84,7 +84,7 @@ public class AuthServiceImp implements AuthService {
         Member member = memberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
 
-        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(),uuid, memberInfoReqDto));
+        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(),uuid, member.getEmail(),memberInfoReqDto));
     }
 
 }

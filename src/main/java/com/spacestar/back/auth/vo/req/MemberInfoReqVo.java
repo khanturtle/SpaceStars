@@ -8,7 +8,6 @@ import java.time.LocalDate;
 @Getter
 public class MemberInfoReqVo {
 
-    private String email;
     private GenderType gender;
     private LocalDate birth;
     private boolean infoAgree;

@@ -16,17 +16,16 @@ import java.time.LocalDate;
 @Builder
 public class MemberInfoReqDto {
 
-    private String email;
     private GenderType gender;
     private LocalDate birth;
     private boolean infoAgree;
 
-    public static Member updateToEntity(Long id,String uuid, MemberInfoReqDto memberInfoReqDto) {
+    public static Member updateToEntity(Long id,String uuid, String email,MemberInfoReqDto memberInfoReqDto) {
 
         return Member.builder()
                 .id(id)
                 .uuid(uuid)
-                .email(memberInfoReqDto.getEmail())
+                .email(email)
                 .gender(memberInfoReqDto.getGender())
                 .birth(memberInfoReqDto.getBirth())
                 .unregister(UnregisterType.MEMBER)
