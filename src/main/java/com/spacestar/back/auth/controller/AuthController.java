@@ -50,7 +50,7 @@ public class AuthController {
     }
 
     @Operation(summary = "회원 정보 수정")
-    @PostMapping("/info/update")
+    @PutMapping("/info/update")
     public ResponseEntity<Void> updateMemberInfo(@RequestHeader("UUID") String uuid,
                                                  @RequestBody MemberInfoReqVo memberInfoReqVo){
 
