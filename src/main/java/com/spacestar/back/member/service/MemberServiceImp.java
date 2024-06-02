@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static com.spacestar.back.member.enums.UnregisterType.DELETED;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -202,6 +204,33 @@ public class MemberServiceImp implements MemberService{
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
 
         memberRepository.updateSwipe(uuid,memberSwipeResDto.isSwipe());
+    }
+
+    @Transactional
+    @Override
+    public void withdrawal(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        Member deleteMember = Member.deleteToEntity(member);
+        memberRepository.save(deleteMember);
+
+        //프로필 사진 삭제
+        profileImageRepository.deleteAllByMember(deleteMember);
+    }
+
+    @Override
+    public void withdrawalForce(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        Member deleteMember = Member.deleteForceToEntity(member);
+        memberRepository.save(deleteMember);
+
+        //프로필 사진 삭제
+        profileImageRepository.deleteAllByMember(deleteMember);
     }
 
 

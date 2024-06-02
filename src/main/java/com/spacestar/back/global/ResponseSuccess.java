@@ -22,7 +22,10 @@ public enum ResponseSuccess {
     CHATTING_PROFILE_SELECT_SUCCESS(200,"채팅 프로필 조회 성공" ),
     MATCHING_PROFILE_SELECT_SUCCESS(200,"매칭 프로필 조회 성공" ),
     SWIPE_RECOMMEND_SELECT_SUCCESS(200, "스와이프 추천 여부 조회 성공"),
-    SWIPE_RECOMMEND_UPDATE_SUCCESS(200, "스와이프 추천 여부 수정 성공");
+    SWIPE_RECOMMEND_UPDATE_SUCCESS(200, "스와이프 추천 여부 수정 성공"),
+
+    WITHDRAWAL_SUCCESS(200,"자발적 회원 탈퇴 성공" ),
+    WITHDRAWAL_FORCE_SUCCESS(200, "영구 탈퇴 성공");
 
 
     private final int code;

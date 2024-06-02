@@ -3,28 +3,22 @@ package com.spacestar.back.member.controller;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.member.dto.req.MemberInfoReqDto;
-import com.spacestar.back.member.dto.req.MemberJoinReqDto;
-import com.spacestar.back.member.dto.req.MemberLoginReqDto;
 import com.spacestar.back.member.dto.req.ProfileImageReqDto;
 import com.spacestar.back.member.dto.res.MemberSwipeResDto;
-import com.spacestar.back.member.jwt.JWTUtil;
 import com.spacestar.back.member.service.MemberService;
 import com.spacestar.back.member.vo.req.MemberInfoReqVo;
-import com.spacestar.back.member.vo.req.MemberJoinReqVo;
-import com.spacestar.back.member.vo.req.MemberLoginReqVo;
 import com.spacestar.back.member.vo.req.ProfileImageReqVo;
+
 import com.spacestar.back.member.vo.res.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpHeaders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 @Slf4j
@@ -115,5 +109,22 @@ public class MemberController {
 
         memberService.updateSwipeRecommend(uuid, mapper.map(memberSwipeResVo, MemberSwipeResDto.class));
         return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_UPDATE_SUCCESS);
+    }
+
+    @Operation(summary = "회원 탈퇴(자발적)")
+    @PatchMapping("/withdrawal")
+    public ResponseEntity<Void> withdrawal(@RequestHeader("UUID") String uuid){
+
+        memberService.withdrawal(uuid);
+        return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_SUCCESS);
+    }
+
+    @Transactional
+    @Operation(summary = "회원 탈퇴(영구 탈퇴)" )
+    @PatchMapping("/withdrawal/force")
+    public ResponseEntity<Void> withdrawalForce(@RequestHeader("UUID") String uuid){
+
+        memberService.withdrawalForce(uuid);
+        return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_FORCE_SUCCESS);
     }
 }

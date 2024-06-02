@@ -23,4 +23,8 @@ public interface MemberService {
     MemberSwipeResDto findSwipeRecommend(String uuid);
 
     void updateSwipeRecommend(String uuid, MemberSwipeResDto memberSwipeResDto);
+
+    void withdrawal(String uuid);
+
+    void withdrawalForce(String uuid);
 }

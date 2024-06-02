@@ -45,19 +45,33 @@ public class AuthServiceImp implements AuthService{
             if (memberInfo.get().getUnregister() == BLACKLIST){
                 throw new GlobalException(ResponseStatus.BLACKLIST_MEMBER);
             }
+            //자발적 탈퇴 회원
+            if (memberInfo.get().getUnregister() == DELETED){
+                Member member = Member.backToEntity(memberInfo.get(),memberJoinReqDto);
+                memberRepository.save(member);
+
+                ProfileImage profileImage = ProfileImage.builder()
+                        .member(member)
+                        .profileImageUrl(memberJoinReqDto.getImageUrl())
+                        .main(true)
+                        .idx(0)
+                        .build();
+            }
         }
 
-        Member member = Member.toEntity(memberJoinReqDto);
-        memberRepository.save(member);
+        else {
+            Member member = Member.toEntity(memberJoinReqDto);
+            memberRepository.save(member);
 
-        ProfileImage profileImage = ProfileImage.builder()
-                .member(member)
-                .profileImageUrl(memberJoinReqDto.getImageUrl())
-                .main(true)
-                .idx(0)
-                .build();
+            ProfileImage profileImage = ProfileImage.builder()
+                    .member(member)
+                    .profileImageUrl(memberJoinReqDto.getImageUrl())
+                    .main(true)
+                    .idx(0)
+                    .build();
 
-        profileImageRepository.save(profileImage);
+            profileImageRepository.save(profileImage);
+        }
     }
 
     @Override
