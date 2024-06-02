@@ -1,5 +1,6 @@
 package com.spacestar.back.auth.service;
 
+import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
@@ -10,4 +11,5 @@ public interface AuthService {
 
     MemberLoginResDto kakaoLogin(MemberLoginReqDto memberLoginReqDto);
 
+    void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto);
 }

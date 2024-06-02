@@ -1,10 +1,12 @@
 package com.spacestar.back.auth.controller;
 
+import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
 import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.service.AuthService;
+import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
 import com.spacestar.back.auth.vo.req.MemberJoinReqVo;
 import com.spacestar.back.auth.vo.req.MemberLoginReqVo;
 import com.spacestar.back.auth.vo.res.MemberLoginResVo;
@@ -47,5 +49,12 @@ public class AuthController {
         return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, mapper.map(memberLoginResDto, MemberLoginResVo.class));
     }
 
+    @Operation(summary = "회원 정보 수정")
+    @PostMapping("/info/update")
+    public ResponseEntity<Void> updateMemberInfo(@RequestHeader("UUID") String uuid,
+                                                 @RequestBody MemberInfoReqVo memberInfoReqVo){
 
+        authService.updateMemberInfo(uuid, mapper.map(memberInfoReqVo, MemberInfoReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
+    }
 }

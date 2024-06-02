@@ -1,6 +1,7 @@
 package com.spacestar.back.auth.service;
 
 import com.spacestar.back.auth.domain.Member;
+import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
@@ -22,13 +23,12 @@ import static com.spacestar.back.auth.enums.UnregisterType.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class AuthServiceImp implements AuthService {
 
     private final MemberRepository memberRepository;
     private final JWTUtil jwtUtil;
 
-    @Transactional
     @Override
     public void addMember(MemberJoinReqDto memberJoinReqDto) {
 
@@ -76,6 +76,15 @@ public class AuthServiceImp implements AuthService {
                 .uuid(member.getUuid())
                 .build();
 
+    }
+
+    @Override
+    public void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(),uuid, memberInfoReqDto));
     }
 
 }
