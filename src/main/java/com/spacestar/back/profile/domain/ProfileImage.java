@@ -6,8 +6,6 @@ import lombok.*;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileImage {
 
@@ -29,5 +27,12 @@ public class ProfileImage {
     @NotNull
     private int idx;
 
-
+    @Builder
+    public ProfileImage(Long id, Profile profile, String profileImageUrl, boolean main, int idx) {
+        this.id = id;
+        this.profile = profile;
+        this.profileImageUrl = profileImageUrl;
+        this.main = main;
+        this.idx = idx;
+    }
 }
