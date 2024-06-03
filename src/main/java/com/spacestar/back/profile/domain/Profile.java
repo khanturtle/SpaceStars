@@ -3,6 +3,8 @@ package com.spacestar.back.profile.domain;
 import com.spacestar.back.global.GlobalTime;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jdk.jshell.Snippet;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +21,6 @@ public class Profile extends GlobalTime {
     @Column(length = 100)
     private String uuid;
 
-    @NotNull
     @Column(length = 20)
     private String nickname;
 
@@ -30,11 +31,24 @@ public class Profile extends GlobalTime {
 
     private Long mbtiId;
 
-    @NotNull
     private Long exp;
 
-    private int reportCount;
+    private Integer reportCount;
 
-    private boolean swipe;
+    private Boolean swipe;
 
+    public Profile(String uuid) {
+        this.uuid = uuid;
+    }
+
+    @Builder
+    public Profile(Long id, String uuid, String nickname, String introduce, Long gamePreferenceId, Long mbtiId, Long exp, int reportCount, boolean swipe) {
+        this.id = id;
+        this.uuid = uuid;
+        this.nickname = nickname;
+        this.introduce = introduce;
+        this.gamePreferenceId = gamePreferenceId;
+        this.mbtiId = mbtiId;
+        this.swipe = swipe;
+    }
 }

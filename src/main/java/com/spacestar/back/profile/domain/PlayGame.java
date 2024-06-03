@@ -2,6 +2,7 @@ package com.spacestar.back.profile.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,4 +36,17 @@ public class PlayGame {
     @Column(length = 50)
     private String gameNickname;
 
+    @Builder
+
+    public PlayGame(Long id, Long gameId, Long tierId, Long positionId, Long classId, Long serverId, boolean main, String uuid, String gameNickname) {
+        this.id = id;
+        this.gameId = gameId;
+        this.tierId = tierId;
+        this.positionId = positionId;
+        this.classId = classId;
+        this.serverId = serverId;
+        this.main = main;
+        this.uuid = uuid;
+        this.gameNickname = gameNickname;
+    }
 }
