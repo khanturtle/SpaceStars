@@ -1,4 +1,4 @@
-package com.spacestar.back.chat.domain;
+package com.spacestar.back.chat.domain.collection;
 
 import com.spacestar.back.chat.enums.MessageType;
 import com.spacestar.back.global.GlobalCreateTime;
@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -23,12 +24,12 @@ public class ChatMessageCollection {
     private String roomNumber;
     private String senderUuid;
     private String content;
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
     @Builder
-    public ChatMessageCollection(String id, String roomNumber, String senderUuid, String content, LocalDateTime createdAt, MessageType messageType) {
+    public ChatMessageCollection(String id, String roomNumber, String senderUuid, String content, Instant createdAt, MessageType messageType) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.senderUuid = senderUuid;

@@ -4,13 +4,12 @@ package com.spacestar.back.chat.controller;
 import com.spacestar.back.chat.dto.MessageDto;
 import com.spacestar.back.chat.repository.ChatMessageMongoRepository;
 import com.spacestar.back.chat.service.ChatMessageService;
+import com.spacestar.back.chat.vo.res.MessageResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,13 +19,18 @@ import java.util.List;
 public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
+    private final ModelMapper mapper;
 
-    @RequestMapping("/chat/{roomNumber}")
-    public ResponseEntity<List<MessageDto>> getChatMessage(@PathVariable String roomNumber) {
+    @GetMapping("/chat/{roomNumber}")
+    public ResponseEntity<List<MessageResVo>> getChatMessage(@PathVariable String roomNumber) {
         List<MessageDto> chatMessageVos = chatMessageService.getChatMessage(roomNumber);
 
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS, chatMessageVos);
+        List<MessageResVo> messageResVos = chatMessageVos.stream()
+                .map(dto -> mapper.map(dto, MessageResVo.class))
+                .toList();
+        return new ResponseEntity<>(ResponseSuccess.SUCCESS, messageResVos);
     }
+
 
 
 }

@@ -1,6 +1,6 @@
 package com.spacestar.back.chat.dto;
 
-import com.spacestar.back.chat.domain.ChatMessageCollection;
+import com.spacestar.back.chat.domain.collection.ChatMessageCollection;
 import com.spacestar.back.chat.enums.MessageType;
 import com.spacestar.back.chat.vo.req.ChatMessageReqVo;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,9 +21,9 @@ public class MessageDto {
     String senderUuid;
     String content;
     MessageType messageType;
-    LocalDateTime createdAt;
+    Instant createdAt;
 
-    public static MessageDto chatMessageReqVoToDto(ChatMessageReqVo chatMessageReqVo, String roomNumber, LocalDateTime createdAt){
+    public static MessageDto chatMessageReqVoToDto(ChatMessageReqVo chatMessageReqVo, String roomNumber, Instant createdAt){
         return MessageDto.builder()
                 .roomNumber(roomNumber)
                 .senderUuid(chatMessageReqVo.getSenderUuid())
@@ -38,7 +39,7 @@ public class MessageDto {
                 .senderUuid(messageDto.getSenderUuid())
                 .content(messageDto.getContent())
                 .messageType(messageDto.getMessageType())
-                .createdAt(messageDto.getCreatedAt().plusHours(9))
+                .createdAt(messageDto.getCreatedAt())
                 .build();
     }
 
@@ -48,7 +49,7 @@ public class MessageDto {
                 .senderUuid(chatMessageCollection.getSenderUuid())
                 .content(chatMessageCollection.getContent())
                 .messageType(chatMessageCollection.getMessageType())
-                .createdAt(chatMessageCollection.getCreatedAt().minusHours(9))
+                .createdAt(chatMessageCollection.getCreatedAt())
                 .build();
     }
 
