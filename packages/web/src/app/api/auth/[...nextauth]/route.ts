@@ -40,21 +40,32 @@ const handler = NextAuth({
         // throw new Error('UserSignUpRequired')
 
         const queryParams = new URLSearchParams(kakaoProfile)
-
         return `/additional-info?${queryParams}`
       }
-      return response
-    },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      // JWT에 카카오 프로필 데이터를 저장
-      if (account?.provider === 'kakao') {
-        token.kakaoProfile = account.kakaoProfile
+
+      if (account) {
+        account.apiResult = response.result
+        // console.log(account)
       }
+      // account.apiResult = response.result
+      return true
+    },
+    async jwt({ token, account }) {
+      // token.kakaoProfile = account.kakaoProfile
+      // console.log('token: ', token, account)
+      if (account?.apiResult) {
+        token.apiResult = account.apiResult
+      }
+      // console.log('token', token)
       return token
     },
-    async session({ session, token, user }) {
-      // 세션에 카카오 프로필 데이터를 추가
-      session.user = token.kakaoProfile
+
+    async session({ session, token }) {
+      if (!session.user.apiResult) {
+        session.user = token
+      }
+      // console.log('session', session)
+      // console.log('session22', token)
       return session
     },
   },

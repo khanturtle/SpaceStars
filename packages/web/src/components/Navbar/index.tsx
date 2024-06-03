@@ -2,10 +2,14 @@
 
 import { useRouter } from 'next/navigation'
 
+import { useSession } from 'next-auth/react'
+
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
   const router = useRouter()
+  const { data: session, status } = useSession()
+  console.log(session, status)
 
   return (
     <nav className={styles.nav}>

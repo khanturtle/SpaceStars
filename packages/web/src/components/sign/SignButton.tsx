@@ -52,7 +52,7 @@ const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
     // 카카오 로그인/회원가입 API 호출
     signIn('kakao', {
       redirect: true,
-      // callbackUrl: '/',
+      callbackUrl: '/',
     })
   }
 
