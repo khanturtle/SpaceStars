@@ -6,15 +6,12 @@ import { getServerSession } from 'next-auth'
 import Navbar from '@/components/Navbar'
 
 async function test() {
-  // const csrfToken = await getCsrfToken()
-  // console.log(csrfToken)
-
   const session = await getServerSession()
   console.log(session)
 }
 
 export default function Page() {
-  // test()
+  test()
 
   return (
     <>

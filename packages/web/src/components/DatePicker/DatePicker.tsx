@@ -4,6 +4,7 @@ import * as React from 'react'
 
 import { CalendarIcon } from '@packages/ui'
 import { format } from 'date-fns'
+import { ko } from 'date-fns/locale'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -15,28 +16,29 @@ import {
 import { cn } from '@/lib/utils'
 
 interface DatePickerCustomProps {
-  className?: string
   id: string
+  date?: Date
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
 }
 
-export default function DatePickerCustom({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  className,
+// TODO: UI 커스텀
+export default function CustomDatePicker({
   id,
+  date,
+  setDate,
 }: DatePickerCustomProps) {
-  const [date, setDate] = React.useState<Date>()
-
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
           className={cn(
-            'w-[280px] justify-start text-left font-normal',
+            'h-[60px] w-full justify-between text-left font-normal',
             !date && 'text-muted-foreground',
           )}
         >
-          {date ? format(date, 'PPP') : <span>Pick a date</span>}
+          {date ? format(date, 'yyyy-MM-dd') : <span>날짜 선택</span>}
+
           <div>
             <CalendarIcon />
           </div>
@@ -51,6 +53,7 @@ export default function DatePickerCustom({
           onSelect={setDate}
           initialFocus
           required
+          locale={ko}
         />
       </PopoverContent>
     </Popover>

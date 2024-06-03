@@ -9,37 +9,58 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    // async signIn({ user, profile }) {
-    //   // 회원이 아니면, 회원가입으로 이동
-    //   if (!profile) {
-    //     return '/additional-info'
-    //   }
-    //   return true
-    // },
-    // async redirect(url, baseUrl) {
-    //   return baseUrl
-    // },
-    async signIn({ user, account, profile }) {
-      // 로그인 성공 시 세션 커스터마이징
-      return true
+    async signIn({ profile, account }) {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: profile?.kakao_account.email,
+          }),
+        },
+      )
+      if (!res.ok) {
+        throw new Error('API Request Failed')
+      }
+
+      const response = await res.json()
+
+      // 회원이 아니면, 회원가입 페이지로 이동
+      if (response.code === 2005) {
+        const kakaoProfile = {
+          email: profile.kakao_account.email,
+          nickname: profile.kakao_account.profile.nickname,
+          profileImage: profile.kakao_account.profile.profile_image_url,
+        }
+
+        account.kakaoProfile = kakaoProfile
+        // throw new Error('UserSignUpRequired')
+
+        const queryParams = new URLSearchParams(kakaoProfile)
+
+        return `/additional-info?${queryParams}`
+      }
+      return response
     },
-    // async redirect({ url, baseUrl }) {
-    //   console.log('Redirect callback called:', { url, baseUrl })
-    //   if (typeof window !== 'undefined' && window.opener) {
-    //     console.log('Posting message to opener')
-    //     window.opener.postMessage({ type: 'kakao-login', url }, baseUrl)
-    //     window.close()
-    //     return baseUrl
-    //   }
-    //   return url
-    // },
-    // async session({ session, user }) {
-    //   // 세션 정보 커스터마이징
-    //   return session
-    // },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      // JWT에 카카오 프로필 데이터를 저장
+      if (account?.provider === 'kakao') {
+        token.kakaoProfile = account.kakaoProfile
+      }
+      return token
+    },
+    async session({ session, token, user }) {
+      // 세션에 카카오 프로필 데이터를 추가
+      session.user = token.kakaoProfile
+      return session
+    },
   },
   pages: {
-    // signIn: '/sign-in',
+    signIn: '/sign-in',
+    error: '/auth-error',
   },
 })
 
