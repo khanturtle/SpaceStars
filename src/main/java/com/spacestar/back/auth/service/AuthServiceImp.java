@@ -5,6 +5,7 @@ import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
 import com.spacestar.back.auth.dto.res.NicknameResDto;
+import com.spacestar.back.auth.enums.UnregisterType;
 import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.repository.MemberRepository;
 import com.spacestar.back.global.GlobalException;
@@ -22,13 +23,12 @@ import static com.spacestar.back.auth.enums.UnregisterType.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class AuthServiceImp implements AuthService {
 
     private final MemberRepository memberRepository;
     private final JWTUtil jwtUtil;
 
-    @Transactional
     @Override
     public void addMember(MemberJoinReqDto memberJoinReqDto) {
 
@@ -82,6 +82,40 @@ public class AuthServiceImp implements AuthService {
                 .updatedAt(member.getUpdatedAt())
                 .build();
 
+    }
+
+    @Override
+    public void withdrawal(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        memberRepository.save( Member.builder()
+                .id(member.getId())
+                .uuid(member.getUuid())
+                .email(member.getEmail())
+                .birth(null)
+                .gender(null)
+                .unregister(UnregisterType.DELETED)
+                .infoAgree(false)
+                .build());
+    }
+
+    @Override
+    public void withdrawalForce(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        memberRepository.save(Member.builder()
+                .id(member.getId())
+                .uuid(member.getUuid())
+                .email(member.getEmail())
+                .birth(null)
+                .gender(null)
+                .unregister(UnregisterType.BLACKLIST)
+                .infoAgree(false)
+                .build());
     }
 
 }

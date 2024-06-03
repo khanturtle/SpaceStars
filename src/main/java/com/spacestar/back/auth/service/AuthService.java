@@ -10,4 +10,7 @@ public interface AuthService {
 
     MemberLoginResDto kakaoLogin(MemberLoginReqDto memberLoginReqDto);
 
+    void withdrawal(String uuid);
+
+    void withdrawalForce(String uuid);
 }
