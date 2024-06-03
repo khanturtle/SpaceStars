@@ -27,7 +27,7 @@ public class ChatRoomController {
     }
 
     // 본인이 참여한 (1:1) 채팅방 목록 조회
-    @GetMapping
+    @GetMapping("/chatroom")
     public ResponseEntity<List<ChatRoomResVo>> getChatRoomList(@RequestHeader String uuid) {
         List<ChatRoomDto> ChatRoomDtoList = chatRoomService.getChatRoomList(uuid);
         List<ChatRoomResVo> chatRoomResVos = ChatRoomDtoList.stream()
