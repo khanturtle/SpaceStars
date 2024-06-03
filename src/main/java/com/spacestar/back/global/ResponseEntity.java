@@ -10,8 +10,8 @@ public record ResponseEntity<T>( String message, int code, T result) {
     }
 
     // 요청에 성공한 경우 -> return 객체가 필요 없는 경우
-    public ResponseEntity() {
-        this( ResponseStatus.SUCCESS.getMessage(), ResponseStatus.SUCCESS.getCode(), null);
+    public ResponseEntity(ResponseSuccess success) {
+        this( success.getMessage(), success.getCode(), null);
     }
 
     // 요청 실패한 경우

@@ -85,13 +85,13 @@ public class GameDetailsController {
                                              @RequestBody GameClassReqVo gameClassReqVo) {
         gameDetailsService.addGameClass(gameId, modelMapper.map(gameClassReqVo, GameClassReqDto.class));
 
-        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_CLASS_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_CLASS_SUCCESS);
     }
 
     @DeleteMapping("/class/{classId}")
     public ResponseEntity<Void> deleteGameClass(@PathVariable Long classId) {
         gameDetailsService.deleteGameClass(classId);
-        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_CLASS_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_CLASS_SUCCESS);
     }
 
     @PostMapping("/position/{gameId}")
@@ -99,13 +99,13 @@ public class GameDetailsController {
                                                 @RequestBody GamePositionReqVo gamePositionReqVo) {
         gameDetailsService.addGamePosition(gameId, modelMapper.map(gamePositionReqVo, GamePositionReqDto.class));
 
-        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_POSITION_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_POSITION_SUCCESS);
     }
 
     @DeleteMapping("/position/{positionId}")
     public ResponseEntity<Void> deleteGamePosition(@PathVariable Long positionId) {
         gameDetailsService.deleteGamePosition(positionId);
-        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_POSITION_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_POSITION_SUCCESS);
     }
 
     @PostMapping("/server/{gameId}")
@@ -113,13 +113,13 @@ public class GameDetailsController {
                                                 @RequestBody GameServerReqVo gameServerReqVo) {
         gameDetailsService.addGameServer(gameId, modelMapper.map(gameServerReqVo, GameServerReqDto.class));
 
-        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_SERVER_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_SERVER_SUCCESS);
     }
 
     @DeleteMapping("/server/{serverId}")
     public ResponseEntity<Void> deleteGameServer(@PathVariable Long serverId) {
         gameDetailsService.deleteGameServer(serverId);
-        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_SERVER_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_SERVER_SUCCESS);
     }
 
     @PostMapping("/tier/{gameId}")
@@ -127,12 +127,12 @@ public class GameDetailsController {
                                               @RequestBody GameTierReqVo gameTierReqVo) {
         gameDetailsService.addGameTier(gameId, modelMapper.map(gameTierReqVo, GameTierReqDto.class));
 
-        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_TIER_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.ADD_GAME_TIER_SUCCESS);
     }
 
     @DeleteMapping("/tier/{tierId}")
     public ResponseEntity<Void> deleteGameTier(@PathVariable Long tierId) {
         gameDetailsService.deleteGameTier(tierId);
-        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_TIER_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.DELETE_GAME_TIER_SUCCESS);
     }
 }
