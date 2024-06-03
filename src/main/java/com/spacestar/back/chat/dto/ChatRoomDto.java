@@ -17,4 +17,11 @@ public class ChatRoomDto {
                 .roomNumber(roomNumber)
                 .build();
     }
+
+    public static ChatRoomDto fromEntity(ChatRoom chatRoom){
+        return new ChatRoomDto(chatRoom.getRoomNumber());
+    }
+
+
+
 }
