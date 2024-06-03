@@ -86,7 +86,7 @@ export default function AdditionalInfoForm() {
   }
 
   return (
-    <form action={handleSubmit}>
+    <form action={createUser.bind()}>
       <div className={styles['form-wrapper']}>
         <Input
           id="email"
