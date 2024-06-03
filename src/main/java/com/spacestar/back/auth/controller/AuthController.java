@@ -47,5 +47,4 @@ public class AuthController {
         return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, mapper.map(memberLoginResDto, MemberLoginResVo.class));
     }
 
-
 }
