@@ -24,7 +24,6 @@ public class ProfileImage {
     @NotNull
     private boolean main;
 
-    @NotNull
     private int idx;
 
     @Builder
