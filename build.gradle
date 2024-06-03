@@ -51,6 +51,9 @@ dependencies {
 
 	//eureka-client
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+	//swagger
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
 }
 ext {
 	set('springCloudVersion', "2022.0.5")
