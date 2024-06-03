@@ -4,6 +4,7 @@ import com.spacestar.back.chat.domain.collection.ChatMessageCollection;
 import com.spacestar.back.chat.dto.MessageDto;
 import com.spacestar.back.chat.repository.ChatMessageMongoRepository;
 import com.spacestar.back.chat.vo.req.ChatMessageReqVo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,10 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ChatMessageServiceImp implements ChatMessageService{
 
     private final ChatMessageMongoRepository chatMessageRepository;
-    @Autowired
-    public ChatMessageServiceImp(ChatMessageMongoRepository chatMessageRepository) {
-        this.chatMessageRepository = chatMessageRepository;
-    }
 
 
     @Override
