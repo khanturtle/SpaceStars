@@ -15,8 +15,11 @@ public class GamePosition {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private Game game;
+    @Column(length = 20)
     private String gamePositionName;
+    @Column(length = 20)
     private String gamePositionNameKor;
+    @Column(length = 255)
     private String gamePositionImage;
 
     @Builder
