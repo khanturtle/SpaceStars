@@ -16,7 +16,8 @@ public enum ResponseSuccess {
     SWIPE_RECOMMEND_SELECT_SUCCESS(200, "스와이프 추천 여부 조회 성공"),
     SWIPE_RECOMMEND_UPDATE_SUCCESS(200, "스와이프 추천 여부 수정 성공"),
     PROFILE_INFO_SELECT_SUCCESS(200, "프로필 정보 조회 성공"),
-    PROFILE_LIKED_GAME_SELECT_SUCCESS(200, "좋아하는 게임 조회 성공");
+    PROFILE_LIKED_GAME_SELECT_SUCCESS(200, "좋아하는 게임 조회 성공"),
+    PROFILE_PLAY_GAME_SELECT_SUCCESS(200, "내가 하는 게임 조회 성공" );
 
 
 

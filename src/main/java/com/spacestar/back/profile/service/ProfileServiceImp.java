@@ -8,6 +8,7 @@ import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
 import com.spacestar.back.profile.dto.req.ProfilePlayGameInfoReqDto;
 import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
 import com.spacestar.back.profile.dto.res.ProfileLikedGameResDto;
+import com.spacestar.back.profile.dto.res.ProfilePlayGameInfoResDto;
 import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
 import com.spacestar.back.profile.repository.ProfileRepository;
@@ -106,5 +107,19 @@ public class ProfileServiceImp implements ProfileService {
             return ProfileLikedGameResDto.builder()
                     .likedGameIdList(likedGameIdList)
                     .build();
+    }
+
+    @Override
+    public List<ProfilePlayGameInfoResDto> getPlayGame(String uuid) {
+
+        List<PlayGame> playGameIds = playGameRepository.findAllByUuid(uuid);
+        List<ProfilePlayGameInfoResDto> profilePlayGameInfoResDtoList = new ArrayList<>();
+
+        int index = 0;
+        for (PlayGame playGame : playGameIds){
+            profilePlayGameInfoResDtoList.add(ProfilePlayGameInfoResDto.toDto(playGame,index));
+            index++;
+        }
+        return profilePlayGameInfoResDtoList;
     }
 }

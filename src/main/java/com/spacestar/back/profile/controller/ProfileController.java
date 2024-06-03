@@ -3,17 +3,19 @@ package com.spacestar.back.profile.controller;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
-import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
 import com.spacestar.back.profile.service.ProfileService;
 import com.spacestar.back.profile.vo.res.ProfileInfoResVo;
 import com.spacestar.back.profile.vo.req.ProfileInfoReqVo;
 import com.spacestar.back.profile.vo.res.ProfileLikedGameResVo;
+import com.spacestar.back.profile.vo.res.ProfilePlayGameInfoResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -48,6 +50,16 @@ public class ProfileController {
 
         return new ResponseEntity<>(ResponseSuccess.PROFILE_LIKED_GAME_SELECT_SUCCESS,
                 mapper.map(profileService.getLikedGame(uuid), ProfileLikedGameResVo.class));
+    }
+
+    @Operation(summary = "플레이한 게임 조회")
+    @GetMapping("/play-game")
+    public ResponseEntity<List<ProfilePlayGameInfoResVo>> getPlayGame(@RequestHeader("UUID") String uuid) {
+
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_PLAY_GAME_SELECT_SUCCESS,
+                profileService.getPlayGame(uuid).stream()
+                        .map(playGame -> mapper.map(playGame, ProfilePlayGameInfoResVo.class))
+                        .toList());
     }
 
 }
