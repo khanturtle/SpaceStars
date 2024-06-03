@@ -1,19 +1,32 @@
 declare module 'next-auth' {
   interface Session {
-    user: {
+    user?: {
       kakaoProfile?: {
-        email?: string
-        nickname?: string
-        profileImage?: string
-      } & DefaultSession['user']
+        email: string
+        nickname: string
+        profileImage: string
+      }
+      apiResult?: unknown
     }
   }
 
-  interface JWT {
-    kakaoProfile?: {
-      email?: string
-      nickname?: string
-      profileImage?: string
+  interface User extends DefaultUser {
+    user?: {
+      kakaoProfile?: {
+        email: string
+        nickname: string
+        profileImage: string
+      }
+      apiResult?: unknown
     }
   }
 }
+
+// declare module 'next-auth/jwt' {
+//   interface JWT {
+//     user: {
+//       apiResult?: unknown
+//       [key: string]: unknown
+//     }
+//   }
+// }

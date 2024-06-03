@@ -7,14 +7,20 @@ import Navbar from '@/components/Navbar'
 
 async function test() {
   const session = await getServerSession()
-  console.log(session)
+  // const session2 = await getSession
+  console.log('page', session)
+  console.log('===')
+  return session
 }
 
-export default function Page() {
-  test()
+export default async function Page() {
+  const session = await getServerSession()
+  console.log('page', session.user)
 
   return (
     <>
+      {session?.user.name}
+
       <Navbar />
       <Button label="테ㅐ스ㅡㅌ" />
       <Input id="xptmxm" />

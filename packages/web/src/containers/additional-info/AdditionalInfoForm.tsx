@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
 
 import { Button, Checkbox, Input, Select } from '@packages/ui'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 
 import createUser from '@/apis/createUser'
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
@@ -65,7 +65,7 @@ export default function AdditionalInfoForm() {
   const [birth, setBirth] = useState<Date | undefined>(new Date())
   const [isChecked, setIsChecked] = useState(false)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const formData = {
       email,
       nickname,
@@ -75,7 +75,14 @@ export default function AdditionalInfoForm() {
       infoAgree: isChecked,
     }
 
-    createUser(formData)
+    const success = await createUser(formData)
+
+    if (success) {
+      // 회원가입 성공 후 로그인
+      signIn('kakao', { redirect: true, callbackUrl: '/' })
+    } else {
+      // 에러 처리
+    }
   }
 
   return (
