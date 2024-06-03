@@ -15,13 +15,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/message")
+@RequestMapping("/api/v1/chat")
 public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
     private final ModelMapper mapper;
 
-    @GetMapping("/chat/{roomNumber}")
+    @GetMapping("/message/{roomNumber}")
     public ResponseEntity<List<MessageResVo>> getChatMessage(@PathVariable String roomNumber) {
         List<MessageDto> chatMessageVos = chatMessageService.getChatMessage(roomNumber);
 

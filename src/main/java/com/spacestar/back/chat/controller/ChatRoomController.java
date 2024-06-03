@@ -13,14 +13,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/chatroom")
+@RequestMapping("/api/v1/chat")
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final ModelMapper mapper;
 
     // 1:1 채팅방 생성
-    @PostMapping("/add")
+    @PostMapping("/chatroom/add")
     public ResponseEntity<Void> addChatRoom(@RequestHeader String uuid, @RequestBody String receiverUuid) {
         chatRoomService.addChatRoom(uuid, receiverUuid);
         return new ResponseEntity<>(ResponseSuccess.CREATE_CHATROOM_SUCCESS);
@@ -37,7 +37,7 @@ public class ChatRoomController {
     }
 
     // 채팅방 상세 조회 ( 채팅방 정보 가져오기 )
-    @GetMapping("/{roomNumber}")
+    @GetMapping("/chatroom/{roomNumber}")
     public ResponseEntity<?> getChatRoomDetail(@PathVariable String roomNumber) {
 
         return null;
