@@ -7,6 +7,7 @@ import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
 import com.spacestar.back.profile.dto.req.ProfilePlayGameInfoReqDto;
 import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
+import com.spacestar.back.profile.dto.res.ProfileLikedGameResDto;
 import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
 import com.spacestar.back.profile.repository.ProfileRepository;
@@ -16,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spacestar.back.global.ResponseStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -86,5 +90,21 @@ public class ProfileServiceImp implements ProfileService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
         return ProfileInfoResDto.toDto(profile);
+    }
+
+    //내가 좋아하는 게임 조회
+    @Override
+    public ProfileLikedGameResDto getLikedGame(String uuid) {
+
+            List<LikedGame> likedGameIds = likedGameRepository.findAllByUuid(uuid);
+            List<Long> likedGameIdList = new ArrayList<>();
+
+            for (LikedGame likedGame : likedGameIds){
+                likedGameIdList.add(likedGame.getGameId());
+            }
+
+            return ProfileLikedGameResDto.builder()
+                    .likedGameIdList(likedGameIdList)
+                    .build();
     }
 }

@@ -7,6 +7,7 @@ import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
 import com.spacestar.back.profile.service.ProfileService;
 import com.spacestar.back.profile.vo.res.ProfileInfoResVo;
 import com.spacestar.back.profile.vo.req.ProfileInfoReqVo;
+import com.spacestar.back.profile.vo.res.ProfileLikedGameResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,14 @@ public class ProfileController {
 
         return new ResponseEntity<>(ResponseSuccess.PROFILE_INFO_SELECT_SUCCESS,
                 mapper.map(profileService.getProfileInfo(uuid), ProfileInfoResVo.class));
+    }
+
+    @Operation(summary = "좋아하는 게임 조회")
+    @GetMapping("/liked-game")
+    public ResponseEntity<ProfileLikedGameResVo> getLikedGame(@RequestHeader("UUID") String uuid) {
+
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_LIKED_GAME_SELECT_SUCCESS,
+                mapper.map(profileService.getLikedGame(uuid), ProfileLikedGameResVo.class));
     }
 
 }

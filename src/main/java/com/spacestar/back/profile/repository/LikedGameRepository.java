@@ -7,10 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface LikedGameRepository extends JpaRepository<LikedGame, Long> {
 
     @Transactional
     @Modifying
     @Query("delete from LikedGame l where l.uuid = :uuid")
     void deleteAllByUuid(@Param("uuid") String uuid);
+
+    List<LikedGame> findAllByUuid(String uuid);
 }
