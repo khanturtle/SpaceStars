@@ -16,9 +16,12 @@ public class ChatMember extends GlobalTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
+
     private String memberUuid;
+
     @Enumerated(EnumType.STRING)
     private ParticpationType particpationType;
 

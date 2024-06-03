@@ -28,6 +28,7 @@ public class ChatMessageCollection {
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
+
     @Builder
     public ChatMessageCollection(String id, String roomNumber, String senderUuid, String content, Instant createdAt, MessageType messageType) {
         this.id = id;

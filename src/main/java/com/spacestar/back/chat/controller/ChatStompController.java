@@ -42,6 +42,9 @@ public class ChatStompController {
 
         // 구독한 사람들에게 전송
         messageTemplate.convertAndSend("/room/" + roomNumber, messageDto);
+
+
+
     }
 
 }
