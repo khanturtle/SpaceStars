@@ -1,18 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
-
 'use client'
 
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+
+import { ChangeEvent, useState } from 'react'
 
 import { Button, Checkbox, Input, Select } from '@packages/ui'
+import { useSession } from 'next-auth/react'
 
-import DatePickerCustom from '@/components/DatePicker/DatePicker'
+import createUser from '@/apis/createUser'
+import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
 
+// MALE,FEMALE,OTHER
 const genderOptions = [
-  { value: 'male', label: '남자' },
-  { value: 'female', label: '여자' },
+  { value: 'MALE', label: '남자' },
+  { value: 'FEMALE', label: '여자' },
+  { value: 'OTHER', label: '비공개' },
 ]
 
 /** 닉네임 중복검사 */
@@ -24,7 +27,7 @@ const NicknameInput = ({
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }) => {
   const handleClick = () => {
-    console.log('닉네임 중복 검사')
+    console.log('닉네임 중복 검사', value)
   }
 
   return (
@@ -50,18 +53,33 @@ const NicknameInput = ({
 }
 
 export default function AdditionalInfoForm() {
-  const [email] = useState('')
-  const [nickname, setNickname] = useState('')
+  const { data, status } = useSession()
+  console.log(data, status)
+
+  const query = useSearchParams()
+
+  const imageUrl = query.get('profileImage') || ''
+  const email = query.get('email') || ''
+  const [nickname, setNickname] = useState(query.get('nickname') || '')
   const [gender, setGender] = useState('')
-  const [birthday, setBirthday] = useState('')
+  const [birth, setBirth] = useState<Date | undefined>(new Date())
   const [isChecked, setIsChecked] = useState(false)
 
-  useEffect(() => {
-    console.log(gender, birthday, isChecked)
-  }, [gender, birthday, isChecked])
+  const handleSubmit = () => {
+    const formData = {
+      email,
+      nickname,
+      imageUrl,
+      gender,
+      birth: birth!.toISOString().slice(0, 10),
+      infoAgree: isChecked,
+    }
+
+    createUser(formData)
+  }
 
   return (
-    <form action="">
+    <form action={handleSubmit}>
       <div className={styles['form-wrapper']}>
         <Input
           id="email"
@@ -87,10 +105,7 @@ export default function AdditionalInfoForm() {
           onChange={(value: string) => setGender(value)}
         />
 
-        <DatePickerCustom
-          className={`z-10 ${styles['input-box']}`}
-          id="birthday"
-        />
+        <CustomDatePicker id="birth" date={birth} setDate={setBirth} />
 
         <Checkbox
           className={styles['input-check']}
