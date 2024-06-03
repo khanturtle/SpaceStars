@@ -1,6 +1,6 @@
 package com.spacestar.back.chat.service;
 
-import com.spacestar.back.chat.domain.ChatMessageCollection;
+import com.spacestar.back.chat.domain.collection.ChatMessageCollection;
 import com.spacestar.back.chat.dto.MessageDto;
 import com.spacestar.back.chat.repository.ChatMessageMongoRepository;
 import com.spacestar.back.chat.vo.req.ChatMessageReqVo;
@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,7 +33,9 @@ public class ChatMessageServiceImp implements ChatMessageService{
 
     @Override
     public MessageDto messageToDto(ChatMessageReqVo chatMessageReqVo, String roomNumber){
-        LocalDateTime createdAt = LocalDateTime.now();
+
+//        LocalDateTime createdAt = LocalDateTime.now();
+        Instant createdAt = Instant.now();
         return MessageDto.chatMessageReqVoToDto(chatMessageReqVo, roomNumber, createdAt);
     }
 

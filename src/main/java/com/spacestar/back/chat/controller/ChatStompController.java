@@ -34,6 +34,7 @@ public class ChatStompController {
         // VO -> DTO
         MessageDto messageDto = chatMessageService.messageToDto(chatMessageReqVo, roomNumber);
         log.info("messageDto: {}", messageDto.getCreatedAt());
+
         // 채팅 메시지 저장
         chatMessageService.addChatMessage(messageDto);
 

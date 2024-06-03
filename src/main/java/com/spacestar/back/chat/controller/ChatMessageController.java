@@ -7,10 +7,7 @@ import com.spacestar.back.chat.service.ChatMessageService;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,12 +18,13 @@ public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
 
-    @RequestMapping("/chat/{roomNumber}")
+    @GetMapping("/chat/{roomNumber}")
     public ResponseEntity<List<MessageDto>> getChatMessage(@PathVariable String roomNumber) {
         List<MessageDto> chatMessageVos = chatMessageService.getChatMessage(roomNumber);
 
         return new ResponseEntity<>(ResponseSuccess.SUCCESS, chatMessageVos);
     }
+
 
 
 }
