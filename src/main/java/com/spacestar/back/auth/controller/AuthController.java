@@ -47,6 +47,7 @@ public class AuthController {
         return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, mapper.map(memberLoginResDto, MemberLoginResVo.class));
     }
 
+
     @Operation(summary = "회원 탈퇴(자발적)")
     @PatchMapping("/withdrawal")
     public ResponseEntity<Void> withdrawal(@RequestHeader("UUID") String uuid){

@@ -74,6 +74,12 @@ public class AuthServiceImp implements AuthService {
         return MemberLoginResDto.builder()
                 .accessToken("Bearer " + jwtUtil.createJwt(member.getUuid(), "ROLE_USER", 3600000L))
                 .uuid(member.getUuid())
+                .email(member.getEmail())
+                .birth(member.getBirth())
+                .gender(member.getGender())
+                .infoAgree(member.isInfoAgree())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
                 .build();
 
     }
