@@ -3,7 +3,9 @@ package com.spacestar.back.profile.controller;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
+import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
 import com.spacestar.back.profile.service.ProfileService;
+import com.spacestar.back.profile.vo.res.ProfileInfoResVo;
 import com.spacestar.back.profile.vo.req.ProfileInfoReqVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,5 +33,12 @@ public class ProfileController {
         return new ResponseEntity<>(ResponseSuccess.PROFILE_INFO_UPDATE_SUCCESS);
     }
 
+    @Operation(summary = "프로필 정보 조회")
+    @GetMapping("/info")
+    public ResponseEntity<ProfileInfoResVo> getProfileInfo(@RequestHeader("UUID") String uuid) {
+
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_INFO_SELECT_SUCCESS,
+                mapper.map(profileService.getProfileInfo(uuid), ProfileInfoResVo.class));
+    }
 
 }

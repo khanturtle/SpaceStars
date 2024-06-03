@@ -6,6 +6,7 @@ import com.spacestar.back.profile.domain.PlayGame;
 import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
 import com.spacestar.back.profile.dto.req.ProfilePlayGameInfoReqDto;
+import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
 import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
 import com.spacestar.back.profile.repository.ProfileRepository;
@@ -26,6 +27,7 @@ public class ProfileServiceImp implements ProfileService {
     private final LikedGameRepository likedGameRepository;
     private final PlayGameRepository playGameRepository;
 
+    //프로필 정보 수정
     @Transactional
     @Override
     public void updateProfileInfo(String uuid, ProfileInfoReqDto profileInfoReqDto) {
@@ -74,5 +76,15 @@ public class ProfileServiceImp implements ProfileService {
                 }
             }
         }
+    }
+
+    //프로필 정보 조회
+    @Override
+    public ProfileInfoResDto getProfileInfo(String uuid) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        return ProfileInfoResDto.toDto(profile);
     }
 }

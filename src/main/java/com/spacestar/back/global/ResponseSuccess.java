@@ -14,7 +14,8 @@ public enum ResponseSuccess {
     PROFILE_IMAGE_SELECT_SUCCESS(200,"프로필 사진 조회 성공" ),
     MAIN_PROFILE_IMAGE_SELECT_SUCCESS(200,"메인 프로필 사진 조회 성공" ),
     SWIPE_RECOMMEND_SELECT_SUCCESS(200, "스와이프 추천 여부 조회 성공"),
-    SWIPE_RECOMMEND_UPDATE_SUCCESS(200, "스와이프 추천 여부 수정 성공");
+    SWIPE_RECOMMEND_UPDATE_SUCCESS(200, "스와이프 추천 여부 수정 성공"),
+    PROFILE_INFO_SELECT_SUCCESS(200, "프로필 정보 조회 성공");
 
 
 
