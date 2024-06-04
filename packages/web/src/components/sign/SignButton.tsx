@@ -1,13 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import { KakaoButton } from '@packages/ui'
 import { signIn } from 'next-auth/react'
 
 const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
   const typeLabel = type === 'sign-in' ? '카카오 로그인' : '카카오 회원가입'
-  const router = useRouter()
 
   // useEffect(() => {
   //   const handleMessage = async (event) => {
@@ -29,6 +26,7 @@ const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
   //   }
   // }, [])
 
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   function openKakaoPopup() {
     const clientId = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
     const redirectUri = `${window.location.origin}/api/auth/callback/kakao`
@@ -46,7 +44,7 @@ const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
     )
   }
 
-  const handleClick = (type: string) => {
+  const handleClick = () => {
     // openKakaoPopup()
 
     // 카카오 로그인/회원가입 API 호출
@@ -60,7 +58,7 @@ const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
     <KakaoButton
       className="mb-[37px]"
       label={typeLabel}
-      onClick={() => handleClick(type)}
+      onClick={() => handleClick()}
     />
   )
 }

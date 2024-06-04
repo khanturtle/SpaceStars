@@ -4263,6 +4263,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^20.14.1":
+  version: 20.14.1
+  resolution: "@types/node@npm:20.14.1"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10c0/12b7879047f50cc217bbea3add7c45e542070f6e9fb2092be97542152b7022512bcb2bf848d04f77e295c4c8699acd484e79a4a4dbe9bcfa4e89dd543d530611
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.4
   resolution: "@types/normalize-package-data@npm:2.4.4"
@@ -10051,6 +10060,7 @@ __metadata:
   resolution: "monorepo@workspace:."
   dependencies:
     "@next/eslint-plugin-next": "npm:^14.2.3"
+    "@types/node": "npm:^20.14.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.10.0"
     "@typescript-eslint/parser": "npm:^7.10.0"
     autoprefixer: "npm:^10.4.19"

@@ -1,3 +1,5 @@
+import { DefaultSession } from 'next-auth'
+
 declare module 'next-auth' {
   interface Session {
     user?: {
@@ -6,8 +8,8 @@ declare module 'next-auth' {
         nickname: string
         profileImage: string
       }
-      apiResult?: unknown
-    }
+      apiToken?: unknown
+    } & DefaultSession['user']
   }
 
   interface User extends DefaultUser {
@@ -17,16 +19,14 @@ declare module 'next-auth' {
         nickname: string
         profileImage: string
       }
-      apiResult?: unknown
+      apiToken?: unknown
     }
   }
-}
 
-// declare module 'next-auth/jwt' {
-//   interface JWT {
-//     user: {
-//       apiResult?: unknown
-//       [key: string]: unknown
-//     }
-//   }
-// }
+  // Profile 타입 확장
+  interface Profile {
+    kakao_account?: {
+      [key: string]: unknown
+    } & DefaultSession['profile']
+  }
+}

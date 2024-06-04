@@ -1,26 +1,18 @@
 import Link from 'next/link'
 
 import { ArrowIcon, Button, Input } from '@packages/ui'
-import { getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth/next'
+
+import { options } from './api/auth/[...nextauth]/options'
 
 import Navbar from '@/components/Navbar'
 
-async function test() {
-  const session = await getServerSession()
-  // const session2 = await getSession
-  console.log('page', session)
-  console.log('===')
-  return session
-}
-
 export default async function Page() {
-  const session = await getServerSession()
-  console.log('page', session.user)
+  const session = await getServerSession(options)
+  console.log('page', session)
 
   return (
     <>
-      {session?.user.name}
-
       <Navbar />
       <Button label="테ㅐ스ㅡㅌ" />
       <Input id="xptmxm" />

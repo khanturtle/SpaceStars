@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
 
 import { Button, Checkbox, Input, Select } from '@packages/ui'
-import { signIn, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 import createUser from '@/apis/createUser'
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
@@ -39,6 +39,7 @@ const NicknameInput = ({
         className={styles['input-box']}
         value={value}
         onChange={onChange}
+        name="nickname"
       />
       <Button
         label="중복검사"
@@ -58,6 +59,7 @@ export default function AdditionalInfoForm() {
 
   const query = useSearchParams()
 
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const imageUrl = query.get('profileImage') || ''
   const email = query.get('email') || ''
   const [nickname, setNickname] = useState(query.get('nickname') || '')
@@ -65,31 +67,49 @@ export default function AdditionalInfoForm() {
   const [birth, setBirth] = useState<Date | undefined>(new Date())
   const [isChecked, setIsChecked] = useState(false)
 
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const handleSubmit = async () => {
-    const formData = {
-      email,
-      nickname,
-      imageUrl,
-      gender,
-      birth: birth!.toISOString().slice(0, 10),
-      infoAgree: isChecked,
-    }
-
-    const success = await createUser(formData)
-
-    if (success) {
-      // 회원가입 성공 후 로그인
-      signIn('kakao', { redirect: true, callbackUrl: '/' })
-    } else {
-      // 에러 처리
-    }
+    // const formData = {
+    //   email,
+    //   nickname,
+    //   imageUrl,
+    //   gender,
+    //   birth: birth!.toISOString().slice(0, 10),
+    //   infoAgree: isChecked,
+    // }
+    // Client
+    // try {
+    //   const res = await fetch(
+    //     `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/join`,
+    //     {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify(formData),
+    //     },
+    //   )
+    //   if (res) {
+    //     signIn('kakao', { redirect: true, callbackUrl: '/' })
+    //   }
+    // } catch (error) {
+    //   console.error('Error:', error)
+    // }
+    // const success = await createUser()
+    // if (success) {
+    //   // 회원가입 성공 후 로그인
+    //   signIn('kakao', { redirect: true, callbackUrl: '/' })
+    // } else {
+    //   // 에러 처리
+    // }
   }
 
   return (
-    <form action={createUser.bind()}>
+    <form action={createUser}>
       <div className={styles['form-wrapper']}>
         <Input
           id="email"
+          name="email"
           label="이메일"
           disabled
           className={styles['input-box']}
@@ -126,6 +146,7 @@ export default function AdditionalInfoForm() {
       </div>
 
       <Button
+        formAction={createUser}
         type="submit"
         shape="oval"
         primary
