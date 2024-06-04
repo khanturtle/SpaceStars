@@ -28,6 +28,10 @@ public class Member extends GlobalTime {
     @Column(length = 50)
     private String email;
 
+    @NotNull
+    @Column(length = 50)
+    private String nickname;
+
     private LocalDate birth;
 
     @Enumerated(EnumType.STRING)
@@ -41,10 +45,11 @@ public class Member extends GlobalTime {
     private boolean infoAgree;
 
     @Builder
-    public Member(Long id, String uuid, String email, LocalDate birth, GenderType gender, UnregisterType unregister, boolean infoAgree) {
+    public Member(Long id, String uuid, String email, String nickname, LocalDate birth, GenderType gender, UnregisterType unregister, boolean infoAgree) {
         this.id = id;
         this.uuid = uuid;
         this.email = email;
+        this.nickname = nickname;
         this.birth = birth;
         this.gender = gender;
         this.unregister = unregister;

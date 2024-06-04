@@ -10,6 +10,7 @@ import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
 import com.spacestar.back.auth.vo.req.MemberJoinReqVo;
 import com.spacestar.back.auth.vo.req.MemberLoginReqVo;
 import com.spacestar.back.auth.vo.res.MemberLoginResVo;
+import com.spacestar.back.auth.vo.res.NicknameResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,4 +57,11 @@ public class AuthController {
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
     }
 
+    @Operation(summary = "닉네임 중복 확인")
+    @GetMapping("/nickname/{nickname}")
+    public ResponseEntity<NicknameResVo> checkNickname(@PathVariable String nickname) {
+
+        return new ResponseEntity<>(ResponseSuccess.NICKNAME_SUCCESS,
+                mapper.map(authService.checkNickname(nickname), NicknameResVo.class));
+    }
 }

@@ -12,6 +12,7 @@ public class MemberLoginResVo {
     private String accessToken;
     private String uuid;
     private String email;
+    private String nickname;
     private LocalDate birth;
     private GenderType gender;
     private boolean infoAgree;
