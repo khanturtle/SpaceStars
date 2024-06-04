@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Builder
 public class MemberInfoReqDto {
 
+    private String nickname;
     private GenderType gender;
     private LocalDate birth;
     private boolean infoAgree;
@@ -26,6 +27,7 @@ public class MemberInfoReqDto {
                 .id(id)
                 .uuid(uuid)
                 .email(email)
+                .nickname(memberInfoReqDto.getNickname())
                 .gender(memberInfoReqDto.getGender())
                 .birth(memberInfoReqDto.getBirth())
                 .unregister(UnregisterType.MEMBER)
