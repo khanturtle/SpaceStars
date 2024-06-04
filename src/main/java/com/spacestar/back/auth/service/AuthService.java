@@ -13,4 +13,5 @@ public interface AuthService {
 
     void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto);
 
+    NicknameResDto checkNickname(String nickname);
 }

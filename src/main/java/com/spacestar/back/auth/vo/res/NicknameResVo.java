@@ -5,7 +5,6 @@ import lombok.*;
 @Getter
 public class NicknameResVo {
 
-    private boolean duplicated;
-    private String message;
+    private boolean isExist;
 
 }

@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class NicknameResDto {
 
-    private boolean duplicated;
-    private String message;
+    private boolean isExist;
 }

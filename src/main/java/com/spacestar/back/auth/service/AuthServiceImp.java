@@ -76,6 +76,7 @@ public class AuthServiceImp implements AuthService {
                 .accessToken("Bearer " + jwtUtil.createJwt(member.getUuid(), "ROLE_USER", 3600000L))
                 .uuid(member.getUuid())
                 .email(member.getEmail())
+                .nickname(member.getNickname())
                 .birth(member.getBirth())
                 .gender(member.getGender())
                 .infoAgree(member.isInfoAgree())
@@ -93,6 +94,21 @@ public class AuthServiceImp implements AuthService {
         memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(), memberInfoReqDto));
     }
 
+    @Override
+    public NicknameResDto checkNickname(String nickname) {
+
+            Optional<Member> member = memberRepository.findByNickname(nickname);
+
+            if (member.isPresent()) {
+                return NicknameResDto.builder()
+                        .isExist(true)
+                        .build();
+            } else {
+                return NicknameResDto.builder()
+                        .isExist(false)
+                        .build();
+            }
+    }
 
 
 }
