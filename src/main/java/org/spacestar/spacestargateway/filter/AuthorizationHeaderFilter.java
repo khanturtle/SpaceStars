@@ -15,6 +15,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -22,11 +23,12 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
 
-	@Autowired
-	private JwtUtil jwtUtil;
+	private final JwtUtil jwtUtil;
 
-	public AuthorizationHeaderFilter() {
+	public AuthorizationHeaderFilter(JwtUtil jwtUtil) {
+
 		super(Config.class);
+		this.jwtUtil = jwtUtil;
 	}
 
 	@Override

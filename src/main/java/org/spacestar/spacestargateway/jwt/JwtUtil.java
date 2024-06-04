@@ -3,6 +3,7 @@ package org.spacestar.spacestargateway.jwt;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class JwtUtil {
 
 	private final SecretKey secretKey;
 
+	@Autowired
 	public JwtUtil(@Value("${jwt.secret}") String secret){
 		this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
 	}
