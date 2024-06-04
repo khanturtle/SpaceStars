@@ -48,14 +48,6 @@ public class AuthController {
         return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, mapper.map(memberLoginResDto, MemberLoginResVo.class));
     }
 
-    @Operation(summary = "회원 정보 수정")
-    @PutMapping("/info/update")
-    public ResponseEntity<Void> updateMemberInfo(@RequestHeader("UUID") String uuid,
-                                                 @RequestBody MemberInfoReqVo memberInfoReqVo){
-
-        authService.updateMemberInfo(uuid, mapper.map(memberInfoReqVo, MemberInfoReqDto.class));
-        return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
-    }
 
     @Operation(summary = "닉네임 중복 확인")
     @GetMapping("/nickname/{nickname}")

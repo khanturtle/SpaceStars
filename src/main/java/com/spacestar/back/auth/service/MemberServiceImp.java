@@ -1,6 +1,7 @@
 package com.spacestar.back.auth.service;
 
 import com.spacestar.back.auth.domain.Member;
+import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.enums.UnregisterType;
 import com.spacestar.back.auth.repository.MemberRepository;
 import com.spacestar.back.global.GlobalException;
@@ -52,5 +53,14 @@ public class MemberServiceImp implements MemberService{
                 .unregister(UnregisterType.BLACKLIST)
                 .infoAgree(false)
                 .build());
+    }
+
+
+    @Override
+    public void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(), memberInfoReqDto));
     }
 }

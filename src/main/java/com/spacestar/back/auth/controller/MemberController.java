@@ -1,16 +1,16 @@
 package com.spacestar.back.auth.controller;
 
+import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.service.MemberService;
+import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ModelMapper mapper;
 
     @Operation(summary = "회원 탈퇴(자발적)")
     @PatchMapping("/withdrawal")
@@ -35,6 +36,16 @@ public class MemberController {
 
         memberService.withdrawalForce(uuid);
         return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_FORCE_SUCCESS);
+    }
+
+
+    @Operation(summary = "회원 정보 수정")
+    @PutMapping("/info/update")
+    public ResponseEntity<Void> updateMemberInfo(@RequestHeader("UUID") String uuid,
+                                                 @RequestBody MemberInfoReqVo memberInfoReqVo){
+
+        memberService.updateMemberInfo(uuid, mapper.map(memberInfoReqVo, MemberInfoReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
     }
 
 }

@@ -86,13 +86,6 @@ public class AuthServiceImp implements AuthService {
 
     }
 
-    @Override
-    public void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto) {
-
-        Member member = memberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
-        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(), memberInfoReqDto));
-    }
 
     @Override
     public NicknameResDto checkNickname(String nickname) {
