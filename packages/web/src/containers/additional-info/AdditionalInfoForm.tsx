@@ -2,10 +2,11 @@
 
 import { useSearchParams } from 'next/navigation'
 
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { Button, Checkbox, Input, Select } from '@packages/ui'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
+import { useFormState } from 'react-dom'
 
 import createUser from '@/apis/createUser'
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
@@ -39,7 +40,6 @@ const NicknameInput = ({
         className={styles['input-box']}
         value={value}
         onChange={onChange}
-        name="nickname"
       />
       <Button
         label="중복검사"
@@ -53,13 +53,17 @@ const NicknameInput = ({
   )
 }
 
+const initialState = {
+  status: 0,
+  message: '',
+}
+
 export default function AdditionalInfoForm() {
-  const { data, status } = useSession()
-  console.log(data, status)
+  const { data: session, status } = useSession()
+  console.log(session, status)
 
   const query = useSearchParams()
 
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const imageUrl = query.get('profileImage') || ''
   const email = query.get('email') || ''
   const [nickname, setNickname] = useState(query.get('nickname') || '')
@@ -67,54 +71,32 @@ export default function AdditionalInfoForm() {
   const [birth, setBirth] = useState<Date | undefined>(new Date())
   const [isChecked, setIsChecked] = useState(false)
 
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  const handleSubmit = async () => {
-    // const formData = {
-    //   email,
-    //   nickname,
-    //   imageUrl,
-    //   gender,
-    //   birth: birth!.toISOString().slice(0, 10),
-    //   infoAgree: isChecked,
-    // }
-    // Client
-    // try {
-    //   const res = await fetch(
-    //     `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/join`,
-    //     {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify(formData),
-    //     },
-    //   )
-    //   if (res) {
-    //     signIn('kakao', { redirect: true, callbackUrl: '/' })
-    //   }
-    // } catch (error) {
-    //   console.error('Error:', error)
-    // }
-    // const success = await createUser()
-    // if (success) {
-    //   // 회원가입 성공 후 로그인
-    //   signIn('kakao', { redirect: true, callbackUrl: '/' })
-    // } else {
-    //   // 에러 처리
-    // }
-  }
+  const createUserWithImage = createUser.bind(null, imageUrl)
+  const [state, formAction] = useFormState(createUserWithImage, initialState)
+
+  useEffect(() => {
+    console.log(state)
+
+    if (state.status === 200) {
+      // 회원가입 성공 후 로그인
+      signIn('kakao', { redirect: true, callbackUrl: '/' })
+    } else if (state.status !== 0) {
+      // TODO: 유효성 에러 표시
+      alert(state.message)
+    }
+  }, [state])
 
   return (
-    <form action={createUser}>
+    <form action={formAction}>
       <div className={styles['form-wrapper']}>
         <Input
           id="email"
-          name="email"
           label="이메일"
           disabled
           className={styles['input-box']}
           value={email}
         />
+        <input type="hidden" name="email" value={email} />
 
         <NicknameInput
           value={nickname}
@@ -133,10 +115,15 @@ export default function AdditionalInfoForm() {
         />
 
         <CustomDatePicker id="birth" date={birth} setDate={setBirth} />
+        <input
+          type="hidden"
+          name="birth"
+          value={birth!.toISOString().slice(0, 10)}
+        />
 
         <Checkbox
           className={styles['input-check']}
-          id="agree"
+          id="infoAgree"
           text="개인정보 수집동의"
           isChecked={isChecked}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -146,7 +133,6 @@ export default function AdditionalInfoForm() {
       </div>
 
       <Button
-        formAction={createUser}
         type="submit"
         shape="oval"
         primary

@@ -1,32 +1,28 @@
-import { DefaultSession } from 'next-auth'
+import { DefaultSession, DefaultUser, DefaultProfile } from 'next-auth'
 
 declare module 'next-auth' {
   interface Session {
     user?: {
-      kakaoProfile?: {
-        email: string
-        nickname: string
-        profileImage: string
-      }
-      apiToken?: unknown
+      data?: { [key: string]: unknown }
     } & DefaultSession['user']
   }
 
   interface User extends DefaultUser {
-    user?: {
-      kakaoProfile?: {
-        email: string
-        nickname: string
-        profileImage: string
-      }
-      apiToken?: unknown
+    data?: {
+      [key: string]: unknown
     }
   }
 
   // Profile 타입 확장
-  interface Profile {
+  interface Profile extends DefaultProfile {
     kakao_account?: {
+      email?: string
+      profile?: {
+        nickname?: string
+        profile_image_url?: string
+        [key: string]: unknown
+      }
       [key: string]: unknown
-    } & DefaultSession['profile']
+    }
   }
 }
