@@ -7,6 +7,7 @@ import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -42,7 +43,7 @@ public class MemberController {
     @Operation(summary = "회원 정보 수정")
     @PutMapping("/info/update")
     public ResponseEntity<Void> updateMemberInfo(@RequestHeader("UUID") String uuid,
-                                                 @RequestBody MemberInfoReqVo memberInfoReqVo){
+                                                 @RequestBody @Valid MemberInfoReqVo memberInfoReqVo){
 
         memberService.updateMemberInfo(uuid, mapper.map(memberInfoReqVo, MemberInfoReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
