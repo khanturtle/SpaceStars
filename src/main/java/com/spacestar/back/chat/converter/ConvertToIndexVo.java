@@ -19,6 +19,6 @@ public class ConvertToIndexVo {
                     }
                     return vo;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 }
