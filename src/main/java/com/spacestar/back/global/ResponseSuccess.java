@@ -14,6 +14,7 @@ public enum ResponseSuccess {
 
     CREATE_CHATROOM_SUCCESS(301, "채팅방 생성 성공"),
     GET_CHATROOM_LIST_SUCCESS(302, "채팅방 목록 조회 성공"),
+    GET_CHATROOM_DETAIL_SUCCESS(303, "채팅방 상세 조회 성공"),
 
     INTERNAL_SERVER_ERROR(900, "Internal server error");
 

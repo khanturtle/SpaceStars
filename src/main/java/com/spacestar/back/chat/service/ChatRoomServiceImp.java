@@ -2,6 +2,7 @@ package com.spacestar.back.chat.service;
 
 import com.spacestar.back.chat.domain.entity.ChatMember;
 import com.spacestar.back.chat.domain.entity.ChatRoom;
+import com.spacestar.back.chat.dto.ChatRoomDetailDto;
 import com.spacestar.back.chat.dto.ChatRoomDto;
 import com.spacestar.back.chat.repository.ChatMemberJPARepository;
 import com.spacestar.back.chat.repository.ChatRoomJPARepository;
@@ -48,6 +49,16 @@ public class ChatRoomServiceImp implements ChatRoomService {
                 .toList();
         return chatRoomList.stream()
                 .map(ChatRoomDto::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<ChatRoomDetailDto> getChatRoomDetail(String roomNumber) {
+        ChatRoom chatRoom = chatRoomJPARepository.findByRoomNumber(roomNumber);
+        List<ChatMember> chatMemberList = chatMemberJPARepository.findAllByChatRoom(chatRoom);
+
+        return chatMemberList.stream()
+                .map(ChatRoomDetailDto::fromEntity)
                 .toList();
     }
 }

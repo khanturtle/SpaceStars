@@ -1,9 +1,12 @@
 package com.spacestar.back.chat.controller;
 
+import com.spacestar.back.chat.converter.ConvertToIndexVo;
+import com.spacestar.back.chat.dto.ChatRoomDetailDto;
 import com.spacestar.back.chat.dto.ChatRoomDto;
 import com.spacestar.back.chat.dto.ReceiverUuidDto;
 import com.spacestar.back.chat.service.ChatRoomService;
 import com.spacestar.back.chat.vo.req.ReceiverUuidReqVo;
+import com.spacestar.back.chat.vo.res.ChatRoomDetailResVo;
 import com.spacestar.back.chat.vo.res.ChatRoomResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
@@ -29,7 +32,7 @@ public class ChatRoomController {
     // 1:1 채팅방 생성
     @Operation(summary = "1:1 채팅방 생성", description = "상대방과 1:1 채팅방을 생성합니다.")
     @PostMapping("/chatroom/create")
-    public ResponseEntity<Void> addChatRoom(@RequestHeader String uuid, @RequestBody ReceiverUuidReqVo receiverUuid){
+    public ResponseEntity<Void> addChatRoom(@RequestHeader String uuid, @RequestBody ReceiverUuidReqVo receiverUuid) {
         ReceiverUuidDto receiverUuidDto = mapper.map(receiverUuid, ReceiverUuidDto.class);
         chatRoomService.addChatRoom(uuid, receiverUuidDto.getReceiverUuid());
         return new ResponseEntity<>(ResponseSuccess.CREATE_CHATROOM_SUCCESS);
@@ -41,14 +44,7 @@ public class ChatRoomController {
     public ResponseEntity<List<ChatRoomResVo>> getChatRoomList(@RequestHeader String uuid) {
         List<ChatRoomDto> chatRoomDtoList = chatRoomService.getChatRoomList(uuid);
 
-        List<ChatRoomResVo> chatRoomResVos = IntStream.range(0, chatRoomDtoList.size())
-                .mapToObj(i -> {
-                    ChatRoomDto dto = chatRoomDtoList.get(i);
-                    ChatRoomResVo resVo = mapper.map(dto, ChatRoomResVo.class);
-                    resVo.setIndex(i + 1); // 인덱스를 1부터 시작하도록 설정
-                    return resVo;
-                })
-                .collect(Collectors.toList());
+        List<ChatRoomResVo> chatRoomResVos = ConvertToIndexVo.convertAndIndex(chatRoomDtoList, ChatRoomResVo.class, mapper);
 
         return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_LIST_SUCCESS, chatRoomResVos);
     }
@@ -56,9 +52,13 @@ public class ChatRoomController {
     // 채팅방 상세 조회 ( 채팅방 정보 가져오기 )
     @Operation(summary = "채팅방 상세 조회", description = "채팅방 상세 정보를 조회합니다.")
     @GetMapping("/chatroom/{roomNumber}")
-    public ResponseEntity<?> getChatRoomDetail(@PathVariable String roomNumber) {
+    public ResponseEntity<List<ChatRoomDetailResVo>> getChatRoomDetail(@PathVariable String roomNumber) {
+        List<ChatRoomDetailDto> chatRoomDetailDtosList = chatRoomService.getChatRoomDetail(roomNumber);
 
-        return null;
+        List<ChatRoomDetailResVo> chatRoomDetailResVos = ConvertToIndexVo.convertAndIndex(
+                chatRoomDetailDtosList, ChatRoomDetailResVo.class, mapper);
+
+        return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_DETAIL_SUCCESS, chatRoomDetailResVos);
     }
 
 }
