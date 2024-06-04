@@ -11,7 +11,5 @@ public interface AuthService {
 
     MemberLoginResDto kakaoLogin(MemberLoginReqDto memberLoginReqDto);
 
-    void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto);
-
     NicknameResDto checkNickname(String nickname);
 }
