@@ -1,22 +1,20 @@
 package com.spacestar.back.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spacestar.back.quickmatching.dto.*;
+import com.spacestar.back.quickmatching.dto.ChatMessageDto;
 import com.spacestar.back.quickmatching.service.QuickMatchingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -24,7 +22,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class MatchingWebSocketHandler extends TextWebSocketHandler {
 
     private final QuickMatchingService matchingService;
-    private final ModelMapper mapper;
     private final ObjectMapper objectMapper;
 
     private final Map<String, Set<WebSocketSession>> chatRoomSessionMap = new HashMap<>();
