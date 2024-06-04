@@ -4,14 +4,12 @@ package com.spacestar.back.chat.dto;
 import com.spacestar.back.chat.domain.entity.ChatMember;
 import com.spacestar.back.chat.domain.entity.ChatRoom;
 import com.spacestar.back.chat.enums.ParticpationType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ChatMemberDto {
     ChatRoom chatRoom;
     String memberUuid;

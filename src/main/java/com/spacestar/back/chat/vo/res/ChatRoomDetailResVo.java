@@ -1,12 +1,12 @@
 package com.spacestar.back.chat.vo.res;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ChatRoomResVo {
+public class ChatRoomDetailResVo {
     private int index;
-    private String roomNumber;
+    private String memberUuid;
+
 }
