@@ -1,10 +1,16 @@
 import Link from 'next/link'
 
 import { ArrowIcon, Button, Input } from '@packages/ui'
+import { getServerSession } from 'next-auth/next'
+
+import { options } from './api/auth/[...nextauth]/options'
 
 import Navbar from '@/components/Navbar'
 
-export default function Page() {
+export default async function Page() {
+  const session = await getServerSession(options)
+  console.log('page', session)
+
   return (
     <>
       <Navbar />
