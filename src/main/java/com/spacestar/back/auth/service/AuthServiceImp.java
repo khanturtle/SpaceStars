@@ -6,6 +6,7 @@ import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
 import com.spacestar.back.auth.dto.res.NicknameResDto;
+import com.spacestar.back.auth.enums.UnregisterType;
 import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.repository.MemberRepository;
 import com.spacestar.back.global.GlobalException;
@@ -74,6 +75,12 @@ public class AuthServiceImp implements AuthService {
         return MemberLoginResDto.builder()
                 .accessToken("Bearer " + jwtUtil.createJwt(member.getUuid(), "ROLE_USER", 3600000L))
                 .uuid(member.getUuid())
+                .email(member.getEmail())
+                .birth(member.getBirth())
+                .gender(member.getGender())
+                .infoAgree(member.isInfoAgree())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
                 .build();
 
     }
@@ -83,8 +90,40 @@ public class AuthServiceImp implements AuthService {
 
         Member member = memberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(), memberInfoReqDto));
+    }
 
-        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(),uuid, member.getEmail(),memberInfoReqDto));
+    public void withdrawal(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        memberRepository.save(Member.builder()
+                .id(member.getId())
+                .uuid(member.getUuid())
+                .email(member.getEmail())
+                .birth(null)
+                .gender(null)
+                .unregister(UnregisterType.DELETED)
+                .infoAgree(false)
+                .build());
+    }
+
+    @Override
+    public void withdrawalForce(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        memberRepository.save(Member.builder()
+                .id(member.getId())
+                .uuid(member.getUuid())
+                .email(member.getEmail())
+                .birth(null)
+                .gender(null)
+                .unregister(UnregisterType.BLACKLIST)
+                .infoAgree(false)
+                .build());
     }
 
 }

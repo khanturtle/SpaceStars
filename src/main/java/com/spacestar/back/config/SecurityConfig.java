@@ -42,7 +42,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8000"));
+                        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8000", "http://15.165.68.220:8000", "http://spacestars.kr:8000", "https://spacestars.kr:8000"));
                         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
