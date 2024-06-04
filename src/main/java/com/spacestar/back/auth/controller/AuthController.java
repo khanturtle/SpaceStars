@@ -1,14 +1,15 @@
 package com.spacestar.back.auth.controller;
 
+import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
 import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.service.AuthService;
+import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
 import com.spacestar.back.auth.vo.req.MemberJoinReqVo;
 import com.spacestar.back.auth.vo.req.MemberLoginReqVo;
 import com.spacestar.back.auth.vo.res.MemberLoginResVo;
-import com.spacestar.back.auth.vo.res.NicknameResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +18,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -47,22 +47,13 @@ public class AuthController {
         return new ResponseEntity<>(ResponseSuccess.LOGIN_SUCCESS, mapper.map(memberLoginResDto, MemberLoginResVo.class));
     }
 
+    @Operation(summary = "회원 정보 수정")
+    @PutMapping("/info/update")
+    public ResponseEntity<Void> updateMemberInfo(@RequestHeader("UUID") String uuid,
+                                                 @RequestBody MemberInfoReqVo memberInfoReqVo){
 
-    @Operation(summary = "회원 탈퇴(자발적)")
-    @PatchMapping("/withdrawal")
-    public ResponseEntity<Void> withdrawal(@RequestHeader("UUID") String uuid){
-
-        authService.withdrawal(uuid);
-        return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_SUCCESS);
+        authService.updateMemberInfo(uuid, mapper.map(memberInfoReqVo, MemberInfoReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
     }
-
-    @Operation(summary = "회원 탈퇴(영구 탈퇴)" )
-    @PatchMapping("/withdrawal/force")
-    public ResponseEntity<Void> withdrawalForce(@RequestHeader("UUID") String uuid){
-
-        authService.withdrawalForce(uuid);
-        return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_FORCE_SUCCESS);
-    }
-
 
 }

@@ -1,6 +1,7 @@
 package com.spacestar.back.auth.service;
 
 import com.spacestar.back.auth.domain.Member;
+import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
@@ -85,37 +86,13 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public void withdrawal(String uuid) {
+    public void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto) {
 
         Member member = memberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
-
-        memberRepository.save( Member.builder()
-                .id(member.getId())
-                .uuid(member.getUuid())
-                .email(member.getEmail())
-                .birth(null)
-                .gender(null)
-                .unregister(UnregisterType.DELETED)
-                .infoAgree(false)
-                .build());
+        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(), memberInfoReqDto));
     }
 
-    @Override
-    public void withdrawalForce(String uuid) {
 
-        Member member = memberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
-
-        memberRepository.save(Member.builder()
-                .id(member.getId())
-                .uuid(member.getUuid())
-                .email(member.getEmail())
-                .birth(null)
-                .gender(null)
-                .unregister(UnregisterType.BLACKLIST)
-                .infoAgree(false)
-                .build());
-    }
 
 }
