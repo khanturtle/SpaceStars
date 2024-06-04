@@ -28,7 +28,6 @@ public class Member extends GlobalTime {
     @Column(length = 50)
     private String email;
 
-    @NotNull
     @Column(length = 50)
     private String nickname;
 
