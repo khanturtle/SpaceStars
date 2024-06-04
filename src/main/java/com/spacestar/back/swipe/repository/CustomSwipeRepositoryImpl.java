@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.spacestar.back.swipe.SwipeStatus.*;
@@ -29,6 +33,16 @@ public class CustomSwipeRepositoryImpl implements CustomSwipeRepository {
                 .where(swipe.matchToMember.eq(uuid).and(swipe.status.eq(WAIT)))
                 .fetch();
     }
+    @Override
+    public List<SwipeListResDto> findSentRequest(String uuid) {
+
+        return query
+                .select(Projections.constructor(SwipeListResDto.class,
+                        swipe.matchToMember))
+                .from(swipe)
+                .where(swipe.matchFromMember.eq(uuid).and(swipe.status.eq(WAIT)))
+                .fetch();
+    }
 
     @Transactional
     @Override
@@ -46,5 +60,24 @@ public class CustomSwipeRepositoryImpl implements CustomSwipeRepository {
                 .where(swipe.matchToMember.eq(uuid))
                 .set(swipe.status, REJECT)
                 .execute();
+    }
+
+    @Transactional
+    @Override
+    public void deleteExpiredSwipe() {
+        query.delete(swipe)
+                .where(swipe.createdAt.before(LocalDateTime.now().minusDays(3)))
+                .execute();
+    }
+  
+    public int countSwipe(String uuid) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.plusDays(1).atStartOfDay();
+
+        return (int) query.selectFrom(swipe)
+                .where(swipe.createdAt.between(startOfDay, endOfDay)
+                        .and(swipe.matchFromMember.eq(uuid)))
+                .fetchCount();
     }
 }

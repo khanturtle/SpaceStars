@@ -18,7 +18,9 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-
+ext {
+	set('springCloudVersion', "2022.0.5")
+}
 repositories {
 	mavenCentral()
 }
@@ -56,6 +58,7 @@ dependencies {
 	//eureka-client
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
+
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
@@ -67,4 +70,9 @@ tasks.named('bootBuildImage') {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
