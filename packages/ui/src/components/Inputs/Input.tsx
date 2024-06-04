@@ -43,6 +43,7 @@ const Input = ({
         <div className="textfield">
           <input
             id={id}
+            name={id}
             type="text"
             autoComplete="off"
             disabled={disabled}

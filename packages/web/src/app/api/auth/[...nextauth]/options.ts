@@ -10,7 +10,7 @@ export const options: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ profile, account }) {
+    async signIn({ profile, user }) {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/login`,
         {
@@ -19,65 +19,45 @@ export const options: NextAuthOptions = {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: profile?.kakao_account.email,
+            email: profile?.kakao_account?.email,
           }),
         },
-      )
-      if (!res.ok) {
-        throw new Error('API Request Failed')
+      ).then((r) => r.json())
+
+      // 회원이면, 회원 정보 저장 및 로그인
+      if (res.code === 200) {
+        user.data = res.result
+        return true
       }
-
-      const response = await res.json()
-      console.log('===', response)
-
-      // 회원이 아니면, 회원가입 페이지로 이동
-      if (response.code === 2005) {
+      /** 회원이 아니면, 회원가입 페이지로 이동
+       *  2005: 비회원
+       *  2006: 탈퇴한 회원 */
+      if (res.code === 2005 || res.code === 2006) {
         const kakaoProfile = {
-          email: profile?.kakao_account.email,
-          nickname: profile?.kakao_account.profile.nickname,
-          profileImage: profile?.kakao_account.profile.profile_image_url,
+          email: profile?.kakao_account?.email as string,
+          nickname: profile?.kakao_account?.profile?.nickname as string,
+          profileImage: profile?.kakao_account?.profile
+            ?.profile_image_url as string,
         }
-        if (account) {
-          account.kakaoProfile = kakaoProfile
-        }
-        // throw new Error('UserSignUpRequired')
 
+        // throw new Error('UserSignUpRequired')
         const queryParams = new URLSearchParams(kakaoProfile)
         return `/additional-info?${queryParams}`
       }
 
-      if (account) {
-        account.apiToken = response.result
-        // console.log(account)
-      }
-      // account.apiToken = response.result
-      return true
+      throw new Error('API Request Failed')
     },
-    async jwt({ token, account, trigger, session, user }) {
-      token.kakaoProfile = account?.kakaoProfile
-      // console.log('token: ', token, account)
-      if (account?.apiToken) {
-        token.apiToken = account.apiToken
+    async jwt({ token, user, trigger, session }) {
+      if (user) {
+        token.data = user.data
       }
       if (trigger === 'update') {
-        console.log('a', account)
-        console.log('s', session)
-        console.log('u', user)
-        console.log('t', token)
-
-        // token = session
+        token.data = { ...(token.data || {}), ...session.data }
       }
-      // console.log('token', token)
       return token
     },
-
     async session({ session, token }) {
-      // console.log('session', session)
-      // console.log('session22', token)
-      if (!session.user?.apiToken) {
-        session.user = token
-      }
-
+      session.user = token
       return session
     },
   },
