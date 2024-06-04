@@ -56,20 +56,4 @@ public class AuthController {
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
     }
 
-    @Operation(summary = "회원 탈퇴(자발적)")
-    @PatchMapping("/withdrawal")
-    public ResponseEntity<Void> withdrawal(@RequestHeader("UUID") String uuid){
-
-        authService.withdrawal(uuid);
-        return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_SUCCESS);
-    }
-
-    @Operation(summary = "회원 탈퇴(영구 탈퇴)" )
-    @PatchMapping("/withdrawal/force")
-    public ResponseEntity<Void> withdrawalForce(@RequestHeader("UUID") String uuid){
-
-        authService.withdrawalForce(uuid);
-        return new ResponseEntity<>(ResponseSuccess.WITHDRAWAL_FORCE_SUCCESS);
-    }
-
 }

@@ -93,37 +93,6 @@ public class AuthServiceImp implements AuthService {
         memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(), memberInfoReqDto));
     }
 
-    public void withdrawal(String uuid) {
 
-        Member member = memberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
-
-        memberRepository.save(Member.builder()
-                .id(member.getId())
-                .uuid(member.getUuid())
-                .email(member.getEmail())
-                .birth(null)
-                .gender(null)
-                .unregister(UnregisterType.DELETED)
-                .infoAgree(false)
-                .build());
-    }
-
-    @Override
-    public void withdrawalForce(String uuid) {
-
-        Member member = memberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
-
-        memberRepository.save(Member.builder()
-                .id(member.getId())
-                .uuid(member.getUuid())
-                .email(member.getEmail())
-                .birth(null)
-                .gender(null)
-                .unregister(UnregisterType.BLACKLIST)
-                .infoAgree(false)
-                .build());
-    }
 
 }

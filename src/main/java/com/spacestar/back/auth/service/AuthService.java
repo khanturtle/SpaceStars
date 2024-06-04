@@ -13,7 +13,4 @@ public interface AuthService {
 
     void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto);
 
-    void withdrawal(String uuid);
-
-    void withdrawalForce(String uuid);
 }
