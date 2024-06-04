@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ChatRoomDto {
-    private String RoomNumber;
+    private String roomNumber;
 
     public static ChatRoom toEntity(String roomNumber){
         return ChatRoom.builder()

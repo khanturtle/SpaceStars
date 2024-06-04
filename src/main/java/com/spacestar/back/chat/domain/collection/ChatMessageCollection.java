@@ -1,5 +1,6 @@
 package com.spacestar.back.chat.domain.collection;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spacestar.back.chat.enums.MessageType;
 import com.spacestar.back.global.GlobalCreateTime;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Document(collection = "chat_message")
 @EntityListeners(AuditingEntityListener.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ChatMessageCollection {
     @Id
     private String id;

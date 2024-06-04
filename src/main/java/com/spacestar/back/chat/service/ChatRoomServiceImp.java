@@ -2,18 +2,19 @@ package com.spacestar.back.chat.service;
 
 import com.spacestar.back.chat.domain.entity.ChatMember;
 import com.spacestar.back.chat.domain.entity.ChatRoom;
-import com.spacestar.back.chat.dto.ChatMemberDto;
 import com.spacestar.back.chat.dto.ChatRoomDto;
 import com.spacestar.back.chat.repository.ChatMemberJPARepository;
 import com.spacestar.back.chat.repository.ChatRoomJPARepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class ChatRoomServiceImp implements ChatRoomService {
@@ -28,7 +29,7 @@ public class ChatRoomServiceImp implements ChatRoomService {
         ChatRoom chatRoom = ChatRoomDto.toEntity(roomNumber);
         // 채팅방 생성
         chatRoomJPARepository.save(chatRoom);
-
+        log.info(receiverUuid,"receiverUuid");
         // 채팅방에 참여자 추가
         chatMemberService.addMemberToChatRoom(chatRoom, uuid);
         chatMemberService.addMemberToChatRoom(chatRoom, receiverUuid);
