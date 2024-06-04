@@ -1,30 +1,42 @@
 'use server'
 
-// interface FormDataType {
-//   email: string
-//   nickname: string
-//   imageUrl: string
-//   gender: string
-//   birth: string
-//   infoAgree: boolean
-// }
-
-async function createUser(formData: FormData) {
-  // console.log(formData.get('email'))
-  // console.log(formData.get('nickname'))
+async function createUser(
+  imageUrl: string,
+  prevState: unknown,
+  formData: FormData,
+) {
+  console.log(imageUrl)
   console.log(formData)
-  console.log(formData.get('nickname'))
-  // try {
-  //   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL_V1}/auth/join`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(formData),
-  //   })
-  // } catch (error) {
-  //   console.error('Error:', error)
-  // }
+
+  const postFormData = {
+    email: formData.get('email'),
+    nickname: formData.get('nickname'),
+    infoAgree: formData.get('infoAgree') === 'true',
+    birth: formData.get('birth'),
+    gender: formData.get('gender'),
+    imageUrl,
+  }
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL_V1}/auth/join`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postFormData),
+    }).then((r) => r.json())
+
+    return {
+      status: res.code as number,
+      message: res.message as string,
+    }
+  } catch (error) {
+    console.error('Error:', error)
+  }
+
+  return {
+    status: 400,
+    message: '',
+  }
 }
 
 export default createUser

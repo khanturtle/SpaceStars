@@ -9,7 +9,7 @@ import Navbar from '@/components/Navbar'
 
 export default async function Page() {
   const session = await getServerSession(options)
-  console.log('page', session)
+  // console.log('page', session)
 
   return (
     <>
@@ -19,6 +19,7 @@ export default async function Page() {
       <ArrowIcon />
 
       <main>
+        {session && (session.user?.data?.nickname as string)}
         <h1>컴포넌트dd</h1>
         <Link href="test">테스트 페이지 ㄱㄱ</Link> |
         <Link href="additional-info">모달얍</Link> |

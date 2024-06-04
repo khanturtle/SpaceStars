@@ -11,11 +11,11 @@ export default function Navbar() {
   const { data: session, status, update } = useSession()
   console.log(session)
 
-  const handleClick = () => {
+  const handleClick = async () => {
     // 예를 들어 여기서 회원 프로필 정보를 받아와서 세션에 저장한다.
-    update({
+    await update({
       data: {
-        nickname: 'test',
+        nickname: 'testt',
       },
     })
   }
