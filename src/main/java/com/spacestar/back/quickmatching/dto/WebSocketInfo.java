@@ -1,12 +1,8 @@
 package com.spacestar.back.quickmatching.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.socket.WebSocketSession;
-
-@Setter
+@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

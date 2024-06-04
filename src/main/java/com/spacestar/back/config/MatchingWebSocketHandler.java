@@ -1,16 +1,22 @@
 package com.spacestar.back.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spacestar.back.quickmatching.dto.WebSocketMessageDto;
+import com.spacestar.back.quickmatching.dto.*;
 import com.spacestar.back.quickmatching.service.QuickMatchingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 @Slf4j
@@ -18,6 +24,10 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class MatchingWebSocketHandler extends TextWebSocketHandler {
 
     private final QuickMatchingService matchingService;
+    private final ModelMapper mapper;
+    private final ObjectMapper objectMapper;
+
+    private final Map<String, Set<WebSocketSession>> chatRoomSessionMap = new HashMap<>();
 
     // 웹소켓 연결
     @Override
@@ -31,32 +41,37 @@ public class MatchingWebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         log.info("양방향 데이터 통신 - {}", session.getId());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        WebSocketMessageDto webSocketMessage = objectMapper.readValue(message.getPayload(), WebSocketMessageDto.class);
+        String payload = message.getPayload();
+        log.info("payload {}", payload);
 
-        if(webSocketMessage.getType().equals("uuid")) {
-            matchingService.waitForMatching(session.getId(), webSocketMessage.getData().get("uuid"));
+        // 페이로드 -> chatMessageDto로 변환
+        ChatMessageDto chatMessageDto = objectMapper.readValue(payload, ChatMessageDto.class);
+        log.info("session {}", chatMessageDto.toString());
+        String gameName = chatMessageDto.getGameName();
+
+        if (!chatRoomSessionMap.containsKey(gameName)) {
+            chatRoomSessionMap.put(gameName, new HashSet<>());
         }
-//        if(webSocketMessage.getType().equals("accept")) {
-//            matchingService.acceptMatching(session.getId());
-//        }
-//        if(webSocketMessage.getType().equals("reject")) {
-//            matchingService.rejectMatching(session.getId());
-//        }
+
+        Set<WebSocketSession> chatRoomSession = chatRoomSessionMap.get(gameName);
+
+        if (chatMessageDto.getMessageType().equals(ChatMessageDto.MessageType.ENTER)) {
+            chatRoomSession.add(session);
+            matchingService.enterQuickMatching(chatMessageDto.getMemberUuid(),gameName);
+        }
+        sendMessageToChatRoom(chatMessageDto, chatRoomSession);
     }
 
-    // 소켓 연결 종료
-//    @Override
-//    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-//        log.info("소켓 연결 종료 - {}", session.getId());
-//        matchingService.finishWaiting(session.getId());
-//    }
-//
-//    // 소켓 통신 에러
-//    @Override
-//    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-//        log.info("소켓 통신 에러 - {}", session.getId());
-//        matchingService.finishWaiting(session.getId());
-//    }
+    private void sendMessageToChatRoom(ChatMessageDto chatMessageDto, Set<WebSocketSession> chatRoomSession) {
+        chatRoomSession.parallelStream().forEach(sess -> sendMessage(sess, chatMessageDto));//2
 
+    }
+
+    public <T> void sendMessage(WebSocketSession session, T message) {
+        try {
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 }

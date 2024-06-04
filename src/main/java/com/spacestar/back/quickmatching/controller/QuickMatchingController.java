@@ -16,9 +16,9 @@ public class QuickMatchingController {
     private final QuickMatchingService quickMatchingService;
     private final ModelMapper mapper;
     @PostMapping
-    public ResponseEntity<Void> enterQuickMatching(@RequestHeader("uuid")String uuid,
+    public ResponseEntity<Void> enterQuickMatching(@RequestHeader("UUID")String uuid,
                                                    @RequestBody QuickMatchingEnterReqVo reqVo){
-        quickMatchingService.enterQuickMatching(uuid,mapper.map(reqVo, QuickMatchingEnterReqDto.class));
+        quickMatchingService.enterQuickMatching(uuid, reqVo.getGameName());
         return new ResponseEntity<>(ResponseSuccess.QUICK_MATCHING_ENTER_SUCCESS);
     }
 }
