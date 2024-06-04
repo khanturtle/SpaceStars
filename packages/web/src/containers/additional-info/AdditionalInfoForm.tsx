@@ -11,6 +11,7 @@ import { useFormState } from 'react-dom'
 import createUser from '@/apis/createUser'
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
+import { useFormInput } from '@/hooks/useFormInput'
 
 // MALE,FEMALE,OTHER
 const genderOptions = [
@@ -65,8 +66,10 @@ export default function AdditionalInfoForm() {
   const query = useSearchParams()
 
   const imageUrl = query.get('profileImage') || ''
-  const email = query.get('email') || ''
-  const [nickname, setNickname] = useState(query.get('nickname') || '')
+
+  const email = useFormInput(query.get('email') || '')
+  const nickname = useFormInput(query.get('nickname') || '')
+
   const [gender, setGender] = useState('')
   const [birth, setBirth] = useState<Date | undefined>(new Date())
   const [isChecked, setIsChecked] = useState(false)
@@ -94,15 +97,13 @@ export default function AdditionalInfoForm() {
           label="이메일"
           disabled
           className={styles['input-box']}
-          value={email}
+          value={email.value as string}
         />
-        <input type="hidden" name="email" value={email} />
+        <input type="hidden" name="email" value={email.value as string} />
 
         <NicknameInput
-          value={nickname}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setNickname(e.target.value)
-          }
+          value={nickname.value as string}
+          onChange={nickname.onChange}
         />
 
         <Select
