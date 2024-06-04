@@ -53,7 +53,7 @@ const Select = ({
               type="radio"
               id={option.value}
               value={option.value}
-              name="select-box"
+              name={id}
               checked={selectedOption === option.value}
               onChange={() => handleOptionChange(option.value)}
               {...props}
