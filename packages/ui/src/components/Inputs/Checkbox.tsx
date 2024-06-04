@@ -1,6 +1,7 @@
 import './Input.css'
 
-export interface CheckboxProps {
+export interface CheckboxProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string
   /** 고유 id, label 요소와 연결 */
   id: string
@@ -27,6 +28,7 @@ const Checkbox = ({
       <label htmlFor={id} className="checkbox-label">
         <input
           id={id}
+          name={id}
           type="checkbox"
           className="invisible"
           disabled={disabled}
