@@ -5,15 +5,12 @@ import { getServerSession } from 'next-auth/next'
 
 import { options } from './api/auth/[...nextauth]/options'
 
-import Navbar from '@/components/Navbar'
-
 export default async function Page() {
   const session = await getServerSession(options)
   // console.log('page', session)
 
   return (
     <>
-      <Navbar />
       <Button label="테ㅐ스ㅡㅌ" />
       <Input id="xptmxm" />
       <ArrowIcon />
