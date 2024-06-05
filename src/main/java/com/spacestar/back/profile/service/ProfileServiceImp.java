@@ -4,6 +4,7 @@ import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.domain.ProfileImage;
+import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
 import com.spacestar.back.profile.dto.res.ProfileImageListResDto;
 import com.spacestar.back.profile.dto.res.ProfileMainImageResDto;
@@ -129,14 +130,12 @@ public class ProfileServiceImp implements ProfileService {
 
     }
 
+    //프로필 이미지 수정
     @Transactional
     @Override
     public void updateProfileImages(String uuid, List<ProfileImageReqDto> profileImageReqDtos) {
 
-        Profile profile = profileRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
-
-        List<ProfileImage> profileImages = profileImageRepository.findAllByProfile(profile);
+        List<ProfileImage> profileImages = profileImageRepository.findAllByUuid(uuid);
 
         //사진 삭제
         for (ProfileImage profileImage : profileImages) {
@@ -158,41 +157,45 @@ public class ProfileServiceImp implements ProfileService {
             for (ProfileImage profileImage : profileImages) {
                 //사진 존재
                 if (profileImageReqDto.getProfileImageUrl().equals(profileImage.getProfileImageUrl())) {
-                    profileImageRepository.save(profileImageReqDto.updateImage(profileImage, profileImageReqDto));
+                    profileImageRepository.save(profileImageReqDto.updateImage(uuid,profileImage, profileImageReqDto));
                     check = true;
                 }
             }
             //사진 존재하지 않음
             if (!check) {
-                profileImageRepository.save(profileImageReqDto.addNewImage(profile, profileImageReqDto));
+                profileImageRepository.save(profileImageReqDto.addNewImage(uuid, profileImageReqDto));
 
             }
         }
     }
 
+    //프로필 이미지 리스트 조회
     @Override
     public List<ProfileImageListResDto> findProfileImageList(String uuid) {
-
-        Profile profile = profileRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
         List<ProfileImageListResDto> profileImageListResDtos = new ArrayList<>();
 
         int i = 0;
-        for (ProfileImage profileImage : profileImageRepository.findAllByProfile(profile)) {
+        for (ProfileImage profileImage : profileImageRepository.findAllByUuid(uuid)) {
             profileImageListResDtos.add(ProfileImageListResDto.convertToDto(i, profileImage));
             i++;
         }
         return profileImageListResDtos;
     }
 
+    //프로필 메인 이미지 조회
     @Override
     public ProfileMainImageResDto findMainProfileImage(String uuid) {
 
-        Profile profile = profileRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
-
         return mapper.map(
-                profileImageRepository.findByProfileAndMain(profile, true), ProfileMainImageResDto.class);
+                profileImageRepository.findByUuidAndMain(uuid, true), ProfileMainImageResDto.class);
+    }
+
+    // 회원가입 시 카카오 프로필 사진 저장
+    @Transactional
+    @Override
+    public void addProfileImage(String uuid, KakaoProfileImageReqDto kakaoProfileImageReqDto) {
+
+        profileImageRepository.save(kakaoProfileImageReqDto.addNewImage(uuid, kakaoProfileImageReqDto));
     }
 }

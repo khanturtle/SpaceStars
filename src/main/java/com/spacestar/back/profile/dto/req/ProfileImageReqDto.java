@@ -17,10 +17,10 @@ public class ProfileImageReqDto {
     private boolean mainImage;
     private int idx;
 
-    public ProfileImage updateImage(ProfileImage profileImage, ProfileImageReqDto profileImageReqDto) {
+    public ProfileImage updateImage(String uuid, ProfileImage profileImage, ProfileImageReqDto profileImageReqDto) {
         return ProfileImage.builder()
                 .id(profileImage.getId())
-                .profile(profileImage.getProfile())
+                .uuid(uuid)
                 .profileImageUrl(profileImageReqDto.getProfileImageUrl())
                 .main(profileImageReqDto.isMainImage())
                 .idx(profileImageReqDto.getIdx())
@@ -28,9 +28,9 @@ public class ProfileImageReqDto {
 
     }
 
-    public ProfileImage addNewImage(Profile profile, ProfileImageReqDto profileImageReqDto) {
+    public ProfileImage addNewImage(String uuid, ProfileImageReqDto profileImageReqDto) {
         return ProfileImage.builder()
-                .profile(profile)
+                .uuid(uuid)
                 .profileImageUrl(profileImageReqDto.getProfileImageUrl())
                 .main(profileImageReqDto.isMainImage())
                 .idx(profileImageReqDto.getIdx())

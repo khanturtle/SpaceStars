@@ -21,9 +21,6 @@ public class Profile extends GlobalTime {
     @Column(length = 100)
     private String uuid;
 
-    @Column(length = 20)
-    private String nickname;
-
     @Column(length = 50)
     private String introduce;
 
@@ -42,10 +39,9 @@ public class Profile extends GlobalTime {
     }
 
     @Builder
-    public Profile(Long id, String uuid, String nickname, String introduce, Long gamePreferenceId, Long mbtiId, Long exp, int reportCount, boolean swipe) {
+    public Profile(Long id, String uuid,  String introduce, Long gamePreferenceId, Long mbtiId, Long exp, int reportCount, boolean swipe) {
         this.id = id;
         this.uuid = uuid;
-        this.nickname = nickname;
         this.introduce = introduce;
         this.gamePreferenceId = gamePreferenceId;
         this.mbtiId = mbtiId;

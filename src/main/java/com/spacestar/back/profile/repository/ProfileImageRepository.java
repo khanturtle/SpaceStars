@@ -9,8 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProfileImageRepository extends JpaRepository<ProfileImage, Long> {
-    List<ProfileImage> findAllByProfile(Profile profile);
 
-    @Query("select p from ProfileImage p where p.profile = :profile and p.main = :main")
-    ProfileImage findByProfileAndMain(@Param("profile") Profile profile, @Param("main") boolean b);
+    @Query("select p from ProfileImage p where p.uuid = :uuid and p.main = :main")
+    ProfileImage findByUuidAndMain(@Param("uuid") String uuid, @Param("main") boolean b);
+
+    List<ProfileImage> findAllByUuid(String uuid);
 }

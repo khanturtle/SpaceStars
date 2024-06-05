@@ -14,8 +14,8 @@ public class ProfileImage {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Profile profile;
+    @Column(length = 100)
+    private String uuid;
 
     @NotNull
     @Column(length = 255)
@@ -27,9 +27,17 @@ public class ProfileImage {
     private int idx;
 
     @Builder
-    public ProfileImage(Long id, Profile profile, String profileImageUrl, boolean main, int idx) {
+    public ProfileImage(Long id, String uuid, String profileImageUrl, boolean main, int idx) {
         this.id = id;
-        this.profile = profile;
+        this.uuid = uuid;
+        this.profileImageUrl = profileImageUrl;
+        this.main = main;
+        this.idx = idx;
+    }
+
+    @Builder
+    public ProfileImage(String uuid, String profileImageUrl, boolean main, int idx) {
+        this.uuid = uuid;
         this.profileImageUrl = profileImageUrl;
         this.main = main;
         this.idx = idx;

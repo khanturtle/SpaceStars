@@ -2,8 +2,10 @@ package com.spacestar.back.profile.controller;
 
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
 import com.spacestar.back.profile.service.ProfileService;
+import com.spacestar.back.profile.vo.req.KakaoProfileImageReqVo;
 import com.spacestar.back.profile.vo.req.ProfileImageReqVo;
 import com.spacestar.back.profile.vo.res.ProfileImageListResVo;
 import com.spacestar.back.profile.vo.res.ProfileMainImageResVo;
@@ -67,7 +69,7 @@ public class ProfileController {
                         .toList());
     }
     @Operation(summary = "프로필 사진 수정 및 피드 사진 추가")
-    @PutMapping("/profile/image/update")
+    @PutMapping("/image/update")
     public ResponseEntity<Void> profileImageUpdate(@RequestHeader("UUID") String uuid,
                                                    @RequestBody List<ProfileImageReqVo> profileImageReqVo){
 
@@ -80,7 +82,7 @@ public class ProfileController {
     }
 
     @Operation(summary = "프로필 사진 리스트 조회")
-    @GetMapping("/profile/image")
+    @GetMapping("/image")
     public ResponseEntity<List<ProfileImageListResVo>> profileImageList(@RequestHeader("UUID") String uuid){
 
         return new ResponseEntity<>(
@@ -91,7 +93,7 @@ public class ProfileController {
     }
 
     @Operation(summary = "대표 프로필 사진 조회")
-    @GetMapping("/profile/image/main")
+    @GetMapping("/image/main")
     public ResponseEntity<ProfileMainImageResVo> mainProfileImage(@RequestHeader("UUID") String uuid){
 
         return new ResponseEntity<>(
@@ -99,6 +101,15 @@ public class ProfileController {
                 mapper.map(profileService.findMainProfileImage(uuid), ProfileMainImageResVo.class)
         );
 
+    }
+
+    @Operation(summary = "회원 가입 시 카카오 프로필 사진 저장")
+    @PostMapping("/image/add")
+    public ResponseEntity<Void> addProfileImage(@RequestHeader("UUID") String uuid,
+                                                @RequestBody KakaoProfileImageReqVo kakaoProfileImageReqVo) {
+
+        profileService.addProfileImage(uuid, mapper.map(kakaoProfileImageReqVo, KakaoProfileImageReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_ADD_SUCCESS);
     }
 
 }
