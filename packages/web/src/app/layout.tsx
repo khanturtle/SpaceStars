@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import Navbar from '@/components/Navbar'
 import AuthSession from '@/components/providers/session-provider'
 
 import '@/styles/globals.css'
@@ -22,6 +23,8 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <AuthSession>
+          <Navbar />
+
           {children}
           {modal}
         </AuthSession>
