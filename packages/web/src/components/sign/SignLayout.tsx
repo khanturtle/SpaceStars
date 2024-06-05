@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 import styles from './sign.module.css'
 import Button from './SignButton'
 
@@ -34,37 +32,21 @@ const Legend = ({
   type,
   title,
   description,
+  image,
 }: {
   type?: 'sign-in' | 'sign-up'
   title?: string
   description?: string
+  image: React.ReactNode
 }) => {
   // FIXME: type이 안들어올 때 체크
   const typeContent = typeContents[type!]
 
   return (
     <div className={styles['title-container']}>
-      {type ? (
-        <>
-          <div className="h-[165px] aspect-[1] relative">
-            <Image
-              alt={typeContent.title}
-              src={typeContent.imageUrl}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-            />
-          </div>
-          <h3>{typeContent.title}</h3>
-          <p>{typeContent.description}</p>
-        </>
-      ) : (
-        <>
-          <h3>{title}</h3>
-          <p>{description}</p>
-        </>
-      )}
+      {image && <div className="h-[165px] aspect-[1] relative">{image}</div>}
+      {title && <h3>{title}</h3>}
+      {description && <p>{description}</p>}
     </div>
   )
 }
@@ -85,12 +67,12 @@ const SignLayout = ({
 }) => {
   return (
     <section className={className}>
-      {type && (
+      {/* {type && (
         <>
           <Legend type={type} />
           <Button type={type} />
         </>
-      )}
+      )} */}
       {children}
     </section>
   )

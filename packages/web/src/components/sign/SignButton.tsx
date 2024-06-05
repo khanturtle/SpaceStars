@@ -3,9 +3,16 @@
 import { KakaoButton } from '@packages/ui'
 import { signIn } from 'next-auth/react'
 
-const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
+const Button = ({
+  type,
+  label = '',
+}: {
+  type?: 'sign-in' | 'sign-up'
+  label: string
+}) => {
   const typeLabel = type === 'sign-in' ? '카카오 로그인' : '카카오 회원가입'
 
+  // TODO: 카카오 인증 팝업
   // useEffect(() => {
   //   const handleMessage = async (event) => {
   //     if (event.origin !== window.location.origin) return
@@ -57,7 +64,7 @@ const Button = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
   return (
     <KakaoButton
       className="mb-[37px]"
-      label={typeLabel}
+      label={label}
       onClick={() => handleClick()}
     />
   )
