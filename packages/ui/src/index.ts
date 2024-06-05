@@ -16,6 +16,7 @@ export { default as Avatar } from './components/Avatar/Avatar'
 export { default as Badge } from './components/Badge/Badge'
 
 export { default as GameButton } from './components/Games/GameButton'
+export { default as GameListButton } from './components/Games/GameListButton'
 
 export { default as TeamCardTitle } from './components/TeamCard/Title'
 export { default as TeamCardUserAvatar } from './components/TeamCard/UserAvatar'
