@@ -5,7 +5,7 @@ import SignLayout from '@/components/sign/SignLayout'
 
 export default function SignInLayout({ className }: { className?: string }) {
   return (
-    <SignLayout className={className} type="sign-in">
+    <SignLayout className={className}>
       <SignLayout.Legend
         image={
           <Image
