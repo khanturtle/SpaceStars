@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final ModelMapper mapper;
-    private final JWTUtil jwtUtil;
     private final AuthService authService;
 
     @Operation(summary = "회원가입")

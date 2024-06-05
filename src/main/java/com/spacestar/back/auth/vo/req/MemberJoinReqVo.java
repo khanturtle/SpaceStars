@@ -1,6 +1,8 @@
 package com.spacestar.back.auth.vo.req;
 
 import com.spacestar.back.auth.enums.GenderType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 
@@ -21,12 +23,14 @@ public class MemberJoinReqVo {
     private String imageUrl;
 
     @NotNull(message = "성별을 선택해주세요")
+    @Enumerated(EnumType.STRING)
     private GenderType gender;
 
     @NotNull(message = "생년월일을 입력해주세요.")
     private LocalDate birth;
 
     @NotNull(message = "약관에 동의해주세요.")
+    @AssertTrue(message = "약관에 동의해주세요.")
     private boolean infoAgree;
 
 }

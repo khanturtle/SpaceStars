@@ -86,7 +86,6 @@ public class AuthServiceImp implements AuthService {
 
     }
 
-
     @Override
     public NicknameResDto checkNickname(String nickname) {
 
