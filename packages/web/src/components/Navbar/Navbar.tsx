@@ -22,7 +22,7 @@ export default function Navbar({ isLogo = false }: { isLogo?: boolean }) {
   const { data: session, status } = useSession()
 
   return (
-    <nav className={styles.nav}>
+    <nav className={`${styles.nav}`}>
       {isLogo && <Logo />}
 
       <div className="flex-1" />

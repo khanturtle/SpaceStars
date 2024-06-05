@@ -1,0 +1,36 @@
+.sidebar {
+  background-color: red;
+  width: 260px;
+  height: calc(100vh - 100px);
+
+  position: sticky;
+  top: 100px;
+  left: 0;
+
+  transition: width 0.3s ease;
+}
+/* 
+@media (max-width: 768px) {
+  .sidebar {
+    width: 0;
+  }
+} 
+*/
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+}
+
+.rightSidebar {
+  background-color: blue;
+
+  width: 250px;
+  height: calc(100vh - 100px);
+
+  position: sticky;
+  top: 100px;
+  right: 0;
+}
