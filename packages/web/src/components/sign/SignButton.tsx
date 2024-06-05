@@ -3,53 +3,33 @@
 import { KakaoButton } from '@packages/ui'
 import { signIn } from 'next-auth/react'
 
+// FIXME: 일단 안됨
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+const openAuthPopup = () => {
+  const width = 500
+  const height = 600
+  const left = (window.innerWidth - width) / 2
+  const top = (window.innerHeight - height) / 2
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const popup = window.open(
+    '/auth/popup',
+    'authPopup',
+    `width=${width},height=${height},top=${top},left=${left}`,
+  )
+
+  // 메시지 수신 대기
+  window.addEventListener('message', (event) => {
+    if (event.origin === window.location.origin) {
+      console.log('인증 성공:', event.data)
+      // 인증 성공 후 처리 로직
+    }
+  })
+}
+
 const Button = ({ label = '' }: { label: string }) => {
-  // TODO: 카카오 인증 팝업
-  // useEffect(() => {
-  //   const handleMessage = async (event) => {
-  //     if (event.origin !== window.location.origin) return
-
-  //     if (event.data.type === 'kakao-login') {
-  //       // 메시지로 전달된 URL을 사용하여 로그인 상태 갱신
-  //       await signIn('kakao', {
-  //         callbackUrl: event.data.url,
-  //         redirect: false,
-  //       })
-  //     }
-  //   }
-
-  //   window.addEventListener('message', handleMessage)
-
-  //   return () => {
-  //     window.removeEventListener('message', handleMessage)
-  //   }
-  // }, [])
-
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  function openKakaoPopup() {
-    const clientId = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
-    const redirectUri = `${window.location.origin}/api/auth/callback/kakao`
-    const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`
-
-    const popupWidth = 600
-    const popupHeight = 800
-    const popupLeft = window.screen.width / 2 - popupWidth / 2
-    const popupTop = window.screen.height / 2 - popupHeight / 2
-
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    const popup = window.open(
-      kakaoLoginUrl,
-      'kakaoLoginPopup',
-      `width=${popupWidth},height=${popupHeight},left=${popupLeft},top=${popupTop}`,
-    )
-  }
-
   const handleClick = () => {
-    // openKakaoPopup()
-
-    // 카카오 로그인/회원가입 API 호출
     signIn('kakao', {
-      redirect: true,
+      redirect: false,
       callbackUrl: '/dashboard',
     })
   }
@@ -58,7 +38,8 @@ const Button = ({ label = '' }: { label: string }) => {
     <KakaoButton
       className="mb-[37px]"
       label={label}
-      onClick={() => handleClick()}
+      onClick={handleClick}
+      // onClick={openAuthPopup}
     />
   )
 }

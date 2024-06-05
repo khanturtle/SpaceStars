@@ -45,7 +45,7 @@ export default function CustomDatePicker({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="z-[5000] w-auto p-0">
         <Calendar
           id={id}
           mode="single"
