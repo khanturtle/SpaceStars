@@ -1,12 +1,21 @@
 'use server'
 
-async function createUser(
+const AUTH_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/auth`
+
+// TODO: 유효성 검사 로직
+export async function createUser(
   imageUrl: string,
+  isAvailable: boolean,
   prevState: unknown,
   formData: FormData,
 ) {
-  console.log(imageUrl)
-  console.log(formData)
+  // 1. 닉네임 중복검사 여부
+  if (!isAvailable) {
+    return {
+      status: 400,
+      message: '입력한 닉네임이 중복되지 않는지 확인해 주세요.',
+    }
+  }
 
   const postFormData = {
     email: formData.get('email'),
@@ -16,8 +25,9 @@ async function createUser(
     gender: formData.get('gender'),
     imageUrl,
   }
+
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL_V1}/auth/join`, {
+    const res = await fetch(`${AUTH_BASE_URL}/join`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +40,7 @@ async function createUser(
       message: res.message as string,
     }
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Join Error:', error)
   }
 
   return {
@@ -38,5 +48,3 @@ async function createUser(
     message: '',
   }
 }
-
-export default createUser

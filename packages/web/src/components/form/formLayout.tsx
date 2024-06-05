@@ -4,6 +4,16 @@ import { ArrowIcon, Button } from '@packages/ui'
 
 import styles from './form.module.css'
 
+export default function FormLayout({
+  className,
+  children,
+}: {
+  className?: string
+  children?: React.ReactNode
+}) {
+  return <section className={className}>{children}</section>
+}
+
 const Legend = ({
   title,
   description,
@@ -13,8 +23,8 @@ const Legend = ({
 }) => {
   return (
     <div className={`${styles['title-container']}`}>
-      <h3>{title}</h3>
-      <p>{description}</p>
+      {title && <h3>{title}</h3>}
+      {description && <p>{description}</p>}
     </div>
   )
 }
@@ -75,16 +85,6 @@ const PassButton = () => {
       </Link>
     </div>
   )
-}
-
-export default function FormLayout({
-  className,
-  children,
-}: {
-  className?: string
-  children?: React.ReactNode
-}) {
-  return <section className={className}>{children}</section>
 }
 
 FormLayout.Legend = Legend
