@@ -161,7 +161,6 @@
   stroke-dashoffset: 18px;
   transition: all 0.3s ease;
 }
-
 .checkbox-label > span {
   pointer-events: none;
   vertical-align: middle;
@@ -172,4 +171,24 @@
   font-style: normal;
   font-weight: 400;
   line-height: 170%;
+}
+
+/* SearchInput.css */
+.search-input {
+  border-radius: 12px;
+  border: 1px solid #dcdbdd;
+  background: var(--White-50, #fff);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+
+  gap: 8px;
+
+  input[type='text'] {
+    all: unset;
+    display: flex;
+  }
 }
