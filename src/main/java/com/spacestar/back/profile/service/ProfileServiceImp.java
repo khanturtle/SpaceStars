@@ -27,6 +27,7 @@ import com.spacestar.back.profile.repository.PlayGameRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -48,6 +49,7 @@ public class ProfileServiceImp implements ProfileService {
         Profile profile = profileRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
+        //프로필 정보 수정
         profileRepository.save(profileInfoReqDto.updateToEntity(profile.getId(), profile.getUuid(), profileInfoReqDto));
 
         //내가 좋아하는 게임
@@ -198,4 +200,35 @@ public class ProfileServiceImp implements ProfileService {
 
         profileImageRepository.save(kakaoProfileImageReqDto.addNewImage(uuid, kakaoProfileImageReqDto));
     }
+
+    //로그인 시 프로필 존재 유무판단
+    @Transactional
+    @Override
+    public Boolean existProfile(String uuid) {
+
+        Optional<Profile> profile = profileRepository.findByUuid(uuid);
+        Optional<LikedGame> likedGame = likedGameRepository.findByUuid(uuid);
+        Optional<PlayGame> playGame = playGameRepository.findByUuid(uuid);
+
+        if (profile.isEmpty()){
+
+            //기본 프로필 생성
+            profileRepository.save(Profile.builder()
+                    .uuid(uuid)
+                    .exp(0L)
+                    .reportCount(0)
+                    .swipe(true)
+                    .build());
+
+            return false;
+        }
+
+        //좋아하는 게임, 플레이한 게임이 없을 경우
+        if (likedGame.isEmpty() || playGame.isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

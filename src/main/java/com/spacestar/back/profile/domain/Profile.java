@@ -30,21 +30,20 @@ public class Profile extends GlobalTime {
 
     private Long exp;
 
-    private Integer reportCount;
+    private int reportCount;
 
-    private Boolean swipe;
-
-    public Profile(String uuid) {
-        this.uuid = uuid;
-    }
+    private boolean swipe;
 
     @Builder
-    public Profile(Long id, String uuid,  String introduce, Long gamePreferenceId, Long mbtiId, Long exp, int reportCount, boolean swipe) {
+    public Profile(Long id, String uuid, String introduce, Long gamePreferenceId, Long mbtiId, Long exp, int reportCount, boolean swipe) {
         this.id = id;
         this.uuid = uuid;
         this.introduce = introduce;
         this.gamePreferenceId = gamePreferenceId;
         this.mbtiId = mbtiId;
+        this.exp = exp;
+        this.reportCount = reportCount;
         this.swipe = swipe;
     }
+
 }

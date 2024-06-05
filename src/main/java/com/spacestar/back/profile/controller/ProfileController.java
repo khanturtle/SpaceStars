@@ -112,4 +112,11 @@ public class ProfileController {
         return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_ADD_SUCCESS);
     }
 
+    @Operation(summary = "로그인 시 프로필 존재 유무 확인")
+    @GetMapping("/exist")
+    public ResponseEntity<Boolean> existProfile(@RequestHeader("UUID") String uuid){
+
+            return new ResponseEntity<>(ResponseSuccess.PROFILE_EXIST_SUCCESS, profileService.existProfile(uuid));
+    }
+
 }

@@ -9,7 +9,7 @@ public class ProfileInfoResVo {
     private Long gamePreferenceId;
     private Long mbtiId;
     private Long exp;
-    private Integer reportCount;
-    private Boolean swipe;
+    private int reportCount;
+    private boolean swipe;
 
 }

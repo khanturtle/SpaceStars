@@ -16,8 +16,8 @@ public class ProfileInfoResDto {
     private Long gamePreferenceId;
     private Long mbtiId;
     private Long exp;
-    private Integer reportCount;
-    private Boolean swipe;
+    private int reportCount;
+    private boolean swipe;
 
     public static ProfileInfoResDto toDto(Profile profile) {
 
@@ -27,7 +27,7 @@ public class ProfileInfoResDto {
                 .mbtiId(profile.getMbtiId())
                 .exp(profile.getExp())
                 .reportCount(profile.getReportCount())
-                .swipe(profile.getSwipe())
+                .swipe(profile.isSwipe())
                 .build();
     }
 }

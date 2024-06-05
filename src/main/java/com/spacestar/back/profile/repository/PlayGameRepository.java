@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PlayGameRepository extends JpaRepository<PlayGame, Long> {
 
@@ -17,4 +18,6 @@ public interface PlayGameRepository extends JpaRepository<PlayGame, Long> {
     void deleteAllByUuid(@Param("uuid") String uuid);
 
     List<PlayGame> findAllByUuid(String uuid);
+
+    Optional<PlayGame> findByUuid(String uuid);
 }
