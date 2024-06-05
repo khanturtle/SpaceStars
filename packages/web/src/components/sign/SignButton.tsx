@@ -3,15 +3,7 @@
 import { KakaoButton } from '@packages/ui'
 import { signIn } from 'next-auth/react'
 
-const Button = ({
-  type,
-  label = '',
-}: {
-  type?: 'sign-in' | 'sign-up'
-  label: string
-}) => {
-  const typeLabel = type === 'sign-in' ? '카카오 로그인' : '카카오 회원가입'
-
+const Button = ({ label = '' }: { label: string }) => {
   // TODO: 카카오 인증 팝업
   // useEffect(() => {
   //   const handleMessage = async (event) => {
@@ -44,6 +36,7 @@ const Button = ({
     const popupLeft = window.screen.width / 2 - popupWidth / 2
     const popupTop = window.screen.height / 2 - popupHeight / 2
 
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const popup = window.open(
       kakaoLoginUrl,
       'kakaoLoginPopup',
