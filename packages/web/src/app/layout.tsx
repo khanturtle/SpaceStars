@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 
-import Navbar from '@/components/Navbar'
 import AuthSession from '@/components/providers/session-provider'
 
 import '@/styles/globals.css'
 
 import '@packages/ui/index.css'
+import Navbar from '@/components/Navbar/Navbar'
 
 export const metadata: Metadata = {
   title: 'Dreaming-Stars',
@@ -23,8 +23,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <AuthSession>
-          <Navbar />
-
+          <Navbar isLogo />
           {children}
           {modal}
         </AuthSession>
