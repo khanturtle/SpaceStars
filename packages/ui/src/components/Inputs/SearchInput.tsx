@@ -8,7 +8,7 @@ export interface IconInputProps
 }
 
 const IconInput = ({
-  className,
+  className = '',
   fill = '#84818A',
   ...props
 }: IconInputProps) => {
