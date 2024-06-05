@@ -4,16 +4,13 @@ import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
+import com.spacestar.back.profile.dto.res.ProfileSwipeResDto;
 import com.spacestar.back.profile.service.ProfileService;
 import com.spacestar.back.profile.vo.req.KakaoProfileImageReqVo;
 import com.spacestar.back.profile.vo.req.ProfileImageReqVo;
-import com.spacestar.back.profile.vo.res.ProfileImageListResVo;
-import com.spacestar.back.profile.vo.res.ProfileMainImageResVo;
+import com.spacestar.back.profile.vo.res.*;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
-import com.spacestar.back.profile.vo.res.ProfileInfoResVo;
 import com.spacestar.back.profile.vo.req.ProfileInfoReqVo;
-import com.spacestar.back.profile.vo.res.ProfileLikedGameResVo;
-import com.spacestar.back.profile.vo.res.ProfilePlayGameInfoResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -117,6 +114,23 @@ public class ProfileController {
     public ResponseEntity<Boolean> existProfile(@RequestHeader("UUID") String uuid){
 
             return new ResponseEntity<>(ResponseSuccess.PROFILE_EXIST_SUCCESS, profileService.existProfile(uuid));
+    }
+
+    @Operation(summary = "스와이프 추천 여부 조회")
+    @GetMapping("/swipe/recommend")
+    public ResponseEntity<ProfileSwipeResVo> swipeRecommend(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_SELECT_SUCCESS,
+                mapper.map(profileService.findSwipeRecommend(uuid), ProfileSwipeResVo.class));
+    }
+
+    @Operation(summary = "스와이프 추천 여부 변경")
+    @PatchMapping("/swipe/recommend/update")
+    public ResponseEntity<Void> swipeRecommendUpdate(@RequestHeader("UUID") String uuid,
+                                                     @RequestBody ProfileSwipeResVo profileSwipeResVo) {
+
+        profileService.updateSwipeRecommend(uuid, mapper.map(profileSwipeResVo, ProfileSwipeResDto.class));
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_UPDATE_SUCCESS);
     }
 
 }

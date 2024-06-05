@@ -6,8 +6,7 @@ import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.domain.ProfileImage;
 import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
-import com.spacestar.back.profile.dto.res.ProfileImageListResDto;
-import com.spacestar.back.profile.dto.res.ProfileMainImageResDto;
+import com.spacestar.back.profile.dto.res.*;
 import com.spacestar.back.profile.repository.ProfileImageRepository;
 import com.spacestar.back.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +18,6 @@ import com.spacestar.back.profile.domain.LikedGame;
 import com.spacestar.back.profile.domain.PlayGame;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
 import com.spacestar.back.profile.dto.req.ProfilePlayGameInfoReqDto;
-import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
-import com.spacestar.back.profile.dto.res.ProfileLikedGameResDto;
-import com.spacestar.back.profile.dto.res.ProfilePlayGameInfoResDto;
 import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
 
@@ -229,6 +225,29 @@ public class ProfileServiceImp implements ProfileService {
         }
 
         return true;
+    }
+
+    //스와이프 추천 여부 조회
+    @Override
+    public ProfileSwipeResDto findSwipeRecommend(String uuid) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        return ProfileSwipeResDto.builder()
+                .swipe(profile.isSwipe())
+                .build();
+    }
+
+    //스와이프 추천 여부 변경
+    @Transactional
+    @Override
+    public void updateSwipeRecommend(String uuid, ProfileSwipeResDto profileSwipeResDto) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        profileRepository.updateSwipe(uuid,profileSwipeResDto.isSwipe());
     }
 
 }

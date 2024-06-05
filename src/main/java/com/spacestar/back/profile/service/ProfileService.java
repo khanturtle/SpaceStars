@@ -27,4 +27,8 @@ public interface ProfileService {
     void addProfileImage(String uuid, KakaoProfileImageReqDto kakaoProfileImageReqDto);
 
     Boolean existProfile(String uuid);
+
+    ProfileSwipeResDto findSwipeRecommend(String uuid);
+
+    void updateSwipeRecommend(String uuid, ProfileSwipeResDto profileSwipeResDto);
 }
