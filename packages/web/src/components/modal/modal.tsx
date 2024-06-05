@@ -32,7 +32,7 @@ function Modal({
     <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[1000] inset-0 h-full">
       <dialog
         ref={dialogRef}
-        className={`w-[30%]
+        className={`w-[50%]
                   flex flex-col items-center justify-around
                   fixed inset-0 
                   bg-[url('/images/BG.svg')] bg-cover bg-center bg-no-repeat 

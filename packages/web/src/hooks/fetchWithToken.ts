@@ -1,7 +1,7 @@
 export async function fetchWithToken(
   url: string,
-  options: RequestInit = {},
   accessToken: string,
+  options: RequestInit = {},
 ) {
   const headers = new Headers(options.headers || {})
 
