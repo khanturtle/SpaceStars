@@ -5,13 +5,13 @@ import { useSearchParams } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'
 
 import { Button, Checkbox, Input, Select } from '@packages/ui'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useFormState } from 'react-dom'
 
-import createUser from '@/apis/createUser'
+import { checkNickname } from '@/apis/auth'
+import { createUser } from '@/apis/createUser'
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
-import { useFormInput } from '@/hooks/useFormInput'
 
 // MALE,FEMALE,OTHER
 const genderOptions = [
@@ -24,14 +24,12 @@ const genderOptions = [
 const NicknameInput = ({
   value,
   onChange,
+  onClick,
 }: {
   value: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onClick: () => void
 }) => {
-  const handleClick = () => {
-    console.log('닉네임 중복 검사', value)
-  }
-
   return (
     <div className={`${styles['input-box']} ${styles.nickname}`}>
       <Input
@@ -41,6 +39,7 @@ const NicknameInput = ({
         className={styles['input-box']}
         value={value}
         onChange={onChange}
+        onBlur={onChange}
       />
       <Button
         label="중복검사"
@@ -48,7 +47,7 @@ const NicknameInput = ({
         backgroundColor="#202020"
         primary
         className="h-[53px]"
-        onClick={handleClick}
+        onClick={onClick}
       />
     </div>
   )
@@ -60,31 +59,45 @@ const initialState = {
 }
 
 export default function AdditionalInfoForm() {
-  const { data: session, status } = useSession()
-  console.log(session, status)
-
   const query = useSearchParams()
 
   const imageUrl = query.get('profileImage') || ''
+  const email = query.get('email') || ''
 
-  const email = useFormInput(query.get('email') || '')
-  const nickname = useFormInput(query.get('nickname') || '')
+  const [nickname, setNickname] = useState<string>(query.get('nickname') || '')
+  const [isAvailable, setIsAvailable] = useState<boolean>(false)
 
   const [gender, setGender] = useState('')
   const [birth, setBirth] = useState<Date | undefined>(new Date())
   const [isChecked, setIsChecked] = useState(false)
 
-  const createUserWithImage = createUser.bind(null, imageUrl)
-  const [state, formAction] = useFormState(createUserWithImage, initialState)
+  const createUserWithMore = createUser.bind(null, imageUrl, isAvailable)
+  const [state, formAction] = useFormState(createUserWithMore, initialState)
+
+  const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value)
+    setIsAvailable(false)
+  }
+
+  const handleCheckNickname = async () => {
+    // TODO: 여기에 닉네임 유효성 검사도 넣어야 함.
+    const isNicknameAvailable = await checkNickname(nickname)
+    setIsAvailable(isNicknameAvailable)
+
+    // FIXME: alert 말고 다른 걸로 유효성 표시
+    if (isNicknameAvailable) {
+      await alert('사용할 수 있는 닉네임입니다.')
+    } else {
+      await alert('이미 사용중인 닉네임입니다.')
+    }
+  }
 
   useEffect(() => {
-    console.log(state)
-
     if (state.status === 200) {
       // 회원가입 성공 후 로그인
-      signIn('kakao', { redirect: true, callbackUrl: '/' })
+      signIn('kakao', { redirect: true, callbackUrl: '/dashboard' })
     } else if (state.status !== 0) {
-      // TODO: 유효성 에러 표시
+      // FIXME: 유효성 에러 표시
       alert(state.message)
     }
   }, [state])
@@ -97,13 +110,14 @@ export default function AdditionalInfoForm() {
           label="이메일"
           disabled
           className={styles['input-box']}
-          value={email.value as string}
+          value={email}
         />
-        <input type="hidden" name="email" value={email.value as string} />
+        <input type="hidden" name="email" value={email} />
 
         <NicknameInput
-          value={nickname.value as string}
-          onChange={nickname.onChange}
+          value={nickname}
+          onChange={handleChangeNickname}
+          onClick={handleCheckNickname}
         />
 
         <Select
