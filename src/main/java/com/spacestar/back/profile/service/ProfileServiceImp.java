@@ -4,9 +4,9 @@ import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.domain.ProfileImage;
+import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
-import com.spacestar.back.profile.dto.res.ProfileImageListResDto;
-import com.spacestar.back.profile.dto.res.ProfileMainImageResDto;
+import com.spacestar.back.profile.dto.res.*;
 import com.spacestar.back.profile.repository.ProfileImageRepository;
 import com.spacestar.back.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +18,12 @@ import com.spacestar.back.profile.domain.LikedGame;
 import com.spacestar.back.profile.domain.PlayGame;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
 import com.spacestar.back.profile.dto.req.ProfilePlayGameInfoReqDto;
-import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
-import com.spacestar.back.profile.dto.res.ProfileLikedGameResDto;
-import com.spacestar.back.profile.dto.res.ProfilePlayGameInfoResDto;
 import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -47,6 +45,7 @@ public class ProfileServiceImp implements ProfileService {
         Profile profile = profileRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
+        //프로필 정보 수정
         profileRepository.save(profileInfoReqDto.updateToEntity(profile.getId(), profile.getUuid(), profileInfoReqDto));
 
         //내가 좋아하는 게임
@@ -129,14 +128,12 @@ public class ProfileServiceImp implements ProfileService {
 
     }
 
+    //프로필 이미지 수정
     @Transactional
     @Override
     public void updateProfileImages(String uuid, List<ProfileImageReqDto> profileImageReqDtos) {
 
-        Profile profile = profileRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
-
-        List<ProfileImage> profileImages = profileImageRepository.findAllByProfile(profile);
+        List<ProfileImage> profileImages = profileImageRepository.findAllByUuid(uuid);
 
         //사진 삭제
         for (ProfileImage profileImage : profileImages) {
@@ -158,41 +155,105 @@ public class ProfileServiceImp implements ProfileService {
             for (ProfileImage profileImage : profileImages) {
                 //사진 존재
                 if (profileImageReqDto.getProfileImageUrl().equals(profileImage.getProfileImageUrl())) {
-                    profileImageRepository.save(profileImageReqDto.updateImage(profileImage, profileImageReqDto));
+                    profileImageRepository.save(profileImageReqDto.updateImage(uuid,profileImage, profileImageReqDto));
                     check = true;
                 }
             }
             //사진 존재하지 않음
             if (!check) {
-                profileImageRepository.save(profileImageReqDto.addNewImage(profile, profileImageReqDto));
+                profileImageRepository.save(profileImageReqDto.addNewImage(uuid, profileImageReqDto));
 
             }
         }
     }
 
+    //프로필 이미지 리스트 조회
     @Override
     public List<ProfileImageListResDto> findProfileImageList(String uuid) {
-
-        Profile profile = profileRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
         List<ProfileImageListResDto> profileImageListResDtos = new ArrayList<>();
 
         int i = 0;
-        for (ProfileImage profileImage : profileImageRepository.findAllByProfile(profile)) {
+        for (ProfileImage profileImage : profileImageRepository.findAllByUuid(uuid)) {
             profileImageListResDtos.add(ProfileImageListResDto.convertToDto(i, profileImage));
             i++;
         }
         return profileImageListResDtos;
     }
 
+    //프로필 메인 이미지 조회
     @Override
     public ProfileMainImageResDto findMainProfileImage(String uuid) {
+
+        return mapper.map(
+                profileImageRepository.findByUuidAndMain(uuid, true), ProfileMainImageResDto.class);
+    }
+
+    // 회원가입 시 카카오 프로필 사진 저장
+    @Transactional
+    @Override
+    public void addProfileImage(String uuid, KakaoProfileImageReqDto kakaoProfileImageReqDto) {
+
+        profileImageRepository.save(kakaoProfileImageReqDto.addNewImage(uuid, kakaoProfileImageReqDto));
+    }
+
+    //로그인 시 프로필 존재 유무판단
+    @Transactional
+    @Override
+    public ProfileExistResDto existProfile(String uuid) {
+
+        Optional<Profile> profile = profileRepository.findByUuid(uuid);
+        List<LikedGame> likedGame = likedGameRepository.findAllByUuid(uuid);
+        List<PlayGame> playGame = playGameRepository.findAllByUuid(uuid);
+
+        if (profile.isEmpty()){
+
+            //기본 프로필 생성
+            profileRepository.save(Profile.builder()
+                    .uuid(uuid)
+                    .exp(0L)
+                    .reportCount(0)
+                    .swipe(true)
+                    .build());
+
+            return ProfileExistResDto.builder()
+                    .isExist(false)
+                    .build();
+        }
+
+        //좋아하는 게임, 플레이한 게임이 없을 경우
+        if (likedGame.isEmpty() || playGame.isEmpty()) {
+            return ProfileExistResDto.builder()
+                    .isExist(false)
+                    .build();
+        }
+
+        return ProfileExistResDto.builder()
+                .isExist(true)
+                .build();
+    }
+
+    //스와이프 추천 여부 조회
+    @Override
+    public ProfileSwipeResDto findSwipeRecommend(String uuid) {
 
         Profile profile = profileRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
-        return mapper.map(
-                profileImageRepository.findByProfileAndMain(profile, true), ProfileMainImageResDto.class);
+        return ProfileSwipeResDto.builder()
+                .swipe(profile.isSwipe())
+                .build();
     }
+
+    //스와이프 추천 여부 변경
+    @Transactional
+    @Override
+    public void updateSwipeRecommend(String uuid, ProfileSwipeResDto profileSwipeResDto) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        profileRepository.updateSwipe(uuid,profileSwipeResDto.isSwipe());
+    }
+
 }

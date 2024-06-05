@@ -17,7 +17,9 @@ public enum ResponseSuccess {
     SWIPE_RECOMMEND_UPDATE_SUCCESS(200, "스와이프 추천 여부 수정 성공"),
     PROFILE_INFO_SELECT_SUCCESS(200, "프로필 정보 조회 성공"),
     PROFILE_LIKED_GAME_SELECT_SUCCESS(200, "좋아하는 게임 조회 성공"),
-    PROFILE_PLAY_GAME_SELECT_SUCCESS(200, "내가 하는 게임 조회 성공" );
+    PROFILE_PLAY_GAME_SELECT_SUCCESS(200, "내가 하는 게임 조회 성공" ),
+    PROFILE_IMAGE_ADD_SUCCESS(200,"카카오 프로필 사진 저장 성공" ),
+    PROFILE_EXIST_SUCCESS(200,"프로필 존재 여부 조회 성공" );
 
 
 

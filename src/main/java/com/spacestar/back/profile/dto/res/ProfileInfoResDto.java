@@ -12,24 +12,22 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProfileInfoResDto {
 
-    private String nickname;
     private String introduce;
     private Long gamePreferenceId;
     private Long mbtiId;
     private Long exp;
-    private Integer reportCount;
-    private Boolean swipe;
+    private int reportCount;
+    private boolean swipe;
 
     public static ProfileInfoResDto toDto(Profile profile) {
 
         return ProfileInfoResDto.builder()
-                .nickname(profile.getNickname())
                 .introduce(profile.getIntroduce())
                 .gamePreferenceId(profile.getGamePreferenceId())
                 .mbtiId(profile.getMbtiId())
                 .exp(profile.getExp())
                 .reportCount(profile.getReportCount())
-                .swipe(profile.getSwipe())
+                .swipe(profile.isSwipe())
                 .build();
     }
 }

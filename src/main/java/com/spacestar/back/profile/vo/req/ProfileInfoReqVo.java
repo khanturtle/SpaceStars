@@ -9,10 +9,6 @@ import java.util.List;
 @Getter
 public class ProfileInfoReqVo {
 
-    @Size(min = 2, max = 20, message = "닉네임은 2 ~ 20자리까지 가능합니다.")
-    @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$", message = "한글, 영어(소문자, 대문자), 숫자만 입력 가능합니다.")
-    private String nickname;
-
     @Pattern(regexp = "^[가-힣a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"|,.<>/?~]{1,30}$", message = "30자 이내로 입력 가능합니다.")
     private String introduction;
 

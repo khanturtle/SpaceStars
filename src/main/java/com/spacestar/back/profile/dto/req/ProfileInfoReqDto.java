@@ -18,7 +18,6 @@ import java.util.List;
 @Builder
 public class ProfileInfoReqDto {
 
-    private String nickname;
     private String introduction;
 
     private Long mbtiId;
@@ -33,7 +32,6 @@ public class ProfileInfoReqDto {
         return Profile.builder()
                 .id(id)
                 .uuid(uuid)
-                .nickname(profileInfoReqDto.getNickname())
                 .introduce(profileInfoReqDto.getIntroduction())
                 .mbtiId(profileInfoReqDto.getMbtiId())
                 .gamePreferenceId(profileInfoReqDto.getGamePreferenceId())

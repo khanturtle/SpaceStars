@@ -2,16 +2,15 @@ package com.spacestar.back.profile.controller;
 
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
+import com.spacestar.back.profile.dto.res.ProfileSwipeResDto;
 import com.spacestar.back.profile.service.ProfileService;
+import com.spacestar.back.profile.vo.req.KakaoProfileImageReqVo;
 import com.spacestar.back.profile.vo.req.ProfileImageReqVo;
-import com.spacestar.back.profile.vo.res.ProfileImageListResVo;
-import com.spacestar.back.profile.vo.res.ProfileMainImageResVo;
+import com.spacestar.back.profile.vo.res.*;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
-import com.spacestar.back.profile.vo.res.ProfileInfoResVo;
 import com.spacestar.back.profile.vo.req.ProfileInfoReqVo;
-import com.spacestar.back.profile.vo.res.ProfileLikedGameResVo;
-import com.spacestar.back.profile.vo.res.ProfilePlayGameInfoResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +66,7 @@ public class ProfileController {
                         .toList());
     }
     @Operation(summary = "프로필 사진 수정 및 피드 사진 추가")
-    @PutMapping("/profile/image/update")
+    @PutMapping("/image/update")
     public ResponseEntity<Void> profileImageUpdate(@RequestHeader("UUID") String uuid,
                                                    @RequestBody List<ProfileImageReqVo> profileImageReqVo){
 
@@ -80,7 +79,7 @@ public class ProfileController {
     }
 
     @Operation(summary = "프로필 사진 리스트 조회")
-    @GetMapping("/profile/image")
+    @GetMapping("/image")
     public ResponseEntity<List<ProfileImageListResVo>> profileImageList(@RequestHeader("UUID") String uuid){
 
         return new ResponseEntity<>(
@@ -91,7 +90,7 @@ public class ProfileController {
     }
 
     @Operation(summary = "대표 프로필 사진 조회")
-    @GetMapping("/profile/image/main")
+    @GetMapping("/image/main")
     public ResponseEntity<ProfileMainImageResVo> mainProfileImage(@RequestHeader("UUID") String uuid){
 
         return new ResponseEntity<>(
@@ -99,6 +98,40 @@ public class ProfileController {
                 mapper.map(profileService.findMainProfileImage(uuid), ProfileMainImageResVo.class)
         );
 
+    }
+
+    @Operation(summary = "회원 가입 시 카카오 프로필 사진 저장")
+    @PostMapping("/image/add")
+    public ResponseEntity<Void> addProfileImage(@RequestHeader("UUID") String uuid,
+                                                @RequestBody KakaoProfileImageReqVo kakaoProfileImageReqVo) {
+
+        profileService.addProfileImage(uuid, mapper.map(kakaoProfileImageReqVo, KakaoProfileImageReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_ADD_SUCCESS);
+    }
+
+    @Operation(summary = "로그인 시 프로필 존재 유무 확인")
+    @GetMapping("/exist")
+    public ResponseEntity<ProfileExistResVo> existProfile(@RequestHeader("UUID") String uuid){
+
+            return new ResponseEntity<>(ResponseSuccess.PROFILE_EXIST_SUCCESS,
+                    mapper.map(profileService.existProfile(uuid), ProfileExistResVo.class));
+    }
+
+    @Operation(summary = "스와이프 추천 여부 조회")
+    @GetMapping("/swipe/recommend")
+    public ResponseEntity<ProfileSwipeResVo> swipeRecommend(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_SELECT_SUCCESS,
+                mapper.map(profileService.findSwipeRecommend(uuid), ProfileSwipeResVo.class));
+    }
+
+    @Operation(summary = "스와이프 추천 여부 변경")
+    @PatchMapping("/swipe/recommend/update")
+    public ResponseEntity<Void> swipeRecommendUpdate(@RequestHeader("UUID") String uuid,
+                                                     @RequestBody ProfileSwipeResVo profileSwipeResVo) {
+
+        profileService.updateSwipeRecommend(uuid, mapper.map(profileSwipeResVo, ProfileSwipeResDto.class));
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_UPDATE_SUCCESS);
     }
 
 }
