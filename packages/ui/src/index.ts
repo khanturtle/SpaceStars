@@ -14,6 +14,7 @@ export {
   ViewCardIcon,
   ViewListIcon,
   SearchIcon,
+  LogoName,
 } from './components/Icons'
 
 export { default as Avatar } from './components/Avatar/Avatar'
