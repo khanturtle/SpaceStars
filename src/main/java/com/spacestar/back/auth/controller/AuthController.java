@@ -1,16 +1,13 @@
 package com.spacestar.back.auth.controller;
 
-import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
-import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.service.AuthService;
-import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
 import com.spacestar.back.auth.vo.req.MemberJoinReqVo;
 import com.spacestar.back.auth.vo.req.MemberLoginReqVo;
 import com.spacestar.back.auth.vo.res.MemberLoginResVo;
-import com.spacestar.back.auth.vo.res.NicknameResVo;
+import com.spacestar.back.auth.vo.res.NicknameExistResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,9 +47,9 @@ public class AuthController {
 
     @Operation(summary = "닉네임 중복 확인")
     @GetMapping("/nickname/{nickname}")
-    public ResponseEntity<NicknameResVo> checkNickname(@PathVariable String nickname) {
+    public ResponseEntity<NicknameExistResVo> checkNickname(@PathVariable String nickname) {
 
         return new ResponseEntity<>(ResponseSuccess.NICKNAME_SUCCESS,
-                mapper.map(authService.checkNickname(nickname), NicknameResVo.class));
+                mapper.map(authService.checkNickname(nickname), NicknameExistResVo.class));
     }
 }

@@ -3,6 +3,7 @@ package com.spacestar.back.auth.controller;
 import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.service.MemberService;
 import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
+import com.spacestar.back.auth.vo.res.NicknameResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,6 +48,14 @@ public class MemberController {
 
         memberService.updateMemberInfo(uuid, mapper.map(memberInfoReqVo, MemberInfoReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
+    }
+
+    @Operation(summary = "uuid로 닉네임 조회")
+    @GetMapping("/nickname/{uuid}")
+    public ResponseEntity<NicknameResVo> getNickname(@PathVariable String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.NICKNAME_SELECT_SUCCESS,
+                mapper.map(memberService.getNickname(uuid), NicknameResVo.class));
     }
 
 }

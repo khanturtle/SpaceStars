@@ -1,10 +1,9 @@
 package com.spacestar.back.auth.vo.res;
 
-import lombok.*;
+import lombok.Getter;
 
 @Getter
 public class NicknameResVo {
 
-    private boolean isExist;
-
+    private String nickname;
 }

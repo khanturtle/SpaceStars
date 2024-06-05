@@ -15,7 +15,8 @@ public enum ResponseSuccess {
     WITHDRAWAL_SUCCESS(200, "자발적 회원탈퇴 성공"),
     WITHDRAWAL_FORCE_SUCCESS(200, "회원 영구 탈퇴 성공"),
     MEMBER_INFO_UPDATE_SUCCESS(200, "회원 정보 수정 성공"),
-    NICKNAME_SUCCESS(200,"닉네임 중복 확인 성공" );
+    NICKNAME_SUCCESS(200,"닉네임 중복 확인 성공" ),
+    NICKNAME_SELECT_SUCCESS(200,"닉네임 조회 성공" );
 
 
 
