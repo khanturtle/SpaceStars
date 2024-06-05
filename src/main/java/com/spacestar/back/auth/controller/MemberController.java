@@ -4,6 +4,7 @@ import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.service.MemberService;
 import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
 import com.spacestar.back.auth.vo.res.NicknameResVo;
+import com.spacestar.back.auth.vo.res.UuidResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,6 +57,14 @@ public class MemberController {
 
         return new ResponseEntity<>(ResponseSuccess.NICKNAME_SELECT_SUCCESS,
                 mapper.map(memberService.getNickname(uuid), NicknameResVo.class));
+    }
+
+    @Operation(summary = "닉네임으로 uuid 찾기")
+    @GetMapping("/uuid/{nickname}")
+    public ResponseEntity<UuidResVo> getUuid(@PathVariable String nickname){
+
+        return new ResponseEntity<>(ResponseSuccess.UUID_SELECT_SUCCESS,
+                mapper.map(memberService.getUuid(nickname), UuidResVo.class));
     }
 
 }
