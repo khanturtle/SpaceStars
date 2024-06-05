@@ -1,9 +1,9 @@
 package com.spacestar.back.profile.service;
 
+
+import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
-import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
-import com.spacestar.back.profile.dto.res.ProfileLikedGameResDto;
-import com.spacestar.back.profile.dto.res.ProfilePlayGameInfoResDto;
+import com.spacestar.back.profile.dto.res.*;
 
 import java.util.List;
 
@@ -15,4 +15,10 @@ public interface ProfileService {
     ProfileLikedGameResDto getLikedGame(String uuid);
 
     List<ProfilePlayGameInfoResDto> getPlayGame(String uuid);
+
+    void updateProfileImages(String uuid, List<ProfileImageReqDto> profileImageReqDtos);
+
+    List<ProfileImageListResDto> findProfileImageList(String uuid);
+
+    ProfileMainImageResDto findMainProfileImage(String uuid);
 }

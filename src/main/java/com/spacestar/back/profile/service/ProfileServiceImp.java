@@ -1,9 +1,21 @@
 package com.spacestar.back.profile.service;
 
 import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.profile.domain.Profile;
+import com.spacestar.back.profile.domain.ProfileImage;
+import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
+import com.spacestar.back.profile.dto.res.ProfileImageListResDto;
+import com.spacestar.back.profile.dto.res.ProfileMainImageResDto;
+import com.spacestar.back.profile.repository.ProfileImageRepository;
+import com.spacestar.back.profile.repository.ProfileRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.spacestar.back.profile.domain.LikedGame;
 import com.spacestar.back.profile.domain.PlayGame;
-import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
 import com.spacestar.back.profile.dto.req.ProfilePlayGameInfoReqDto;
 import com.spacestar.back.profile.dto.res.ProfileInfoResDto;
@@ -11,13 +23,6 @@ import com.spacestar.back.profile.dto.res.ProfileLikedGameResDto;
 import com.spacestar.back.profile.dto.res.ProfilePlayGameInfoResDto;
 import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
-import com.spacestar.back.profile.repository.ProfileRepository;
-import com.spacestar.back.profile.vo.req.ProfileInfoReqVo;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.spacestar.back.global.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,8 @@ public class ProfileServiceImp implements ProfileService {
     private final ProfileRepository profileRepository;
     private final LikedGameRepository likedGameRepository;
     private final PlayGameRepository playGameRepository;
+    private final ProfileImageRepository profileImageRepository;
+    private final ModelMapper mapper;
 
     //프로필 정보 수정
     @Transactional
@@ -45,8 +52,7 @@ public class ProfileServiceImp implements ProfileService {
         //내가 좋아하는 게임
         if (profileInfoReqDto.getLikedGameIds().isEmpty()) {
             likedGameRepository.deleteAllByUuid(uuid);
-        }
-        else{
+        } else {
             //좋아하는 게임 삭제
             likedGameRepository.deleteAllByUuid(uuid);
 
@@ -63,21 +69,19 @@ public class ProfileServiceImp implements ProfileService {
         }
 
         //내가 플레이한 게임
-        if (profileInfoReqDto.getPlayGameIds().isEmpty()){
+        if (profileInfoReqDto.getPlayGameIds().isEmpty()) {
             playGameRepository.deleteAllByUuid(uuid);
-        }
-        else{
+        } else {
             //플레이한 게임 삭제
             playGameRepository.deleteAllByUuid(uuid);
 
             //플레이한 게임 추가
-            for (ProfilePlayGameInfoReqDto profilePlayGameInfoReqDto : profileInfoReqDto.getPlayGameIds()){
+            for (ProfilePlayGameInfoReqDto profilePlayGameInfoReqDto : profileInfoReqDto.getPlayGameIds()) {
                 //메인 게임 수정
                 if (profileInfoReqDto.getMainGameId().equals(profilePlayGameInfoReqDto.getGameId())) {
-                    playGameRepository.save(profilePlayGameInfoReqDto.toEntity(uuid, true,profilePlayGameInfoReqDto));
-                }
-                else{
-                    playGameRepository.save(profilePlayGameInfoReqDto.toEntity(uuid, false,profilePlayGameInfoReqDto));
+                    playGameRepository.save(profilePlayGameInfoReqDto.toEntity(uuid, true, profilePlayGameInfoReqDto));
+                } else {
+                    playGameRepository.save(profilePlayGameInfoReqDto.toEntity(uuid, false, profilePlayGameInfoReqDto));
                 }
             }
         }
@@ -93,22 +97,23 @@ public class ProfileServiceImp implements ProfileService {
         return ProfileInfoResDto.toDto(profile);
     }
 
-    //내가 좋아하는 게임 조회
+    //좋아하는 게임 조회
     @Override
     public ProfileLikedGameResDto getLikedGame(String uuid) {
 
-            List<LikedGame> likedGameIds = likedGameRepository.findAllByUuid(uuid);
-            List<Long> likedGameIdList = new ArrayList<>();
+        List<LikedGame> likedGameIds = likedGameRepository.findAllByUuid(uuid);
+        List<Long> likedGameIdList = new ArrayList<>();
 
-            for (LikedGame likedGame : likedGameIds){
-                likedGameIdList.add(likedGame.getGameId());
-            }
+        for (LikedGame likedGame : likedGameIds) {
+            likedGameIdList.add(likedGame.getGameId());
+        }
 
-            return ProfileLikedGameResDto.builder()
-                    .likedGameIdList(likedGameIdList)
-                    .build();
+        return ProfileLikedGameResDto.builder()
+                .likedGameIdList(likedGameIdList)
+                .build();
     }
 
+    // 내가 하는 게임 조회
     @Override
     public List<ProfilePlayGameInfoResDto> getPlayGame(String uuid) {
 
@@ -116,10 +121,78 @@ public class ProfileServiceImp implements ProfileService {
         List<ProfilePlayGameInfoResDto> profilePlayGameInfoResDtoList = new ArrayList<>();
 
         int index = 0;
-        for (PlayGame playGame : playGameIds){
-            profilePlayGameInfoResDtoList.add(ProfilePlayGameInfoResDto.toDto(playGame,index));
+        for (PlayGame playGame : playGameIds) {
+            profilePlayGameInfoResDtoList.add(ProfilePlayGameInfoResDto.toDto(playGame, index));
             index++;
         }
         return profilePlayGameInfoResDtoList;
+
+    }
+
+    @Transactional
+    @Override
+    public void updateProfileImages(String uuid, List<ProfileImageReqDto> profileImageReqDtos) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        List<ProfileImage> profileImages = profileImageRepository.findAllByProfile(profile);
+
+        //사진 삭제
+        for (ProfileImage profileImage : profileImages) {
+            boolean check = false;
+            for (ProfileImageReqDto profileImageReqDto : profileImageReqDtos) {
+                if (profileImage.getProfileImageUrl().equals(profileImageReqDto.getProfileImageUrl())) {
+                    check = true;
+                    break;
+                }
+            }
+            if (!check) {
+                profileImageRepository.delete(profileImage);
+            }
+        }
+
+        // 사진 저장
+        for (ProfileImageReqDto profileImageReqDto : profileImageReqDtos) {
+            boolean check = false;
+            for (ProfileImage profileImage : profileImages) {
+                //사진 존재
+                if (profileImageReqDto.getProfileImageUrl().equals(profileImage.getProfileImageUrl())) {
+                    profileImageRepository.save(profileImageReqDto.updateImage(profileImage, profileImageReqDto));
+                    check = true;
+                }
+            }
+            //사진 존재하지 않음
+            if (!check) {
+                profileImageRepository.save(profileImageReqDto.addNewImage(profile, profileImageReqDto));
+
+            }
+        }
+    }
+
+    @Override
+    public List<ProfileImageListResDto> findProfileImageList(String uuid) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        List<ProfileImageListResDto> profileImageListResDtos = new ArrayList<>();
+
+        int i = 0;
+        for (ProfileImage profileImage : profileImageRepository.findAllByProfile(profile)) {
+            profileImageListResDtos.add(ProfileImageListResDto.convertToDto(i, profileImage));
+            i++;
+        }
+        return profileImageListResDtos;
+    }
+
+    @Override
+    public ProfileMainImageResDto findMainProfileImage(String uuid) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        return mapper.map(
+                profileImageRepository.findByProfileAndMain(profile, true), ProfileMainImageResDto.class);
     }
 }
