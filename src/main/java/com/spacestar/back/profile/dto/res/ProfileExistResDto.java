@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProfileExistResDto {
 
-    private boolean isExist;
+    private Boolean isExist;
 }

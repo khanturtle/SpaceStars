@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class ProfileExistResVo {
 
-    private boolean isExist;
+    private Boolean isExist;
 }
