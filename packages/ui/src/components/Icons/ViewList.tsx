@@ -22,8 +22,8 @@ const ViewList = ({
       {...props}
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M21 9H8V6H21V9V9ZM21 14H8V11H21V14V14ZM21 19H8V16H21V19V19ZM6 19H3V16H6V19V19ZM6 6V9H3V6H6V6ZM6 14H3V11H6V14V14Z"
         fill={fill}
       />
