@@ -1,7 +1,6 @@
 package com.spacestar.back.profile.service;
 
 
-import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
 import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
@@ -26,7 +25,7 @@ public interface ProfileService {
 
     void addProfileImage(String uuid, KakaoProfileImageReqDto kakaoProfileImageReqDto);
 
-    Boolean existProfile(String uuid);
+    ProfileExistResDto existProfile(String uuid);
 
     ProfileSwipeResDto findSwipeRecommend(String uuid);
 

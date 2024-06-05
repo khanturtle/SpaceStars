@@ -111,9 +111,10 @@ public class ProfileController {
 
     @Operation(summary = "로그인 시 프로필 존재 유무 확인")
     @GetMapping("/exist")
-    public ResponseEntity<Boolean> existProfile(@RequestHeader("UUID") String uuid){
+    public ResponseEntity<ProfileExistResVo> existProfile(@RequestHeader("UUID") String uuid){
 
-            return new ResponseEntity<>(ResponseSuccess.PROFILE_EXIST_SUCCESS, profileService.existProfile(uuid));
+            return new ResponseEntity<>(ResponseSuccess.PROFILE_EXIST_SUCCESS,
+                    mapper.map(profileService.existProfile(uuid), ProfileExistResVo.class));
     }
 
     @Operation(summary = "스와이프 추천 여부 조회")

@@ -18,6 +18,4 @@ public interface PlayGameRepository extends JpaRepository<PlayGame, Long> {
     void deleteAllByUuid(@Param("uuid") String uuid);
 
     List<PlayGame> findAllByUuid(String uuid);
-
-    Optional<PlayGame> findByUuid(String uuid);
 }

@@ -200,11 +200,11 @@ public class ProfileServiceImp implements ProfileService {
     //로그인 시 프로필 존재 유무판단
     @Transactional
     @Override
-    public Boolean existProfile(String uuid) {
+    public ProfileExistResDto existProfile(String uuid) {
 
         Optional<Profile> profile = profileRepository.findByUuid(uuid);
-        Optional<LikedGame> likedGame = likedGameRepository.findByUuid(uuid);
-        Optional<PlayGame> playGame = playGameRepository.findByUuid(uuid);
+        List<LikedGame> likedGame = likedGameRepository.findAllByUuid(uuid);
+        List<PlayGame> playGame = playGameRepository.findAllByUuid(uuid);
 
         if (profile.isEmpty()){
 
@@ -216,15 +216,21 @@ public class ProfileServiceImp implements ProfileService {
                     .swipe(true)
                     .build());
 
-            return false;
+            return ProfileExistResDto.builder()
+                    .isExist(false)
+                    .build();
         }
 
         //좋아하는 게임, 플레이한 게임이 없을 경우
         if (likedGame.isEmpty() || playGame.isEmpty()) {
-            return false;
+            return ProfileExistResDto.builder()
+                    .isExist(false)
+                    .build();
         }
 
-        return true;
+        return ProfileExistResDto.builder()
+                .isExist(true)
+                .build();
     }
 
     //스와이프 추천 여부 조회
