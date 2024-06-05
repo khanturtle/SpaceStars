@@ -11,9 +11,11 @@ import styles from './modal.module.css'
 function Modal({
   className,
   children,
+  onCloseRoute,
 }: {
   className?: string
   children: React.ReactNode
+  onCloseRoute?: string
 }) {
   const router = useRouter()
   const dialogRef = useRef<ElementRef<'dialog'>>(null)
@@ -25,7 +27,11 @@ function Modal({
   }, [])
 
   function onDismiss() {
-    router.back()
+    if (onCloseRoute) {
+      router.replace(onCloseRoute)
+    } else {
+      router.back()
+    }
   }
 
   return (
