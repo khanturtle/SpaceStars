@@ -11,9 +11,11 @@ import styles from './modal.module.css'
 function Modal({
   className,
   children,
+  onCloseRoute,
 }: {
   className?: string
   children: React.ReactNode
+  onCloseRoute?: string
 }) {
   const router = useRouter()
   const dialogRef = useRef<ElementRef<'dialog'>>(null)
@@ -25,14 +27,18 @@ function Modal({
   }, [])
 
   function onDismiss() {
-    router.back()
+    if (onCloseRoute) {
+      router.replace(onCloseRoute)
+    } else {
+      router.back()
+    }
   }
 
   return (
     <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[1000] inset-0 h-full">
       <dialog
         ref={dialogRef}
-        className={`w-[30%]
+        className={`w-[50%]
                   flex flex-col items-center justify-around
                   fixed inset-0 
                   bg-[url('/images/BG.svg')] bg-cover bg-center bg-no-repeat 

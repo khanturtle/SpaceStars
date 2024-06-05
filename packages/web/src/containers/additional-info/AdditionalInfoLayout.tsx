@@ -8,7 +8,7 @@ export default function AdditionalInfoLayout({
   className?: string
 }) {
   return (
-    <FormLayout className={` ${className}`}>
+    <FormLayout className={`${className}`}>
       <FormLayout.Legend
         title="SIGN UP"
         description={`회원가입을 위해\n 아래의 항목을 입력해주세요.`}
