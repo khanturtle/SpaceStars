@@ -8,6 +8,34 @@
   left: 0;
 
   transition: width 0.3s ease;
+
+  & ul {
+    padding: 40px 60px;
+
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+  }
+
+  & li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 0px 11px 8px 0px;
+
+    font-family: 'Work Sans';
+    font-size: 14px;
+    font-style: normal;
+    line-height: normal;
+  }
+}
+.i {
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
 }
 /* 
 @media (max-width: 768px) {
