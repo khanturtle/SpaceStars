@@ -45,13 +45,6 @@
 } 
 */
 
-/* 메인 콘텐츠 스타일 */
-.main-content {
-  flex: 1;
-  height: 100%;
-  overflow: auto;
-}
-
 .rightSidebar {
   background-color: blue;
 

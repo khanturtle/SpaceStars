@@ -9,7 +9,7 @@
 }
 .card {
   display: flex;
-  width: 355px;
+  width: 32%;
   padding: 19px 29px;
   flex-direction: column;
   align-items: flex-start;
@@ -38,4 +38,18 @@
   align-items: center;
 
   border-radius: 15px;
+}
+
+.gameList {
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.gameList::-webkit-scrollbar {
+  display: none;
 }
