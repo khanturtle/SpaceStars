@@ -1,13 +1,5 @@
-import {
-  Badge,
-  TeamCardJoinButton,
-  TeamCardTitle,
-  TeamCardUserAvatar,
-} from '@packages/ui'
-
-import Teams from './state'
-
-import TeamBox from '@/containers/team-list/TeamBox'
+import { getGames } from '@/apis/game'
+import GameSelectBox from '@/containers/team-list/GameSelectBox'
 
 // TODO: 팀 리스트 받아오기
 
@@ -16,19 +8,26 @@ type RoomType = {
   typeValue: '모집완료' | '모집중'
 }
 
-export default function page() {
+export default async function page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string }
+}) {
   function getRoomTypeInfo(isFinished: boolean): RoomType {
     return {
       roomType: isFinished ? 'closed' : 'open',
       typeValue: isFinished ? '모집완료' : '모집중',
     }
   }
+  const games = await getGames()
 
   return (
-    <div>
-      <div>
+    <>
+      <GameSelectBox games={games} searchParams={searchParams} />
+
+      {/* <div>
         <h2>카드</h2>
-        <TeamBox className="w-[1100px]">
+        <TeamBox className="">
           <TeamBox.TeamCardList type="card">
             {Teams.map((team) => {
               const { roomType, typeValue } = getRoomTypeInfo(team.isFinished)
@@ -90,7 +89,7 @@ export default function page() {
 
       <div>
         <h2>리스트</h2>
-        <TeamBox className="w-[1100px]">
+        <TeamBox className="">
           <TeamBox.TeamCardList type="list">
             {Teams.map((team) => {
               const { roomType, typeValue } = getRoomTypeInfo(team.isFinished)
@@ -149,7 +148,7 @@ export default function page() {
             })}
           </TeamBox.TeamCardList>
         </TeamBox>
-      </div>
-    </div>
+      </div> */}
+    </>
   )
 }
