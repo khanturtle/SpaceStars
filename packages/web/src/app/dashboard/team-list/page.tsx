@@ -1,5 +1,8 @@
+import { LockIcon } from '@packages/ui'
+
 import { getGames } from '@/apis/game'
 import GameSelectBox from '@/containers/team-list/GameSelectBox'
+import SubSelectBox from '@/containers/team-list/SubSelectBox'
 
 // TODO: 팀 리스트 받아오기
 
@@ -24,7 +27,30 @@ export default async function page({
   return (
     <>
       <GameSelectBox games={games} searchParams={searchParams} />
-
+      <div className="h-[20px]" />
+      <SubSelectBox>
+        <SubSelectBox.Title
+          title="Team List"
+          // FIXME: Room 갯수로 수정
+          desc={`(${games.length} Items)`}
+        />
+        <div className="flex-1" />
+        <SubSelectBox.Search />
+        {/* FIXME: query key-value 수정 */}
+        <SubSelectBox.SubButton
+          name="모집중"
+          queryKey="test1"
+          queryValue="1"
+          searchParams={searchParams}
+        />
+        <SubSelectBox.SubButton
+          name="lock"
+          icon={<LockIcon fill="#2C3149" />}
+          queryKey="test2"
+          queryValue="2"
+          searchParams={searchParams}
+        />
+      </SubSelectBox>
       {/* <div>
         <h2>카드</h2>
         <TeamBox className="">
