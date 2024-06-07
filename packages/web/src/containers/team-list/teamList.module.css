@@ -53,3 +53,41 @@
 .gameList::-webkit-scrollbar {
   display: none;
 }
+
+/* SubSelectBox.css */
+.subSelecBox {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.subTitle {
+  font-family: Poppins;
+  color: #202020;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 48px;
+}
+.subDesc {
+  font-family: Poppins;
+  color: #84818a;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.button {
+  border-radius: 12px;
+  border: 1px solid #dcdbdd;
+  background: var(--White-50, #fff);
+
+  display: flex;
+  padding: 9px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
