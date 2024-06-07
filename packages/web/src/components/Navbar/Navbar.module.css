@@ -8,11 +8,13 @@
   align-items: center;
 
   border-bottom: 1px solid #ddd;
-  background: var(--White-50, #fff);
+  background-color: var(--White-50, #fff);
 
   position: sticky;
   top: 0;
   left: 0;
+
+  z-index: 1000;
 }
 
 .nav_logo {
