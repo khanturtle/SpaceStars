@@ -19,7 +19,7 @@ const Logo = () => {
 
 export default function Navbar({ isLogo = false }: { isLogo?: boolean }) {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { status } = useSession()
 
   return (
     <nav className={`${styles.nav}`}>
