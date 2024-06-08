@@ -4,15 +4,14 @@ import { useRouter } from 'next/navigation'
 
 import { useState } from 'react'
 
-import { SearchInput } from '@packages/ui'
+import { SearchInput, ViewCardIcon, ViewListIcon } from '@packages/ui'
 
 import styles from './teamList.module.css'
 
 export const Search = () => {
   const [value, setValue] = useState<string>('')
 
-  const handleSearch = (e) => {
-    e.preventDefault()
+  const handleSearch = () => {
     console.log(value)
   }
 
@@ -54,6 +53,40 @@ export const SubButton = ({
   )
 }
 
-export const ListToggle = () => {
-  return <div>ㅇㅅㅇ</div>
+export const ViewToggle = ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string }
+}) => {
+  const view = searchParams.view === 'card' || searchParams.view === undefined
+  const router = useRouter()
+
+  const handleToggle = (newView: 'card' | 'list') => {
+    const currentParams = new URLSearchParams(searchParams)
+    currentParams.set('view', newView)
+    router.push(`?${currentParams.toString()}`)
+  }
+
+  return (
+    <div className={styles.button}>
+      <button
+        type="button"
+        aria-label="Card View"
+        onClick={() => handleToggle('card')}
+      >
+        <i>
+          <ViewCardIcon fill={view ? '#009580' : '#84818A'} />
+        </i>
+      </button>
+      <button
+        type="button"
+        aria-label="List View"
+        onClick={() => handleToggle('list')}
+      >
+        <i>
+          <ViewListIcon fill={view ? '#84818A' : '#009580'} />
+        </i>
+      </button>
+    </div>
+  )
 }

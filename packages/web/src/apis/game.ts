@@ -13,7 +13,7 @@ export async function getGames(): Promise<GameType[]> {
   try {
     const response = await fetch(`${GAME_BASE_URL}`)
     const data = await response.json()
-    if (!data) {
+    if (!data.ok) {
       throw new Error('Failed get games')
     }
     return data.result

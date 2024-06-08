@@ -34,16 +34,17 @@ export default function GameSelectBox({
   return (
     // TODO: 터치 스크롤 구현
     <div className={`${styles.gameList}`}>
-      {games.map((game) => (
-        <div key={game.index}>
-          <GameListButton
-            // FIXME: game 데이터 수정
-            item={TEMP_ITEM}
-            onClick={() => handleGame(game)}
-            isClicked={searchParams.game === game.gameName}
-          />
-        </div>
-      ))}
+      {games &&
+        games.map((game) => (
+          <div key={game.index}>
+            <GameListButton
+              // FIXME: game 데이터 수정
+              item={TEMP_ITEM}
+              onClick={() => handleGame(game)}
+              isClicked={searchParams.game === game.gameName}
+            />
+          </div>
+        ))}
     </div>
   )
 }
