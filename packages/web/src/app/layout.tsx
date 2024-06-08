@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 
+import '@packages/ui/index.css'
+
 import '@/styles/globals.css'
 import '@/styles/fonts.css'
-
-import '@packages/ui/index.css'
+import '@/styles/colors.css'
 
 import Navbar from '@/components/Navbar/Navbar'
 import AuthSession from '@/components/providers/session-provider'

@@ -2,13 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-primary: #823bf7;
-  --color-background: #f8f8f9;
-}
-
 body {
-  background-color: var(--color-background);
   font-family: 'Pretendard';
 }
 
