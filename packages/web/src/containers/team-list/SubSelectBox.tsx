@@ -2,7 +2,11 @@ import { Search, ViewToggle, SubButton } from './SubSelectButtons'
 import styles from './teamList.module.css'
 
 const SubSelectBox = ({ children }: { children: React.ReactNode }) => {
-  return <div className={styles.subSelecBox}>{children}</div>
+  return (
+    <div className="flex w-full justify-between items-center gap-2">
+      {children}
+    </div>
+  )
 }
 
 const Title = ({ title, desc }: { title: string; desc?: string }) => {
