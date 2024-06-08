@@ -5,6 +5,11 @@
 :root {
   font-family: var(--font-primary);
   --color-primary: #823bf7;
+  --color-background: #f8f8f9;
+}
+
+body {
+  background-color: var(--color-background);
 }
 
 @layer base {

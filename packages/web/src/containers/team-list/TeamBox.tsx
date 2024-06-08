@@ -57,6 +57,7 @@ const TeamCardItem = ({
         <div>{joinButton}</div>
       </li>
     )
+
   return (
     <li className={`${styles.list} ${styles[TYPE]}`}>
       <div className="w-[380px]">{title}</div>
