@@ -9,4 +9,5 @@ public class GameResVo {
     private String gameNameKor;
     private String gameName;
     private String gameImage;
+    private String gameLogoImage;
 }

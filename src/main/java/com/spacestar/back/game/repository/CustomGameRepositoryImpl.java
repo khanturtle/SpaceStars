@@ -25,17 +25,19 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
         List<GameResDto> gameResDtos = query
                 .select(Projections.constructor(GameResDto.class,
                         qGame.name,
-                        qGame.image,
+                        qGame.gameImage,
                         qGame.nameKor,
+                        qGame.image,
                         qGame.id))
                 .from(qGame)
                 .fetch();
-
+        System.out.println("qGame = " + qGame.gameImage);
         return IntStream.range(0, gameResDtos.size())
                 .mapToObj(i -> GameResDto.builder()
                         .index(i)
                         .gameId(gameResDtos.get(i).getGameId())
                         .gameName(gameResDtos.get(i).getGameName())
+                        .gameLogoImage(gameResDtos.get(i).getGameLogoImage())
                         .gameNameKor(gameResDtos.get(i).getGameNameKor())
                         .gameImage(gameResDtos.get(i).getGameImage())
                         .build())

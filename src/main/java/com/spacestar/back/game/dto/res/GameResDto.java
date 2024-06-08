@@ -12,11 +12,13 @@ public class GameResDto {
     private String gameNameKor;
     private String gameName;
     private String gameImage;
+    private String gameLogoImage;
 
-    public GameResDto(String gameName, String gameImage, String gameNameKor, Long gameId) {
+    public GameResDto(String gameName, String gameImage, String gameNameKor,String gameLogoImage, Long gameId) {
         this.gameId = gameId;
         this.gameNameKor = gameNameKor;
         this.gameName = gameName;
         this.gameImage = gameImage;
+        this.gameLogoImage = gameLogoImage;
     }
 }
