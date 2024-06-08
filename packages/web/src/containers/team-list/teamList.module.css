@@ -55,14 +55,6 @@
 }
 
 /* SubSelectBox.css */
-.subSelecBox {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
-
 .subTitle {
   font-family: Poppins;
   color: #202020;
