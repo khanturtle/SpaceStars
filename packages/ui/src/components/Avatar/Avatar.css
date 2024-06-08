@@ -9,11 +9,12 @@
   align-items: center;
   justify-content: center;
 }
+
 .avatar-wrapper {
-  width: 56px;
-  height: 56px;
+  width: 90%;
+  height: 90%;
   border-radius: 15px;
-  background-color: #000;
+  background-color: var(--Black-950, #000);
 
   display: flex;
   align-items: center;
@@ -26,7 +27,6 @@
   bottom: 13px;
 
   color: var(--White-50, #fff);
-  font-family: Poppins;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;

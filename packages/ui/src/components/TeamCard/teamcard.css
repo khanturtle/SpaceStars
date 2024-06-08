@@ -2,7 +2,7 @@
 .game-list-card-title {
   color: #4e4e4e;
 
-  font-family: Poppins;
+  font-family: inherit;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -11,7 +11,7 @@
 .game-list-card-description {
   color: var(--White-400, #989898);
 
-  font-family: Poppins;
+  font-family: inherit;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -20,7 +20,7 @@
 .game-list-card-description--small {
   color: #4e4e4e;
 
-  font-family: Poppins;
+  font-family: inherit;
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
@@ -57,7 +57,6 @@
   gap: 8px;
 
   p {
-    font-family: 'Plus Jakarta Sans';
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
