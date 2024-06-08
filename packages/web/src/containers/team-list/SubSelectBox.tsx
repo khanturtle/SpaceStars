@@ -1,4 +1,4 @@
-import { Search, ListToggle, SubButton } from './SubSelectButtons'
+import { Search, ViewToggle, SubButton } from './SubSelectButtons'
 import styles from './teamList.module.css'
 
 const SubSelectBox = ({ children }: { children: React.ReactNode }) => {
@@ -17,6 +17,6 @@ const Title = ({ title, desc }: { title: string; desc?: string }) => {
 SubSelectBox.Title = Title
 SubSelectBox.Search = Search
 SubSelectBox.SubButton = SubButton
-SubSelectBox.ListToggle = ListToggle
+SubSelectBox.ViewToggle = ViewToggle
 
 export default SubSelectBox
