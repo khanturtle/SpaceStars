@@ -1,6 +1,6 @@
 .sidebar {
   background-color: red;
-  width: 220px;
+  width: 260px;
   height: calc(100vh - 100px);
 
   position: sticky;
@@ -48,7 +48,7 @@
 .rightSidebar {
   background-color: blue;
 
-  width: 220px;
+  width: 328px;
   height: calc(100vh - 100px);
 
   position: sticky;
