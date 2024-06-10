@@ -6,6 +6,8 @@ import com.spacestar.back.friend.dto.res.FriendListResDto;
 import com.spacestar.back.friend.dto.res.FriendRequestResDto;
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
+import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,24 +28,29 @@ public class FriendServiceImp implements FriendService{
     @Override
     public void addFriend(String uuid, FriendUuidReqDto friendUuidReqDto) {
 
-        //내가 친구 신청
-        Friend me = Friend.builder()
-                .friendType(FriendType.SENDER)
-                .uuid(uuid)
-                .friendUuid(friendUuidReqDto.getFriendUuid())
-                .build();
+        if (friendRepository.findByFriendUuidAndUuid(friendUuidReqDto.getFriendUuid(), uuid) != null){
+            throw new GlobalException(ResponseStatus.ALREADY_EXIST_FRIEND_REQUEST);
+        }
 
-        friendRepository.save(me);
+        else {
+            //내가 친구 신청
+            Friend me = Friend.builder()
+                    .friendType(FriendType.SENDER)
+                    .uuid(uuid)
+                    .friendUuid(friendUuidReqDto.getFriendUuid())
+                    .build();
 
-        //상대 객체도 만들기
-        Friend friend = Friend.builder()
-                .friendType(FriendType.RECEIVER)
-                .uuid(friendUuidReqDto.getFriendUuid())
-                .friendUuid(uuid)
-                .build();
+            friendRepository.save(me);
 
-        friendRepository.save(friend);
+            //상대 객체도 만들기
+            Friend friend = Friend.builder()
+                    .friendType(FriendType.RECEIVER)
+                    .uuid(friendUuidReqDto.getFriendUuid())
+                    .friendUuid(uuid)
+                    .build();
 
+            friendRepository.save(friend);
+        }
     }
 
     //친구 목록 조회
@@ -108,6 +115,16 @@ public class FriendServiceImp implements FriendService{
                 .build();
 
         friendRepository.save(realFriend2);
+    }
+
+    @Override
+    public void rejectFriend(String uuid, FriendUuidReqDto friendUuidReqDto) {
+
+        Friend friend = friendRepository.findByFriendUuidAndUuid(friendUuidReqDto.getFriendUuid(), uuid);
+        friendRepository.delete(friend);
+
+        Friend friend2 = friendRepository.findByFriendUuidAndUuid(uuid, friendUuidReqDto.getFriendUuid());
+        friendRepository.delete(friend2);
     }
 }
 

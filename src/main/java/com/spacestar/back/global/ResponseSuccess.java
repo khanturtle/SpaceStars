@@ -25,7 +25,9 @@ public enum ResponseSuccess {
     FRIEND_ADD_SUCCESS(200, "친구 신청 성공"),
     FRIEND_LIST_SELECT_SUCCESS(200,"친구 목록 조회 성공" ),
     FRIEND_REQUEST_SELECT_SUCCESS(200,"친구 요청 목록 조회 성공" ),
-    FRIEND_ACCEPT_SUCCESS(200,"친구 수락" );
+    FRIEND_ACCEPT_SUCCESS(200,"친구 요청 수락" ),
+    FRIEND_REJECT_SUCCESS(200, "친구 요청 거절"),
+    FRIEND_DELETE_SUCCESS(200,"친구 삭제 성공" );
 
 
 

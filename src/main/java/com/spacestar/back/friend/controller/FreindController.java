@@ -51,12 +51,31 @@ public class FreindController {
     }
 
     @Operation(summary = "친구 수락")
-    @PatchMapping("/accept")
+    @PatchMapping("/request/accept")
     public ResponseEntity<Void> acceptFriend(@RequestHeader("UUID") String uuid,
                                              @RequestBody FriendUuidReqVo friendUuidReqVo){
 
         friendService.acceptFriend(uuid, mapper.map(friendUuidReqVo, FriendUuidReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.FRIEND_ACCEPT_SUCCESS);
     }
+
+    @Operation(summary = "친구 요청 거절")
+    @DeleteMapping("/request/reject")
+    public ResponseEntity<Void> rejectFriend(@RequestHeader("UUID") String uuid,
+                                             @RequestBody FriendUuidReqVo friendUuidReqVo){
+
+        friendService.rejectFriend(uuid, mapper.map(friendUuidReqVo, FriendUuidReqDto.class));
+
+        return new ResponseEntity<>(ResponseSuccess.FRIEND_REJECT_SUCCESS);
+    }
+
+    @Operation(summary = "친구 삭제")
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteFriend(@RequestHeader("UUID") String uuid,
+                                             @RequestBody FriendUuidReqVo friendUuidReqVo){
+        friendService.rejectFriend(uuid, mapper.map(friendUuidReqVo, FriendUuidReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.FRIEND_DELETE_SUCCESS);
+    }
+
 
 }

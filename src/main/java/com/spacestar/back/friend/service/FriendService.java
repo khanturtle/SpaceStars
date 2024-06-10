@@ -12,4 +12,6 @@ public interface FriendService {
     FriendRequestResDto getFriendRequestList(String uuid);
 
     void acceptFriend(String uuid, FriendUuidReqDto friendUuidReqDto);
+
+    void rejectFriend(String uuid, FriendUuidReqDto friendUuidReqDto);
 }
