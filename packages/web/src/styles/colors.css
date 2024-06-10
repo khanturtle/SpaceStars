@@ -52,6 +52,9 @@
   --btn-secondary: #bb86fc;
   --btn-secondary-border: #7d12ff;
   --border: var(--White-50);
+
+  --online: #3bcd23;
+  --offline: #dddddd;
 }
 
 body {

@@ -1,16 +1,16 @@
-import { SearchInput } from '@packages/ui'
 import './tmp.css'
+import FriendsList from '@/containers/chat/FriendsList'
+import SearchBox from '@/containers/chat/SearchBox'
 
 export default function page() {
   return (
-    <div className="all">
+    <>
       <div className="left">
-        <div className="search">검색창</div>
+        <SearchBox />
 
-        <div className="online">
-          <h3>Online Friends</h3>
-          <div>ㅇㅅㅇ</div>
-        </div>
+        <FriendsList title="Online Friends">
+          <FriendsList.OnlineFriends />
+        </FriendsList>
 
         <div className="messages">
           <h3>Messages</h3>
@@ -194,6 +194,6 @@ export default function page() {
 
         <div className="chat">채팅창</div>
       </div>
-    </div>
+    </>
   )
 }
