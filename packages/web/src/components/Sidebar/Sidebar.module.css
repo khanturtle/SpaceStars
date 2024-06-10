@@ -46,12 +46,5 @@
 */
 
 .rightSidebar {
-  background-color: blue;
-
-  min-width: 328px;
-  height: calc(100vh - 100px);
-
-  position: sticky;
-  top: 100px;
-  right: 0;
+  @apply bg-[blue] min-w-[328px] h-[calc(100vh_-_100px)] sticky right-0 top-[100px];
 }

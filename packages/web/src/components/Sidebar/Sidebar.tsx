@@ -14,12 +14,12 @@ const SIDE_LINK = [
   {
     index: 2,
     title: '팀원 모집',
-    href: '/team-list',
+    href: '/dashboard/team-list',
   },
   {
     index: 3,
     title: '채팅',
-    href: '/chat',
+    href: '/dashboard/chat',
   },
 ]
 
