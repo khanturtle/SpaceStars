@@ -15,7 +15,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class TeamChatRoomServiceImp implements TeamChatRoomService{
+
     private final TeamChatRoomJpaRepository teamChatRoomJpaRepository;
+    private final TeamChatMemberService teamChatMemberService;
     @Override
     public void addTeamChatRoom(String uuid, TeamChatRoomReqDto teamChatRoomReqDto) {
         String roomNumber = UUID.randomUUID().toString();
@@ -23,6 +25,8 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService{
         // 채팅방 생성
         teamChatRoomJpaRepository.save(teamChatRoom);
 
+        // 채팅방에 참여자 추가 (방장인 경우)
+        teamChatMemberService.addMemberToTeamChatRoom(teamChatRoom, uuid,true);
 
     }
 }
