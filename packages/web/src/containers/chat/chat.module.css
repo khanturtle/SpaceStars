@@ -1,0 +1,18 @@
+.ul {
+  /* max-height: 74px; */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  /* overflow-y: scroll; */
+
+  /* align-content: flex-start;
+  justify-content: flex-start;
+
+  overflow-x: scroll;
+  overflow-y: hidden; */
+}
+
+.ul::-webkit-scrollbar {
+  display: none;
+}

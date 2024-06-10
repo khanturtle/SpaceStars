@@ -8,7 +8,7 @@
   overflow-x: scroll;
   overflow-y: hidden;
 }
-
+/* TODO: 스크롤바 커스텀 */
 .ul::-webkit-scrollbar {
   display: none;
 }
