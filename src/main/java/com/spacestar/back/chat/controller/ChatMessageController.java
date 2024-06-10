@@ -21,6 +21,8 @@ public class ChatMessageController {
     private final ChatMessageService chatMessageService;
     private final ModelMapper mapper;
 
+
+    // 전체 채팅 내역 조회 (페이지 네이션)
     @GetMapping("/message/{roomNumber}")
     public ResponseEntity<List<MessageResVo>> getChatMessage(@PathVariable String roomNumber) {
         List<MessageDto> chatMessageVos = chatMessageService.getChatMessage(roomNumber);
@@ -31,6 +33,17 @@ public class ChatMessageController {
         return new ResponseEntity<>(ResponseSuccess.SUCCESS, messageResVos);
     }
 
+    // 안 읽은 메시지 내역 조회
+    @GetMapping("/message/unread/{roomNumber}")
+    public ResponseEntity<List<MessageResVo>> getUnreadMessage(@RequestHeader String uuid,
+                                                               @PathVariable String roomNumber) {
+        List<MessageDto> chatMessageVos = chatMessageService.getUnreadMessage(uuid,roomNumber);
+
+        List<MessageResVo> messageResVos = chatMessageVos.stream()
+                .map(dto -> mapper.map(dto, MessageResVo.class))
+                .toList();
+        return new ResponseEntity<>(ResponseSuccess.SUCCESS, messageResVos);
+    }
 
 
 }

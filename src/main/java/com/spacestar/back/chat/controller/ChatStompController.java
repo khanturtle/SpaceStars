@@ -3,6 +3,7 @@ package com.spacestar.back.chat.controller;
 
 import com.spacestar.back.chat.dto.MessageDto;
 import com.spacestar.back.chat.service.ChatMessageService;
+import com.spacestar.back.chat.vo.req.ChatJoinReqVo;
 import com.spacestar.back.chat.vo.req.ChatMessageReqVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +31,10 @@ public class ChatStompController {
     @MessageMapping("/{roomNumber}")
     public void addChatMessage(
             @DestinationVariable String roomNumber,
-                               @Payload ChatMessageReqVo chatMessageReqVo) {
+            @Payload ChatMessageReqVo chatMessageReqVo) {
         // VO -> DTO
         MessageDto messageDto = chatMessageService.messageToDto(chatMessageReqVo, roomNumber);
         log.info("messageDto: {}", messageDto.getCreatedAt());
-
 
 
         // 채팅 메시지 저장
@@ -43,8 +43,27 @@ public class ChatStompController {
         // 구독한 사람들에게 전송
         messageTemplate.convertAndSend("/room/" + roomNumber, messageDto);
 
-
-
     }
 
+    @MessageMapping("/join/{roomNumber}")
+    public void joinChatRoom(@DestinationVariable String roomNumber,
+                             @Payload ChatJoinReqVo chatJoinReqVo) {
+        String senderUuid = chatJoinReqVo.getSenderUuid();
+        // 입장 메시지 저장
+        chatMessageService.addChatJoin(roomNumber, senderUuid);
+
+        // 입장 메시지 브로드캐스트 (필요에 따라)
+        //messageTemplate.convertAndSend("/room/" + roomNumber, joinMessage);
+    }
+
+    @MessageMapping("/exit/{roomNumber}")
+    public void exitChatRoom(@DestinationVariable String roomNumber,
+                             @Payload ChatJoinReqVo chatExitReqVo) {
+        String senderUuid = chatExitReqVo.getSenderUuid();
+        // 퇴장 메시지 저장
+        chatMessageService.addChatExit(roomNumber, senderUuid);
+
+        // 퇴장 메시지 브로드캐스트 (필요에 따라)
+
+    }
 }
