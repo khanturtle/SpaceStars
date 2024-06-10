@@ -22,11 +22,11 @@ export const MidItems = () => {
       name: '대시보드',
     },
     {
-      link: '/dashboard/team-list',
+      link: '/team-list',
       name: '팀원모집',
     },
     {
-      link: '/dashboard/chat',
+      link: '/chat',
       name: 'Chat',
     },
   ]

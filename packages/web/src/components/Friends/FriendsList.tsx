@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import styles from './chat.module.css'
+import styles from './friends.module.css'
 
 export default function FriendsList({
   title = 'Friends',

@@ -1,5 +1,7 @@
 import './tmp.css'
-import FriendsList from '@/containers/chat/FriendsList'
+
+import FriendsList from '@/components/Friends/FriendsList'
+
 import SearchBox from '@/containers/chat/SearchBox'
 
 export default function page() {
