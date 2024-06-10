@@ -128,6 +128,7 @@ const tmpMsgList: TmpMsgList[] = [
 export default function page() {
   return (
     <>
+    {/* TODO: parallel로 수정 */}
       <div className="left">
         <SearchBox />
 
@@ -141,6 +142,7 @@ export default function page() {
       </div>
 
       <div className="right">
+        <div className='header'>ㅇㅅㅇ</div>
         <div className="msg">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis
           ducimus, sit voluptate aliquam quas alias! Temporibus dolores suscipit
