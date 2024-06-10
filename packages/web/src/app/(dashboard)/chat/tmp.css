@@ -1,20 +1,30 @@
 .left {
-  background-color: blueviolet;
   min-width: 380px;
   height: calc(100vh - 100px);
   padding: 0 50px;
-
+  background-color: var(--White-50, #fff);
   overflow-y: scroll;
 }
+/* TODO: 스크롤바 커스텀 */
 .left::-webkit-scrollbar {
   display: none;
 }
 
 .right {
   background-color: black;
-  width: auto;
+  flex-grow: 1;
   height: calc(100vh - 100px);
   position: relative;
+
+  .header {
+    height: 100px;
+    width: 100%;
+
+    background-color: red;
+    position: absolute;
+    z-index: 1200;
+    top: -100px;
+  }
 
   .msg {
     height: calc(100% - 90px);
