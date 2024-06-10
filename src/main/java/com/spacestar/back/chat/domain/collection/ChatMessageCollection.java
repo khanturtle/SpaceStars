@@ -30,14 +30,22 @@ public class ChatMessageCollection {
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
+    // 들어간 시간 나간시간 추가
+    private Instant enterTime;
+    private Instant exitTime;
+
 
     @Builder
-    public ChatMessageCollection(String id, String roomNumber, String senderUuid, String content, Instant createdAt, MessageType messageType) {
+    public ChatMessageCollection(String id, String roomNumber, String senderUuid, String content, Instant createdAt, MessageType messageType,
+                                 Instant enterTime, Instant exitTime) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.senderUuid = senderUuid;
         this.content = content;
         this.createdAt = createdAt;
         this.messageType = messageType;
+        // roomNumber, senderUuid, 1.enter 2 exit,
+        this.enterTime = enterTime;
+        this.exitTime = exitTime;
     }
 }

@@ -11,4 +11,9 @@ public interface ChatMessageService {
     MessageDto messageToDto(ChatMessageReqVo chatMessageReqVo, String roomNumber);
     List<MessageDto> getChatMessage(String roomNumber);
 
+    void addChatJoin(String roomNumber, String senderUuid);
+
+    void addChatExit(String roomNumber, String senderUuid);
+
+    List<MessageDto> getUnreadMessage(String uuid, String roomNumber);
 }

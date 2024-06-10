@@ -61,4 +61,5 @@ public class ChatRoomController {
         return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_DETAIL_SUCCESS, chatRoomDetailResVos);
     }
 
+
 }
