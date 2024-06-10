@@ -4,18 +4,10 @@
   height: calc(100vh - 100px);
   padding: 0 50px;
 
-.online,
-  .messages {
-    @apply mb-9;
-    h3 {
-      @apply text-[#161616] text-lg not-italic font-medium leading-[normal] mb-6;
-    }
-
-    div {
-      background-color: white;
-      height: 74px;
-    }
-  }
+  overflow-y: scroll;
+}
+.left::-webkit-scrollbar {
+  display: none;
 }
 
 .right {
