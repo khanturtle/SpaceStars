@@ -1,42 +1,41 @@
-'use client'
+import Link from 'next/link'
 
-import { useRouter } from 'next/navigation'
-
-import { Avatar, LogoIcon, LogoName } from '@packages/ui'
-import { useSession } from 'next-auth/react'
+import { LogoIcon, LogoName } from '@packages/ui'
 
 import styles from './Navbar.module.css'
+import { LoginButton } from './NavbarItem'
 
-const Logo = () => {
-  return (
-    <div className={styles.nav_logo}>
-      <h1 className="hidden">SPACE STAR</h1>
-      <LogoIcon width="40" height="34" />
-      <LogoName width="120" />
-    </div>
-  )
-}
+const NavRightItem = ({ children }: { children?: React.ReactNode }) => (
+  <div className="flex max-w-[328px] pl-[50px]">{children}</div>
+)
 
-export default function Navbar({ isLogo = false }: { isLogo?: boolean }) {
-  const router = useRouter()
-  const { status } = useSession()
+const NavMidItem = ({
+  children,
+  className,
+}: {
+  children?: React.ReactNode
+  className?: string
+}) => <div className={`${styles.mid} ${className}`}>{children}</div>
 
+export default function Navbar({ children }: { children?: React.ReactNode }) {
   return (
     <nav className={`${styles.nav}`}>
-      {isLogo && <Logo />}
+      <div className="w-[260px]">
+        <Link
+          href="/"
+          className="w-[120px] h-full flex flex-col content-start justify-center"
+        >
+          <h1 className="hidden">SPACE STAR</h1>
+          <LogoIcon width="40" height="34" />
+          <LogoName width="120" />
+        </Link>
+      </div>
 
-      <div className="flex-1" />
-
-      {/* <div className={styles.nav_mode}>모드</div> */}
-
-      {status === 'authenticated' && <Avatar />}
-      {status === 'unauthenticated' && (
-        <button type="button" onClick={() => router.push('/sign-in')}>
-          로그인 | 회원가입
-        </button>
-      )}
+      {children}
     </nav>
   )
 }
 
-Navbar.Logo = Logo
+Navbar.RightItem = NavRightItem
+Navbar.MidItem = NavMidItem
+Navbar.LoginButton = LoginButton
