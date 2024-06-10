@@ -6,7 +6,6 @@ import '@/styles/globals.css'
 import '@/styles/fonts.css'
 import '@/styles/colors.css'
 
-import Navbar from '@/components/Navbar/Navbar'
 import AuthSession from '@/components/providers/session-provider'
 
 export const metadata: Metadata = {
@@ -25,7 +24,6 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <AuthSession>
-          <Navbar isLogo />
           {children}
           {modal}
         </AuthSession>
