@@ -42,11 +42,19 @@ public class ProfileController {
 
     @Operation(summary = "프로필 정보 조회")
     @GetMapping("/info")
-    public ResponseEntity<ProfileInfoResVo> getProfileInfo(@RequestHeader("UUID") String uuid) {
+    public ResponseEntity<ProfileInfoResVo> getProfileInfo(@RequestHeader("UUID") String uuid ){
 
         return new ResponseEntity<>(ResponseSuccess.PROFILE_INFO_SELECT_SUCCESS,
                 mapper.map(profileService.getProfileInfo(uuid), ProfileInfoResVo.class));
     }
+    @Operation(summary = "다른 회원 프로필 정보 조회")
+    @GetMapping("/info/{uuid}")
+    public ResponseEntity<ProfileInfoResVo> getYourProfileInfo(@PathVariable("uuid") String targetUuid){
+
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_INFO_SELECT_SUCCESS,
+                mapper.map(profileService.getProfileInfo(targetUuid), ProfileInfoResVo.class));
+    }
+
 
     @Operation(summary = "좋아하는 게임 조회")
     @GetMapping("/liked-game")
@@ -56,12 +64,30 @@ public class ProfileController {
                 mapper.map(profileService.getLikedGame(uuid), ProfileLikedGameResVo.class));
     }
 
+    @Operation(summary = "다른 회원 좋아하는 게임 조회")
+    @GetMapping("/liked-game/{uuid}")
+    public ResponseEntity<ProfileLikedGameResVo> getYourLikedGame(@PathVariable("uuid") String targetUuid) {
+
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_LIKED_GAME_SELECT_SUCCESS,
+                mapper.map(profileService.getLikedGame(targetUuid), ProfileLikedGameResVo.class));
+    }
+
     @Operation(summary = "플레이한 게임 조회")
     @GetMapping("/play-game")
     public ResponseEntity<List<ProfilePlayGameInfoResVo>> getPlayGame(@RequestHeader("UUID") String uuid) {
 
         return new ResponseEntity<>(ResponseSuccess.PROFILE_PLAY_GAME_SELECT_SUCCESS,
                 profileService.getPlayGame(uuid).stream()
+                        .map(playGame -> mapper.map(playGame, ProfilePlayGameInfoResVo.class))
+                        .toList());
+    }
+
+    @Operation(summary = "다른 회원 플레이한 게임 조회")
+    @GetMapping("/play-game/{uuid}")
+    public ResponseEntity<List<ProfilePlayGameInfoResVo>> getYourPlayGame(@PathVariable("uuid") String targetUuid) {
+
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_PLAY_GAME_SELECT_SUCCESS,
+                profileService.getPlayGame(targetUuid).stream()
                         .map(playGame -> mapper.map(playGame, ProfilePlayGameInfoResVo.class))
                         .toList());
     }
@@ -89,6 +115,17 @@ public class ProfileController {
                 .toList());
     }
 
+    @Operation(summary = "다른 회원 프로필 사진 리스트 조회")
+    @GetMapping("/image/{uuid}")
+    public ResponseEntity<List<ProfileImageListResVo>> profileYourImageList(@PathVariable("uuid") String targetUuid){
+
+        return new ResponseEntity<>(
+                ResponseSuccess.PROFILE_IMAGE_SELECT_SUCCESS, profileService.findProfileImageList(targetUuid)
+                .stream()
+                .map(dto -> mapper.map(dto, ProfileImageListResVo.class))
+                .toList());
+    }
+
     @Operation(summary = "대표 프로필 사진 조회")
     @GetMapping("/image/main")
     public ResponseEntity<ProfileMainImageResVo> mainProfileImage(@RequestHeader("UUID") String uuid){
@@ -96,6 +133,17 @@ public class ProfileController {
         return new ResponseEntity<>(
                 ResponseSuccess.MAIN_PROFILE_IMAGE_SELECT_SUCCESS,
                 mapper.map(profileService.findMainProfileImage(uuid), ProfileMainImageResVo.class)
+        );
+
+    }
+
+    @Operation(summary = "다른 회원 대표 프로필 사진 조회")
+    @GetMapping("/image/main/{uuid}")
+    public ResponseEntity<ProfileMainImageResVo> mainProfileYourImage(@PathVariable("uuid") String targetUuid){
+
+        return new ResponseEntity<>(
+                ResponseSuccess.MAIN_PROFILE_IMAGE_SELECT_SUCCESS,
+                mapper.map(profileService.findMainProfileImage(targetUuid), ProfileMainImageResVo.class)
         );
 
     }
