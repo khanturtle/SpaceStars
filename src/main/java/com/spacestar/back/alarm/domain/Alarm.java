@@ -23,6 +23,7 @@ public class Alarm {
 	private Long id;
 
 	@NotNull
+	@Column(length = 30)
 	private String reciverUuid;
 
 	@NotNull
