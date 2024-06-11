@@ -28,18 +28,14 @@ function FakeModal({
   return (
     <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[1000] inset-0 h-full">
       <div
-        className={`relative w-[50%]
-                  flex flex-col items-center justify-around
-                  inset-0 bg-white
-                  overflow-hidden rounded-[10px]
-                  ${className}
-                  `}
+        className={`relative flex flex-col items-center justify-around
+                  inset-0 bg-white overflow-hidden rounded-[10px]
+                  ${className}`}
       >
         <div
           className={`w-full h-full 
                   bg-[url('/images/BG.svg')] bg-cover bg-center bg-no-repeat 
-                  overflow-hidden rounded-[10px]
-                  `}
+                  overflow-hidden rounded-[10px]`}
         >
           {children}
 
