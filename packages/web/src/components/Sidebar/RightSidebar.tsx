@@ -8,7 +8,7 @@ export default function RightSidebar() {
 
   console.log(pathName)
   if (pathName === '/dashboard/chat') {
-    return <div className={styles.rightSidebar}>채팅</div>
+    return <section className={styles.rightSidebar}>채팅</section>
   }
-  return <div className={styles.rightSidebar}>오른쪽 </div>
+  return <section className={styles.rightSidebar}>오른쪽 </section>
 }
