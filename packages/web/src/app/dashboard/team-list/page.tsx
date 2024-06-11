@@ -36,7 +36,7 @@ export default async function page({
   const viewType = searchParams.view === 'list' ? 'list' : 'card'
 
   return (
-    <section className="flex-1 px-[50px] py-[42px] overflow-auto">
+    <main className="px-[50px] py-[42px] overflow-auto">
       <GameSelectBox games={games} searchParams={searchParams} />
 
       <div className="h-[20px]" />
@@ -66,6 +66,7 @@ export default async function page({
         <SubSelectBox.ViewToggle searchParams={searchParams} />
       </SubSelectBox>
 
+{/* TODO: 집어넣는거 고려 */}
       <TeamBox className="pt-[40px]">
         <TeamBox.TeamCardList type={viewType}>
           {Teams.map((team) => {
@@ -128,6 +129,6 @@ export default async function page({
           })}
         </TeamBox.TeamCardList>
       </TeamBox>
-    </section>
+    </main>
   )
 }
