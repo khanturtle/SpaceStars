@@ -5,8 +5,7 @@ export default function Page() {
   return (
     <Modal>
       <SignUpLayout
-        className={`h-full py-[50px]
-                  flex flex-col items-center justify-around`}
+        className={`h-full px-[240px] py-[50px] flex flex-col items-center justify-around`}
       />
     </Modal>
   )
