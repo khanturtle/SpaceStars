@@ -47,6 +47,7 @@ export const options: NextAuthOptions = {
 
       throw new Error('API Request Failed')
     },
+    // TODO: 백엔드 엑세스토큰이랑 만료시간 맞춰서 로그아웃 또는 세션 연장 처리
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.data = user.data
