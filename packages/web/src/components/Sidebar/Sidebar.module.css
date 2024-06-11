@@ -1,6 +1,6 @@
 .sidebar {
   background-color: red;
-  width: 220px;
+  min-width: 260px;
   height: calc(100vh - 100px);
 
   position: sticky;
@@ -10,7 +10,7 @@
   transition: width 0.3s ease;
 
   & ul {
-    padding: 40px 25px;
+    padding: 40px 30px;
 
     display: flex;
     width: 100%;
@@ -46,12 +46,5 @@
 */
 
 .rightSidebar {
-  background-color: blue;
-
-  width: 220px;
-  height: calc(100vh - 100px);
-
-  position: sticky;
-  top: 100px;
-  right: 0;
+  @apply bg-[blue] min-w-[328px] h-[calc(100vh_-_100px)] sticky right-0 top-[100px];
 }

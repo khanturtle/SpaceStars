@@ -16,6 +16,11 @@ const SIDE_LINK = [
     title: '팀원 모집',
     href: '/dashboard/team-list',
   },
+  {
+    index: 3,
+    title: '채팅',
+    href: '/dashboard/chat',
+  },
 ]
 
 export default function Sidebar() {

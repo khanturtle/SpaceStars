@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  images: {
+    domains: ['t1.kakaocdn.net', 's3-alpha-sig.figma.com', 'picsum.photos'],
+  },
   experimental: {
     externalDir: true,
     workerThreads: false,
