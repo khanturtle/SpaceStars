@@ -8,8 +8,7 @@ COPY package.json package.json
 COPY packages/ui/package.json packages/ui/package.json
 COPY packages/web/package.json packages/web/package.json
 
-RUN yarn cache clean
-RUN yarn install
+RUN yarn cache clean && yarn
 COPY .pnp.loader.mjs .pnp.loader.mjs
 
 COPY . .

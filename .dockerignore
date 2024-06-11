@@ -1,5 +1,5 @@
 node_modules
-.next
+# .next
 .github
 .husky
 .git
@@ -16,3 +16,10 @@ README.md
 
 packages/ui/.storybook/
 packages/ui/README.md
+
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
