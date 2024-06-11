@@ -17,14 +17,6 @@ export default function Home() {
   const stompClient = useRef(null)
   const config = {
     iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-    sdpSemantics: 'unified-plan',
-  }
-  const sdpConstraints = {
-    mandatory: {
-      OfferToReceiveAudio: true,
-      OfferToReceiveVideo: true,
-    },
-    optional: [],
   }
 
   useEffect(() => {
@@ -82,7 +74,7 @@ export default function Home() {
 
   const createPeerConnection = async (otherKey) => {
     console.log(`Creating peer connection for ${otherKey}`)
-    const pc = new RTCPeerConnection(config, sdpConstraints)
+    const pc = new RTCPeerConnection(config)
     pc.addEventListener('icecandidate', (event) => {
       onIceCandidate(event, otherKey)
     })
@@ -153,14 +145,23 @@ export default function Home() {
             console.log('Received offer message')
             const { key, body: offer } = JSON.parse(message.body)
             const pc = await createPeerConnection(key)
-            await pc.setRemoteDescription(
-              new RTCSessionDescription({
-                type: offer.type,
-                sdp: offer.sdp,
-              }),
-            )
-            sendAnswer(pc, key)
-            setPeerInfo(new Map(peerInfo.set(key, pc)))
+            if (
+              pc.signalingState === 'stable' ||
+              pc.signalingState === 'have-local-offer'
+            ) {
+              await pc.setRemoteDescription(
+                new RTCSessionDescription({
+                  type: offer.type,
+                  sdp: offer.sdp,
+                }),
+              )
+              sendAnswer(pc, key)
+              setPeerInfo(new Map(peerInfo.set(key, pc)))
+            } else {
+              console.warn(
+                `Cannot set remote description in signaling state: ${pc.signalingState}`,
+              )
+            }
           },
         )
 
@@ -170,9 +171,13 @@ export default function Home() {
             console.log('Received answer message')
             const { key, body: answer } = JSON.parse(message.body)
             const pc = peerInfo.get(key)
-            if (pc) {
+            if (pc && pc.signalingState === 'have-local-offer') {
               pc.setRemoteDescription(new RTCSessionDescription(answer))
               console.log(`Set remote description for ${key}`, answer)
+            } else {
+              console.warn(
+                `Cannot set remote description in signaling state: ${pc.signalingState}`,
+              )
             }
           },
         )
