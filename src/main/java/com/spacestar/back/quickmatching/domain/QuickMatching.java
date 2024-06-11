@@ -1,26 +1,30 @@
 package com.spacestar.back.quickmatching.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class QuickMatching {
+public class QuickMatching implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private String id;
     private String matchToMember;
     private String matchFromMember;
+    private QuickMatchStatus matchToMemberStatus;
+    private QuickMatchStatus matchFromMemberStatus;
 
-    public QuickMatching(String fSessionId, String mSessionId) {
-        this.matchFromMember = fSessionId;
-        this.matchToMember = mSessionId;
+    @Builder
+    public QuickMatching(String id, String matchFromMember, String matchToMember, QuickMatchStatus matchToMemberStatus, QuickMatchStatus matchFromMemberStatus) {
+        this.id = id;
+        this.matchToMemberStatus = matchToMemberStatus;
+        this.matchFromMemberStatus = matchFromMemberStatus;
+        this.matchFromMember = matchFromMember;
+        this.matchToMember = matchToMember;
     }
-
 }
