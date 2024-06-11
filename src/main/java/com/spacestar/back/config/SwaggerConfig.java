@@ -17,14 +17,14 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @Configuration
 @OpenAPIDefinition(
-        info = @Info(title = "API Document", description = "회원서비스 명세서", version = "v1")
+        info = @Info(title = "API Document", description = "채팅서비스 명세서", version = "v1")
 )
 public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
         SecurityScheme securityScheme = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP).bearerFormat("JWT")
+                .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
                 .in(SecurityScheme.In.HEADER).name("Authorization");
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
 
