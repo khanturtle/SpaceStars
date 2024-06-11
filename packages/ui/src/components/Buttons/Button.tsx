@@ -6,7 +6,7 @@ export interface ButtonProps
   primary?: boolean
   backgroundColor?: string
   fontColor?: string
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | 'full'
   label: string
   shape?: 'rect' | 'rounded' | 'oval'
   shadow?: boolean
@@ -31,12 +31,12 @@ const Button = ({
     backgroundColor?.startsWith('bg-') ||
     (!backgroundColor?.includes('(') && !backgroundColor?.startsWith('#'))
   const tailwindClass = isTailwindColor ? ` ${backgroundColor}` : ''
-  const inlineStyle = isTailwindColor ? {} : { backgroundColor }
+  const inlineStyle = isTailwindColor ? undefined : { backgroundColor }
 
   return (
     <button
       type="button"
-      className={`${className} ${mode} button button--${size} button--${shape} ${tailwindClass} ${isShadow}`}
+      className={`${mode} button button--${size} button--${shape} ${tailwindClass} ${isShadow} ${className}`}
       style={inlineStyle}
       {...props}
     >

@@ -4,9 +4,19 @@ import { useRouter } from 'next/navigation'
 
 import { type ElementRef, useEffect, useRef } from 'react'
 
+import { CloseIcon } from '@packages/ui'
+
 import styles from './modal.module.css'
 
-function Modal({ children }: { children: React.ReactNode }) {
+function Modal({
+  className,
+  children,
+  onCloseRoute,
+}: {
+  className?: string
+  children: React.ReactNode
+  onCloseRoute?: string
+}) {
   const router = useRouter()
   const dialogRef = useRef<ElementRef<'dialog'>>(null)
 
@@ -17,33 +27,33 @@ function Modal({ children }: { children: React.ReactNode }) {
   }, [])
 
   function onDismiss() {
-    router.back()
+    if (onCloseRoute) {
+      router.replace(onCloseRoute)
+    } else {
+      router.back()
+    }
   }
 
   return (
-    <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[1000] inset-0">
+    <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[1000] inset-0 h-full">
       <dialog
         ref={dialogRef}
-        className={`w-[90%] h-[90%] sm:w-[80%] sm:h-[80%] 
-                  md:w-[60%] md:h-[60%] lg:w-[50%] lg:h-[60%]
-                  flex flex-col items-center justify-evenly
-                  fixed inset-0 
+        className={`flex flex-col items-center justify-around fixed inset-0 
                   bg-[url('/images/BG.svg')] bg-cover bg-center bg-no-repeat 
-                  overflow-hidden
-                  rounded-[10px]
-                  `}
+                  overflow-hidden rounded-[10px]
+                  ${className}`}
         onClose={onDismiss}
       >
-        <div className="flex flex-col items-center justify-evenly">
-          {children}
-        </div>
+        {children}
 
         <button
           type="button"
           aria-label="닫기"
           onClick={onDismiss}
           className={styles['close-button']}
-        />
+        >
+          <CloseIcon />
+        </button>
       </dialog>
     </div>
   )

@@ -37,7 +37,18 @@
     ],
     "unused-imports/no-unused-imports-ts": [2],
     "comma-spacing": [2, { "before": false, "after": true }],
-    "react/require-default-props": 0
+    "react/require-default-props": 0,
+    "react/jsx-props-no-spreading": 0,
+    "import/extensions": [
+      0,
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   },
   "overrides": [
     {
@@ -111,7 +122,10 @@
               "caseInsensitive": true
             }
           }
-        ]
+        ],
+        "react/function-component-definition": "off",
+        "import/no-extraneous-dependencies": "off",
+        "import/prefer-default-export": "off"
       }
     },
     {

@@ -1,0 +1,62 @@
+:root {
+  --Alto-50: #f7f7f7;
+  --Alto-100: #ededed;
+  --Alto-200: #d9d9d9;
+  --Alto-300: #c8c8c8;
+  --Alto-400: #adadad;
+  --Alto-500: #999999;
+  --Alto-600: #888888;
+  --Alto-700: #7b7b7b;
+  --Alto-800: #676767;
+  --Alto-900: #545454;
+  --Alto-950: #363636;
+
+  --Black-50: #f6f6f6;
+  --Black-100: #e7e7e7;
+  --Black-200: #d1d1d1;
+  --Black-300: #b0b0b0;
+  --Black-400: #888888;
+  --Black-500: #6d6d6d;
+  --Black-600: #5d5d5d;
+  --Black-700: #4f4f4f;
+  --Black-800: #454545;
+  --Black-900: #3d3d3d;
+  --Black-950: #000000;
+
+  --White-50: #ffffff;
+  --White-100: #efefef;
+  --White-200: #dcdcdc;
+  --White-300: #bdbdbd;
+  --White-400: #989898;
+  --White-500: #7c7c7c;
+  --White-600: #656565;
+  --White-700: #525252;
+  --White-800: #464646;
+  --White-900: #3d3d3d;
+  --White-950: #292929;
+}
+
+:root {
+  --background: #f8f8f9;
+
+  --Main-Color-1: #6a64e9;
+
+  --color-primary: #7d12ff;
+  --secondary-text: #666;
+  --body-text: #333333;
+  --main-text: #111111;
+  --sub-text: #626262;
+  --point-text: #7d12ff;
+
+  --btn-primary: #202020;
+  --btn-secondary: #bb86fc;
+  --btn-secondary-border: #7d12ff;
+  --border: var(--White-50);
+
+  --online: #3bcd23;
+  --offline: #dddddd;
+}
+
+body {
+  background-color: var(--background);
+}

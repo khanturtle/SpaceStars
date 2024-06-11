@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Input from './Input'
 
 const meta = {
-  title: 'Components/Input',
+  title: 'Components/Inputs/Input',
   component: Input,
   parameters: {
     layout: 'centered',
@@ -22,7 +22,6 @@ export const DefaultInput: Story = {
     placeholder: 'placeholder',
   },
 }
-
 export const LabelInput: Story = {
   args: {
     id: 'nickname',
@@ -35,5 +34,6 @@ export const DisabledInput: Story = {
     id: 'nickname',
     label: '닉네임',
     disabled: true,
+    value: 'email@email',
   },
 }
