@@ -10295,6 +10295,8 @@ __metadata:
   resolution: "monorepo@workspace:."
   dependencies:
     "@next/eslint-plugin-next": "npm:^14.2.3"
+    "@storybook/react": "npm:^8.1.6"
+    "@storybook/test": "npm:^8.1.6"
     "@types/node": "npm:^20.14.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.10.0"
     "@typescript-eslint/parser": "npm:^7.10.0"
