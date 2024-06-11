@@ -18,7 +18,8 @@ public enum ResponseStatus {
     /**
      * 3000: member
      **/
-    NOT_EXIST_PROFILE(3000,"존재하지 않는 프로필입니다." );
+    NOT_EXIST_PROFILE(3000,"존재하지 않는 프로필입니다." ),
+    ALREADY_EXIST_FRIEND_REQUEST(3001,"이미 친구 요청을 보냈습니다." );
 
     private final int code;
     private final String message;
