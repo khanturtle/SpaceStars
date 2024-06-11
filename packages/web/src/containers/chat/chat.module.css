@@ -12,7 +12,47 @@
   overflow-x: scroll;
   overflow-y: hidden; */
 }
-
 .ul::-webkit-scrollbar {
   display: none;
+}
+
+.chatroom {
+  background-color: purple;
+  width: 100%;
+  height: calc(100vh - 100px);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  height: 100px;
+  width: 100%;
+
+  background-color: red;
+  position: absolute;
+  z-index: 1200;
+  top: -100px;
+}
+
+.msg {
+  background-color: magenta;
+  width: 100%;
+  height: calc(100% - 90px);
+  overflow-y: scroll;
+}
+
+.chat {
+  background-color: var(--White-50, #fff);
+  width: 100%;
+  height: 90px;
+
+  display: flex;
+  padding: 16px 50px;
+  align-items: center;
+}
+
+.input::placeholder {
+  color: #b0bfca;
 }
