@@ -1,8 +1,10 @@
-package com.spacestar.back.chat.domain.collection;
+package com.spacestar.back.teamChat.domain.collection;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spacestar.back.chat.enums.MessageType;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,13 +14,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-
 @Getter
 @NoArgsConstructor
-@Document(collection = "chat_message")
+@Document(collection = "team_chat_message")
 @EntityListeners(AuditingEntityListener.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ChatMessageCollection {
+public class TeamChatMessageCollection {
     @Id
     private String id;
     private String roomNumber;
@@ -28,22 +29,14 @@ public class ChatMessageCollection {
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
-    // 들어간 시간 나간시간 추가
-    private Instant enterTime;
-    private Instant exitTime;
-
-
     @Builder
-    public ChatMessageCollection(String id, String roomNumber, String senderUuid, String content, Instant createdAt, MessageType messageType,
-                                 Instant enterTime, Instant exitTime) {
+    public TeamChatMessageCollection(String id, String roomNumber, String senderUuid, String content, Instant createdAt, MessageType messageType) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.senderUuid = senderUuid;
         this.content = content;
         this.createdAt = createdAt;
         this.messageType = messageType;
-        // roomNumber, senderUuid, 1.enter 2 exit,
-        this.enterTime = enterTime;
-        this.exitTime = exitTime;
     }
+
 }
