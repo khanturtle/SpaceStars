@@ -27,7 +27,7 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <section className={`${styles.sidebar} `}>
+    <aside className={`${styles.sidebar} `}>
       <ul>
         {SIDE_LINK.map((item) => (
           <li
@@ -43,6 +43,6 @@ export default function Sidebar() {
           </li>
         ))}
       </ul>
-    </section>
+    </aside>
   )
 }

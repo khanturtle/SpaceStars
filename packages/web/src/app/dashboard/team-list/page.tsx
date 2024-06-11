@@ -1,5 +1,4 @@
 import {
-  LockIcon,
   TeamCardJoinButton,
   TeamCardTitle,
   TeamCardUserAvatar,
@@ -9,9 +8,8 @@ import {
 import Teams from './state'
 
 import { getGames } from '@/apis/game'
-import GameSelectBox from '@/containers/team-list/GameSelectBox'
-import SubSelectBox from '@/containers/team-list/SubSelectBox'
 import TeamBox from '@/containers/team-list/TeamBox'
+import SelectBoxContainer from '@/containers/team-list/SelectBoxContainer'
 
 // TODO: 팀 리스트 받아오기
 
@@ -36,36 +34,10 @@ export default async function page({
   const viewType = searchParams.view === 'list' ? 'list' : 'card'
 
   return (
-    <section className="flex-1 px-[50px] py-[42px] overflow-auto">
-      <GameSelectBox games={games} searchParams={searchParams} />
+    <main className="flex-1 px-[50px] py-[42px] h-[full] overflow-auto">
+      <SelectBoxContainer searchParams={searchParams} games={games} />
 
-      <div className="h-[20px]" />
-
-      <SubSelectBox>
-        <SubSelectBox.Title
-          title="Team List"
-          // FIXME: Room 갯수로 수정
-          desc={`(${games.length} Items)`}
-        />
-        <div className="flex-1" />
-        <SubSelectBox.Search />
-        {/* FIXME: query key-value 수정 */}
-        <SubSelectBox.SubButton
-          name="모집중"
-          queryKey="test1"
-          queryValue="1"
-          searchParams={searchParams}
-        />
-        <SubSelectBox.SubButton
-          name="lock"
-          icon={<LockIcon fill="#2C3149" />}
-          queryKey="test2"
-          queryValue="2"
-          searchParams={searchParams}
-        />
-        <SubSelectBox.ViewToggle searchParams={searchParams} />
-      </SubSelectBox>
-
+      {/* TODO: 집어넣는거 고려 */}
       <TeamBox className="pt-[40px]">
         <TeamBox.TeamCardList type={viewType}>
           {Teams.map((team) => {
@@ -128,6 +100,6 @@ export default async function page({
           })}
         </TeamBox.TeamCardList>
       </TeamBox>
-    </section>
+    </main>
   )
 }
