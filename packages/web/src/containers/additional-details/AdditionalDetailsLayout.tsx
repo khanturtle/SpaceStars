@@ -56,13 +56,14 @@ export default function AdditionalDetailsLayout({
   //  FIXME: title 수정하기
   if (Number(step) === 1) {
     return (
-      <FormLayout className={`${className} w-[335px]`}>
+      <FormLayout className={`${className}`}>
         <FormLayout.Legend
           title="SIGN UP?"
           description={`좋아하는 게임을\n 선택해주세요 (최대 3개)`}
         />
 
         <LikeGameForm
+          className="w-[335px]"
           selectedGames={selectedGames}
           onClick={handleButtonClick}
         />
@@ -72,9 +73,10 @@ export default function AdditionalDetailsLayout({
       </FormLayout>
     )
   }
+
   if (Number(step) === 2) {
     return (
-      <FormLayout className={`${className} w-[335px]`}>
+      <FormLayout className={`${className}`}>
         <FormLayout.Legend
           title="SIGN UP?"
           description={`대표 게임을\n 설정해주세요`}
@@ -91,7 +93,7 @@ export default function AdditionalDetailsLayout({
   }
   if (Number(step) === 3) {
     return (
-      <FormLayout className={`${className} w-[335px]`}>
+      <FormLayout className={`${className}`}>
         <FormLayout.Legend
           title="SIGN UP?"
           description={`MBTI를\n 선택해주세요`}
