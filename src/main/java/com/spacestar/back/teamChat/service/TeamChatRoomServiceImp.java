@@ -29,4 +29,5 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService{
         teamChatMemberService.addMemberToTeamChatRoom(teamChatRoom, uuid,true);
 
     }
+
 }
