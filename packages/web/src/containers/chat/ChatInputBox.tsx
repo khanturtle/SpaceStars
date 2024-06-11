@@ -2,7 +2,7 @@ import { SendIcon } from '@packages/ui'
 import { ChangeEvent, useState } from 'react'
 import styles from './chat.module.css'
 
-const InputBox = () => {
+const InputItem = () => {
   const [chat, setChat] = useState<string>('')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,12 +41,16 @@ const InputBox = () => {
   )
 }
 
-export default function ChatInput({ children }: { children: React.ReactNode }) {
+export default function ChatInputBox({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div className={styles.chat}>
       {children}
 
-      <InputBox />
+      <InputItem />
     </div>
   )
 }
@@ -67,4 +71,4 @@ const IconBtn = ({
   )
 }
 
-ChatInput.IconBtn = IconBtn
+ChatInputBox.IconBtn = IconBtn

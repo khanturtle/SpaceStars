@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
 import { EmojiIcon, FileIcon } from '@packages/ui'
 import styles from './chat.module.css'
-import ChatInput from './ChatInput'
+import ChatInputBox from './ChatInputBox'
 
 export default function ChatRoomContainer() {
   return (
@@ -181,14 +181,14 @@ export default function ChatRoomContainer() {
         </p>
       </div>
 
-      <ChatInput>
-        <ChatInput.IconBtn handleClick={() => console.log('1')}>
+      <ChatInputBox>
+        <ChatInputBox.IconBtn handleClick={() => console.log('1')}>
           <FileIcon />
-        </ChatInput.IconBtn>
-        <ChatInput.IconBtn handleClick={() => console.log('2')}>
+        </ChatInputBox.IconBtn>
+        <ChatInputBox.IconBtn handleClick={() => console.log('2')}>
           <EmojiIcon />
-        </ChatInput.IconBtn>
-      </ChatInput>
+        </ChatInputBox.IconBtn>
+      </ChatInputBox>
     </div>
   )
 }
