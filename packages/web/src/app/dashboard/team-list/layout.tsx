@@ -3,5 +3,5 @@ export default async function layout({
 }: {
   children: React.ReactNode
 }) {
-  return <div>{children}</div>
+  return <section className="flex-1">{children}</section>
 }
