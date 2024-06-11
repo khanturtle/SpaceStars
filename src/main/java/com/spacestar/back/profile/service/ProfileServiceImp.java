@@ -24,6 +24,7 @@ import com.spacestar.back.profile.repository.PlayGameRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Service
 @Slf4j
@@ -101,15 +102,12 @@ public class ProfileServiceImp implements ProfileService {
     public ProfileLikedGameResDto getLikedGame(String uuid) {
 
         List<LikedGame> likedGameIds = likedGameRepository.findAllByUuid(uuid);
-        List<Long> likedGameIdList = new ArrayList<>();
 
-        for (LikedGame likedGame : likedGameIds) {
-            likedGameIdList.add(likedGame.getGameId());
-        }
+        List<Long> likedGameIdList = likedGameIds.stream()
+                .map(LikedGame::getGameId)
+                .toList();
 
-        return ProfileLikedGameResDto.builder()
-                .likedGameIdList(likedGameIdList)
-                .build();
+        return new ProfileLikedGameResDto(likedGameIdList);
     }
 
     // 내가 하는 게임 조회
@@ -117,15 +115,10 @@ public class ProfileServiceImp implements ProfileService {
     public List<ProfilePlayGameInfoResDto> getPlayGame(String uuid) {
 
         List<PlayGame> playGameIds = playGameRepository.findAllByUuid(uuid);
-        List<ProfilePlayGameInfoResDto> profilePlayGameInfoResDtoList = new ArrayList<>();
 
-        int index = 0;
-        for (PlayGame playGame : playGameIds) {
-            profilePlayGameInfoResDtoList.add(ProfilePlayGameInfoResDto.toDto(playGame, index));
-            index++;
-        }
-        return profilePlayGameInfoResDtoList;
-
+        return IntStream.range(0,playGameIds.size())
+                .mapToObj(index -> ProfilePlayGameInfoResDto.toDto(playGameIds.get(index), index))
+                .toList();
     }
 
     //프로필 이미지 수정
