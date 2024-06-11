@@ -29,4 +29,13 @@ public class TeamChatRoomController {
         return new ResponseEntity<>(ResponseSuccess.CREATE_TEAM_CHATROOM_SUCCESS);
     }
 
+    // 팀 채팅방 목록 조회
+    @Operation(summary = "팀 채팅방 목록 조회", description = "팀 채팅방 목록을 조회합니다.")
+    @GetMapping("/chatroom/list")
+    public ResponseEntity<?> getTeamChatRoomList(@RequestHeader String uuid) {
+
+
+        return new ResponseEntity<>(ResponseSuccess.SUCCESS, null);
+    }
+
 }
