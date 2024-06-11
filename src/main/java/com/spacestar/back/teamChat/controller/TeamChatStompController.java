@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "TeamChat", description = "팀 채팅")
 public class TeamChatStompController {
-    private final TeamChatMessageService teamChatMessageService;
-    private final SimpMessagingTemplate messageTemplate;
-
-    @MessageMapping("/team/{roomNumber}")
+//    private final TeamChatMessageService teamChatMessageService;
+//    private final SimpMessagingTemplate messageTemplate;
+//
+//    @MessageMapping("/team/{roomNumber}")
 
 
 
