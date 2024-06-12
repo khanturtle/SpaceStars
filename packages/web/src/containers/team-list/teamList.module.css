@@ -40,20 +40,6 @@
   border-radius: 15px;
 }
 
-.gameList {
-  display: flex;
-  gap: 9px;
-  overflow-x: auto;
-  white-space: nowrap;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.gameList::-webkit-scrollbar {
-  display: none;
-}
-
 /* SubSelectBox.css */
 .subTitle {
   font-family: Poppins;
@@ -83,3 +69,23 @@
   align-items: center;
   gap: 10px;
 }
+
+
+/* GameSelectBox.css */
+.gameList {
+  height: 68px;
+  padding: 4px 0;
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  overflow-y: unset;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+/* GameSelectBox.css */

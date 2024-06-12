@@ -23,11 +23,11 @@ const GameItem = ({game, currentGame, onClick}: {
   }
     
   return (
-      <GameListButton
+    <GameListButton
+      className='min-w-[164px]'
       item={item}
       onClick={() => onClick(game)}
-      isClicked={currentGame === game.gameName}
-    />
+      isClicked={currentGame === game.gameName} />
   )
 }
 

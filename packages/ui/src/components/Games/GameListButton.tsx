@@ -37,7 +37,7 @@ const GameListButton = ({
       <div className="z-10 flex items-center justify-center w-full h-full ">
         <div className="game-logo">
           <img
-            className="object-cover w-full h-full"
+            className="object-contain w-full h-full"
             src={item.gameLogo}
             alt={item.gameName}
           />
