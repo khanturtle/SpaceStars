@@ -1,7 +1,12 @@
-import LoginButton from './LoginButton'
+'use client'
+
+import { useRouter } from 'next/navigation'
+
 import styles from './Navbar.module.css'
 
-function Navbar() {
+export default function Navbar() {
+  const router = useRouter()
+
   return (
     <nav className={styles.nav}>
       <div className={styles.nav_logo}>
@@ -19,9 +24,9 @@ function Navbar() {
 
       <div className={styles.nav_mode}>모드</div>
 
-      <LoginButton styles={styles} />
+      <button type="button" onClick={() => router.push('/sign-in')}>
+        로그인/회원가입
+      </button>
     </nav>
   )
 }
-
-export default Navbar
