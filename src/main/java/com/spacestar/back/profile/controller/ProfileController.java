@@ -175,7 +175,7 @@ public class ProfileController {
     }
     @Tag(name = "ProfileImage", description = "프로필 사진")
     @Operation(summary = "메인 프로필 사진으로 설정")
-    @PostMapping("/image/main/update")
+    @PatchMapping("/image/main/update")
     public ResponseEntity<Void> mainProfileImage(@RequestHeader("UUID") String uuid,
                                                 @RequestBody ProfileImageReqVo profileImageReqVo) {
 

@@ -211,8 +211,9 @@ public class ProfileServiceImp implements ProfileService {
             profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, false, profileImage.getId(), profileImageReqDto));
         }
 
-        profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true, profileImageReqDto));
-
+        else{
+            profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true, profileImageReqDto));
+        }
     }
 
     //로그인 시 프로필 존재 유무판단
