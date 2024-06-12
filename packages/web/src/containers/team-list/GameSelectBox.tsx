@@ -7,7 +7,7 @@ import { GameListButton } from '@packages/ui'
 import styles from './teamList.module.css'
 
 import { GameType } from '@/apis/game'
-import { gamesImageUrl } from './state'
+import { gamesImageUrl } from '@/apis/state'
 
 const GameItem = ({game, currentGame, onClick}: {
   game: GameType
