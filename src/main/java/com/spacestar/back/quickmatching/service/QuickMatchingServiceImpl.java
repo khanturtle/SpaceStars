@@ -10,7 +10,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -39,21 +43,22 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             for (ZSetOperations.TypedTuple<String> tuple : gameData) {
                 String matchMemberUuid = tuple.getValue();
                 score = calculateScore(uuid, matchMemberUuid);
-                if (score > maxScore && score>=50) {
+                if (score > maxScore && score >= 50) {
                     maxScore = score;
                     matchedMemberUuid = matchMemberUuid;
                 }
             }
         }
-        if(matchedMemberUuid!=null){
-            enterMatchQueue(matchedMemberUuid,uuid);
+        if (matchedMemberUuid != null) {
+            enterMatchQueue(matchedMemberUuid, uuid);
+            sendComment(gameName);
         }
     }
 
     //사용자 간에 매치 점수 계산
     private int calculateScore(String matchFromMember, String matchToMember) {
         //todo kafka 되면 유저 정보 토대로 점수 계산
-        return 40;
+        return 50;
     }
 
     //수락 대기 큐 진입
@@ -66,5 +71,47 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 .matchFromMemberStatus(QuickMatchStatus.WAIT)
                 .build();
         quickMatchingRepository.save(quickMatching);
+    }
+    //SSE
+    private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
+
+    @Override
+    public SseEmitter connect(final String articleId) {
+        SseEmitter sseEmitter = new SseEmitter(300_000L);
+
+        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
+                .name("connect")
+                .data("connected!")
+                .reconnectTime(3000L);
+
+        sendEvent(sseEmitter, sseEventBuilder);
+
+        Set<SseEmitter> sseEmitters = container.getOrDefault(articleId, new HashSet<>());
+        sseEmitters.add(sseEmitter);
+        container.put(articleId, sseEmitters);
+        sseEmitter.onCompletion(() -> {
+            sseEmitters.remove(sseEmitter);
+        });
+        return sseEmitter;
+    }
+
+    private static void sendEvent(final SseEmitter sseEmitter,
+                                  final SseEmitter.SseEventBuilder sseEventBuilder) {
+        try {
+            sseEmitter.send(sseEventBuilder);
+        } catch (IOException e) {
+            sseEmitter.complete();
+        }
+    }
+
+    public void sendComment(String gameName) {
+        Set<SseEmitter> sseEmitters = container.getOrDefault(gameName, new HashSet<>());
+
+        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
+                .name("Matched")
+                .data("매치 되었습니다.")
+                .reconnectTime(3000L);
+
+        sseEmitters.forEach(sseEmitter -> sendEvent(sseEmitter, sseEventBuilder));
     }
 }
