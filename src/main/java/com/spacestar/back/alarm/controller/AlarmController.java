@@ -25,7 +25,7 @@ public class AlarmController {
 	private final ModelMapper modelMapper;
 
 	//알림 리스트 조회 API
-	@GetMapping("/")
+	@GetMapping
 	@Operation(summary = "알림 목록 조회")
 	public ResponseEntity<AlarmListResVo> getAlarmList(@RequestHeader("UUID") String uuid){
 
