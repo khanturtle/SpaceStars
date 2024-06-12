@@ -12,6 +12,4 @@ import lombok.NoArgsConstructor;
 public class ProfileMainImageResDto {
 
     private String profileImageUrl;
-    private boolean mainImage;
-    private int imageIdx;
 }

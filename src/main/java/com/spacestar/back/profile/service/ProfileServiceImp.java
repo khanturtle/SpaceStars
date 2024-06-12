@@ -38,6 +38,9 @@ public class ProfileServiceImp implements ProfileService {
     private final ProfileImageRepository profileImageRepository;
     private final ModelMapper mapper;
 
+    /**
+     * 프로필 정보 (프로필, 좋아하는게임, 내가 하는게임)
+     * **/
     //프로필 정보 수정
     @Transactional
     @Override
@@ -121,57 +124,42 @@ public class ProfileServiceImp implements ProfileService {
                 .toList();
     }
 
-    //프로필 이미지 수정
-    @Transactional
+    //스와이프 추천 여부 조회
     @Override
-    public void updateProfileImages(String uuid, List<ProfileImageReqDto> profileImageReqDtos) {
+    public ProfileSwipeResDto findSwipeRecommend(String uuid) {
 
-        List<ProfileImage> profileImages = profileImageRepository.findAllByUuid(uuid);
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
-        //사진 삭제
-        for (ProfileImage profileImage : profileImages) {
-            boolean check = false;
-            for (ProfileImageReqDto profileImageReqDto : profileImageReqDtos) {
-                if (profileImage.getProfileImageUrl().equals(profileImageReqDto.getProfileImageUrl())) {
-                    check = true;
-                    break;
-                }
-            }
-            if (!check) {
-                profileImageRepository.delete(profileImage);
-            }
-        }
-
-        // 사진 저장
-        for (ProfileImageReqDto profileImageReqDto : profileImageReqDtos) {
-            boolean check = false;
-            for (ProfileImage profileImage : profileImages) {
-                //사진 존재
-                if (profileImageReqDto.getProfileImageUrl().equals(profileImage.getProfileImageUrl())) {
-                    profileImageRepository.save(profileImageReqDto.updateImage(uuid,profileImage, profileImageReqDto));
-                    check = true;
-                }
-            }
-            //사진 존재하지 않음
-            if (!check) {
-                profileImageRepository.save(profileImageReqDto.addNewImage(uuid, profileImageReqDto));
-
-            }
-        }
+        return ProfileSwipeResDto.builder()
+                .swipe(profile.isSwipe())
+                .build();
     }
 
+    //스와이프 추천 여부 변경
+    @Transactional
+    @Override
+    public void updateSwipeRecommend(String uuid, ProfileSwipeResDto profileSwipeResDto) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        profileRepository.updateSwipe(uuid,profileSwipeResDto.isSwipe());
+    }
+
+
+    /**
+     * 프로필 사진
+     * **/
     //프로필 이미지 리스트 조회
     @Override
     public List<ProfileImageListResDto> findProfileImageList(String uuid) {
 
-        List<ProfileImageListResDto> profileImageListResDtos = new ArrayList<>();
+        List<ProfileImage> profileImages = profileImageRepository.findAllByUuid(uuid);
 
-        int i = 0;
-        for (ProfileImage profileImage : profileImageRepository.findAllByUuid(uuid)) {
-            profileImageListResDtos.add(ProfileImageListResDto.convertToDto(i, profileImage));
-            i++;
-        }
-        return profileImageListResDtos;
+        return IntStream.range(0, profileImages.size())
+                .mapToObj(index -> ProfileImageListResDto.convertToDto(index, profileImages.get(index)))
+                .toList();
     }
 
     //프로필 메인 이미지 조회
@@ -182,12 +170,47 @@ public class ProfileServiceImp implements ProfileService {
                 profileImageRepository.findByUuidAndMain(uuid, true), ProfileMainImageResDto.class);
     }
 
-    // 회원가입 시 카카오 프로필 사진 저장
+    //프로필 사진 추가
     @Transactional
     @Override
-    public void addProfileImage(String uuid, KakaoProfileImageReqDto kakaoProfileImageReqDto) {
+    public void addProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
 
-        profileImageRepository.save(kakaoProfileImageReqDto.addNewImage(uuid, kakaoProfileImageReqDto));
+        //메인 프로필이 없으면 메인으로
+        if (!profileImageRepository.existsByUuidAndMain(uuid, true)){
+            profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true,profileImageReqDto));
+        }
+        else{
+            profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, false,profileImageReqDto));
+        }
+
+    }
+
+    //프로필 사진 삭제
+    @Override
+    public void deleteProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
+
+        //메인 프로필이면 삭제 안되게
+        if (profileImageRepository.existsByUuidAndMain(uuid, true)){
+            throw new GlobalException(ResponseStatus.MAIN_PROFILE_IMAGE_DELETE);
+        }
+        else{
+            profileImageRepository.delete(profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl()));
+        }
+
+    }
+
+    // 메인 프로필 사진 설정
+    @Override
+    public void mainProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
+
+        ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
+
+        if ( profileImage != null){
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, false, profileImage.getId(), profileImageReqDto));
+        }
+
+        profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true, profileImageReqDto));
+
     }
 
     //로그인 시 프로필 존재 유무판단
@@ -225,28 +248,4 @@ public class ProfileServiceImp implements ProfileService {
                 .isExist(true)
                 .build();
     }
-
-    //스와이프 추천 여부 조회
-    @Override
-    public ProfileSwipeResDto findSwipeRecommend(String uuid) {
-
-        Profile profile = profileRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
-
-        return ProfileSwipeResDto.builder()
-                .swipe(profile.isSwipe())
-                .build();
-    }
-
-    //스와이프 추천 여부 변경
-    @Transactional
-    @Override
-    public void updateSwipeRecommend(String uuid, ProfileSwipeResDto profileSwipeResDto) {
-
-        Profile profile = profileRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
-
-        profileRepository.updateSwipe(uuid,profileSwipeResDto.isSwipe());
-    }
-
 }

@@ -15,14 +15,4 @@ public class KakaoProfileImageReqDto {
 
     private String profileImageUrl;
 
-
-
-    public ProfileImage addNewImage(String uuid, KakaoProfileImageReqDto kakaoProfileImageReqDto) {
-        return ProfileImage.builder()
-                .uuid(uuid)
-                .profileImageUrl(kakaoProfileImageReqDto.getProfileImageUrl())
-                .main(true)
-                .idx(0)
-                .build();
-    }
 }

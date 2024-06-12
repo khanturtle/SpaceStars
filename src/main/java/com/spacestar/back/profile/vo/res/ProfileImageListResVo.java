@@ -8,5 +8,4 @@ public class ProfileImageListResVo {
     private int index;
     private String profileImageUrl;
     private boolean mainImage;
-    private int imageIdx;
 }

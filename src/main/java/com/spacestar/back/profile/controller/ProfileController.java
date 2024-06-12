@@ -13,6 +13,7 @@ import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
 import com.spacestar.back.profile.vo.req.ProfileInfoReqVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jdk.jfr.Description;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -31,7 +32,7 @@ public class ProfileController {
     private final ModelMapper mapper;
 
 
-    @Operation(summary = "프로필 정보 추가 입력 및 수정")
+    @Operation(summary = "기본 프로필 정보 추가 입력 및 수정")
     @PutMapping("/info/update")
     public ResponseEntity<Void> updateProfileInfo(@RequestHeader("UUID") String uuid,
                                                   @RequestBody ProfileInfoReqVo profileInfoReqVo) {
@@ -91,18 +92,6 @@ public class ProfileController {
                         .map(playGame -> mapper.map(playGame, ProfilePlayGameInfoResVo.class))
                         .toList());
     }
-    @Operation(summary = "프로필 사진 수정 및 피드 사진 추가")
-    @PutMapping("/image/update")
-    public ResponseEntity<Void> profileImageUpdate(@RequestHeader("UUID") String uuid,
-                                                   @RequestBody List<ProfileImageReqVo> profileImageReqVo){
-
-        List<ProfileImageReqDto> profileImageReqDtos = profileImageReqVo.stream()
-                .map(vo -> mapper.map(vo, ProfileImageReqDto.class))
-                .toList();
-        profileService.updateProfileImages(uuid, profileImageReqDtos);
-
-        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_UPDATE_SUCCESS);
-    }
 
     @Operation(summary = "프로필 사진 리스트 조회")
     @GetMapping("/image")
@@ -148,16 +137,35 @@ public class ProfileController {
 
     }
 
-    @Operation(summary = "회원 가입 시 카카오 프로필 사진 저장")
+    @Operation(summary = "프로필 사진 추가")
     @PostMapping("/image/add")
     public ResponseEntity<Void> addProfileImage(@RequestHeader("UUID") String uuid,
-                                                @RequestBody KakaoProfileImageReqVo kakaoProfileImageReqVo) {
+                                                @RequestBody ProfileImageReqVo profileImageReqVo) {
 
-        profileService.addProfileImage(uuid, mapper.map(kakaoProfileImageReqVo, KakaoProfileImageReqDto.class));
+        profileService.addProfileImage(uuid, mapper.map(profileImageReqVo, ProfileImageReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_ADD_SUCCESS);
+    }
+
+    @Operation(summary = "프로필 사진 삭제")
+    @PostMapping("/image/delete")
+    public ResponseEntity<Void> deleteProfileImage(@RequestHeader("UUID") String uuid,
+                                                @RequestBody ProfileImageReqVo profileImageReqVo) {
+
+        profileService.deleteProfileImage(uuid, mapper.map(profileImageReqVo, ProfileImageReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_ADD_SUCCESS);
+    }
+
+    @Operation(summary = "메인 프로필 사진으로 설정")
+    @PostMapping("/image/main/update")
+    public ResponseEntity<Void> mainProfileImage(@RequestHeader("UUID") String uuid,
+                                                @RequestBody ProfileImageReqVo profileImageReqVo) {
+
+        profileService.mainProfileImage(uuid, mapper.map(profileImageReqVo, ProfileImageReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_ADD_SUCCESS);
     }
 
     @Operation(summary = "로그인 시 프로필 존재 유무 확인")
+    @Description("프로필 존재 유무 확인 후 없으면 기본 프로필 생성"+ "게임 빈 칸이면 false, 모두 채워져 있으면 true")
     @GetMapping("/exist")
     public ResponseEntity<ProfileExistResVo> existProfile(@RequestHeader("UUID") String uuid){
 
