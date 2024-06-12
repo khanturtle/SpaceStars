@@ -1,4 +1,4 @@
-package com.spacestar.back.profile.dto.res;
+package com.spacestar.back.friend.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ProfileMainImageResDto {
+public class FriendUuidReqDto {
 
-    private String profileImageUrl;
+    private String friendUuid;
 }
