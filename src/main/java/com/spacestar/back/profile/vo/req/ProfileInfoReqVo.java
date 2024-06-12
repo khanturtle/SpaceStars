@@ -13,7 +13,6 @@ public class ProfileInfoReqVo {
     private String introduction;
 
     private Long mbtiId;
-    private boolean swipe;
 }
 
 

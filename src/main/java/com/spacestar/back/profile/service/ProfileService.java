@@ -1,10 +1,9 @@
 package com.spacestar.back.profile.service;
 
 
-import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
-import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
-import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
+import com.spacestar.back.profile.dto.req.*;
 import com.spacestar.back.profile.dto.res.*;
+import com.spacestar.back.profile.vo.req.LikedGameInfoReqVo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -33,4 +32,8 @@ public interface ProfileService {
     void deleteProfileImage(String uuid, ProfileImageReqDto profileImageReqDto);
 
     void mainProfileImage(String uuid, ProfileImageReqDto profileImageReqDto);
+
+    void updateLikedGameInfo(String uuid, LikedGameInfoReqDto likedGameInfoReqDto);
+
+    void updatePlayGameInfo(String uuid, List<PlayGameInfoReqDto> playGameInfoReqDtos);
 }

@@ -4,11 +4,12 @@ import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.domain.ProfileImage;
-import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
-import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
+import com.spacestar.back.profile.dto.req.*;
 import com.spacestar.back.profile.dto.res.*;
 import com.spacestar.back.profile.repository.ProfileImageRepository;
 import com.spacestar.back.profile.repository.ProfileRepository;
+import com.spacestar.back.profile.vo.req.LikedGameInfoReqVo;
+import com.thoughtworks.xstream.XStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -16,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spacestar.back.profile.domain.LikedGame;
 import com.spacestar.back.profile.domain.PlayGame;
-import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
-import com.spacestar.back.profile.dto.req.ProfilePlayGameInfoReqDto;
 import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
 
@@ -49,45 +48,46 @@ public class ProfileServiceImp implements ProfileService {
         Profile profile = profileRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
-        //프로필 정보 수정
-        profileRepository.save(profileInfoReqDto.updateToEntity(profile.getId(), profile.getUuid(), profileInfoReqDto));
+        profileRepository.save(ProfileInfoReqDto.updateProfileInfo(profile, profileInfoReqDto));
+    }
 
-        //내가 좋아하는 게임
-        if (profileInfoReqDto.getLikedGameIds().isEmpty()) {
-            likedGameRepository.deleteAllByUuid(uuid);
-        } else {
-            //좋아하는 게임 삭제
-            likedGameRepository.deleteAllByUuid(uuid);
+    //좋아하는 게임 정보 수정
+    @Transactional
+    @Override
+    public void updateLikedGameInfo(String uuid, LikedGameInfoReqDto likedGameInfoReqDto) {
 
-            //좋아하는 게임 추가
-            for (Long ids : profileInfoReqDto.getLikedGameIds()) {
+        List<LikedGame> likedGameList = likedGameRepository.findAllByUuid(uuid);
 
-                LikedGame likeGame = LikedGame.builder()
-                        .gameId(ids)
+        //기존 좋아하는 게임 삭제
+        likedGameRepository.deleteAll(likedGameList);
+
+        //새로운 좋아하는 게임 추가
+        List<LikedGame> likedGames = likedGameInfoReqDto.getLikedGameIdList().stream()
+                .map(gameId -> LikedGame.builder()
                         .uuid(uuid)
-                        .build();
+                        .gameId(gameId)
+                        .build())
+                .toList();
 
-                likedGameRepository.save(likeGame);
-            }
-        }
+        likedGameRepository.saveAll(likedGames);
+    }
 
-        //내가 플레이한 게임
-        if (profileInfoReqDto.getPlayGameIds().isEmpty()) {
-            playGameRepository.deleteAllByUuid(uuid);
-        } else {
-            //플레이한 게임 삭제
-            playGameRepository.deleteAllByUuid(uuid);
+    //내가 하는 게임 정보 수정
+    @Transactional
+    @Override
+    public void updatePlayGameInfo(String uuid, List<PlayGameInfoReqDto> playGameInfoReqDtos) {
 
-            //플레이한 게임 추가
-            for (ProfilePlayGameInfoReqDto profilePlayGameInfoReqDto : profileInfoReqDto.getPlayGameIds()) {
-                //메인 게임 수정
-                if (profileInfoReqDto.getMainGameId().equals(profilePlayGameInfoReqDto.getGameId())) {
-                    playGameRepository.save(profilePlayGameInfoReqDto.toEntity(uuid, true, profilePlayGameInfoReqDto));
-                } else {
-                    playGameRepository.save(profilePlayGameInfoReqDto.toEntity(uuid, false, profilePlayGameInfoReqDto));
-                }
-            }
-        }
+        List<PlayGame> playGameList = playGameRepository.findAllByUuid(uuid);
+
+        //기존 내가 하는 게임 삭제
+        playGameRepository.deleteAll(playGameList);
+
+        //새로운 내가 하는 게임 추가
+        List<PlayGame> playGames = playGameInfoReqDtos.stream()
+                .map(playGameInfoReqDto -> PlayGameInfoReqDto.toEntity(uuid, playGameInfoReqDto))
+                .toList();
+
+        playGameRepository.saveAll(playGames);
     }
 
     //프로필 정보 조회
@@ -186,6 +186,7 @@ public class ProfileServiceImp implements ProfileService {
     }
 
     //프로필 사진 삭제
+    @Transactional
     @Override
     public void deleteProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
 
@@ -200,6 +201,7 @@ public class ProfileServiceImp implements ProfileService {
     }
 
     // 메인 프로필 사진 설정
+    @Transactional
     @Override
     public void mainProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
 
