@@ -184,12 +184,12 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     @Override
-    public void quitQuickMatching(String uuid,QuickMatchingEnterReqDto reqDto) {
+    public void quitQuickMatching(String uuid, QuickMatchingEnterReqDto reqDto) {
         Double score = redisTemplate.opsForZSet().score(reqDto.getGameName(), uuid);
 
         if (score != null) {
             redisTemplate.opsForZSet().remove(reqDto.getGameName(), uuid);
-        }else throw new GlobalException(ResponseStatus.WAITING_MEMBER_NOT_EXIST);
+        } else throw new GlobalException(ResponseStatus.WAITING_MEMBER_NOT_EXIST);
     }
 
 
