@@ -5,32 +5,31 @@ import { type ElementRef, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { CloseIcon } from '@packages/ui'
 import styles from './modal.module.css'
+import { useModalStore } from '@/store/modalStore'
 
-function Modal({
+function ModalClient({
   className,
   children,
-  onCloseRoute,
 }: {
   className?: string
   children: React.ReactNode
-  onCloseRoute?: string
 }) {
   const router = useRouter()
   const dialogRef = useRef<ElementRef<'dialog'>>(null)
   const modalRoot = document.getElementById('modal-root') || document.body
 
+  const { isModalOpen, closeModal } = useModalStore()
+
   useEffect(() => {
-    if (!dialogRef.current?.open) {
+    if (isModalOpen && dialogRef.current?.open) {
       dialogRef.current?.showModal()
+    } else if (!isModalOpen && dialogRef.current?.open) {
+      dialogRef.current?.close()
     }
-  }, [])
+  }, [isModalOpen])
 
   function onDismiss() {
-    if (onCloseRoute) {
-      router.replace(onCloseRoute)
-    } else {
-      router.back()
-    }
+    closeModal()
   }
 
   return createPortal(
@@ -44,7 +43,6 @@ function Modal({
         onClose={onDismiss}
       >
         {children}
-
         <button
           type="button"
           aria-label="닫기"
@@ -55,8 +53,8 @@ function Modal({
         </button>
       </dialog>
     </div>,
-    modalRoot
+    modalRoot,
   )
 }
 
-export default Modal
+export default ModalClient
