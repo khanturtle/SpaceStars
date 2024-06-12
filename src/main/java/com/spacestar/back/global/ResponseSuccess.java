@@ -2,6 +2,7 @@ package com.spacestar.back.global;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 
 @Getter
@@ -27,7 +28,11 @@ public enum ResponseSuccess {
     FRIEND_REQUEST_SELECT_SUCCESS(200,"친구 요청 목록 조회 성공" ),
     FRIEND_ACCEPT_SUCCESS(200,"친구 요청 수락" ),
     FRIEND_REJECT_SUCCESS(200, "친구 요청 거절"),
-    FRIEND_DELETE_SUCCESS(200,"친구 삭제 성공" );
+    FRIEND_DELETE_SUCCESS(200,"친구 삭제 성공" ),
+
+    //report
+    REPORT_ADD_SUCCESS(HttpStatus.OK.value(),"신고 성공")
+    ;
 
 
 
