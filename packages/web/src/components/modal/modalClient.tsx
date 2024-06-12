@@ -1,11 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { type ElementRef, useEffect, useRef } from 'react'
+import { type ElementRef, useEffect, useRef, useContext } from 'react'
 import { createPortal } from 'react-dom'
 import { CloseIcon } from '@packages/ui'
 import styles from './modal.module.css'
-import { useModalStore } from '@/store/modalStore'
+import { ModalContext } from '../providers/modal-provider'
 
 function ModalClient({
   className,
@@ -14,11 +13,10 @@ function ModalClient({
   className?: string
   children: React.ReactNode
 }) {
-  const router = useRouter()
   const dialogRef = useRef<ElementRef<'dialog'>>(null)
   const modalRoot = document.getElementById('modal-root') || document.body
 
-  const { isModalOpen, closeModal } = useModalStore()
+  const { isModalOpen, closeModal } = useContext(ModalContext)
 
   useEffect(() => {
     if (isModalOpen && dialogRef.current?.open) {
