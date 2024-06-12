@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Configuration
 @OpenAPIDefinition(
-		info = @Info(title = "API Document", description = "서비스 명세서", version = "v1")
+		info = @Info(title = "API Document", description = "member 서비스 명세서", version = "v1")
 )
 public class SwaggerConfig {
 
