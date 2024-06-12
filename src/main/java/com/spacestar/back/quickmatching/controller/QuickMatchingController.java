@@ -24,32 +24,32 @@ public class QuickMatchingController {
     public ResponseEntity<Void> enterQuickMatching(@RequestHeader("UUID")String uuid,
                                                    @RequestBody QuickMatchingEnterReqVo reqVo){
         quickMatchingService.enterQuickMatching(uuid, mapper.map(reqVo, QuickMatchingEnterReqDto.class));
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS);
+        return new ResponseEntity<>(ResponseSuccess.QUICK_MATCHING_ENTER_SUCCESS);
     }
     @Operation(summary = "대기 큐 취소")
     @DeleteMapping
     public ResponseEntity<Void> quitQuickMatching(@RequestHeader("UUID")String uuid,
                                                   @RequestBody QuickMatchingEnterReqVo reqVo){
         quickMatchingService.quitQuickMatching(uuid,mapper.map(reqVo, QuickMatchingEnterReqDto.class));
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS);
+        return new ResponseEntity<>(ResponseSuccess.QUICK_MATCHING_QUIT_SUCCESS);
     }
     @Operation(summary = "큐 요청 수락하기")
     @PatchMapping("/accept")
     public ResponseEntity<Void> acceptQuickMatch(@RequestHeader("UUID")String uuid) {
         quickMatchingService.acceptQuickMatch(uuid);
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS);
+        return new ResponseEntity<>(ResponseSuccess.QUICK_MATCHING_ACCEPT_SUCCESS);
     }
     @Operation(summary = "큐 요청 거절하기")
     @PatchMapping("/reject")
     public ResponseEntity<Void> rejectQuickMatch(@RequestHeader("UUID")String uuid) {
         quickMatchingService.rejectQuickMatch(uuid);
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS);
+        return new ResponseEntity<>(ResponseSuccess.QUICK_MATCHING_REJECT_SUCCESS);
     }
     @Operation(summary = "수락 큐 결과")
     @PostMapping("/complete")
     public ResponseEntity<QuickMatchingResVo> completeQuickMatch(@RequestHeader("UUID")String uuid,
                                                  @RequestBody QuickMatchingEnterReqVo reqVo){
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS,
+        return new ResponseEntity<>(ResponseSuccess.QUICK_MATCHING_COMPLETE_SUCCESS,
                 mapper.map(quickMatchingService.completeQuickMatch(uuid,mapper.map(reqVo, QuickMatchingEnterReqDto.class)), QuickMatchingResVo.class));
     }
 
