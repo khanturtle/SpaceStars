@@ -9,7 +9,6 @@ COPY package.json package.json
 COPY packages/ui/package.json packages/ui/package.json
 COPY packages/web/package.json packages/web/package.json
 
-RUN yarn cache clean
 RUN yarn install
 COPY .pnp.loader.mjs .pnp.loader.mjs
 
@@ -34,7 +33,6 @@ COPY --from=ui-builder /app/.pnp.loader.mjs .pnp.loader.mjs
 COPY --from=ui-builder /app/packages/ui/dist packages/ui/dist
 
 # 웹 패키지 빌드
-RUN yarn cache clean
 RUN yarn install
 
 COPY . . 
