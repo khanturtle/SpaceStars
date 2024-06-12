@@ -18,8 +18,8 @@ RUN yarn ui build
 
 # 캐시 삭제
 RUN rm -rf /tmp/*
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apk del .build-deps
+RUN rm -rf /var/cache/apk/*
 
 # 2단계: 실제 애플리케이션 이미지
 FROM node:18-alpine AS web-builder
@@ -45,8 +45,8 @@ RUN yarn web build
 
 # 캐시 삭제
 RUN rm -rf /tmp/*
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apk del .build-deps
+RUN rm -rf /var/cache/apk/*
 
 # 3단계: 실제 애플리케이션 이미지
 FROM node:18-alpine
@@ -69,8 +69,8 @@ RUN yarn install
 
 # 캐시 삭제
 RUN rm -rf /tmp/*
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apk del .build-deps
+RUN rm -rf /var/cache/apk/*
 
 # 웹 서버를 위한 포트 열기
 EXPOSE 3000
