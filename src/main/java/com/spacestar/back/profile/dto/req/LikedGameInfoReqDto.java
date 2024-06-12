@@ -1,18 +1,17 @@
 package com.spacestar.back.profile.dto.req;
 
-import com.spacestar.back.profile.domain.ProfileImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class KakaoProfileImageReqDto {
+public class LikedGameInfoReqDto {
 
-
-    private String profileImageUrl;
-
+    private List<Long> likedGameIdList;
 }

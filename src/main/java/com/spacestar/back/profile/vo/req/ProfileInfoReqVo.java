@@ -13,12 +13,6 @@ public class ProfileInfoReqVo {
     private String introduction;
 
     private Long mbtiId;
-    private Long gamePreferenceId;
-    private Long mainGameId;
-    private List<Long> likedGameIds;
-    private List<ProfilePlayGameInfoReqVo> playGameIds;
-    private boolean swipe;
-
 }
 
 
