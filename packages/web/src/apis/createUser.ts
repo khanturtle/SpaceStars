@@ -20,7 +20,7 @@ export async function createUser(
   const postFormData = {
     email: formData.get('email'),
     nickname: formData.get('nickname'),
-    infoAgree: formData.get('infoAgree') === 'true',
+    infoAgree: formData.get('infoAgree') === 'on',
     birth: formData.get('birth'),
     gender: formData.get('gender'),
     imageUrl,
