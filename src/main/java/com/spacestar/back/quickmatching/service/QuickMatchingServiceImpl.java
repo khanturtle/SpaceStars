@@ -1,5 +1,6 @@
 package com.spacestar.back.quickmatching.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spacestar.back.quickmatching.domain.QuickMatchStatus;
 import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -25,6 +27,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
     private final RedisTemplate<String, String> redisTemplate;
     private final QuickMatchingRepository quickMatchingRepository;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void enterQuickMatching(String uuid, QuickMatchingEnterReqDto reqDto) {
@@ -50,7 +53,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             }
         }
         if (matchedMemberUuid != null) {
-            enterMatchQueue(matchedMemberUuid, uuid);
+            enterMatchQueue(uuid, matchedMemberUuid);
             sendComment(gameName);
         }
     }
@@ -67,11 +70,12 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 .id(matchFromMember + matchToMember)
                 .matchFromMember(matchFromMember)
                 .matchToMember(matchToMember)
-                .matchToMemberStatus(QuickMatchStatus.WAIT)
                 .matchFromMemberStatus(QuickMatchStatus.WAIT)
+                .matchToMemberStatus(QuickMatchStatus.WAIT)
                 .build();
         quickMatchingRepository.save(quickMatching);
     }
+
     //SSE
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
 
@@ -94,6 +98,33 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         });
         return sseEmitter;
     }
+
+    @Override
+    public void acceptQuickMatch(String uuid) {
+        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
+        assert quickMatchingMembers != null;
+
+        for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
+            try {
+                Map<String, Object> data = objectMapper.readValue(tuple.getValue(), Map.class);
+
+                if (uuid.equals(data.get("matchFromMember"))) {
+                    data.put("matchFromMemberStatus", "ACCEPTED");
+                    String updatedValue = objectMapper.writeValueAsString(data);
+                    redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
+                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
+                } else if(uuid.equals(data.get("matchToMember"))){
+                    data.put("matchToMemberStatus", "ACCEPTED");
+                    String updatedValue = objectMapper.writeValueAsString(data);
+                    redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
+                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private static void sendEvent(final SseEmitter sseEmitter,
                                   final SseEmitter.SseEventBuilder sseEventBuilder) {

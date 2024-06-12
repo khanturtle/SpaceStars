@@ -29,4 +29,9 @@ public class QuickMatchingController {
         SseEmitter emitter = quickMatchingService.connect(gameName);
         return ResponseEntity.ok(emitter);
     }
+
+    @PatchMapping
+    public void acceptQuickMatch(@RequestHeader("UUID")String uuid) {
+        quickMatchingService.acceptQuickMatch(uuid);
+    }
 }
