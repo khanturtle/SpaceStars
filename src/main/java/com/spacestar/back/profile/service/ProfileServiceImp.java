@@ -59,7 +59,7 @@ public class ProfileServiceImp implements ProfileService {
         List<LikedGame> likedGameList = likedGameRepository.findAllByUuid(uuid);
 
         //기존 좋아하는 게임 삭제
-        likedGameRepository.deleteAll(likedGameList);
+        likedGameRepository.deleteAllByUuid(uuid);
 
         //새로운 좋아하는 게임 추가
         List<LikedGame> likedGames = likedGameInfoReqDto.getLikedGameIdList().stream()
@@ -80,7 +80,7 @@ public class ProfileServiceImp implements ProfileService {
         List<PlayGame> playGameList = playGameRepository.findAllByUuid(uuid);
 
         //기존 내가 하는 게임 삭제
-        playGameRepository.deleteAll(playGameList);
+        playGameRepository.deleteAllByUuid(uuid);
 
         //새로운 내가 하는 게임 추가
         List<PlayGame> playGames = playGameInfoReqDtos.stream()

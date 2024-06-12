@@ -166,7 +166,7 @@ public class ProfileController {
     }
     @Tag(name = "ProfileImage", description = "프로필 사진")
     @Operation(summary = "프로필 사진 삭제")
-    @PostMapping("/image/delete")
+    @DeleteMapping("/image/delete")
     public ResponseEntity<Void> deleteProfileImage(@RequestHeader("UUID") String uuid,
                                                 @RequestBody ProfileImageReqVo profileImageReqVo) {
 
