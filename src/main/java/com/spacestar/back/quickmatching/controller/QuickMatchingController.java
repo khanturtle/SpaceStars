@@ -30,8 +30,14 @@ public class QuickMatchingController {
         return ResponseEntity.ok(emitter);
     }
 
-    @PatchMapping
+    @PatchMapping("/accept")
     public void acceptQuickMatch(@RequestHeader("UUID")String uuid) {
         quickMatchingService.acceptQuickMatch(uuid);
     }
+    @PatchMapping("/reject")
+    public void rejectQuickMatch(@RequestHeader("UUID")String uuid) {
+        quickMatchingService.rejectQuickMatch(uuid);
+    }
+
+
 }

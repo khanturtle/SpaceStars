@@ -10,4 +10,6 @@ public interface QuickMatchingService {
     SseEmitter connect(String gameName);
 
     void acceptQuickMatch(String uuid);
+
+    void rejectQuickMatch(String uuid);
 }

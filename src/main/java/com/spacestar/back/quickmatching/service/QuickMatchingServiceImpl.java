@@ -125,6 +125,32 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         }
     }
 
+    @Override
+    public void rejectQuickMatch(String uuid) {
+        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
+        assert quickMatchingMembers != null;
+
+        for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
+            try {
+                Map<String, Object> data = objectMapper.readValue(tuple.getValue(), Map.class);
+
+                if (uuid.equals(data.get("matchFromMember"))) {
+                    data.put("matchFromMemberStatus", "REJECT");
+                    String updatedValue = objectMapper.writeValueAsString(data);
+                    redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
+                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
+                } else if(uuid.equals(data.get("matchToMember"))){
+                    data.put("matchToMemberStatus", "REJECT");
+                    String updatedValue = objectMapper.writeValueAsString(data);
+                    redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
+                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private static void sendEvent(final SseEmitter sseEmitter,
                                   final SseEmitter.SseEventBuilder sseEventBuilder) {
