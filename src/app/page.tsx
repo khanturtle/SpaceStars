@@ -1,13 +1,9 @@
-import Navbar from '@/components/Navbar'
+import Link from 'next/link'
 
 export default function Page() {
   return (
-    <>
-      <Navbar />
-
-      <main>
-        <h1>컴포넌트dd</h1>
-      </main>
-    </>
+    <main>
+      <Link href="/chat">채팅 페이지 ㄱㄱ</Link>
+    </main>
   )
 }

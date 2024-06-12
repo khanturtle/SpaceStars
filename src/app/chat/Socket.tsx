@@ -45,7 +45,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [messages, setMessages] = useState<string[]>([])
 
   useEffect(() => {
-    const socket = new SockJS('http://spacestars.kr/api/v1/wschat')
+    const socket = new SockJS('https://spacestars.kr/api/v1/wschat')
     // const client = Stomp.over(socket)
     const client = Stomp.over(() => socket)
     client.debug = () => {}
