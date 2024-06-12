@@ -83,7 +83,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
 
     @Override
-    public SseEmitter connect(final String articleId) {
+    public SseEmitter connect(QuickMatchingEnterReqDto reqDto) {
         SseEmitter sseEmitter = new SseEmitter(300_000L);
 
         final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
@@ -93,9 +93,9 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
         sendEvent(sseEmitter, sseEventBuilder);
 
-        Set<SseEmitter> sseEmitters = container.getOrDefault(articleId, new HashSet<>());
+        Set<SseEmitter> sseEmitters = container.getOrDefault(reqDto.getGameName(), new HashSet<>());
         sseEmitters.add(sseEmitter);
-        container.put(articleId, sseEmitters);
+        container.put(reqDto.getGameName(), sseEmitters);
         sseEmitter.onCompletion(() -> {
             sseEmitters.remove(sseEmitter);
         });

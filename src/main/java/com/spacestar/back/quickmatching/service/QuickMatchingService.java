@@ -8,7 +8,7 @@ public interface QuickMatchingService {
 
     void enterQuickMatching(String uuid, QuickMatchingEnterReqDto reqDto);
 
-    SseEmitter connect(String gameName);
+    SseEmitter connect(QuickMatchingEnterReqDto reqDto);
 
     void acceptQuickMatch(String uuid);
 
