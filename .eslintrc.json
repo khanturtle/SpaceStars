@@ -54,7 +54,7 @@
     {
       "files": ["packages/web/**/*.ts?(x)", "packages/web/**/*.js?(x)"],
       "settings": {
-        "import/resorver": {
+        "import/resolver": {
           "typescript": {
             "project": "./packages/web/tsconfig.json"
           }
@@ -131,7 +131,7 @@
     {
       "files": ["packages/ui/**/*.ts?(x)", "packages/ui/**/*.js?(x)"],
       "settings": {
-        "import/resorver": {
+        "import/resolver": {
           "typescript": {
             "project": "./packages/ui/tsconfig.json"
           }
