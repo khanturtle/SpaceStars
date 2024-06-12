@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spacestar.back.quickmatching.domain.QuickMatchStatus;
 import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
+import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
 import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -149,6 +150,35 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public QuickMatchingResDto completeQuickMatch(String uuid,QuickMatchingEnterReqDto reqDto) {
+        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
+        assert quickMatchingMembers != null;
+
+        for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
+            try {
+                Map<String, Object> data = objectMapper.readValue(tuple.getValue(), Map.class);
+                if (uuid.equals(data.get("matchFromMember"))||uuid.equals(data.get("matchToMember"))) {
+                    if(data.get("matchFromMemberStatus").equals("ACCEPTED")&&data.get("matchToMemberStatus").equals("ACCEPTED")){
+                        if(tuple.getValue()!=null){
+                            redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
+                        }
+                        redisTemplate.opsForZSet().remove(reqDto.getGameName(),data.get("matchFromMember"));
+                        return QuickMatchingResDto.builder().memberUuid(uuid).build();
+                    }else {
+                        if(tuple.getValue()!=null) {
+                            redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
+                        }
+                        return null;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 
