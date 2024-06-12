@@ -19,8 +19,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/api/v1/wschat");   //SockJS 연결 주소
         registry.addEndpoint("/api/v1/wschat")   //SockJS 연결 주소
+                .setAllowedOriginPatterns("*");  //CORS 허용
+        registry.addEndpoint("/api/v1/wschat")   //SockJS 연결 주소
+                .setAllowedOriginPatterns("*")  //CORS 허용
                 .withSockJS();
     }
 
