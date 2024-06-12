@@ -4,6 +4,7 @@ import com.spacestar.back.friend.domain.Friend;
 import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.FriendListResDto;
 import com.spacestar.back.friend.dto.res.FriendRequestResDto;
+import com.spacestar.back.friend.dto.res.IsFriendResDto;
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
 import com.spacestar.back.global.GlobalException;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -125,6 +127,25 @@ public class FriendServiceImp implements FriendService{
 
         Friend friend2 = friendRepository.findByFriendUuidAndUuid(uuid, friendUuidReqDto.getFriendUuid());
         friendRepository.delete(friend2);
+    }
+
+    @Override
+    public IsFriendResDto isFriend(String uuid, String targetUuid) {
+
+        Optional<Friend> friend = friendRepository.findByUuidAndFriendUuid(targetUuid, uuid);
+
+        if (friend.isPresent()){
+            return IsFriendResDto.builder()
+                    .isFriend(true)
+                    .build();
+        }
+        else {
+            return IsFriendResDto.builder()
+                    .isFriend(false)
+                    .build();
+        }
+
+
     }
 }
 
