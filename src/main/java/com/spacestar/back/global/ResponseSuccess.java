@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ResponseSuccess {
 
-    SUCCESS(200, "요청에 성공했습니다."),
+    //alarm
+    ALARM_LIST_SELECT_SUCCESS(200, "알림 목록 조회를 성공하였습니다."),
+
 
     INTERNAL_SERVER_ERROR(900, "Internal server error"),
 
