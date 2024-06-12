@@ -30,7 +30,6 @@ public class ProfilePlayGameInfoReqDto {
                 .classId(profilePlayGameInfoReqDto.getClassId())
                 .serverId(profilePlayGameInfoReqDto.getServerId())
                 .build();
-
-
     }
+
 }

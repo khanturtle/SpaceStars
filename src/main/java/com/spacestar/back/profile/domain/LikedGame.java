@@ -22,7 +22,6 @@ public class LikedGame {
     private String uuid;
 
     @Builder
-
     public LikedGame(Long id, Long gameId, String uuid) {
         this.id = id;
         this.gameId = gameId;
