@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class ReportController {
     private final ReportService reportService;
     private final ModelMapper mapper;
+
     @PostMapping
-    public ResponseEntity<?> createReport(@RequestHeader("UUID")String uuid,
-                                          @RequestBody ReportReqVo reqVo){
-        reportService.createReport(uuid,mapper.map(reqVo, ReportReqDto.class));
+    public ResponseEntity<Void> createReport(@RequestHeader("UUID") String uuid,
+                                             @RequestBody ReportReqVo reqVo) {
+        reportService.createReport(uuid, mapper.map(reqVo, ReportReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.REPORT_ADD_SUCCESS);
     }
 }

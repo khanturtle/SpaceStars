@@ -18,12 +18,15 @@ public class Report {
     private String toMember;
     @Column(length = 200)
     private String content;
+    @Column(length = 200)
+    private String picture;
 
     @Builder
-    public Report(String fromMember, String toMember, String content) {
+    public Report(String fromMember, String toMember, String content,String picture) {
         this.fromMember = fromMember;
         this.toMember = toMember;
         this.content = content;
+        this.picture = picture;
     }
 
 }
