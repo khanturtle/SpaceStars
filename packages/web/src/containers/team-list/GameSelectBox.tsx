@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
-import { CheckIcon, GameListButton } from '@packages/ui'
+import { GameListButton } from '@packages/ui'
 
 import styles from './teamList.module.css'
 
@@ -12,7 +12,7 @@ import { gamesImageUrl } from './state'
 const GameItem = ({game, currentGame, onClick}: {
   game: GameType
   currentGame: string
-  onClick: (gameId: string) => void
+  onClick: (game: GameType) => void
 }) => {
   const gameImageUrl = gamesImageUrl[game.gameId]
 
@@ -24,14 +24,12 @@ const GameItem = ({game, currentGame, onClick}: {
     
   return (
       <GameListButton
-      // FIXME: game 데이터 수정
       item={item}
-      onClick={() => onClick}
+      onClick={() => onClick(game)}
       isClicked={currentGame === game.gameName}
     />
   )
 }
-
 
 export default function GameSelectBox({
   games,
