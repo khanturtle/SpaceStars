@@ -9,17 +9,13 @@ COPY package.json package.json
 COPY packages/ui/package.json packages/ui/package.json
 COPY packages/web/package.json packages/web/package.json
 
+RUN yarn cache clean --all
 RUN yarn install
 COPY .pnp.loader.mjs .pnp.loader.mjs
 
 COPY . .
 
 RUN yarn ui build
-
-# 캐시 삭제
-RUN rm -rf /tmp/*
-RUN apk del .build-deps
-RUN rm -rf /var/cache/apk/*
 
 # 2단계: 실제 애플리케이션 이미지
 FROM node:18-alpine AS web-builder
@@ -31,22 +27,17 @@ COPY --from=ui-builder /app/packages/ui/package.json packages/ui/package.json
 COPY --from=ui-builder /app/packages/web/package.json packages/web/package.json
 COPY --from=ui-builder /app/.yarn .yarn
 COPY --from=ui-builder /app/.yarnrc.yml .yarnrc.yml
-COPY --from=ui-builder /app/yarn.lock yarn.lock
 COPY --from=ui-builder /app/package.json package.json
 COPY --from=ui-builder /app/.pnp.loader.mjs .pnp.loader.mjs
 
 COPY --from=ui-builder /app/packages/ui/dist packages/ui/dist
 
+# 웹 패키지 빌드
 RUN yarn install
 
 COPY . . 
 
 RUN yarn web build
-
-# 캐시 삭제
-RUN rm -rf /tmp/*
-RUN apk del .build-deps
-RUN rm -rf /var/cache/apk/*
 
 # 3단계: 실제 애플리케이션 이미지
 FROM node:18-alpine
@@ -66,11 +57,6 @@ COPY --from=web-builder /app/packages/web/public packages/web/public
 COPY --from=web-builder /app/packages/ui/dist packages/ui/dist
 
 RUN yarn install
-
-# 캐시 삭제
-RUN rm -rf /tmp/*
-RUN apk del .build-deps
-RUN rm -rf /var/cache/apk/*
 
 # 웹 서버를 위한 포트 열기
 EXPOSE 3000
