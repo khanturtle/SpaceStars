@@ -16,6 +16,7 @@ const GameItem = ({game, currentGame, onClick}: {
 }) => {
   const gameImageUrl = gamesImageUrl[game.gameId]
 
+  // FIXME: 우리 도메인 S3 URL으로 수정
   const item = {
     gameImage: gameImageUrl.gameImage,
     gameLogo: gameImageUrl.gameLogoImage,
