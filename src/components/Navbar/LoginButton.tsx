@@ -9,7 +9,7 @@ type LoginButtonProps = {
 function LoginButton({ styles }: LoginButtonProps) {
   const { data } = useSession()
 
-  console.log('data', data)
+  // console.log('data', data)
 
   const handleClick = async () => {
     await signIn('kakao')
