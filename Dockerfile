@@ -16,6 +16,11 @@ COPY . .
 
 RUN yarn ui build
 
+# 캐시 삭제
+RUN rm -rf /tmp/*
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
+
 # 2단계: 실제 애플리케이션 이미지
 FROM node:18-alpine AS web-builder
 
@@ -32,12 +37,16 @@ COPY --from=ui-builder /app/.pnp.loader.mjs .pnp.loader.mjs
 
 COPY --from=ui-builder /app/packages/ui/dist packages/ui/dist
 
-# 웹 패키지 빌드
 RUN yarn install
 
 COPY . . 
 
 RUN yarn web build
+
+# 캐시 삭제
+RUN rm -rf /tmp/*
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
 # 3단계: 실제 애플리케이션 이미지
 FROM node:18-alpine
@@ -57,6 +66,11 @@ COPY --from=web-builder /app/packages/web/public packages/web/public
 COPY --from=web-builder /app/packages/ui/dist packages/ui/dist
 
 RUN yarn install
+
+# 캐시 삭제
+RUN rm -rf /tmp/*
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
 # 웹 서버를 위한 포트 열기
 EXPOSE 3000
