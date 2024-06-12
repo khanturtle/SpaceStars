@@ -39,7 +39,7 @@ public class ProfileServiceImp implements ProfileService {
 
     /**
      * 프로필 정보 (프로필, 좋아하는게임, 내가 하는게임)
-     * **/
+     **/
     //프로필 정보 수정
     @Transactional
     @Override
@@ -119,7 +119,7 @@ public class ProfileServiceImp implements ProfileService {
 
         List<PlayGame> playGameIds = playGameRepository.findAllByUuid(uuid);
 
-        return IntStream.range(0,playGameIds.size())
+        return IntStream.range(0, playGameIds.size())
                 .mapToObj(index -> ProfilePlayGameInfoResDto.toDto(playGameIds.get(index), index))
                 .toList();
     }
@@ -144,22 +144,30 @@ public class ProfileServiceImp implements ProfileService {
         Profile profile = profileRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
-        profileRepository.updateSwipe(uuid,profileSwipeResDto.isSwipe());
+        profileRepository.updateSwipe(uuid, profileSwipeResDto.isSwipe());
     }
 
 
     /**
      * 프로필 사진
-     * **/
+     **/
     //프로필 이미지 리스트 조회
     @Override
     public List<ProfileImageListResDto> findProfileImageList(String uuid) {
 
+        List<ProfileImageListResDto> dtoList = new ArrayList<>();
         List<ProfileImage> profileImages = profileImageRepository.findAllByUuid(uuid);
 
-        return IntStream.range(0, profileImages.size())
-                .mapToObj(index -> ProfileImageListResDto.convertToDto(index, profileImages.get(index)))
-                .toList();
+        //메인이 가장 앞에 오게
+        ProfileImage mainProfileImage = profileImageRepository.findByUuidAndMain(uuid, true);
+        dtoList.add(ProfileImageListResDto.convertToDto(0, mainProfileImage));
+
+        IntStream.range(0, profileImages.size())
+                .mapToObj( index -> ProfileImageListResDto.convertToDto(index+1, profileImages.get(index)))
+                .forEach(dtoList::add);
+
+        return dtoList;
+
     }
 
     //프로필 메인 이미지 조회
@@ -175,13 +183,14 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public void addProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
 
-        //메인 프로필이 없으면 메인으로
-        if (!profileImageRepository.existsByUuidAndMain(uuid, true)){
-            profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true,profileImageReqDto));
+        ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
+
+        //메인 사진 비활성화
+        if (profileImage != null){
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, profileImage.getId(), false, profileImage.getProfileImageUrl()));
         }
-        else{
-            profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, false,profileImageReqDto));
-        }
+        //가장 최근 사진이 메인 프로필
+        profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true, profileImageReqDto.getProfileImageUrl()));
 
     }
 
@@ -190,30 +199,14 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public void deleteProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
 
-        //메인 프로필이면 삭제 안되게
-        if (profileImageRepository.existsByUuidAndMain(uuid, true)){
-            throw new GlobalException(ResponseStatus.MAIN_PROFILE_IMAGE_DELETE);
-        }
-        else{
-            profileImageRepository.delete(profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl()));
-        }
+//        //메인 프로필이면 삭제 안되게
+//        if (profileImageRepository.existsByUuidAndMain(uuid, true)) {
+//            throw new GlobalException(ResponseStatus.MAIN_PROFILE_IMAGE_DELETE);
+//        } else {
+//            profileImageRepository.delete(profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl()));
+//        }
+//        기본 프로필 사진 호출 어디서 하는가
 
-    }
-
-    // 메인 프로필 사진 설정
-    @Transactional
-    @Override
-    public void mainProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
-
-        ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
-
-        if ( profileImage != null){
-            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, false, profileImage.getId(), profileImageReqDto));
-        }
-
-        else{
-            profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true, profileImageReqDto));
-        }
     }
 
     //로그인 시 프로필 존재 유무판단
@@ -225,7 +218,7 @@ public class ProfileServiceImp implements ProfileService {
         List<LikedGame> likedGame = likedGameRepository.findAllByUuid(uuid);
         List<PlayGame> playGame = playGameRepository.findAllByUuid(uuid);
 
-        if (profile.isEmpty()){
+        if (profile.isEmpty()) {
 
             //기본 프로필 생성
             profileRepository.save(Profile.builder()

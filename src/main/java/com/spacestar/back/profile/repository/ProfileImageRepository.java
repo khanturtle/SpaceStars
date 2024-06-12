@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProfileImageRepository extends JpaRepository<ProfileImage, Long> {
 
-    @Query("select p from ProfileImage p where p.uuid = :uuid and p.main = :main")
-    ProfileImage findByUuidAndMain(@Param("uuid") String uuid, @Param("main") boolean b);
+    ProfileImage findByUuidAndMain(String uuid, boolean b);
 
     List<ProfileImage> findAllByUuid(String uuid);
 

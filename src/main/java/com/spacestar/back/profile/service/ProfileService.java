@@ -31,8 +31,6 @@ public interface ProfileService {
 
     void deleteProfileImage(String uuid, ProfileImageReqDto profileImageReqDto);
 
-    void mainProfileImage(String uuid, ProfileImageReqDto profileImageReqDto);
-
     void updateLikedGameInfo(String uuid, LikedGameInfoReqDto likedGameInfoReqDto);
 
     void updatePlayGameInfo(String uuid, List<PlayGameInfoReqDto> playGameInfoReqDtos);
