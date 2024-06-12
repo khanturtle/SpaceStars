@@ -26,6 +26,13 @@ public class QuickMatchingController {
         quickMatchingService.enterQuickMatching(uuid, mapper.map(reqVo, QuickMatchingEnterReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.SUCCESS);
     }
+    @Operation(summary = "대기 큐 취소")
+    @DeleteMapping
+    public ResponseEntity<Void> quitQuickMatching(@RequestHeader("UUID")String uuid,
+                                                  @RequestBody QuickMatchingEnterReqVo reqVo){
+        quickMatchingService.quitQuickMatching(uuid,mapper.map(reqVo, QuickMatchingEnterReqDto.class));
+        return new ResponseEntity<>(ResponseSuccess.SUCCESS);
+    }
     @Operation(summary = "큐 요청 수락하기")
     @PatchMapping("/accept")
     public ResponseEntity<Void> acceptQuickMatch(@RequestHeader("UUID")String uuid) {

@@ -15,4 +15,6 @@ public interface QuickMatchingService {
     void rejectQuickMatch(String uuid);
 
     QuickMatchingResDto completeQuickMatch(String uuid,QuickMatchingEnterReqDto reqDto);
+
+    void quitQuickMatching(String uuid,QuickMatchingEnterReqDto reqDto);
 }

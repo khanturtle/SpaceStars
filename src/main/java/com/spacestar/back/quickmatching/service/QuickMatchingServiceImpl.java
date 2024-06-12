@@ -1,6 +1,8 @@
 package com.spacestar.back.quickmatching.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.quickmatching.domain.QuickMatchStatus;
 import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
@@ -114,7 +116,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                     String updatedValue = objectMapper.writeValueAsString(data);
                     redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
                     redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
-                } else if(uuid.equals(data.get("matchToMember"))){
+                } else if (uuid.equals(data.get("matchToMember"))) {
                     data.put("matchToMemberStatus", "ACCEPTED");
                     String updatedValue = objectMapper.writeValueAsString(data);
                     redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
@@ -140,7 +142,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                     String updatedValue = objectMapper.writeValueAsString(data);
                     redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
                     redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
-                } else if(uuid.equals(data.get("matchToMember"))){
+                } else if (uuid.equals(data.get("matchToMember"))) {
                     data.put("matchToMemberStatus", "REJECT");
                     String updatedValue = objectMapper.writeValueAsString(data);
                     redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
@@ -153,22 +155,22 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     @Override
-    public QuickMatchingResDto completeQuickMatch(String uuid,QuickMatchingEnterReqDto reqDto) {
+    public QuickMatchingResDto completeQuickMatch(String uuid, QuickMatchingEnterReqDto reqDto) {
         Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
         assert quickMatchingMembers != null;
 
         for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
             try {
                 Map<String, Object> data = objectMapper.readValue(tuple.getValue(), Map.class);
-                if (uuid.equals(data.get("matchFromMember"))||uuid.equals(data.get("matchToMember"))) {
-                    if(data.get("matchFromMemberStatus").equals("ACCEPTED")&&data.get("matchToMemberStatus").equals("ACCEPTED")){
-                        if(tuple.getValue()!=null){
+                if (uuid.equals(data.get("matchFromMember")) || uuid.equals(data.get("matchToMember"))) {
+                    if (data.get("matchFromMemberStatus").equals("ACCEPTED") && data.get("matchToMemberStatus").equals("ACCEPTED")) {
+                        if (tuple.getValue() != null) {
                             redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
                         }
-                        redisTemplate.opsForZSet().remove(reqDto.getGameName(),data.get("matchFromMember"));
+                        redisTemplate.opsForZSet().remove(reqDto.getGameName(), data.get("matchFromMember"));
                         return QuickMatchingResDto.builder().memberUuid(uuid).build();
-                    }else {
-                        if(tuple.getValue()!=null) {
+                    } else {
+                        if (tuple.getValue() != null) {
                             redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
                         }
                         return null;
@@ -179,6 +181,15 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void quitQuickMatching(String uuid,QuickMatchingEnterReqDto reqDto) {
+        Double score = redisTemplate.opsForZSet().score(reqDto.getGameName(), uuid);
+
+        if (score != null) {
+            redisTemplate.opsForZSet().remove(reqDto.getGameName(), uuid);
+        }else throw new GlobalException(ResponseStatus.WAITING_MEMBER_NOT_EXIST);
     }
 
 
