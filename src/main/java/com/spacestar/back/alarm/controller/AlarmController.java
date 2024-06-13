@@ -4,8 +4,11 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +21,10 @@ import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/alarm")
@@ -28,6 +33,8 @@ public class AlarmController {
 
 	private final AlarmServiceImpl alarmService;
 	private final ModelMapper modelMapper;
+
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
 	//알림 리스트 조회 API
 	@GetMapping
@@ -44,7 +51,13 @@ public class AlarmController {
 		return Flux.interval(Duration.ofSeconds(1))
 			.map(sequence -> "SSE - " + LocalTime.now().toString());
 	}
-
+	
+	// kafka 연결 테스트
+	@PostMapping("/kafkaSendMessage")
+	public void kafkaSendMessage(String data){
+		log.info("sender message : " + data);
+		kafkaTemplate.send("test_topic2", data);
+	}
 	//Todo
 	//알림 상태 조회 API
 
