@@ -28,9 +28,10 @@ public class Game {
     @NotNull
     private String nameKor;
     @NotNull
-    @Column(name = "game_logo_image")
-    private String image;
+    @Column(columnDefinition = "TEXT")
+    private String gameLogoImage;
     @NotNull
+    @Column(columnDefinition = "TEXT")
     private String gameImage;
     @NotNull
     private boolean isTier;
@@ -51,11 +52,11 @@ public class Game {
     private List<GameServer> gameServers = new ArrayList<GameServer>();
 
     @Builder
-    public Game(GameGenre gameGenre, String name, String nameKor,String gameImage, String image, boolean isTier, boolean isPosition, boolean isClass, boolean isServer) {
+    public Game(GameGenre gameGenre, String name, String nameKor, String gameImage, String gameLogoImage, boolean isTier, boolean isPosition, boolean isClass, boolean isServer) {
         this.gameGenre = gameGenre;
         this.name = name;
         this.nameKor = nameKor;
-        this.image = image;
+        this.gameLogoImage = gameLogoImage;
         this.gameImage = gameImage;
         this.isTier = isTier;
         this.isPosition = isPosition;

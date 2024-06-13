@@ -19,7 +19,7 @@ public class GameServer {
     private String gameServerName;
     @Column(length = 50)
     private String gameServerNameKor;
-    @Column(length = 255)
+    @Column(columnDefinition = "TEXT")
     private String gameServerImage;
 
     @Builder

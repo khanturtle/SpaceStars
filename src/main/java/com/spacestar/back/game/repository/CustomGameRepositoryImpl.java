@@ -27,7 +27,7 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
                         qGame.name,
                         qGame.gameImage,
                         qGame.nameKor,
-                        qGame.image,
+                        qGame.gameLogoImage,
                         qGame.id))
                 .from(qGame)
                 .fetch();
