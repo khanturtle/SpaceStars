@@ -22,7 +22,8 @@ public enum ResponseSuccess {
     QUICK_MATCHING_QUIT_SUCCESS(HttpStatus.OK.value(),"빠른 매칭 큐 취소"),
     QUICK_MATCHING_ACCEPT_SUCCESS(HttpStatus.OK.value(),"빠른 매칭 큐 수락 성공"),
     QUICK_MATCHING_REJECT_SUCCESS(HttpStatus.OK.value(),"빠른 매칭 큐 거절 성공"),
-    QUICK_MATCHING_COMPLETE_SUCCESS(HttpStatus.OK.value(),"빠른 매칭 큐 성사 성공")
+    QUICK_MATCHING_COMPLETE_SUCCESS(HttpStatus.OK.value(),"빠른 매칭 큐 성사 성공"),
+    QUICK_MATCHING_COMPLETE_FAIL(HttpStatus.OK.value(),"빠른 매칭 큐 매칭 실패")
     ;
 
 

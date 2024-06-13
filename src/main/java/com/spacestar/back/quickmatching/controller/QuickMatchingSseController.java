@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
@@ -22,10 +19,12 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class QuickMatchingSseController {
     private final QuickMatchingService quickMatchingService;
     private final ModelMapper mapper;
+
     @Operation(summary = "대기 큐 SSE 연결")
-    @PostMapping(value="/connect", produces= MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> connect(@RequestBody QuickMatchingEnterReqVo reqVo){
-        SseEmitter emitter = quickMatchingService.connect(mapper.map(reqVo, QuickMatchingEnterReqDto.class));
+    @PostMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid,
+                                              @RequestBody QuickMatchingEnterReqVo reqVo) {
+        SseEmitter emitter = quickMatchingService.connect(mapper.map(reqVo, QuickMatchingEnterReqDto.class), uuid);
         return ResponseEntity.ok(emitter);
     }
 }

@@ -3,6 +3,7 @@ package com.spacestar.back.quickmatching.controller;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
+import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
 import com.spacestar.back.quickmatching.service.QuickMatchingService;
 import com.spacestar.back.quickmatching.vo.QuickMatchingEnterReqVo;
 import com.spacestar.back.quickmatching.vo.QuickMatchingResVo;
@@ -54,8 +55,13 @@ public class QuickMatchingController {
     @PostMapping("/complete")
     public ResponseEntity<QuickMatchingResVo> completeQuickMatch(@RequestHeader("UUID") String uuid,
                                                                  @RequestBody QuickMatchingEnterReqVo reqVo) {
+        QuickMatchingResDto matchedMember = quickMatchingService.completeQuickMatch(uuid, mapper.map(reqVo, QuickMatchingEnterReqDto.class));
+
+        if (matchedMember == null) {
+            return new ResponseEntity<>(ResponseSuccess.QUICK_MATCHING_COMPLETE_FAIL);
+        }
         return new ResponseEntity<>(ResponseSuccess.QUICK_MATCHING_COMPLETE_SUCCESS,
-                mapper.map(quickMatchingService.completeQuickMatch(uuid, mapper.map(reqVo, QuickMatchingEnterReqDto.class)), QuickMatchingResVo.class));
+                mapper.map(matchedMember, QuickMatchingResVo.class));
     }
 
 }
