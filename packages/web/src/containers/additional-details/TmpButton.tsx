@@ -1,21 +1,26 @@
 'use client'
 
-import { ModalContext } from '@/components/providers/modal-provider'
-import { useContext } from 'react'
+import { getIsProfile } from '@/apis/member'
+import { useSession } from 'next-auth/react'
 
 export default function TmpButton() {
-  const { openModal, isModalOpen } = useContext(ModalContext)
+  const { data: session, status } = useSession()
+  const token = (session?.user?.data.accessToken as string) || ''
 
   const handleClick = () => {
-    openModal(<div className="px-[50px] py-[50px]">모달짠</div>)
-    console.log(isModalOpen)
+    console.log(session?.user?.data?.accessToken)
+    if (status === 'authenticated') {
+      getIsProfile(token)
+    }
   }
 
   return (
     <>
-      <button type="button" onClick={handleClick}>
-        모달얍얍
-      </button>
+      {status === 'authenticated' && (
+        <button type="button" onClick={handleClick}>
+          프로필 유무 확인
+        </button>
+      )}
     </>
   )
 }
