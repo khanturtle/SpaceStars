@@ -1,6 +1,6 @@
 import { Select } from '@packages/ui'
 
-export default function MBTIForm({
+export default function AdditionalMBTI({
   mbti,
   onChange,
 }: {
