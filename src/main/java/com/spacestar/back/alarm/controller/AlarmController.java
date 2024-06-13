@@ -1,6 +1,10 @@
 package com.spacestar.back.alarm.controller;
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 import org.modelmapper.ModelMapper;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +18,7 @@ import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +36,12 @@ public class AlarmController {
 
 		return new ResponseEntity<>(ResponseSuccess.ALARM_LIST_SELECT_SUCCESS,
 			modelMapper.map(alarmService.getAlarmList(uuid), AlarmListResVo.class));
+	}
+
+	@GetMapping(value = "/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public Flux<String> streamEvents(){
+		return Flux.interval(Duration.ofSeconds(1))
+			.map(sequence -> "SSE - " + LocalTime.now().toString());
 	}
 
 	//Todo
