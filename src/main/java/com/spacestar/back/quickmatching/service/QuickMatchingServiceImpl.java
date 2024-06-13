@@ -33,12 +33,14 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final ObjectMapper objectMapper;
     //SSE
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
+
+    //대기큐진입
     @Override
     public void enterQuickMatching(String uuid, QuickMatchingEnterReqDto reqDto) {
         redisTemplate.opsForZSet().add(reqDto.getGameName(), uuid, System.currentTimeMillis());
         doQuickMatch(reqDto.getGameName(), uuid);
     }
-
+    //기존에 대기큐에 있던 사용자와 매칭 실시
     public void doQuickMatch(String gameName, String uuid) {
         Set<ZSetOperations.TypedTuple<String>> waitingMembers = redisTemplate.opsForZSet().rangeWithScores(gameName, 0, -1);
         int maxScore = 0;
@@ -85,7 +87,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         quickMatchingRepository.save(quickMatching);
     }
 
-
+    //UUID로 SSE 연결
     @Override
     public SseEmitter connect(QuickMatchingEnterReqDto reqDto,String uuid) {
         SseEmitter sseEmitter = new SseEmitter(300_000L);
