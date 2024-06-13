@@ -15,22 +15,22 @@ public class ProfileImageReqDto {
 
     private String profileImageUrl;
 
-    public static ProfileImage updateImage(String uuid, boolean b, Long id, ProfileImageReqDto profileImageReqDto) {
-        return ProfileImage.builder()
-                .id(id)
-                .uuid(uuid)
-                .profileImageUrl(profileImageReqDto.getProfileImageUrl())
-                .build();
 
-    }
-
-    public static ProfileImage addNewImage(String uuid, boolean b, ProfileImageReqDto profileImageReqDto) {
+    public static ProfileImage addNewImage(String uuid, boolean b, String profileImageUrl) {
         return ProfileImage.builder()
                 .uuid(uuid)
-                .profileImageUrl(profileImageReqDto.getProfileImageUrl())
+                .profileImageUrl(profileImageUrl)
                 .main(b)
                 .build();
     }
 
 
+    public static ProfileImage updateImage(String uuid, Long id, boolean b, String profileImageUrl) {
+        return ProfileImage.builder()
+                .id(id)
+                .uuid(uuid)
+                .profileImageUrl(profileImageUrl)
+                .main(b)
+                .build();
+    }
 }
