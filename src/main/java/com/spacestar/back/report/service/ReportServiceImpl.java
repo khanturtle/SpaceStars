@@ -17,6 +17,6 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public void createReport(String uuid, ReportReqDto reqDto) {
         reportRepository.save(ReportConverter.toEntity(uuid,reqDto));
-        profileRepository.increaseReportCount(reqDto.getToMember());
+        profileRepository.increaseReportCount(reqDto.getToMemberUuid());
     }
 }

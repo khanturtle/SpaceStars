@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public class ReportReqVo {
     private String content;
-    private String toMember;
+    private String toMemberUuid;
     private String picture;
 }
