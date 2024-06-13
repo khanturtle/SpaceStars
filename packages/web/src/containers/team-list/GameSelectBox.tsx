@@ -46,6 +46,7 @@ export default function GameSelectBox({
     currentParams.set('game', item.gameName)
     router.push(`?${currentParams.toString()}`)
   }
+  console.log(games)
 
   return (
     // TODO: 터치 스크롤 구현
