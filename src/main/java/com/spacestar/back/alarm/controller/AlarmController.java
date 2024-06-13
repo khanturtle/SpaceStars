@@ -38,6 +38,7 @@ public class AlarmController {
 			modelMapper.map(alarmService.getAlarmList(uuid), AlarmListResVo.class));
 	}
 
+	// 실시간 Stream 테스트
 	@GetMapping(value = "/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<String> streamEvents(){
 		return Flux.interval(Duration.ofSeconds(1))
