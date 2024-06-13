@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 import { GameType, getGameOptions } from '@/apis/game'
-import GameOptionSelect from '@/components/game/GameOptionSelect'
+import GameSelectBox from '@/components/game/GameSelectBox'
 import { useGameStore } from '@/store/gameStore'
 
 const GameOption = ({ item }: { item: GameType }) => {
@@ -29,9 +29,10 @@ const GameOption = ({ item }: { item: GameType }) => {
   })
 
   return (
-    <GameOptionSelect
+    <GameSelectBox
       gameImage={item.gameLogoImage}
       gameName={item.gameNameKor}
+      gameId={item.gameId}
       options={options}
     />
   )

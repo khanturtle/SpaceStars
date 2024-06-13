@@ -33,18 +33,48 @@ export interface IsOptionType {
   isTier: false
 }
 /** 게임 옵션 조회 */
-export async function getGameOptions(gameId: number): Promise<IsOptionType | undefined> {
+export async function getGameOptions(
+  gameId: number,
+): Promise<IsOptionType | undefined> {
   try {
     const response = await fetch(`${GAME_BASE_URL}/option/${gameId}`)
     const data = await response.json()
 
     if (data.code !== 200) {
-      throw new Error('Failed get games')
+      throw new Error('Failed get options')
     }
 
     return data.result
   } catch (err) {
     console.error(err)
-    return 
+    return
+  }
+}
+
+export async function getGameOptionDetail(
+  gameId: number,
+  option: 'isClass' | 'isPosition' | 'isServer' | 'isTier',
+) {
+  const OPTION_NAME = {
+    isClass: 'class',
+    isPosition: 'position',
+    isServer: 'server',
+    isTier: 'tier',
+  }
+
+  const optionName = OPTION_NAME[option]
+
+  try {
+    const response = await fetch(`${GAME_BASE_URL}/${optionName}/${gameId}`)
+    const data = await response.json()
+
+    if (data.code !== 200) {
+      throw new Error('Failed get option detail')
+    }
+
+    return data.result
+  } catch (err) {
+    console.error(err)
+    return
   }
 }
