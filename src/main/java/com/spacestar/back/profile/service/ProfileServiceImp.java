@@ -21,6 +21,7 @@ import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -155,17 +156,13 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public List<ProfileImageListResDto> findProfileImageList(String uuid) {
 
-        List<ProfileImageListResDto> dtoList = new ArrayList<>();
         List<ProfileImage> profileImages = profileImageRepository.findAllByUuid(uuid);
 
-        //메인이 가장 앞에 오게
-        ProfileImage mainProfileImage = profileImageRepository.findByUuidAndMain(uuid, true);
-        dtoList.add(ProfileImageListResDto.convertToDto(0, mainProfileImage));
-
-        IntStream.range(0, profileImages.size())
-                .mapToObj( index -> ProfileImageListResDto.convertToDto(index+1, profileImages.get(index)))
-                .forEach(dtoList::add);
-
+        //역순
+        List<ProfileImageListResDto> dtoList = new ArrayList<>(IntStream.range(0, profileImages.size())
+                .mapToObj(index -> ProfileImageListResDto.convertToDto(profileImages.size()-index-1, profileImages.get(index)))
+                .toList());
+        Collections.reverse(dtoList);
         return dtoList;
 
     }
@@ -186,7 +183,7 @@ public class ProfileServiceImp implements ProfileService {
         ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
 
         //메인 사진 비활성화
-        if (profileImage != null){
+        if (profileImage != null) {
             profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, profileImage.getId(), false, profileImage.getProfileImageUrl()));
         }
         //가장 최근 사진이 메인 프로필
@@ -199,13 +196,22 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public void deleteProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
 
-//        //메인 프로필이면 삭제 안되게
-//        if (profileImageRepository.existsByUuidAndMain(uuid, true)) {
-//            throw new GlobalException(ResponseStatus.MAIN_PROFILE_IMAGE_DELETE);
-//        } else {
-//            profileImageRepository.delete(profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl()));
-//        }
-//        기본 프로필 사진 호출 어디서 하는가
+        ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
+
+        //메인 사진 삭제
+        if (profileImage.getProfileImageUrl().equals(profileImageReqDto.getProfileImageUrl())) {
+            log.info("메인 사진 삭제");
+            profileImageRepository.delete(profileImage);
+            //이전 이미지가 메인이 됨
+            ProfileImage newMain = profileImageRepository.findLastByUuid(uuid);
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, newMain.getId(), true, newMain.getProfileImageUrl()));
+        }
+        //일반 사진 삭제
+        else {
+            log.info("일반 사진 삭제");
+            ProfileImage beDelete = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl());
+            profileImageRepository.delete(beDelete);
+        }
 
     }
 

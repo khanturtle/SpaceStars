@@ -19,4 +19,7 @@ public interface ProfileImageRepository extends JpaRepository<ProfileImage, Long
     boolean existsByUuidAndMain(String uuid, boolean b);
 
     ProfileImage findByUuidAndProfileImageUrl(String uuid, String profileImageUrl);
+
+    @Query(value = "SELECT p FROM ProfileImage p WHERE p.uuid = :uuid ORDER BY p.id DESC LIMIT 1")
+    ProfileImage findLastByUuid(@Param("uuid") String uuid);
 }
