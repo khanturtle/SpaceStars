@@ -4,11 +4,12 @@ import { useRouter } from 'next/navigation'
 
 import { useState } from 'react'
 
-import LikeGameForm from './LikeGameForm'
+import LikeGameForm from './AdditionalGames'
 import MBTIForm from './MBTIForm'
 import { ItemType } from './state'
 
 import FormLayout from '@/components/form/formLayout'
+import { getGames } from '@/apis/game'
 
 // TODO: 다음 버튼 유효성 검증 및 disabled
 export default function AdditionalDetailsContainer({
@@ -53,26 +54,12 @@ export default function AdditionalDetailsContainer({
     }
   }
 
-  //  FIXME: title 수정하기
-  if (Number(step) === 1) {
-    return (
-      <FormLayout>
-        <FormLayout.Legend
-          title="SIGN UP?"
-          description={`좋아하는 게임을\n 선택해주세요 (최대 3개)`}
-        />
-
-        <LikeGameForm
-          className="w-[335px]"
-          selectedGames={selectedGames}
-          onClick={handleButtonClick}
-        />
-
-        <FormLayout.NextButton onClick={handleNextStep} />
-        <FormLayout.PassButton />
-      </FormLayout>
-    )
+  const getGame = async () => {
+    const res = await getGames()
+    console.log(res)
   }
+
+  getGame()
 
   if (Number(step) === 2) {
     return (
@@ -91,7 +78,7 @@ export default function AdditionalDetailsContainer({
       </FormLayout>
     )
   }
-  
+
   if (Number(step) === 3) {
     return (
       <FormLayout className={`${className}`}>
@@ -110,6 +97,6 @@ export default function AdditionalDetailsContainer({
       </FormLayout>
     )
   }
-  
+
   return <div>잘못된 URL</div>
 }
