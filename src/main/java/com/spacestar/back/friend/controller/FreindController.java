@@ -2,6 +2,7 @@ package com.spacestar.back.friend.controller;
 
 import com.spacestar.back.friend.service.FriendService;
 import com.spacestar.back.friend.vo.req.FriendUuidReqVo;
+import com.spacestar.back.friend.vo.req.IsFriendResVo;
 import com.spacestar.back.friend.vo.res.FriendListResVo;
 import com.spacestar.back.friend.vo.res.FriendRequestResVo;
 import com.spacestar.back.global.ResponseEntity;
@@ -75,6 +76,15 @@ public class FreindController {
                                              @RequestBody FriendUuidReqVo friendUuidReqVo){
         friendService.rejectFriend(uuid, mapper.map(friendUuidReqVo, FriendUuidReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.FRIEND_DELETE_SUCCESS);
+    }
+
+    @Operation(summary = "친구 유무 검색")
+    @GetMapping("/is-friend/{targetUuid}")
+    public ResponseEntity<IsFriendResVo> isFriend(@RequestHeader("UUID") String uuid,
+                                                  @RequestParam("targetUuid") String targetUuid){
+
+        return new ResponseEntity<>(ResponseSuccess.FRIEND_IS_FRIEND_SUCCESS,
+                mapper.map(friendService.isFriend(uuid, targetUuid), IsFriendResVo.class));
     }
 
 
