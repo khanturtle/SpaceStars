@@ -4,13 +4,12 @@ declare module 'next-auth' {
   interface Session {
     user?: {
       picture?: string | null
-      data: { [key: string]: unknown }
-    } & DefaultSession['user']
+    }
   }
 
   interface User extends DefaultUser {
     data: {
-      [key: string]: unknown
+      [key: string]: any
     }
   }
 
