@@ -17,6 +17,7 @@ public class ProfilePlayGameInfoResDto {
     private Long classId;
     private Long serverId;
     private String gameNickname;
+    private boolean main;
 
     public static ProfilePlayGameInfoResDto toDto(PlayGame playGame, int index) {
 
@@ -28,6 +29,7 @@ public class ProfilePlayGameInfoResDto {
                 .classId(playGame.getClassId())
                 .serverId(playGame.getServerId())
                 .gameNickname(playGame.getGameNickname())
+                .main(playGame.isMain())
                 .build();
     }
 }
