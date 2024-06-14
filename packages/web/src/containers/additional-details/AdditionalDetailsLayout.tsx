@@ -6,12 +6,11 @@ import { ArrowIcon } from '@packages/ui'
 
 import FormLayout from '@/components/form/formLayout'
 import { ModalContext } from '@/components/providers/modal-provider'
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore, useSelectedOption } from '@/store/gameStore'
 
 import AdditionalGames from './AdditionalGames'
 import AdditionalMBTI from './AdditionalMBTI'
 import AdditionalOptions from './AdditionalOptions'
-
 import styles from './additional.module.css'
 
 /** 건너뛰기 버튼 */
@@ -45,16 +44,14 @@ const PassButton = () => {
 // TODO: 다음 버튼 유효성 검증 및 disabled
 export const AdditionalDetailsLayout = () => {
   const [step, setStep] = useState<number>(1)
+  const { closeModal } = useContext(ModalContext)
+
   const { selectedGameIds } = useGameStore()
+  const { selectedGameWithOption } = useSelectedOption()
 
   const handleNextStep = () => {
     if (step + 1 <= 3) {
       setStep(step + 1)
-    } else if (step + 1 === 4) {
-      console.log('좋아하는 게임:', selectedGameIds)
-      // console.log('mbti:', mbti)
-
-      console.log('저장하고 닫기')
     }
   }
 
@@ -62,6 +59,16 @@ export const AdditionalDetailsLayout = () => {
     if (step - 1 > 0) {
       setStep(step - 1)
     }
+  }
+
+  /** 회원 정보 제출 */
+  const handleSubmitDetails = () => {
+    console.log('좋아하는 게임:', selectedGameIds)
+    console.log('대표 게임', selectedGameWithOption)
+    // console.log('mbti:', mbti)
+
+    console.log('저장하고 닫기')
+    // closeModal()
   }
 
   /** step 1: 게임 선택 */
@@ -105,11 +112,14 @@ export const AdditionalDetailsLayout = () => {
       <FormLayout>
         <FormLayout.Legend title="MBTI를 선택해주세요" />
 
-        {/* <AdditionalMBTI mbti={mbti} onChange={(value: string) => setMbti(value)} /> */}
+        <AdditionalMBTI
+        // mbti={mbti}
+        // onChange={(value: string) => setMbti(value)}
+        />
 
         <FormLayout.PrevNextButton
           onPrevClick={handlePrevStep}
-          onNextClick={handleNextStep}
+          onNextClick={handleSubmitDetails}
         />
         <PassButton />
       </FormLayout>

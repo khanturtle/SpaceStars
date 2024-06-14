@@ -37,7 +37,9 @@
 }
 
 :root {
-  --background: #f8f8f9;
+  /* --background: #f8f8f9; */
+  --background: transparent;
+  /* background: transparent; */
 
   --Main-Color-1: #6a64e9;
 
