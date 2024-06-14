@@ -26,7 +26,7 @@ public class BlockController {
     private final ModelMapper mapper;
 
     @Operation(summary = "차단")
-    @PostMapping("/add")
+    @PostMapping("/")
     public ResponseEntity<Void> addBlock(@RequestHeader("UUID") String uuid, @RequestBody BlockReqVo blockReqVo){
 
         blockService.addBlock(uuid, mapper.map(blockReqVo, BlockReqDto.class));
@@ -34,7 +34,7 @@ public class BlockController {
     }
 
     @Operation(summary = "차단 취소")
-    @DeleteMapping("/delete")
+    @DeleteMapping("/")
     public ResponseEntity<Void> deleteBlock(@RequestHeader("UUID") String uuid, @RequestBody BlockReqVo blockReqVo){
 
         blockService.deleteBlock(uuid, mapper.map(blockReqVo, BlockReqDto.class));
