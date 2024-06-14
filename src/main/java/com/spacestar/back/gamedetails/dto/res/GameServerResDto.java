@@ -1,6 +1,5 @@
 package com.spacestar.back.gamedetails.dto.res;
 
-import com.spacestar.back.gamedetails.domain.GamePosition;
 import com.spacestar.back.gamedetails.domain.GameServer;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,17 +8,17 @@ import lombok.Getter;
 @Builder
 public class GameServerResDto {
     private int index;
-    private long gameServerId;
-    private String gameServerName;
-    private String gameServerNameKor;
-    private String gameServerImage;
+    private long id;
+    private String name;
+    private String nameKor;
+    private String image;
     public static GameServerResDto toGameServerResDto(int index, GameServer gameServer) {
         return GameServerResDto.builder()
                 .index(index)
-                .gameServerId(gameServer.getId())
-                .gameServerName(gameServer.getGameServerName())
-                .gameServerImage(gameServer.getGameServerImage())
-                .gameServerNameKor(gameServer.getGameServerNameKor())
+                .id(gameServer.getId())
+                .name(gameServer.getGameServerName())
+                .image(gameServer.getGameServerImage())
+                .nameKor(gameServer.getGameServerNameKor())
                 .build();
     }
 }
