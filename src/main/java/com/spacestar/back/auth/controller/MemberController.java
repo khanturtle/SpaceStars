@@ -51,6 +51,7 @@ public class MemberController {
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
     }
 
+
     @Operation(summary = "uuid로 닉네임 조회")
     @GetMapping("/nickname/{uuid}")
     public ResponseEntity<NicknameResVo> getNickname(@PathVariable String uuid){
