@@ -28,7 +28,7 @@ public class ProfileController {
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "기본 프로필 정보 추가 입력 및 수정")
-    @PutMapping("/info/update")
+    @PutMapping("/info")
     public ResponseEntity<Void> updateProfileInfo(@RequestHeader("UUID") String uuid,
                                                   @RequestBody ProfileInfoReqVo profileInfoReqVo) {
 
@@ -38,7 +38,7 @@ public class ProfileController {
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "좋아하는 게임 정보 추가 입력 및 수정")
-    @PutMapping("/liked-game/info/update")
+    @PutMapping("/liked-game")
     public ResponseEntity<Void> updateLikedGameInfo(@RequestHeader("UUID") String uuid,
                                                     @RequestBody LikedGameInfoReqVo likedGameInfoReqVo) {
 
@@ -48,7 +48,7 @@ public class ProfileController {
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "내가 하는 게임 정보 추가 입력 및 수정")
-    @PutMapping("/play-game/info/update")
+    @PutMapping("/play-game")
     public ResponseEntity<Void> updatePlayGameInfo(@RequestHeader("UUID") String uuid,
                                                    @RequestBody List<PlayGameInfoReqVo> playGameInfoReqVos) {
 
@@ -166,7 +166,7 @@ public class ProfileController {
 
     @Tag(name = "ProfileImage", description = "프로필 사진")
     @Operation(summary = "프로필 사진 추가")
-    @PostMapping("/image/add")
+    @PostMapping("/image")
     public ResponseEntity<Void> addProfileImage(@RequestHeader("UUID") String uuid,
                                                 @RequestBody ProfileImageReqVo profileImageReqVo) {
 
@@ -176,7 +176,7 @@ public class ProfileController {
 
     @Tag(name = "ProfileImage", description = "프로필 사진")
     @Operation(summary = "프로필 사진 삭제")
-    @DeleteMapping("/image/delete")
+    @DeleteMapping("/image")
     public ResponseEntity<Void> deleteProfileImage(@RequestHeader("UUID") String uuid,
                                                    @RequestBody ProfileImageReqVo profileImageReqVo) {
 
@@ -205,7 +205,7 @@ public class ProfileController {
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "스와이프 추천 여부 변경")
-    @PatchMapping("/swipe/recommend/update")
+    @PatchMapping("/swipe/recommend")
     public ResponseEntity<Void> swipeRecommendUpdate(@RequestHeader("UUID") String uuid,
                                                      @RequestBody ProfileSwipeResVo profileSwipeResVo) {
 
