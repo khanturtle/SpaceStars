@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NicknameResDto {
+public class UuidResDto {
 
-    private String nickname;
+    private String uuid;
 }

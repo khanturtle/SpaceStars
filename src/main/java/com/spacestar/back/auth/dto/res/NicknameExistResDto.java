@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NicknameResDto {
+public class NicknameExistResDto {
 
-    private String nickname;
+    private boolean isExist;
 }
