@@ -1,12 +1,10 @@
 package com.spacestar.back.auth.service;
 
 import com.spacestar.back.auth.domain.Member;
-import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
-import com.spacestar.back.auth.dto.res.NicknameResDto;
-import com.spacestar.back.auth.enums.UnregisterType;
+import com.spacestar.back.auth.dto.res.NicknameExistResDto;
 import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.repository.MemberRepository;
 import com.spacestar.back.global.GlobalException;
@@ -87,16 +85,16 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public NicknameResDto checkNickname(String nickname) {
+    public NicknameExistResDto checkNickname(String nickname) {
 
             Optional<Member> member = memberRepository.findByNickname(nickname);
 
             if (member.isPresent()) {
-                return NicknameResDto.builder()
+                return NicknameExistResDto.builder()
                         .isExist(true)
                         .build();
             } else {
-                return NicknameResDto.builder()
+                return NicknameExistResDto.builder()
                         .isExist(false)
                         .build();
             }
