@@ -9,7 +9,7 @@ public class GameConvertor {
         return Game.builder()
                 .gameGenre(gameGenre)
                 .name(gameReqDto.getName())
-                .image(gameReqDto.getGameLogoImage())
+                .gameLogoImage(gameReqDto.getGameLogoImage())
                 .gameImage(gameReqDto.getGameImage())
                 .nameKor(gameReqDto.getNameKor())
                 .isClass(gameReqDto.isClass())

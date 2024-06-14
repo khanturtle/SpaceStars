@@ -8,18 +8,18 @@ import lombok.Getter;
 @Builder
 public class GameClassResDto {
     private int index;
-    private long gameClassId;
-    private String gameClassName;
-    private String gameClassNameKor;
-    private String gameClassImage;
+    private long id;
+    private String name;
+    private String nameKor;
+    private String image;
 
     public static GameClassResDto toGameClassResDto(int index, GameClass gameClass) {
         return GameClassResDto.builder()
                 .index(index)
-                .gameClassId(gameClass.getId())
-                .gameClassName(gameClass.getGameClassName())
-                .gameClassImage(gameClass.getGameClassImage())
-                .gameClassNameKor(gameClass.getGameClassNameKor())
+                .id(gameClass.getId())
+                .name(gameClass.getGameClassName())
+                .image(gameClass.getGameClassImage())
+                .nameKor(gameClass.getGameClassNameKor())
                 .build();
     }
 }

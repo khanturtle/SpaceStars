@@ -19,7 +19,7 @@ public class GameTier {
     private String gameTierName;
     @Column(length = 20)
     private String gameTierNameKor;
-    @Column(length = 255)
+    @Column(columnDefinition = "TEXT")
     private String gameTierImage;
 
     @Builder
