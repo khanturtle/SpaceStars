@@ -17,7 +17,8 @@ public enum ResponseSuccess {
     MEMBER_INFO_UPDATE_SUCCESS(200, "회원 정보 수정 성공"),
     NICKNAME_SUCCESS(200,"닉네임 중복 확인 성공" ),
     NICKNAME_SELECT_SUCCESS(200,"닉네임 조회 성공" ),
-    UUID_SELECT_SUCCESS(200, "uuid 조회 성공");
+    UUID_SELECT_SUCCESS(200, "uuid 조회 성공"),
+    MEMBER_INFO_SELECT_SUCCESS(200, "회원 정보 조회 성공");
 
 
 
