@@ -44,6 +44,7 @@ const PassButton = () => {
 // TODO: 다음 버튼 유효성 검증 및 disabled
 export const AdditionalDetailsLayout = () => {
   const [step, setStep] = useState<number>(1)
+  const [mbti, setMbti] = useState<string>('')
   const { closeModal } = useContext(ModalContext)
 
   const { selectedGameIds } = useGameStore()
@@ -65,7 +66,7 @@ export const AdditionalDetailsLayout = () => {
   const handleSubmitDetails = () => {
     console.log('좋아하는 게임:', selectedGameIds)
     console.log('대표 게임', selectedGameWithOption)
-    // console.log('mbti:', mbti)
+    console.log('mbti:', mbti)
 
     console.log('저장하고 닫기')
     // closeModal()
@@ -109,13 +110,10 @@ export const AdditionalDetailsLayout = () => {
   /** step 3: MBTI 선택 */
   if (step === 3)
     return (
-      <FormLayout>
+      <FormLayout className="relative">
         <FormLayout.Legend title="MBTI를 선택해주세요" />
 
-        <AdditionalMBTI
-        // mbti={mbti}
-        // onChange={(value: string) => setMbti(value)}
-        />
+        <AdditionalMBTI mbti={mbti} setMbti={setMbti} />
 
         <FormLayout.PrevNextButton
           onPrevClick={handlePrevStep}
