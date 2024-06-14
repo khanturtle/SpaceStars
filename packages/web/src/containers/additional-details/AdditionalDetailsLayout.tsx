@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from 'react'
 
 import { ArrowIcon } from '@packages/ui'
 
+import { getIsProfile } from '@/apis/profile'
 import FormLayout from '@/components/form/formLayout'
 import { ModalContext } from '@/components/providers/modal-provider'
 import { useGameStore, useSelectedOption } from '@/store/gameStore'
@@ -13,9 +14,9 @@ import { useGameStore, useSelectedOption } from '@/store/gameStore'
 import AdditionalGames from './AdditionalGames'
 import AdditionalMBTI from './AdditionalMBTI'
 import AdditionalOptions from './AdditionalOptions'
-import styles from './additional.module.css'
 import { updateProfile } from './action'
-import { getIsProfile } from '@/apis/profile'
+
+import styles from './additional.module.css'
 
 /** 건너뛰기 버튼 */
 const PassButton = () => {
@@ -48,7 +49,7 @@ const PassButton = () => {
 }
 
 // TODO: 다음 버튼 유효성 검증 및 disabled
-export const AdditionalDetailsLayout = () => {
+export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
   const [step, setStep] = useState<number>(1)
   const [mbtiId, setMbtiId] = useState<number>()
   const { closeModal } = useContext(ModalContext)
@@ -68,16 +69,9 @@ export const AdditionalDetailsLayout = () => {
     }
   }
 
-  const accessToken = ''
-
   /** 회원 정보 제출 */
   const handleSubmitDetails = () => {
-    updateProfile(
-      selectedGameIds,
-      selectedGameWithOption!,
-      mbtiId!,
-      accessToken,
-    )
+    updateProfile(selectedGameIds, selectedGameWithOption!, mbtiId!, token)
 
     closeModal()
   }
@@ -151,7 +145,7 @@ export const DevModalOpen = () => {
           <div
             className={`relative h-full flex flex-col items-center ${styles.container}`}
           >
-            <AdditionalDetailsLayout />
+            <AdditionalDetailsLayout token={token} />
           </div>,
         )
       }
