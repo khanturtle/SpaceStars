@@ -4,16 +4,15 @@ import { useContext, useState } from 'react'
 
 import { ArrowIcon } from '@packages/ui'
 
-import { ModalContext } from '@/components/providers/modal-provider'
 import FormLayout from '@/components/form/formLayout'
+import { ModalContext } from '@/components/providers/modal-provider'
 import { useGameStore } from '@/store/gameStore'
 
 import AdditionalGames from './AdditionalGames'
 import AdditionalMBTI from './AdditionalMBTI'
-import styles from './additional.module.css'
 import AdditionalOptions from './AdditionalOptions'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Terminal } from 'lucide-react'
+
+import styles from './additional.module.css'
 
 /** 건너뛰기 버튼 */
 const PassButton = () => {
@@ -116,7 +115,6 @@ export const AdditionalDetailsLayout = () => {
       </FormLayout>
     )
   return null
-  // <AdditionalDetailsContainer step="1" />
 }
 
 export const DevModalOpenBtn = () => {

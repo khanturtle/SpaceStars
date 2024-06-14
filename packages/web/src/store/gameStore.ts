@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { GameType } from '@/apis/game'
+import { GameOptionDetailType, GameType } from '@/apis/game'
 
 interface GameState {
   selectedGames: GameType[]
@@ -45,4 +45,68 @@ export const useGameStore = create<GameState>((set) => ({
       }
     }),
   resetGames: () => set(initialState),
+}))
+
+/** 대표 게임 옵션 선택 */
+interface GameOptionType {
+  gameId: number
+  tierId?: number
+  positionId?: number
+  classId?: number
+  serverId?: number
+  gameNickname?: string
+  main: boolean
+}
+
+interface SelectedOptionStore {
+  selectedGameWithOption: GameOptionType | null
+  setGameWithOption: (
+    gameId: number,
+    optionType: string,
+    option: GameOptionDetailType,
+  ) => void
+}
+
+export const useSelectedOption = create<SelectedOptionStore>((set) => ({
+  selectedGameWithOption: null,
+  setGameWithOption: (gameId, optionType, option) =>
+    set((state) => {
+      let updatedGameOption: GameOptionType | null = {
+        ...state.selectedGameWithOption,
+        gameId: gameId,
+        main: true,
+      }
+
+      if (updatedGameOption) {
+        switch (optionType) {
+          case 'isTier':
+            updatedGameOption = { ...updatedGameOption, tierId: option.id }
+            break
+          case 'isPosition':
+            updatedGameOption = {
+              ...updatedGameOption,
+              positionId: option.id,
+            }
+            break
+          case 'isClass':
+            updatedGameOption = {
+              ...updatedGameOption,
+              classId: option.id,
+            }
+            break
+          case 'isServer':
+            updatedGameOption = {
+              ...updatedGameOption,
+              serverId: option.id,
+            }
+            break
+          default:
+            break
+        }
+      }
+
+      return {
+        selectedGameWithOption: updatedGameOption,
+      }
+    }),
 }))

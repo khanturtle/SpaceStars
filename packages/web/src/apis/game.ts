@@ -51,10 +51,18 @@ export async function getGameOptions(
   }
 }
 
+export interface GameOptionDetailType {
+  index: number
+  id: number
+  image: string
+  name: string
+  nameKor: string
+}
+
 export async function getGameOptionDetail(
   gameId: number,
   option: 'isClass' | 'isPosition' | 'isServer' | 'isTier',
-) {
+): Promise<GameOptionDetailType[]> {
   const OPTION_NAME = {
     isClass: 'class',
     isPosition: 'position',
@@ -75,6 +83,6 @@ export async function getGameOptionDetail(
     return data.result
   } catch (err) {
     console.error(err)
-    return
+    return []
   }
 }
