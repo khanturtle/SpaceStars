@@ -28,7 +28,7 @@ public class ProfileController {
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "기본 프로필 정보 추가 입력 및 수정")
-    @PutMapping("/info")
+    @PatchMapping("/info")
     public ResponseEntity<Void> updateProfileInfo(@RequestHeader("UUID") String uuid,
                                                   @RequestBody ProfileInfoReqVo profileInfoReqVo) {
 
@@ -38,7 +38,7 @@ public class ProfileController {
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "좋아하는 게임 정보 추가 입력 및 수정")
-    @PutMapping("/liked-game")
+    @PatchMapping("/liked-game")
     public ResponseEntity<Void> updateLikedGameInfo(@RequestHeader("UUID") String uuid,
                                                     @RequestBody LikedGameInfoReqVo likedGameInfoReqVo) {
 
@@ -48,7 +48,7 @@ public class ProfileController {
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "내가 하는 게임 정보 추가 입력 및 수정")
-    @PutMapping("/play-game")
+    @PatchMapping("/play-game")
     public ResponseEntity<Void> updatePlayGameInfo(@RequestHeader("UUID") String uuid,
                                                    @RequestBody List<PlayGameInfoReqVo> playGameInfoReqVos) {
 
