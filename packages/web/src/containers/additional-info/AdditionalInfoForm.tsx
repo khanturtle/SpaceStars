@@ -86,9 +86,9 @@ export default function AdditionalInfoForm() {
 
     // FIXME: alert 말고 다른 걸로 유효성 표시
     if (isNicknameAvailable) {
-      await alert('사용할 수 있는 닉네임입니다.')
+      alert('사용할 수 있는 닉네임입니다.')
     } else {
-      await alert('이미 사용중인 닉네임입니다.')
+      alert('이미 사용중인 닉네임입니다.')
     }
   }
 

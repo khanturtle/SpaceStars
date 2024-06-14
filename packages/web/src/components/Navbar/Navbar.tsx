@@ -25,9 +25,12 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           href="/"
           className="w-[120px] h-full flex flex-col content-start justify-center"
         >
+          {/* TODO: text 0px */}
           <h1 className="hidden">SPACE STAR</h1>
-          <LogoIcon width="40" height="34" />
-          <LogoName width="120" />
+          <div id="logo">
+            <LogoIcon width="40" height="34" />
+            <LogoName width="120" />
+          </div>
         </Link>
       </div>
 

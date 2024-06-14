@@ -136,8 +136,8 @@ export const DevModalOpen = () => {
   const { openModal } = useContext(ModalContext)
 
   useEffect(() => {
+    console.log(session)
     const fetchData = async () => {
-      const token = (session?.user?.data.accessToken as string) || ''
       const data = await getIsProfile(token)
       if (data.code === 200 && !data.result.isExist) {
         // false인 경우, 모달 열기
@@ -152,7 +152,9 @@ export const DevModalOpen = () => {
     }
 
     if (status === 'authenticated') {
-      fetchData()
+      const token = (session?.user?.data.accessToken as string) || ''
+
+      fetchData(token)
     }
   }, [status])
 

@@ -35,13 +35,14 @@ export default async function RootLayout({
       <body>
         <AuthSession>
           <ModalProvider>
+            {/* TODO: Navbar 안 또는 여기에 header로 감싸기 */}
             <Navbar>
               <Navbar.MidBox className="flex-1">
                 <Navbar.MidItems />
               </Navbar.MidBox>
 
               <Navbar.RightBox>
-                {session?.user?.data ? (
+                {session?.user ? (
                   <Avatar image_url={profileImage} />
                 ) : (
                   <Navbar.LoginButton />

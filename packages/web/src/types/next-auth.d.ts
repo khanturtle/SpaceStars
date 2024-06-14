@@ -4,7 +4,10 @@ declare module 'next-auth' {
   interface Session {
     user?: {
       picture?: string | null
-    }
+      data: {
+        [key: string]: string | number | boolean | null | undefined
+      }
+    } & DefaultSession['user']
   }
 
   interface User extends DefaultUser {
@@ -12,7 +15,6 @@ declare module 'next-auth' {
       [key: string]: any
     }
   }
-
   // Profile 타입 확장
   interface Profile extends DefaultProfile {
     kakao_account?: {
