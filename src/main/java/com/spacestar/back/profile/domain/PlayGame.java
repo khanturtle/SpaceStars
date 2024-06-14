@@ -32,7 +32,6 @@ public class PlayGame {
     @Column(length = 100)
     private String uuid;
 
-    @NotNull
     @Column(length = 50)
     private String gameNickname;
 
