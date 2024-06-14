@@ -181,7 +181,7 @@ public class ProfileController {
                                                    @RequestBody ProfileImageReqVo profileImageReqVo) {
 
         profileService.deleteProfileImage(uuid, mapper.map(profileImageReqVo, ProfileImageReqDto.class));
-        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_ADD_SUCCESS);
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_DELETE_SUCCESS);
     }
 
     @Tag(name = "Profile", description = "프로필")
