@@ -41,7 +41,7 @@ public class MemberController {
 
 
     @Operation(summary = "회원 정보 수정")
-    @PutMapping("/info/update")
+    @PatchMapping("/info")
     public ResponseEntity<Void> updateMemberInfo(@RequestHeader("UUID") String uuid,
                                                  @RequestBody @Valid MemberInfoReqVo memberInfoReqVo){
 
