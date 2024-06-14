@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import { useContext, useState } from 'react'
 
 import { ArrowIcon } from '@packages/ui'
@@ -14,7 +12,10 @@ import AdditionalGames from './AdditionalGames'
 import AdditionalMBTI from './AdditionalMBTI'
 import styles from './additional.module.css'
 import AdditionalOptions from './AdditionalOptions'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Terminal } from 'lucide-react'
 
+/** 건너뛰기 버튼 */
 const PassButton = () => {
   const { resetGames } = useGameStore()
   const { closeModal } = useContext(ModalContext)
@@ -46,8 +47,6 @@ const PassButton = () => {
 export const AdditionalDetailsLayout = () => {
   const [step, setStep] = useState<number>(1)
   const { selectedGameIds } = useGameStore()
-
-  const router = useRouter()
 
   const handleNextStep = () => {
     if (step + 1 <= 3) {

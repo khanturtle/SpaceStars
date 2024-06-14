@@ -12,6 +12,7 @@ import { options } from '@/app/api/auth/[...nextauth]/options'
 import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
+import { AlertProvider } from '@/components/providers/alert-provider'
 
 export const metadata: Metadata = {
   title: 'Dreaming-Stars',
@@ -34,24 +35,26 @@ export default async function RootLayout({
     <html lang="ko">
       <body>
         <AuthSession>
-          <ModalProvider>
-            <Navbar>
-              <Navbar.MidBox className="flex-1">
-                <Navbar.MidItems />
-              </Navbar.MidBox>
+          <AlertProvider>
+            <ModalProvider>
+              <Navbar>
+                <Navbar.MidBox className="flex-1">
+                  <Navbar.MidItems />
+                </Navbar.MidBox>
 
-              <Navbar.RightBox>
-                {session?.user?.data ? (
-                  <Avatar image_url={profileImage} />
-                ) : (
-                  <Navbar.LoginButton />
-                )}
-              </Navbar.RightBox>
-            </Navbar>
+                <Navbar.RightBox>
+                  {session?.user?.data ? (
+                    <Avatar image_url={profileImage} />
+                  ) : (
+                    <Navbar.LoginButton />
+                  )}
+                </Navbar.RightBox>
+              </Navbar>
 
-            {children}
-            {modal}
-          </ModalProvider>
+              {children}
+              {modal}
+            </ModalProvider>
+          </AlertProvider>
         </AuthSession>
       </body>
     </html>
