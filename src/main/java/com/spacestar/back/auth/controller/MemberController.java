@@ -1,8 +1,10 @@
 package com.spacestar.back.auth.controller;
 
 import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
+import com.spacestar.back.auth.dto.res.MemberInfoResDto;
 import com.spacestar.back.auth.service.MemberService;
 import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
+import com.spacestar.back.auth.vo.res.MemberInfoResVo;
 import com.spacestar.back.auth.vo.res.NicknameResVo;
 import com.spacestar.back.auth.vo.res.UuidResVo;
 import com.spacestar.back.global.ResponseEntity;
@@ -66,6 +68,14 @@ public class MemberController {
 
         return new ResponseEntity<>(ResponseSuccess.UUID_SELECT_SUCCESS,
                 mapper.map(memberService.getUuid(nickname), UuidResVo.class));
+    }
+
+    @Operation(summary = "회원 정보 조회")
+    @GetMapping("/info")
+    public ResponseEntity<MemberInfoResVo> findMemberInfo(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_SELECT_SUCCESS,
+                mapper.map(memberService.findMemberInfo(uuid), MemberInfoResVo.class));
     }
 
 }

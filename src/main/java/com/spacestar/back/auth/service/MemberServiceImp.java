@@ -2,6 +2,7 @@ package com.spacestar.back.auth.service;
 
 import com.spacestar.back.auth.domain.Member;
 import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
+import com.spacestar.back.auth.dto.res.MemberInfoResDto;
 import com.spacestar.back.auth.dto.res.NicknameResDto;
 import com.spacestar.back.auth.dto.res.UuidResDto;
 import com.spacestar.back.auth.enums.UnregisterType;
@@ -86,6 +87,23 @@ public class MemberServiceImp implements MemberService{
 
         return UuidResDto.builder()
                 .uuid(member.getUuid())
+                .build();
+    }
+
+    @Override
+    public MemberInfoResDto findMemberInfo(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        return MemberInfoResDto.builder()
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .birth(member.getBirth())
+                .gender(member.getGender())
+                .infoAgree(member.isInfoAgree())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
                 .build();
     }
 }
