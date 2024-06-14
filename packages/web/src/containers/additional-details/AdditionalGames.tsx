@@ -1,17 +1,15 @@
 'use client'
 
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { GameButton } from '@packages/ui'
 
 import { GameType, getGames } from '@/apis/game'
 import { useGameStore } from '@/store/gameStore'
-import { AlertContext } from '@/components/providers/alert-provider'
 
 function GameSelectButton({ game }: { game: GameType }) {
   const { selectedGames, selectedGamesCount, addGame, removeGame } =
     useGameStore()
-  const { show } = useContext(AlertContext)
 
   // FIXME: 다음 단계에서 이전으로 돌아가면, 선택은 해제되어 있고, 값은 들어있음
   // 불변성? 때문인지 확인 필요
@@ -23,11 +21,6 @@ function GameSelectButton({ game }: { game: GameType }) {
         addGame(game)
       } else {
         // FIXME: alert 수정
-        show({
-          title: 'Success',
-          description: 'This is a success alert',
-          variant: 'success',
-        })
 
         alert('더 이상 선택할 수 없어요')
       }

@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react'
+
 import {
   Select,
   SelectContent,
@@ -5,8 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-
-import { Dispatch, SetStateAction } from 'react'
 
 // TODO: API 받아오기
 const MBTIOptions = [
@@ -29,19 +29,23 @@ const MBTIOptions = [
 ]
 
 export default function AdditionalMBTI({
-  mbti,
-  setMbti,
+  mbtiId,
+  setMbtiId,
 }: {
-  mbti: string
-  setMbti: Dispatch<SetStateAction<string>>
+  mbtiId: number | undefined
+  setMbtiId: Dispatch<SetStateAction<number | undefined>>
 }) {
   const handleValueChange = (value: string) => {
-    setMbti(value)
+    const mbtiIdToNumber = Number(value)
+    setMbtiId(mbtiIdToNumber)
   }
 
   // TODO: 뒷 배경 찾기 안되면 popover
   return (
-    <Select value={mbti} onValueChange={handleValueChange}>
+    <Select
+      value={mbtiId ? mbtiId.toString() : undefined}
+      onValueChange={handleValueChange}
+    >
       <SelectTrigger
         className=" w-full h-[60px] mb-10  border border-[color:var(--White-50,#fff)] shadow-[0px_4px_10px_0px_rgba(37,73,150,0.1)] rounded-[10px] border-solid text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] "
         style={{ background: 'rgba(255, 255, 255, 0.5)' }}
@@ -52,7 +56,7 @@ export default function AdditionalMBTI({
         {MBTIOptions.map((item) => (
           <SelectItem
             key={item.id}
-            value={item.value}
+            value={item.id.toString()}
             className="text-base not-italic font-normal leading-[170%] bg-[none] m-0"
           >
             {item.value}

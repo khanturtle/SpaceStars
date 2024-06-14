@@ -11,7 +11,7 @@ interface GameState {
   resetGames: () => void
 }
 
-const initialState = {
+const initialGameState = {
   selectedGames: [],
   selectedGameIds: [],
   selectedGamesCount: 0,
@@ -44,11 +44,11 @@ export const useGameStore = create<GameState>((set) => ({
         selectedGamesCount: state.selectedGamesCount - 1,
       }
     }),
-  resetGames: () => set(initialState),
+  resetGames: () => set(initialGameState),
 }))
 
 /** 대표 게임 옵션 선택 */
-interface GameOptionType {
+export interface GameOptionType {
   gameId: number
   tierId?: number
   positionId?: number
@@ -65,6 +65,11 @@ interface SelectedOptionStore {
     optionType: string,
     option: GameOptionDetailType,
   ) => void
+  resetOptions: () => void
+}
+
+const initialOptionState = {
+  selectedGameWithOption: null,
 }
 
 export const useSelectedOption = create<SelectedOptionStore>((set) => ({
@@ -109,4 +114,5 @@ export const useSelectedOption = create<SelectedOptionStore>((set) => ({
         selectedGameWithOption: updatedGameOption,
       }
     }),
+  resetOptions: () => set(initialOptionState),
 }))

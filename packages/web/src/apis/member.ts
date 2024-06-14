@@ -10,20 +10,3 @@ export async function getProfile() {
     return false
   }
 }
-
-/** 프로필 유무 확인하기 */
-export async function getIsProfile(token: string) {
-  try {
-    const response = await fetch(`${MEMBER_BASE_URL}/profile/exist`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? token : '',
-      },
-    })
-    return response
-  } catch (e) {
-    console.error(e)
-    return false
-  }
-}

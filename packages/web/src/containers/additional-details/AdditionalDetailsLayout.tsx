@@ -1,6 +1,8 @@
 'use client'
 
-import { useContext, useState } from 'react'
+import { useSession } from 'next-auth/react'
+
+import { useContext, useEffect, useState } from 'react'
 
 import { ArrowIcon } from '@packages/ui'
 
@@ -12,14 +14,18 @@ import AdditionalGames from './AdditionalGames'
 import AdditionalMBTI from './AdditionalMBTI'
 import AdditionalOptions from './AdditionalOptions'
 import styles from './additional.module.css'
+import { updateProfile } from './action'
+import { getIsProfile } from '@/apis/profile'
 
 /** 건너뛰기 버튼 */
 const PassButton = () => {
   const { resetGames } = useGameStore()
+  const { resetOptions } = useSelectedOption()
   const { closeModal } = useContext(ModalContext)
 
   const handleClick = () => {
     resetGames()
+    resetOptions()
     closeModal()
   }
 
@@ -44,7 +50,7 @@ const PassButton = () => {
 // TODO: 다음 버튼 유효성 검증 및 disabled
 export const AdditionalDetailsLayout = () => {
   const [step, setStep] = useState<number>(1)
-  const [mbti, setMbti] = useState<string>('')
+  const [mbtiId, setMbtiId] = useState<number>()
   const { closeModal } = useContext(ModalContext)
 
   const { selectedGameIds } = useGameStore()
@@ -62,14 +68,18 @@ export const AdditionalDetailsLayout = () => {
     }
   }
 
+  const accessToken = ''
+
   /** 회원 정보 제출 */
   const handleSubmitDetails = () => {
-    console.log('좋아하는 게임:', selectedGameIds)
-    console.log('대표 게임', selectedGameWithOption)
-    console.log('mbti:', mbti)
+    updateProfile(
+      selectedGameIds,
+      selectedGameWithOption!,
+      mbtiId!,
+      accessToken,
+    )
 
-    console.log('저장하고 닫기')
-    // closeModal()
+    closeModal()
   }
 
   /** step 1: 게임 선택 */
@@ -113,9 +123,10 @@ export const AdditionalDetailsLayout = () => {
       <FormLayout className="relative">
         <FormLayout.Legend title="MBTI를 선택해주세요" />
 
-        <AdditionalMBTI mbti={mbti} setMbti={setMbti} />
+        <AdditionalMBTI mbtiId={mbtiId} setMbtiId={setMbtiId} />
 
         <FormLayout.PrevNextButton
+          nextLabel="완료"
           onPrevClick={handlePrevStep}
           onNextClick={handleSubmitDetails}
         />
@@ -125,13 +136,17 @@ export const AdditionalDetailsLayout = () => {
   return null
 }
 
-export const DevModalOpenBtn = () => {
+export const DevModalOpen = () => {
+  const { data: session, status } = useSession()
+
   const { openModal } = useContext(ModalContext)
 
-  return (
-    <button
-      type="button"
-      onClick={() =>
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = (session?.user?.data.accessToken as string) || ''
+      const data = await getIsProfile(token)
+      if (data.code === 200 && !data.result.isExist) {
+        // false인 경우, 모달 열기
         openModal(
           <div
             className={`relative h-full flex flex-col items-center ${styles.container}`}
@@ -140,8 +155,13 @@ export const DevModalOpenBtn = () => {
           </div>,
         )
       }
-    >
-      추가정보
-    </button>
-  )
+    }
+
+    if (status === 'authenticated') {
+      fetchData()
+    }
+  }, [status])
+
+  // 컴포넌트는 모달을 열고 종료
+  return null
 }

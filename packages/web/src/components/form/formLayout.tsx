@@ -41,9 +41,11 @@ const NextButton = ({ onClick }: { onClick?: () => void }) => {
 }
 
 const PrevNextButton = ({
+  nextLabel = '다음',
   onPrevClick,
   onNextClick,
 }: {
+  nextLabel?: string
   onPrevClick?: () => void
   onNextClick?: () => void
 }) => {
@@ -59,7 +61,7 @@ const PrevNextButton = ({
       />
       <Button
         className="flex-grow"
-        label="다음"
+        label={nextLabel}
         shape="oval"
         primary
         backgroundColor="#000"
