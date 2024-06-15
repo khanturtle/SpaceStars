@@ -128,8 +128,7 @@ const tmpMsgList: TmpMsgList[] = [
 
 export default function page() {
   return (
-    <>
-      {/* TODO: parallel로 수정 */}
+    <section className="relative flex flex-row w-full h-full">
       <div className="left">
         <SearchBox />
 
@@ -143,6 +142,6 @@ export default function page() {
       </div>
 
       <ChatRoomContainer />
-    </>
+    </section>
   )
 }

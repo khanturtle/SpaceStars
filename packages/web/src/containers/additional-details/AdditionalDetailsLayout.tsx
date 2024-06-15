@@ -136,7 +136,6 @@ export const DevModalOpen = () => {
   const { openModal } = useContext(ModalContext)
 
   useEffect(() => {
-    console.log(session)
     const fetchData = async (token: string) => {
       const data = await getIsProfile(token)
       if (data.code === 200 && !data.result.isExist) {

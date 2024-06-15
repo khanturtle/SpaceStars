@@ -34,7 +34,7 @@ export default async function page({
   const viewType = searchParams.view === 'list' ? 'list' : 'card'
 
   return (
-    <main className="flex-1 px-[50px] py-[42px] h-[full] overflow-auto">
+    <section className="flex-1 px-[50px] py-[42px] h-[full] overflow-auto">
       <SelectBoxContainer searchParams={searchParams} games={games} />
 
       {/* TODO: 집어넣는거 고려 */}
@@ -100,6 +100,6 @@ export default async function page({
           })}
         </TeamBox.TeamCardList>
       </TeamBox>
-    </main>
+    </section>
   )
 }

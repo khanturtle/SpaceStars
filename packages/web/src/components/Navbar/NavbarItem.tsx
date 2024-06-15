@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 export const LoginButton = () => {
   const router = useRouter()
@@ -10,30 +10,4 @@ export const LoginButton = () => {
       로그인 | 회원가입
     </button>
   )
-}
-
-export const MidItems = () => {
-  const pathname = usePathname()
-
-  // TODO: 알맞은 컴포넌트로 바꾸기
-  const PATH_NAME_KR = [
-    {
-      link: '/dashboard',
-      name: '대시보드',
-    },
-    {
-      link: '/team-list',
-      name: '팀원모집',
-    },
-    {
-      link: '/chat',
-      name: 'Chat',
-    },
-  ]
-
-  const currentPathName = PATH_NAME_KR.find(
-    (item) => item.link === pathname,
-  )?.name
-
-  return <div>{currentPathName}</div>
 }

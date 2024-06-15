@@ -10,5 +10,5 @@ export default function RightSidebar() {
   if (pathName === '/dashboard/chat') {
     return <section className={styles.rightSidebar}>채팅</section>
   }
-  return <section className={styles.rightSidebar}>오른쪽 </section>
+  return <section className={styles.rightSidebar}>오른쪽</section>
 }

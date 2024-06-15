@@ -40,19 +40,19 @@ export default function AdditionalMBTI({
     setMbtiId(mbtiIdToNumber)
   }
 
-  // TODO: 뒷 배경 찾기 안되면 popover
   return (
     <Select
       value={mbtiId ? mbtiId.toString() : undefined}
       onValueChange={handleValueChange}
     >
       <SelectTrigger
-        className=" w-full h-[60px] mb-10  border border-[color:var(--White-50,#fff)] shadow-[0px_4px_10px_0px_rgba(37,73,150,0.1)] rounded-[10px] border-solid text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] "
+        className="w-full h-[60px] mb-10 border border-[color:var(--White-50,#fff)] shadow-[0px_4px_10px_0px_rgba(37,73,150,0.1)] rounded-[10px] border-solid text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] "
         style={{ background: 'rgba(255, 255, 255, 0.5)' }}
       >
         <SelectValue placeholder="MBTI" />
       </SelectTrigger>
-      <SelectContent className="relative z-[9999] w-full h-full bg-[white] border-none ">
+
+      <SelectContent className="relative z-[9999] w-full h-[230px] bg-[white] border-none ">
         {MBTIOptions.map((item) => (
           <SelectItem
             key={item.id}
