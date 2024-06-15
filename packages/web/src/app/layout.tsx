@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 
 import '@packages/ui/index.css'
 
@@ -16,8 +16,28 @@ import WebSocketProvider from '@/components/providers/socket-provider'
 import Gutter from '@/components/Gutter'
 
 export const metadata: Metadata = {
-  title: 'Dreaming-Stars',
-  description: '꿈꾸는 별들',
+  title: '우주별: 우리 주변의 별별 사람들',
+  description:
+    '다양한 게임을 즐기며 새로운 친구를 만날 수 있는 커뮤니티 플랫폼',
+  keywords: ['게임', '우주', '플랫폼', '엔터테인먼트', '콘텐츠'],
+  openGraph: {
+    type: 'website',
+    url: 'https://spacestars.kr',
+    title: '우주별: 우리 주변의 별별 사람들',
+    description:
+      '다양한 게임을 즐기며 새로운 친구를 만날 수 있는 커뮤니티 플랫폼',
+    images: [
+      { url: '/images/opengraph-image.png', alt: '우주별 서비스 이미지' },
+    ],
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: 'light',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 2,
+  userScalable: false,
 }
 
 export default async function RootLayout({
