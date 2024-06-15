@@ -1,113 +1,163 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
-import LikeGameForm from './LikeGameForm'
-import MBTIForm from './MBTIForm'
-import { ItemType } from './state'
+import { ArrowIcon } from '@packages/ui'
 
+import { getIsProfile } from '@/apis/profile'
 import FormLayout from '@/components/form/formLayout'
+import { ModalContext } from '@/components/providers/modal-provider'
+import { useGameStore, useSelectedOption } from '@/store/gameStore'
 
-// TODO: 다음 버튼 유효성 검증 및 disabled
-export default function AdditionalDetailsLayout({
-  className,
-  step,
-}: {
-  className?: string
-  step: string
-}) {
-  const router = useRouter()
-  const [mbti, setMbti] = useState('')
-  const [selectedGames, setSelectedGames] = useState<ItemType[]>([])
+import AdditionalGames from './AdditionalGames'
+import AdditionalMBTI from './AdditionalMBTI'
+import AdditionalOptions from './AdditionalOptions'
+import { updateProfile } from './action'
 
-  const handleButtonClick = (item: ItemType) => {
-    setSelectedGames((prev) => {
-      if (prev.includes(item)) {
-        return prev.filter((game) => game.index !== item.index)
-      }
-      // TODO: 오류 문구 출력 ?
-      if (prev.length === 3) {
-        return prev
-      }
-      return [...prev, item]
-    })
+import styles from './additional.module.css'
+
+/** 건너뛰기 버튼 */
+const PassButton = () => {
+  const { resetGames } = useGameStore()
+  const { resetOptions } = useSelectedOption()
+  const { closeModal } = useContext(ModalContext)
+
+  const handleClick = () => {
+    resetGames()
+    resetOptions()
+    closeModal()
   }
 
+  return (
+    <div className="flex justify-center w-full mt-6">
+      <button
+        type="button"
+        onClick={handleClick}
+        className="inline-flex items-center justify-center gap-8"
+      >
+        <i>
+          <ArrowIcon width="14" height="14" type="right" fill="white" />
+        </i>
+        <p className="text-white text-center text-base not-italic font-normal leading-[170%]">
+          건너뛰기
+        </p>
+      </button>
+    </div>
+  )
+}
+
+// TODO: 다음 버튼 유효성 검증 및 disabled
+export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
+  const [step, setStep] = useState<number>(1)
+  const [mbtiId, setMbtiId] = useState<number>()
+  const { closeModal } = useContext(ModalContext)
+
+  const { selectedGameIds } = useGameStore()
+  const { selectedGameWithOption } = useSelectedOption()
+
   const handleNextStep = () => {
-    const nextStep = parseInt(step, 10) + 1
-    if (nextStep <= 3) {
-      router.replace(`/additional-details?step=${nextStep}`)
-    } else if (nextStep === 4) {
-      console.log('likeGames', selectedGames)
-      console.log('mbti:', mbti)
-      console.log('저장하고 닫기')
+    if (step + 1 <= 3) {
+      setStep(step + 1)
     }
   }
 
   const handlePrevStep = () => {
-    const prevStep = parseInt(step, 10) - 1
-    if (prevStep > 0) {
-      router.replace(`/additional-details?step=${prevStep}`)
+    if (step - 1 > 0) {
+      setStep(step - 1)
     }
   }
 
-  //  FIXME: title 수정하기
-  if (Number(step) === 1) {
+  /** 회원 정보 제출 */
+  const handleSubmitDetails = () => {
+    updateProfile(selectedGameIds, selectedGameWithOption!, mbtiId!, token)
+
+    closeModal()
+  }
+
+  /** step 1: 게임 선택 */
+  if (step === 1)
     return (
-      <FormLayout className={`${className}`}>
+      <FormLayout>
         <FormLayout.Legend
-          title="SIGN UP?"
-          description={`좋아하는 게임을\n 선택해주세요 (최대 3개)`}
+          title={'좋아하는 게임을 선택해주세요'}
+          description={`최대 3개까지 선택 가능합니다.`}
         />
 
-        <LikeGameForm
-          className="w-[335px]"
-          selectedGames={selectedGames}
-          onClick={handleButtonClick}
-        />
+        <AdditionalGames />
 
         <FormLayout.NextButton onClick={handleNextStep} />
-        <FormLayout.PassButton />
+        <PassButton />
       </FormLayout>
     )
-  }
 
-  if (Number(step) === 2) {
+  /** step 2: 대표 게임 선택 */
+  if (step === 2)
     return (
-      <FormLayout className={`${className}`}>
+      <FormLayout>
         <FormLayout.Legend
-          title="SIGN UP?"
-          description={`대표 게임을\n 설정해주세요`}
+          title="대표 게임을 선택해주세요"
+          description={`게임 1개를 골라 옵션을 선택해주세요.`}
         />
-        <section className="border h-36">{step} 폼쓰</section>
+
+        <AdditionalOptions />
 
         <FormLayout.PrevNextButton
           onPrevClick={handlePrevStep}
           onNextClick={handleNextStep}
         />
-        <FormLayout.PassButton />
+        <PassButton />
       </FormLayout>
     )
-  }
-  if (Number(step) === 3) {
-    return (
-      <FormLayout className={`${className}`}>
-        <FormLayout.Legend
-          title="SIGN UP?"
-          description={`MBTI를\n 선택해주세요`}
-        />
 
-        <MBTIForm mbti={mbti} onChange={(value: string) => setMbti(value)} />
+  /** step 3: MBTI 선택 */
+  if (step === 3)
+    return (
+      <FormLayout className="relative">
+        <FormLayout.Legend title="MBTI를 선택해주세요" />
+
+        <AdditionalMBTI mbtiId={mbtiId} setMbtiId={setMbtiId} />
 
         <FormLayout.PrevNextButton
+          nextLabel="완료"
           onPrevClick={handlePrevStep}
-          onNextClick={handleNextStep}
+          onNextClick={handleSubmitDetails}
         />
-        <FormLayout.PassButton />
+        <PassButton />
       </FormLayout>
     )
-  }
-  return <div>잘못된 URL</div>
+  return null
+}
+
+export const DevModalOpen = () => {
+  const { data: session, status } = useSession()
+
+  const { openModal } = useContext(ModalContext)
+
+  useEffect(() => {
+    console.log(session)
+    const fetchData = async (token: string) => {
+      const data = await getIsProfile(token)
+      if (data.code === 200 && !data.result.isExist) {
+        // false인 경우, 모달 열기
+        openModal(
+          <div
+            className={`relative h-full flex flex-col items-center ${styles.container}`}
+          >
+            <AdditionalDetailsLayout token={token} />
+          </div>,
+        )
+      }
+    }
+
+    if (status === 'authenticated') {
+      const token = (session?.user?.data.accessToken as string) || ''
+
+      fetchData(token)
+    }
+  }, [status])
+
+  // 컴포넌트는 모달을 열고 종료
+  return null
 }

@@ -10,6 +10,7 @@ import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import Navbar from '@/components/Navbar/Navbar'
+import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
 
 export const metadata: Metadata = {
@@ -33,22 +34,25 @@ export default async function RootLayout({
     <html lang="ko">
       <body>
         <AuthSession>
-          <Navbar>
-            <Navbar.MidBox className="flex-1">
-              <Navbar.MidItems />
-            </Navbar.MidBox>
+          <ModalProvider>
+            {/* TODO: Navbar 안 또는 여기에 header로 감싸기 */}
+            <Navbar>
+              <Navbar.MidBox className="flex-1">
+                <Navbar.MidItems />
+              </Navbar.MidBox>
 
-            <Navbar.RightBox>
-              {session?.user?.data ? (
-                <Avatar image_url={profileImage} />
-              ) : (
-                <Navbar.LoginButton />
-              )}
-            </Navbar.RightBox>
-          </Navbar>
+              <Navbar.RightBox>
+                {session?.user ? (
+                  <Avatar image_url={profileImage} />
+                ) : (
+                  <Navbar.LoginButton />
+                )}
+              </Navbar.RightBox>
+            </Navbar>
 
-          {children}
-          {modal}
+            {children}
+            {modal}
+          </ModalProvider>
         </AuthSession>
       </body>
     </html>

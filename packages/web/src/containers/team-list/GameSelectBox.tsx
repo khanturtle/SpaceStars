@@ -2,20 +2,21 @@
 
 import { useRouter } from 'next/navigation'
 
-import { CheckIcon, GameListButton } from '@packages/ui'
+import { GameListButton } from '@packages/ui'
 
 import styles from './teamList.module.css'
 
 import { GameType } from '@/apis/game'
-import { gamesImageUrl } from './state'
+import { gamesImageUrl } from '@/apis/state'
 
 const GameItem = ({game, currentGame, onClick}: {
   game: GameType
   currentGame: string
-  onClick: (gameId: string) => void
+  onClick: (game: GameType) => void
 }) => {
   const gameImageUrl = gamesImageUrl[game.gameId]
 
+  // FIXME: 우리 도메인 S3 URL으로 수정
   const item = {
     gameImage: gameImageUrl.gameImage,
     gameLogo: gameImageUrl.gameLogoImage,
@@ -23,15 +24,13 @@ const GameItem = ({game, currentGame, onClick}: {
   }
     
   return (
-      <GameListButton
-      // FIXME: game 데이터 수정
+    <GameListButton
+      className='min-w-[164px]'
       item={item}
-      onClick={() => onClick}
-      isClicked={currentGame === game.gameName}
-    />
+      onClick={() => onClick(game)}
+      isClicked={currentGame === game.gameName} />
   )
 }
-
 
 export default function GameSelectBox({
   games,
