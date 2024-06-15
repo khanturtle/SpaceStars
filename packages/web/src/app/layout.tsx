@@ -13,6 +13,7 @@ import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
 import WebSocketProvider from '@/components/providers/socket-provider'
+import Gutter from '@/components/Gutter'
 
 export const metadata: Metadata = {
   title: 'Dreaming-Stars',
@@ -27,6 +28,7 @@ export default async function RootLayout({
   modal: React.ReactNode
 }>) {
   const session = await getServerSession(options)
+  // TODO: 프로필 이미지 수정
   const profileImage =
     session?.user?.picture ||
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
@@ -37,20 +39,19 @@ export default async function RootLayout({
         <AuthSession>
           <WebSocketProvider>
             <ModalProvider>
-              {/* TODO: Navbar 안 또는 여기에 header로 감싸기 */}
-              <Navbar>
-                <Navbar.MidBox className="flex-1">
-                  <Navbar.MidItems />
-                </Navbar.MidBox>
+              <header>
+                <Navbar>
+                  <Gutter className="flex-1" />
 
-                <Navbar.RightBox>
-                  {session?.user ? (
-                    <Avatar image_url={profileImage} />
-                  ) : (
-                    <Navbar.LoginButton />
-                  )}
-                </Navbar.RightBox>
-              </Navbar>
+                  <Navbar.RightBox>
+                    {session?.user ? (
+                      <Avatar image_url={profileImage} />
+                    ) : (
+                      <Navbar.LoginButton />
+                    )}
+                  </Navbar.RightBox>
+                </Navbar>
+              </header>
 
               {children}
               {modal}
