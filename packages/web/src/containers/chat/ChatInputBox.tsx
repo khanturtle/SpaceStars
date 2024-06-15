@@ -1,6 +1,6 @@
+import { useWebSocket } from '@/components/providers/socket-provider'
 import { SendIcon } from '@packages/ui'
 import { ChangeEvent, useState } from 'react'
-import styles from './chat.module.css'
 
 const InputItem = () => {
   const [chat, setChat] = useState<string>('')
@@ -9,16 +9,26 @@ const InputItem = () => {
     setChat(e.target.value)
   }
 
-  /** 채팅 전송 */
-  const handleClick = () => {
-    console.log('Sending chat:', chat)
-    setChat('')
+  const stompClient = useWebSocket()
+
+  /** 메시지 전송 */
+  // FIXME: url 수정
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log(chat, stompClient)
+    if (chat !== '' && stompClient) {
+      stompClient.send('채팅 전송', {}, JSON.stringify(chat))
+      setChat('')
+    }
   }
 
   return (
-    <form className="flex justify-between grow gap-3.5 pl-2.5">
+    <form
+      className="flex flex-1 justify-between gap-3.5 pl-2.5"
+      onSubmit={handleSubmit}
+    >
       <input
-        className={`flex grow bg-[color:var(--White-50,#fff)] text-[#161616] text-sm not-italic font-normal leading-[normal] px-5 py-2 input-reset ${styles.input}`}
+        className="inline-block w-full flex-grow-1 bg-[color:var(--White-50,#fff)] text-[#161616] text-sm not-italic font-normal leading-[normal] px-5 py-2 input-reset chat-placeholder"
         type="text"
         placeholder="Write a message..."
         value={chat}
@@ -27,7 +37,7 @@ const InputItem = () => {
         autoFocus
       />
 
-      <button type="submit" onClick={handleClick}>
+      <button type="submit">
         <i
           className="flex items-center justify-center rounded-full w-9 h-9"
           style={{
@@ -47,7 +57,7 @@ export default function ChatInputBox({
   children: React.ReactNode
 }) {
   return (
-    <div className={styles.chat}>
+    <div className="bg-[color:var(--White-50,#fff)] w-full h-[90px] flex items-center relative px-[50px] py-4">
       {children}
 
       <InputItem />
@@ -56,16 +66,16 @@ export default function ChatInputBox({
 }
 
 const IconBtn = ({
-  children,
+  icon,
   handleClick,
 }: {
-  children?: React.ReactNode
+  icon?: React.ReactNode
   handleClick: () => void
 }) => {
   return (
     <div className="flex items-center justify-center w-12 h-12">
       <button onClick={handleClick}>
-        <i className="w-6 h-6">{children}</i>
+        <i className="w-6 h-6">{icon}</i>
       </button>
     </div>
   )

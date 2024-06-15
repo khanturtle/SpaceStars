@@ -12,6 +12,7 @@ import { options } from '@/app/api/auth/[...nextauth]/options'
 import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
+import WebSocketProvider from '@/components/providers/socket-provider'
 
 export const metadata: Metadata = {
   title: 'Dreaming-Stars',
@@ -34,25 +35,27 @@ export default async function RootLayout({
     <html lang="ko">
       <body>
         <AuthSession>
-          <ModalProvider>
-            {/* TODO: Navbar 안 또는 여기에 header로 감싸기 */}
-            <Navbar>
-              <Navbar.MidBox className="flex-1">
-                <Navbar.MidItems />
-              </Navbar.MidBox>
+          <WebSocketProvider>
+            <ModalProvider>
+              {/* TODO: Navbar 안 또는 여기에 header로 감싸기 */}
+              <Navbar>
+                <Navbar.MidBox className="flex-1">
+                  <Navbar.MidItems />
+                </Navbar.MidBox>
 
-              <Navbar.RightBox>
-                {session?.user ? (
-                  <Avatar image_url={profileImage} />
-                ) : (
-                  <Navbar.LoginButton />
-                )}
-              </Navbar.RightBox>
-            </Navbar>
+                <Navbar.RightBox>
+                  {session?.user ? (
+                    <Avatar image_url={profileImage} />
+                  ) : (
+                    <Navbar.LoginButton />
+                  )}
+                </Navbar.RightBox>
+              </Navbar>
 
-            {children}
-            {modal}
-          </ModalProvider>
+              {children}
+              {modal}
+            </ModalProvider>
+          </WebSocketProvider>
         </AuthSession>
       </body>
     </html>
