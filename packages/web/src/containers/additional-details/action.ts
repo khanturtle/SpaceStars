@@ -1,5 +1,5 @@
 import { GameOptionType } from '@/store/gameStore'
-
+// TODO: 서버액션 테스트
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL_V1
 
 // 1. 좋아하는 게임 입력

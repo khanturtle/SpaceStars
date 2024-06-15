@@ -27,7 +27,7 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className={`${styles.sidebar} `}>
+    <aside className={`${styles.sidebar}`}>
       <ul>
         {SIDE_LINK.map((item) => (
           <li
