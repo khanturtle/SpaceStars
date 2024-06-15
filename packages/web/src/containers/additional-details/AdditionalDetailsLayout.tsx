@@ -137,7 +137,7 @@ export const DevModalOpen = () => {
 
   useEffect(() => {
     console.log(session)
-    const fetchData = async () => {
+    const fetchData = async (token: string) => {
       const data = await getIsProfile(token)
       if (data.code === 200 && !data.result.isExist) {
         // false인 경우, 모달 열기

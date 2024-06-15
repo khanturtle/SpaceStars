@@ -5,7 +5,7 @@ declare module 'next-auth' {
     user?: {
       picture?: string | null
       data: {
-        [key: string]: string | number | boolean | null | undefined
+        [key: string]: any
       }
     } & DefaultSession['user']
   }
