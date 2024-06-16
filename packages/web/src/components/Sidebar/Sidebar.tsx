@@ -70,10 +70,10 @@ export default function Sidebar() {
         <svg
           viewBox="0 0 24 24"
           stroke="currentColor"
-          stroke-width="2"
+          strokeWidth="2"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -81,10 +81,10 @@ export default function Sidebar() {
         </svg>
         <svg
           stroke="currentColor"
-          stroke-width="2"
+          strokeWidth="2"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           viewBox="0 0 24 24"
         >
           <path d="M19 12H5M12 19l-7-7 7-7" />
