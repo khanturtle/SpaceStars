@@ -2,15 +2,22 @@ package com.spacestar.back.chat.service;
 
 import com.spacestar.back.chat.domain.collection.ChatMessageCollection;
 import com.spacestar.back.chat.dto.MessageDto;
+import com.spacestar.back.chat.dto.RecentMessageDto;
+import com.spacestar.back.chat.enums.MessageType;
 import com.spacestar.back.chat.repository.ChatMessageMongoRepository;
 import com.spacestar.back.chat.vo.req.ChatMessageReqVo;
+import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -37,15 +44,51 @@ public class ChatMessageServiceImp implements ChatMessageService {
     }
 
     @Override
-    public List<MessageDto> getChatMessage(String roomNumber) {
-        // MongoDB에서 roomNumber에 해당하는 채팅 메시지 가져오기
-        List<ChatMessageCollection> chatMessageCollections = chatMessageRepository.findAllByRoomNumber(roomNumber);
-        // ChatMessageCollection -> MessageDto stream
-        return chatMessageCollections.stream()
-                .map(MessageDto::messageDtoFromEntity)
-                .toList();
-    }
+    public List<MessageDto> getReadMessage(String uuid, String roomNumber, Pageable pageable) {
 
+        // MongoDB에서 roomNumber와 uuid에 해당하는 사용자의 마지막 퇴장 메시지를 가져오기
+        Optional<ChatMessageCollection> optionalExitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid);
+
+        log.info("optionalExitMessage: {}", optionalExitMessage);
+
+        if (optionalExitMessage.isPresent()) {
+            ChatMessageCollection exitMessage = optionalExitMessage.get();
+            Instant exitTime = exitMessage.getExitTime();
+
+            // exitTime 이후의 메시지를 찾기
+            Page<ChatMessageCollection> readMessages = chatMessageRepository.findReadMessage(roomNumber, exitTime, pageable);
+
+            log.info(readMessages.toString());
+            // MessageDto로 변환하여 반환
+            return readMessages.stream()
+                    .map(MessageDto::messageDtoFromEntity)
+                    .toList();
+        }
+
+        // Optional이 empty인 경우, 즉 사용자의 퇴장 기록이 없는 경우, 빈 리스트 반환
+        return Collections.emptyList();
+    }
+    @Override
+    public List<MessageDto> getUnreadMessage(String uuid, String roomNumber) {
+        // MongoDB에서 roomNumber와 uuid에 해당하는 사용자의 마지막 퇴장 메시지를 가져오기
+        Optional<ChatMessageCollection> optionalExitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid);
+
+        if (optionalExitMessage.isPresent()) {
+            ChatMessageCollection exitMessage = optionalExitMessage.get();
+            Instant exitTime = exitMessage.getExitTime();
+
+            // exitTime 이후의 메시지를 찾기
+            List<ChatMessageCollection> unreadMessages = chatMessageRepository.findUnreadMessage(roomNumber, exitTime);
+
+            // MessageDto로 변환하여 반환
+            return unreadMessages.stream()
+                    .map(MessageDto::messageDtoFromEntity)
+                    .toList();
+        }
+
+        // Optional이 empty인 경우, 즉 사용자의 퇴장 기록이 없는 경우, 빈 리스트 반환
+        return Collections.emptyList();
+    }
     @Override
     public void addChatJoin(String roomNumber, String senderUuid) {
         Instant enterTime = Instant.now();
@@ -66,27 +109,36 @@ public class ChatMessageServiceImp implements ChatMessageService {
                 .build());
     }
 
+
+
+
     @Override
-    public List<MessageDto> getUnreadMessage(String uuid, String roomNumber) {
-        // MongoDB에서 roomNumber에 해당하는 채팅 메시지 가져오기
-        ChatMessageCollection exitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid);
-        if (exitMessage != null) {
-            Instant exitTime = exitMessage.getExitTime();
-            // exitTime 이후의 메시지를 찾기.
-            List<ChatMessageCollection> unreadMessages = chatMessageRepository.findUnreadMessage(roomNumber, exitTime);
+    public RecentMessageDto getRecentMessage(String uuid, String roomNumber) {
+        /**
+         * 1. uuid와 roomNumber로 최근 나간시간 가져오기
+         * 2. uuid, roomNumber,나간시간 이후 안읽은 메시지 수 카운트
+         * 2-2 제일 마지막 메시지도 가져오기
+         * 3. 최근 메시지가 없으면 exception 발생
+         */
 
-            // MessageDto로 변환하여 반환.
-            return unreadMessages.stream()
-                    .map(MessageDto::messageDtoFromEntity)
-                    .toList();
-        }
-        return List.of();
-        // exitTime이 없으면 모든 메시지를 가져옵니다.
+        ChatMessageCollection exitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_EXITTIME));
+        Instant exitTime = exitMessage.getExitTime();
+        List<ChatMessageCollection> unreadMessages = chatMessageRepository.findUnreadMessage(roomNumber, exitTime);
 
-        // ChatMessageCollection -> MessageDto stream
-//        return chatMessageCollections.stream()
-//                .map(MessageDto::messageDtoFromEntity)
-//                .toList();
+        // 999개 이상이면 999까지만
+        int unReadCount = Math.min(unreadMessages.size(), 999);
+        ChatMessageCollection recentMessage = unreadMessages.get(0);
+
+        // 마지막 메시지가 텍스트면 content, 아니면 사진을 보냈습니다
+        String lastChatMessage = (recentMessage.getMessageType() == MessageType.TEXT) ?
+                recentMessage.getContent() : "사진을 보냈습니다";
+
+        return RecentMessageDto.builder()
+                .unReadCount(unReadCount)
+                .lastChatMessage(lastChatMessage)
+                .createdAt(recentMessage.getCreatedAt())
+                .build();
     }
 
 }

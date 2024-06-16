@@ -1,4 +1,4 @@
-package com.spacestar.back.chat.converter;
+package com.spacestar.back.converter;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;

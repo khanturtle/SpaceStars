@@ -16,19 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@Tag(name = "Chat", description = "채팅")
+@Tag(name = "Chat", description = "1:1 채팅(전송)")
 //@RequestMapping("/chat")
 public class ChatStompController {
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messageTemplate;
-
     @Autowired
     public ChatStompController(ChatMessageService chatMessageService, SimpMessagingTemplate messageTemplate) {
         this.chatMessageService = chatMessageService;
         this.messageTemplate = messageTemplate;
     }
 
-    @MessageMapping("/{roomNumber}")
+    // 채팅 메시지 전송
+
+    @MessageMapping("/one-to-one/{roomNumber}")
     public void addChatMessage(
             @DestinationVariable String roomNumber,
             @Payload ChatMessageReqVo chatMessageReqVo) {
@@ -44,8 +45,8 @@ public class ChatStompController {
         messageTemplate.convertAndSend("/room/" + roomNumber, messageDto);
 
     }
-
-    @MessageMapping("/join/{roomNumber}")
+    // 채팅방 입장
+    @MessageMapping("/one-to-one/join/{roomNumber}")
     public void joinChatRoom(@DestinationVariable String roomNumber,
                              @Payload ChatJoinReqVo chatJoinReqVo) {
         String senderUuid = chatJoinReqVo.getSenderUuid();
@@ -56,7 +57,8 @@ public class ChatStompController {
         //messageTemplate.convertAndSend("/room/" + roomNumber, joinMessage);
     }
 
-    @MessageMapping("/exit/{roomNumber}")
+    // 채팅방 퇴장
+    @MessageMapping("/one-to-one/exit/{roomNumber}")
     public void exitChatRoom(@DestinationVariable String roomNumber,
                              @Payload ChatJoinReqVo chatExitReqVo) {
         String senderUuid = chatExitReqVo.getSenderUuid();

@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public class TeamChatRoomDto {
 
+    private Long gameId;
+
     private String roomNumber;
 
     private String roomName;
@@ -16,8 +18,6 @@ public class TeamChatRoomDto {
     private int maxMembers;
 
     private Boolean isFinished;
-
-    private Long gameId;
 
     private String memo;
 

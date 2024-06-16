@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Transactional
 public class TeamChatMemberServiceImp implements TeamChatMemberService{
-    TeamChatMemberJpaRepository teamChatMemberJpaRepository;
+    private final TeamChatMemberJpaRepository teamChatMemberJpaRepository;
     @Override
     public void addMemberToTeamChatRoom(TeamChatRoom teamChatRoom, String uuid, Boolean ownerStatus) {
         TeamChatMember teamChatMember = TeamChatMemberDto.toEntity(teamChatRoom, uuid,ownerStatus);
