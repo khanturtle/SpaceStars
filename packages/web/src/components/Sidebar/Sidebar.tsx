@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 
 import styles from './Sidebar.module.css'
 
@@ -23,24 +24,79 @@ const SIDE_LINK = [
   },
 ]
 
-export default function Sidebar() {
+const SideBarItem = ({ item }: { item: any }) => {
   const pathname = usePathname()
 
+  const isPathname = pathname === item.href
+
   return (
-    <aside className={`${styles.sidebar}`}>
-      <ul>
+    <li className={styles['side-menu']}>
+      <Link
+        href={item.href}
+        className={`${styles.a} ${isPathname && 'text-[color:var(--Main-Color-1,#6a64e9)]'}`}
+      >
+        {/* TODO: SVG 수정 */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 24 24"
+        >
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          <path d="M9 22V12h6v10" />
+        </svg>
+        <p className="text-[16px] not-italic leading-[normal]">{item.title}</p>
+      </Link>
+    </li>
+  )
+}
+
+export default function Sidebar() {
+  const [leftSide, setLeftSide] = useState(false)
+
+  const toggleLeftSide = () => {
+    setLeftSide(!leftSide)
+  }
+
+  return (
+    <aside
+      className={`${styles['left-side']} ${leftSide ? `${styles.active}` : ''}`}
+    >
+      <button
+        className={styles['left-side-button']}
+        type="button"
+        onClick={toggleLeftSide}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg
+          stroke="currentColor"
+          stroke-width="2"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          viewBox="0 0 24 24"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <ul className={styles['side-wrapper']}>
         {SIDE_LINK.map((item) => (
-          <li
-            key={item.index}
-            className={
-              pathname === item.href
-                ? 'text-[color:var(--Main-Color-1,#6a64e9)] font-semibold'
-                : 'text-[color:var(--Text-50, #9c9c9c)] font-normal'
-            }
-          >
-            <div className={styles.i}>아</div>
-            <Link href={item.href}>{item.title}</Link>
-          </li>
+          <SideBarItem key={item.index} item={item} />
         ))}
       </ul>
     </aside>

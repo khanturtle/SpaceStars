@@ -3,7 +3,9 @@ import { DevModalOpen } from '@/containers/additional-details/AdditionalDetailsL
 export default function page() {
   return (
     <>
-      <section className="flex-1">{/* 기타 등등 컴포넌트들 */}</section>
+      <section className="flex-1 pl-[20px]">
+        {/* 기타 등등 컴포넌트들 */}
+      </section>
 
       <DevModalOpen />
     </>
