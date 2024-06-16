@@ -2,8 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 
-import { useRef, useState } from 'react'
-
 import { GameListButton } from '@packages/ui'
 
 import { GameType } from '@/apis/game'
