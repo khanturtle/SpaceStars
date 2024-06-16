@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useReducer } from 'react'
 
 import styles from './Sidebar.module.css'
 
@@ -26,16 +26,15 @@ const SIDE_LINK = [
 
 const SideBarItem = ({ item }: { item: any }) => {
   const pathname = usePathname()
-
   const isPathname = pathname === item.href
 
   return (
     <li className={styles['side-menu']}>
       <Link
         href={item.href}
-        className={`${styles.a} ${isPathname && 'text-[color:var(--Main-Color-1,#6a64e9)]'}`}
+        className={`${styles.a} ${isPathname ? 'text-[color:var(--Main-Color-1,#6a64e9)]' : 'text-[color:#9c9cab]'}`}
       >
-        {/* TODO: SVG 수정 */}
+        {/* TODO: 폰트 컬러, SVG 수정 */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -55,11 +54,9 @@ const SideBarItem = ({ item }: { item: any }) => {
 }
 
 export default function Sidebar() {
-  const [leftSide, setLeftSide] = useState(false)
-
-  const toggleLeftSide = () => {
-    setLeftSide(!leftSide)
-  }
+  const [leftSide, toggleLeftSide] = useReducer((state) => {
+    return !state
+  }, false)
 
   return (
     <aside
