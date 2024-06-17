@@ -60,6 +60,9 @@ dependencies {
 
 	//swagger
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
+
+	// kafka
+	implementation 'org.springframework.kafka:spring-kafka'
 }
 
 dependencyManagement {
