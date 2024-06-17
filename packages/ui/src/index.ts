@@ -30,3 +30,5 @@ export { default as GameOption } from './components/Games/GameOption'
 export { default as TeamCardTitle } from './components/TeamCard/Title'
 export { default as TeamCardUserAvatar } from './components/TeamCard/UserAvatar'
 export { default as TeamCardJoinButton } from './components/TeamCard/JoinButton'
+
+export { default as FlipCard } from './components/Card/FlipCard'

@@ -1,11 +1,11 @@
 import './tmp.css'
 
-import FriendsList from '@/components/Friends/FriendsList'
-import SearchBox from '@/containers/chat/SearchBox'
-import { TmpFriendType } from '@/apis/friends'
-import MessageContainer from '@/containers/chat/MessageContainer'
 import { TmpMsgList } from '@/apis/chat'
+import { TmpFriendType } from '@/apis/friends'
+import OnlineFriends from '@/components/Friends/OnlineFriends'
 import ChatRoomContainer from '@/containers/chat/ChatRoomContainer'
+import MessageContainer from '@/containers/chat/MessageContainer'
+import SearchBox from '@/containers/chat/SearchBox'
 
 // FIXME: 온라인 친구 받아오기
 const tmpImage =
@@ -132,9 +132,7 @@ export default function page() {
       <div className="left">
         <SearchBox />
 
-        <FriendsList title="Online Friends">
-          <FriendsList.OnlineFriends friends={tmpFriends} />
-        </FriendsList>
+        <OnlineFriends friends={tmpFriends} />
 
         <MessageContainer>
           <MessageContainer.MessageList messages={tmpMsgList} />
