@@ -16,6 +16,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import com.spacestar.back.kafka.message.MatchingMessage;
 
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Sinks;
 
 @Configuration
 @RequiredArgsConstructor
@@ -41,5 +42,10 @@ public class KafkaConfig {
 		ConcurrentKafkaListenerContainerFactory<String, MatchingMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
 		return factory;
+	}
+
+	@Bean
+	public Sinks.Many<MatchingMessage> sink(){
+		return Sinks.many().multicast().onBackpressureBuffer();
 	}
 }

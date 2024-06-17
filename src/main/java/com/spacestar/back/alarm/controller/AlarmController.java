@@ -17,12 +17,14 @@ import com.spacestar.back.alarm.service.AlarmServiceImpl;
 import com.spacestar.back.alarm.vo.AlarmListResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import com.spacestar.back.kafka.message.MatchingMessage;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 @Slf4j
 @RestController
@@ -34,7 +36,7 @@ public class AlarmController {
 	private final AlarmServiceImpl alarmService;
 	private final ModelMapper modelMapper;
 
-	private final KafkaTemplate<String, String> kafkaTemplate;
+	private final Sinks.Many<MatchingMessage> sink;
 
 	//알림 리스트 조회 API
 	@GetMapping
@@ -45,18 +47,11 @@ public class AlarmController {
 			modelMapper.map(alarmService.getAlarmList(uuid), AlarmListResVo.class));
 	}
 
-	// 실시간 Stream 테스트
-	@GetMapping(value = "/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<String> streamEvents(){
-		return Flux.interval(Duration.ofSeconds(1))
-			.map(sequence -> "SSE - " + LocalTime.now().toString());
-	}
-	
-	// kafka 연결 테스트
-	@PostMapping("/kafkaSendMessage")
-	public void kafkaSendMessage(String data){
-		log.info("sender message : " + data);
-		kafkaTemplate.send("test_topic2", data);
+	// 매칭 알림 실시간 수신
+	@GetMapping(value ="/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public Flux<MatchingMessage> matchingEvents(@RequestHeader("UUID") String uuid){
+		log.info("Received UUID: {}", uuid);
+		return sink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()));
 	}
 	//Todo
 	//알림 상태 조회 API
