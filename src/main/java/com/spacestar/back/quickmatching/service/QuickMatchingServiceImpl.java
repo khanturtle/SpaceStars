@@ -8,6 +8,7 @@ import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
 import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
 import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
+import com.spacestar.back.quickmatching.vo.res.AuthResDto;
 import com.spacestar.back.quickmatching.vo.res.ProfileResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final ObjectMapper objectMapper;
     @Value("${spring.application.profile-url}")
     private String profileUrl;
-
+    @Value("${spring.application.auth-url}")
+    private String authUrl;
     //SSE
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
 
@@ -78,12 +80,31 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     //사용자 간에 매치 점수 계산
+    //매칭 우선 순위 : 내가 하는 게임 >>>> 게임 성향 >> 연령대 >>>> mbti >>>>>>>성별
     private int calculateScore(String matchFromMember, String matchToMember) {
         int score = 0;
+//        score += mainGameScore(getProfile(matchFromMember).getMainGameId(), getProfile(matchToMember).getMainGameId());
+//        score += gamePreferenceScore(getProfile(matchFromMember).getGamePreferenceId(), getProfile(matchToMember).getGamePreferenceId());
+        score += ageScore(getAuth(matchFromMember).getAge(), getAuth(matchToMember).getAge());
         score += mbtiScore(getProfile(matchFromMember).getMbtiId(), getProfile(matchToMember).getMbtiId());
-//        score += gamePreferenceScore(getProfile(matchFromMember).getGamePreference_Id(), getProfile(matchToMember).getGamePreference_Id());
         //신고 당한 횟수 만큼 점수 깎기
         score -= (getProfile(matchFromMember).getReportCount() + getProfile(matchToMember).getReportCount());
+        return score;
+    }
+
+    private int ageScore(int myAge, int yourAge) {
+        int maxScore = 40; // 최대 점수
+        int ageDifference = Math.abs(myAge - yourAge); // 나이 차이
+
+        // 나이 차이가 0이면 최대 점수를 반환하고, 차이가 커질수록 점수가 줄어듭니다.
+        // 예를 들어, 나이 차이가 1이면 90점, 차이가 2이면 80점 등으로 계산합니다.
+        int score = maxScore - (ageDifference * 4);
+
+        // 점수가 0보다 작을 수 없으므로, 최소 점수는 0으로 설정합니다.
+        if (score < 0) {
+            score = 0;
+        }
+
         return score;
     }
 
@@ -94,6 +115,11 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         return restTemplate.exchange(url, HttpMethod.GET, null, ProfileResDto.class).getBody();
     }
 
+    private AuthResDto getAuth(String memberUuid) {
+        String url = authUrl + memberUuid;
+        //RestTemplate으로 프로필 서비스 호출
+        return restTemplate.exchange(url, HttpMethod.GET, null, AuthResDto.class).getBody();
+    }
 
     //수락 대기 큐 진입
     public void enterMatchQueue(String matchFromMember, String matchToMember) {
