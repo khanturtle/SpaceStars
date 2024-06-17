@@ -6,6 +6,7 @@ import com.spacestar.back.auth.service.MemberService;
 import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
 import com.spacestar.back.auth.vo.res.MemberInfoResVo;
 import com.spacestar.back.auth.vo.res.NicknameResVo;
+import com.spacestar.back.auth.vo.res.QuickAuthInfoResVo;
 import com.spacestar.back.auth.vo.res.UuidResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
@@ -78,12 +79,21 @@ public class MemberController {
                 mapper.map(memberService.findMemberInfo(uuid), MemberInfoResVo.class));
     }
 
-    @Operation(summary = "회원 정보 조회")
+    @Operation(summary = "다른 회원 정보 조회")
     @GetMapping("/info/{uuid}")
     public ResponseEntity<MemberInfoResVo> findYourMemberInfo(@PathVariable("uuid") String targetUuid){
 
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_SELECT_SUCCESS,
                 mapper.map(memberService.findMemberInfo(targetUuid), MemberInfoResVo.class));
+    }
+
+    @Tag(name = "select", description = "조회용")
+    @Operation(summary = "빠른 매칭용 사용자 정보 조회")
+    @GetMapping("/quick-matching/{uuid}")
+    public ResponseEntity<QuickAuthInfoResVo> findQuickAuthInfo(@PathVariable("uuid") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.QUICK_MEMBER_INFO_SELECT_SUCCESS,
+                mapper.map(memberService.findQuickAuthInfo(uuid), QuickAuthInfoResVo.class));
     }
 
 
