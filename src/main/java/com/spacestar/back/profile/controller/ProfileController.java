@@ -9,6 +9,7 @@ import com.spacestar.back.profile.vo.req.*;
 import com.spacestar.back.profile.vo.res.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.Path;
 import jdk.jfr.Description;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -211,6 +212,15 @@ public class ProfileController {
 
         profileService.updateSwipeRecommend(uuid, mapper.map(profileSwipeResVo, ProfileSwipeResDto.class));
         return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_UPDATE_SUCCESS);
+    }
+
+    @Tag(name = "Select", description = "조회용")
+    @Operation(summary = "빠른 매칭용 사용자 정보 조회")
+    @GetMapping("/quick-matching/{uuid}")
+    public ResponseEntity<QuickMemberInfoResVo> quickMemberInfo(@PathVariable("uuid") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.QUICK_MEMBER_INFO_SELECT_SUCCESS,
+                mapper.map(profileService.quickMemberInfo(uuid), QuickMemberInfoResVo.class));
     }
 
 }
