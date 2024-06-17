@@ -29,7 +29,7 @@ public interface ProfileService {
 
     void updateSwipeRecommend(String uuid, ProfileSwipeResDto profileSwipeResDto);
 
-    void deleteProfileImage(String uuid, ProfileImageReqDto profileImageReqDto);
+    void deleteProfileImage(String uuid, ProfileImageDeleteReqDto profileImageDeleteReqDto);
 
     void updateLikedGameInfo(String uuid, LikedGameInfoReqDto likedGameInfoReqDto);
 

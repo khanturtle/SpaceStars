@@ -3,8 +3,7 @@ package com.spacestar.back.profile.vo.req;
 import lombok.Getter;
 
 @Getter
-public class ProfileImageReqVo {
+public class ProfileImageDeleteReqVo {
 
     private String profileImageUrl;
-    private boolean main;
 }
