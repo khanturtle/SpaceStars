@@ -41,7 +41,7 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService{
 
     @Override
     public List<TeamChatRoomListDto> getTeamChatRoomList(String uuid) {
-        
+        List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findAllByMemberUuid(uuid);
 
         return null;
     }

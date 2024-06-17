@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -46,10 +47,13 @@ public class ChatRoomServiceImp implements ChatRoomService {
         // 채팅방 목록 가져오기
         List<ChatRoom> chatRoomList = chatMemberList.stream()
                 .map(ChatMember::getChatRoom)
+                .distinct() // 중복된 채팅방 제거
                 .toList();
+
+        // 채팅방 목록을 DTO로 변환
         return chatRoomList.stream()
-                .map(ChatRoomDto::fromEntity)
-                .toList();
+                .map(chatRoom -> ChatRoomDto.fromEntity(chatRoom, uuid))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.spacestar.back.teamChat.dto.req.TeamChatRoomReqDto;
 import com.spacestar.back.teamChat.service.TeamChatRoomService;
 import com.spacestar.back.teamChat.vo.req.TeamChatRoomReqVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomRecruitReqVo;
+import com.spacestar.back.teamChat.vo.res.TeamChatRoomResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +37,11 @@ public class TeamChatRoomController {
     }
 
     // 팀 채팅방 목록 조회
-    @Operation(summary = "팀 채팅방 목록 조회", description = "팀 채팅방 목록을 조회합니다.")
+    @Operation(summary = "내가 속한 채팅방 리스트 조회", description = "내가 속한 그룹 채팅방 리스트 조회")
     @GetMapping("/chatroom/list")
-    public ResponseEntity<?> getTeamChatRoomList(@RequestHeader String uuid) {
-
-        List<TeamChatRoomListDto> teamChatRoomListDtos = teamChatRoomService.getTeamChatRoomList(uuid);
+    public ResponseEntity<List<TeamChatRoomResVo>> getTeamChatRoomList(@RequestHeader String uuid) {
+        // 팀 채팅방 목록 조회 Dto 로 받아오기
+        List<TeamChatRoomListDto> teamChatRoomList = teamChatRoomService.getTeamChatRoomList(uuid);
 
         return new ResponseEntity<>(ResponseSuccess.SUCCESS, null);
     }
