@@ -11,6 +11,7 @@ import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
 import com.spacestar.back.quickmatching.vo.res.ProfileResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,9 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final RedisTemplate<String, String> redisTemplate;
     private final QuickMatchingRepository quickMatchingRepository;
     private final ObjectMapper objectMapper;
+    @Value("${spring.application.profile-url}")
+    private String profileUrl;
+
     //SSE
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
 
@@ -78,14 +82,15 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         int score = 0;
         score += mbtiScore(getProfile(matchFromMember).getMbtiId(), getProfile(matchToMember).getMbtiId());
 //        score += gamePreferenceScore(getProfile(matchFromMember).getGamePreference_Id(), getProfile(matchToMember).getGamePreference_Id());
-//        score += reportScore(getProfile(matchFromMember).getReportCount(), getProfile(matchToMember).getReportCount());
+        //신고 당한 횟수 만큼 점수 깎기
+        score -= (getProfile(matchFromMember).getReportCount() + getProfile(matchToMember).getReportCount());
         return score;
     }
 
+
     private ProfileResDto getProfile(String memberUuid) {
-        memberUuid = "8fd4310e-9443-430e-bc3b-8803ae2a692d";
-        String url = "http://15.165.68.220:8085/api/v1/profile/liked-game/" + memberUuid;
-        // GET 요청 보내기
+        String url = profileUrl + memberUuid;
+        //RestTemplate으로 프로필 서비스 호출
         return restTemplate.exchange(url, HttpMethod.GET, null, ProfileResDto.class).getBody();
     }
 
