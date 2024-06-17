@@ -5,6 +5,7 @@ const nextConfig = {
     domains: [
       't1.kakaocdn.net',
       'space-star-bucket.s3.ap-northeast-2.amazonaws.com',
+      's3-alpha-sig.figma.com',
     ],
   },
   experimental: {

@@ -2,7 +2,6 @@ import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
 
-
 const MEMBER_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/member`
 
 export interface ProfileType {
@@ -32,9 +31,16 @@ export async function getProfile(): Promise<ProfileType | undefined> {
 /** 상대방 정보 받아오기 */
 export async function getProfileByUuid(
   uuid: string,
+  _token?: string,
 ): Promise<ProfileType | undefined> {
-  const session = await getServerSession(options)
-  const token = session?.user?.data.accessToken
+  let token
+
+  if (_token) {
+    token = _token
+  } else {
+    const session = await getServerSession(options)
+    token = session?.user?.data.accessToken
+  }
 
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/info/${uuid}`, {

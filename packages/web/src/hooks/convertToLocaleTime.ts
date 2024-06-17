@@ -1,4 +1,4 @@
-function formatDate(date: Date): string {
+function comparedToday(date: Date): string {
   const today = new Date()
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000)
 
@@ -28,7 +28,20 @@ export function convertToKoreanTime(dateString: string | Date): string {
   } else {
     return ''
   }
-  const formattedDate = formatDate(date)
+  const formattedDate = comparedToday(date)
 
   return formattedDate
+}
+
+export function getConvertToKoreanHM(dateString: string | Date): string {
+  let date: Date
+  if (typeof dateString === 'string') {
+    date = new Date(dateString)
+  } else if (dateString instanceof Date) {
+    date = dateString
+  } else {
+    return ''
+  }
+
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }

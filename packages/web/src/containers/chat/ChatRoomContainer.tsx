@@ -5,10 +5,12 @@ import { useEffect, useState } from 'react'
 import { EmojiIcon, FileIcon } from '@packages/ui'
 
 import { useWebSocket } from '@/components/providers/socket-provider'
+import { ChatMessageType } from '@/types/ChatType'
 
 import styles from './chat.module.css'
 import ChatInputBox from './ChatInputBox'
-import { ChatMessageType } from '@/types/ChatType'
+
+import ChatLogList from '../chat-room/ChatLogList'
 
 export default function ChatRoomContainer({
   roomNumber,
@@ -65,8 +67,7 @@ export default function ChatRoomContainer({
     <div className={styles.chatroom}>
       {/* <div className={styles.header}>ㅇㅅㅇ</div> */}
 
-      {/* TODO: 이거 스타일 */}
-      <div className={styles.msg}>{msgLog.map((msg) => msg.content)}</div>
+      <ChatLogList msgLog={msgLog} UUID={UUID} />
 
       <ChatInputBox roomNumber={roomNumber} UUID={UUID}>
         <ChatInputBox.IconBtn

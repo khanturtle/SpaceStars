@@ -28,9 +28,16 @@ export async function getMainProfileImg(): Promise<
 /** 대표 프로필 조회 */
 export async function getMainProfileImgByUuid(
   uuid: string,
+  _token?: string,
 ): Promise<ProfileImageType | undefined | null> {
-  const session = await getServerSession(options)
-  const token = session?.user?.data.accessToken
+  let token
+
+  if (_token) {
+    token = _token
+  } else {
+    const session = await getServerSession(options)
+    token = session?.user?.data.accessToken
+  }
 
   if (!token) return undefined
 

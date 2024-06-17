@@ -1,5 +1,4 @@
 .chatroom {
-  background-color: purple;
   width: 100%;
   height: calc(100vh - 100px);
 
@@ -16,11 +15,4 @@
   position: absolute;
   z-index: 1200;
   top: -100px;
-}
-
-.msg {
-  background-color: magenta;
-  width: 100%;
-  height: calc(100% - 90px);
-  overflow-y: scroll;
 }
