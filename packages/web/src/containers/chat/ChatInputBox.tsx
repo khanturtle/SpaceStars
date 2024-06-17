@@ -2,7 +2,13 @@ import { useWebSocket } from '@/components/providers/socket-provider'
 import { SendIcon } from '@packages/ui'
 import { ChangeEvent, useState } from 'react'
 
-const InputItem = () => {
+const InputItem = ({
+  roomNumber,
+  UUID,
+}: {
+  roomNumber: string
+  UUID: string
+}) => {
   const [chat, setChat] = useState<string>('')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,9 +21,17 @@ const InputItem = () => {
   // FIXME: url 수정
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(chat, stompClient)
+    // console.log(chat, stompClient)
     if (chat !== '' && stompClient) {
-      stompClient.send('채팅 전송', {}, JSON.stringify(chat))
+      stompClient.send(
+        `/pub/one-to-one/${roomNumber}`,
+        {},
+        JSON.stringify({
+          senderUuid: UUID,
+          content: chat,
+          messageType: 'TEXT',
+        }),
+      )
       setChat('')
     }
   }
@@ -53,14 +67,18 @@ const InputItem = () => {
 
 export default function ChatInputBox({
   children,
+  roomNumber,
+  UUID,
 }: {
   children: React.ReactNode
+  roomNumber: string
+  UUID: string
 }) {
   return (
     <div className="bg-[color:var(--White-50,#fff)] w-full h-[90px] flex items-center relative px-[50px] py-4">
       {children}
 
-      <InputItem />
+      <InputItem roomNumber={roomNumber} UUID={UUID} />
     </div>
   )
 }

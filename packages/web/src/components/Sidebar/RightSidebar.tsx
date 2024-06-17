@@ -9,7 +9,7 @@ export default function RightSidebar() {
   const [rightSide, setRightSide] = useState(false)
   const pathName = usePathname()
 
-  console.log(pathName)
+  // console.log(pathName)
   // if (pathName === '/dashboard/chat') {
   //   return <section className={styles.rightSidebar}>채팅 참여자</section>
   // }

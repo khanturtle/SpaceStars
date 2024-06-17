@@ -26,22 +26,23 @@ export default function WebSocketProvider({
 }: {
   children: ReactNode
 }) {
-  const [stompClient, setStompClient] = useState<
-    WebSocketContextType | undefined
-  >(undefined)
+  const [stompClient, setStompClient] = useState<CompatClient | null>(null)
 
   useEffect(() => {
     const socket = new SockJS(`${process.env.NEXT_PUBLIC_API_URL_V1}/wschat`)
     const client = Stomp.over(() => socket)
     client.debug = () => {}
 
-    function connect() {
-      client.connect({}, function connection() {
+    client.connect(
+      {},
+      (frame: any) => {
+        console.log('Connected to WebSocket:', frame)
         setStompClient(client)
-      })
-    }
-
-    connect()
+      },
+      (error: any) => {
+        console.error('WebSocket connection error:', error)
+      },
+    )
 
     return () => {
       if (client) {
