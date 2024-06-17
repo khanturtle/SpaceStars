@@ -8,8 +8,8 @@ import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
 import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
 import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
-import com.spacestar.back.quickmatching.vo.res.AuthResDto;
-import com.spacestar.back.quickmatching.vo.res.ProfileResDto;
+import com.spacestar.back.quickmatching.dto.res.AuthResDto;
+import com.spacestar.back.quickmatching.dto.res.ProfileResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,10 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -91,8 +88,20 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 //        score += gamePreferenceScore(getProfile(matchFromMember).getGamePreferenceId(), getProfile(matchToMember).getGamePreferenceId());
         score += ageScore(getAuth(matchFromMember).getAge(), getAuth(matchToMember).getAge());
         score += mbtiScore(getProfile(matchFromMember).getMbtiId(), getProfile(matchToMember).getMbtiId());
+        score += genderScore(getAuth(matchFromMember).getGender(), getAuth(matchToMember).getGender());
         //신고 당한 횟수 만큼 점수 깎기
         score -= (getProfile(matchFromMember).getReportCount() + getProfile(matchToMember).getReportCount());
+        return score;
+    }
+
+    private int genderScore(String myGender, String yourGender) {
+        int score = 0;
+        if(myGender.equals("OTHERS")||yourGender.equals("OTHERS")){
+            return score;
+        }
+        if(!myGender.equals(yourGender)){
+            score = 10;
+        }
         return score;
     }
 

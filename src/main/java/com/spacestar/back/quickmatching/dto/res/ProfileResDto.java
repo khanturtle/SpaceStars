@@ -1,4 +1,4 @@
-package com.spacestar.back.quickmatching.vo.res;
+package com.spacestar.back.quickmatching.dto.res;
 
 import lombok.Getter;
 
