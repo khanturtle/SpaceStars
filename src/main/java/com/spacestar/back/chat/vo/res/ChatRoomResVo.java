@@ -9,4 +9,5 @@ import lombok.Setter;
 public class ChatRoomResVo {
     private int index;
     private String roomNumber;
+    private String otherMemberUuid;
 }

@@ -1,6 +1,7 @@
 package com.spacestar.back.chat.controller;
 
 
+import com.spacestar.back.chat.dto.ChatUserListDto;
 import com.spacestar.back.chat.dto.MessageDto;
 import com.spacestar.back.chat.service.ChatMessageService;
 import com.spacestar.back.chat.vo.req.ChatExitReqVo;
@@ -93,7 +94,8 @@ public class ChatStompController {
     private void updateRoomUserList(String roomNumber) {
         List<String> users = roomUsers.get(roomNumber);
         if (users != null) {
-            messageTemplate.convertAndSend("/sub/one-to-one/" + roomNumber + "/users", users);
+            ChatUserListDto chatUserListDto = new ChatUserListDto(users);
+            messageTemplate.convertAndSend("/sub/one-to-one/users/" + roomNumber, chatUserListDto);
         }
     }
 }

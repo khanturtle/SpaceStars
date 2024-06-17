@@ -14,4 +14,6 @@ import java.util.List;
 public interface TeamChatMemberJpaRepository extends JpaRepository<TeamChatMember, Long> {
     @Query("SELECT m FROM TeamChatMember m JOIN FETCH m.teamChatRoom r WHERE r.id = :id")
     List<TeamChatMember> findByTeamChatRoomId(@Param("id") Long id);
+
+    List<TeamChatMember> findAllByMemberUuid(String uuid);
 }
