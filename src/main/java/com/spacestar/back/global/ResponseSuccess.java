@@ -39,7 +39,10 @@ public enum ResponseSuccess {
     BLOCK_ADD_SUCCESS(200, "차단 추가 성공"),
     BLOCK_DELETE_SUCCESS(200, "차단 취소 성공"),
     BLOCK_EXIST_SUCCESS(200, "차단 여부 조회 성공"),
-    BLOCK_LIST_SELECT_SUCCESS(200, "차단 목록 조회 성공");
+    BLOCK_LIST_SELECT_SUCCESS(200, "차단 목록 조회 성공"),
+
+    //select
+    QUICK_MEMBER_INFO_SELECT_SUCCESS(200, "빠른 회원 정보 조회 성공");
 
 
 

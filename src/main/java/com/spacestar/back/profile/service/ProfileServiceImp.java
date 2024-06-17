@@ -250,4 +250,20 @@ public class ProfileServiceImp implements ProfileService {
                 .isExist(true)
                 .build();
     }
+
+    /***
+     * 퀵 프로필 조회
+     */
+
+    @Override
+    public QuickMemberInfoResDto quickMemberInfo(String uuid) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        PlayGame playGame = playGameRepository.findByUuidAndMain(uuid,true);
+
+        return QuickMemberInfoResDto.converter(profile.getGamePreferenceId(), profile.getMbtiId(), playGame.getGameId(), profile.getReportCount());
+    }
+
 }
