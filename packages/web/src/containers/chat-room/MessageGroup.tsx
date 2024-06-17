@@ -60,14 +60,12 @@ export default function MessageGroup({
     <div className={`${styles['message-group']} ${styles[type]}`}>
       {type === 'received' && <UserProfile uuid={messages[0].senderUuid} />}
       {messages?.map((msg) => (
-        <>
-          <div
-            key={msg.createdAt}
-            className={`${styles['message-bubble']} ${styles[type]}`}
-          >
-            {msg.content}
-          </div>
-        </>
+        <div
+          key={msg.createdAt}
+          className={`${styles['message-bubble']} ${styles[type]}`}
+        >
+          {msg.content}
+        </div>
       ))}
       <span className={styles.time}>{time}</span>
     </div>

@@ -136,27 +136,39 @@
   margin-top: 18px;
 }
 
+.user-img img {
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
 .user-img {
   border-radius: 50%;
   width: 45px;
   height: 45px;
   margin-right: 15px;
-  object-fit: cover;
-  object-position: center;
+  position: relative;
+
+  border: 2px solid var(--Main-Color-1, #6a64e9);
 }
-.user-img {
-  border: 2px solid #e2b96c;
+.user-img.offline {
+  border: 2px solid var(--Stroke, #ddd);
 }
 
 .username {
-  font-size: 15px;
-  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex: 1;
+  align-items: center;
 }
+.username p {
+  font-size: 14px;
 
-.date {
-  font-size: 15px;
-  color: #595c6c;
-  margin-top: 4px;
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .user-status {
@@ -164,17 +176,11 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  margin-left: auto;
+  margin-left: 8px;
 }
 .user-status.offline {
   background-color: #606a8d;
 }
 .user-status.idle {
   background-color: #dd1c20;
-}
-
-.contacts .username {
-  display: flex;
-  flex: 1;
-  align-items: center;
 }

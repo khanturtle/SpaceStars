@@ -35,8 +35,8 @@ const GameOption = ({
       <div className="flex items-start gap-2.5">
         {/* 해당 게임에 맞는 옵션 선택하기 */}
         {options &&
-          options.map(() => (
-            <button className="w-[40px] h-[40px] relative">
+          options.map((_, index) => (
+            <button key={index} className="w-[40px] h-[40px] relative">
               <i>
                 <CirclePlusIcon />
               </i>
