@@ -1,5 +1,6 @@
-import MessageGroup from './MessageGroup'
 import { ChatMessageType } from '@/types/ChatType'
+
+import MessageGroup from './MessageGroup'
 
 export default function ChatLogList({
   msgLog,

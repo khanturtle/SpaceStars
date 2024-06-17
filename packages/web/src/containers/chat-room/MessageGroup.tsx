@@ -58,7 +58,7 @@ export default function MessageGroup({
 
   return (
     <div className={`${styles['message-group']} ${styles[type]}`}>
-      {type !== 'received' && <UserProfile uuid={messages[0].senderUuid} />}
+      {type === 'received' && <UserProfile uuid={messages[0].senderUuid} />}
       {messages?.map((msg) => (
         <>
           <div
