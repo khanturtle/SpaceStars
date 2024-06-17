@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@Tag(name = "Chat", description = "채팅")
+@Tag(name = "Chat", description = "1:1 채팅(전송)")
 //@RequestMapping("/chat")
 public class ChatStompController {
     private final ChatMessageService chatMessageService;
@@ -33,6 +33,8 @@ public class ChatStompController {
         this.chatMessageService = chatMessageService;
         this.messageTemplate = messageTemplate;
     }
+
+    // 채팅 메시지 전송
 
     @MessageMapping("/one-to-one/{roomNumber}")
     public void addChatMessage(

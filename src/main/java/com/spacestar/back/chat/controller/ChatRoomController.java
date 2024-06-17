@@ -1,6 +1,6 @@
 package com.spacestar.back.chat.controller;
 
-import com.spacestar.back.chat.converter.ConvertToIndexVo;
+import com.spacestar.back.converter.ConvertToIndexVo;
 import com.spacestar.back.chat.dto.ChatRoomDetailDto;
 import com.spacestar.back.chat.dto.ChatRoomDto;
 import com.spacestar.back.chat.dto.ReceiverUuidDto;
@@ -17,13 +17,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/chat")
-@Tag(name = "ChatRoom", description = "채팅방")
+@RequestMapping("/api/v1/chat/one-to-one")
+@Tag(name = "ChatRoom", description = "1:1 채팅방")
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;

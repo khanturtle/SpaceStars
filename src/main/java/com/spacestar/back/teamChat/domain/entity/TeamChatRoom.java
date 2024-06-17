@@ -17,22 +17,22 @@ public class TeamChatRoom extends GlobalTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private Long gameId;
     private String roomNumber;
 
     private String roomName;
 
-    private Boolean isPassword;
+    private String memo;
 
-    private String password;
 
     private int maxMembers;
 
     private Boolean isFinished;
 
-    private Long gameId;
+    private Boolean isPassword;
 
-    private String memo;
+    private String password;
+
 
     @Builder
     public TeamChatRoom(String roomNumber, String roomName, Boolean isPassword, String password, int maxMembers, Boolean isFinished, Long gameId, String memo) {

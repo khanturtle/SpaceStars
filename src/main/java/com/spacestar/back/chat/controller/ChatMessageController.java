@@ -1,21 +1,30 @@
 package com.spacestar.back.chat.controller;
 
 
+import com.spacestar.back.converter.ConvertToIndexVo;
 import com.spacestar.back.chat.dto.MessageDto;
-import com.spacestar.back.chat.repository.ChatMessageMongoRepository;
+import com.spacestar.back.chat.dto.RecentMessageDto;
 import com.spacestar.back.chat.service.ChatMessageService;
 import com.spacestar.back.chat.vo.res.MessageResVo;
+import com.spacestar.back.chat.vo.res.RecentMessageResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/chat")
+@RequestMapping("/api/v1/chat/one-to-one")
+@Tag(name = "ChatMessage", description = "1:1 채팅 메시지")
 public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
@@ -23,28 +32,41 @@ public class ChatMessageController {
 
 
     // 전체 채팅 내역 조회 (페이지 네이션)
+    @Operation(summary = "전체 채팅 내역 조회", description = "채팅방의 전체 채팅 내역을 조회합니다.")
     @GetMapping("/message/{roomNumber}")
-    public ResponseEntity<List<MessageResVo>> getChatMessage(@PathVariable String roomNumber) {
-        List<MessageDto> chatMessageVos = chatMessageService.getChatMessage(roomNumber);
+    public ResponseEntity<List<MessageResVo>> getReadMessage(@RequestHeader String uuid,
+                                                             @PathVariable String roomNumber,
+                                                             @RequestParam(value = "page", defaultValue = "1") int page,
+                                                             @RequestParam(value = "size", defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        log.info(pageable.toString());
+        List<MessageDto> chatMessageVos = chatMessageService.getReadMessage(uuid, roomNumber,pageable);
+        List<MessageResVo> messageResVos = ConvertToIndexVo.convertAndIndex(chatMessageVos, MessageResVo.class, mapper);
 
-        List<MessageResVo> messageResVos = chatMessageVos.stream()
-                .map(dto -> mapper.map(dto, MessageResVo.class))
-                .toList();
         return new ResponseEntity<>(ResponseSuccess.SUCCESS, messageResVos);
     }
 
     // 안 읽은 메시지 내역 조회
+    @Operation(summary = "안 읽은 메시지 내역 조회", description = "채팅방의 안 읽은 메시지 내역을 조회합니다.")
     @GetMapping("/message/unread/{roomNumber}")
     public ResponseEntity<List<MessageResVo>> getUnreadMessage(@RequestHeader String uuid,
                                                                @PathVariable String roomNumber) {
-        List<MessageDto> chatMessageVos = chatMessageService.getUnreadMessage(uuid,roomNumber);
+        List<MessageDto> chatMessageVos = chatMessageService.getUnreadMessage(uuid, roomNumber);
+        List<MessageResVo> messageResVos = ConvertToIndexVo.convertAndIndex(chatMessageVos, MessageResVo.class, mapper);
 
-        List<MessageResVo> messageResVos = chatMessageVos.stream()
-                .map(dto -> mapper.map(dto, MessageResVo.class))
-                .toList();
         return new ResponseEntity<>(ResponseSuccess.SUCCESS, messageResVos);
     }
 
+    // 최근 메시지 조회
+    @Operation(summary = "최근 메시지 조회", description = "채팅방의 최근 메시지를 조회합니다.(최근 메시지, 안 읽은 메시지 개수, 시간)")
+    @GetMapping("/message/recent/{roomNumber}")
+    public ResponseEntity<RecentMessageResVo> getRecentMessage(@RequestHeader String uuid,
+                                                               @PathVariable String roomNumber) {
+        RecentMessageDto recentMessageDto = chatMessageService.getRecentMessage(uuid, roomNumber);
+        RecentMessageResVo recentMessageResVo = mapper.map(recentMessageDto, RecentMessageResVo.class);
+
+        return new ResponseEntity<>(ResponseSuccess.SUCCESS, recentMessageResVo);
+    }
 
 }
 
