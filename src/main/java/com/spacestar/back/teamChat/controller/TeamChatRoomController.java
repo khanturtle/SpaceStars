@@ -37,13 +37,13 @@ public class TeamChatRoomController {
     }
 
     // 팀 채팅방 목록 조회
-    @Operation(summary = "내가 속한 채팅방 리스트 조회", description = "내가 속한 그룹 채팅방 리스트 조회")
+    @Operation(summary = "내가 속한 그룹 채팅방 리스트 조회", description = "내가 속한 그룹 채팅방 리스트 조회")
     @GetMapping("/chatroom/list")
     public ResponseEntity<List<TeamChatRoomResVo>> getTeamChatRoomList(@RequestHeader String uuid) {
         // 팀 채팅방 목록 조회 Dto 로 받아오기
         List<TeamChatRoomListDto> teamChatRoomList = teamChatRoomService.getTeamChatRoomList(uuid);
-
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS, null);
+        List<TeamChatRoomResVo> teamChatRoomResVos = ConvertToIndexVo.convertAndIndex(teamChatRoomList, TeamChatRoomResVo.class, mapper);
+        return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_LIST_SUCCESS, teamChatRoomResVos);
     }
 
     @Operation(summary = "팀원 모집 방 목록 조회", description = "팀원 모집 방 목록을 조회합니다.")

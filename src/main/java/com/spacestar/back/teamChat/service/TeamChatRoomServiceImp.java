@@ -22,11 +22,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class TeamChatRoomServiceImp implements TeamChatRoomService{
+public class TeamChatRoomServiceImp implements TeamChatRoomService {
 
     private final TeamChatRoomJpaRepository teamChatRoomJpaRepository;
     private final TeamChatMemberJpaRepository teamChatMemberJpaRepository;
     private final TeamChatMemberService teamChatMemberService;
+
     @Override
     public void addTeamChatRoom(String uuid, TeamChatRoomReqDto teamChatRoomReqDto) {
         String roomNumber = UUID.randomUUID().toString();
@@ -35,21 +36,24 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService{
         teamChatRoomJpaRepository.save(teamChatRoom);
 
         // 채팅방에 참여자 추가 (방장인 경우)
-        teamChatMemberService.addMemberToTeamChatRoom(teamChatRoom, uuid,true);
+        teamChatMemberService.addMemberToTeamChatRoom(teamChatRoom, uuid, true);
 
     }
 
     @Override
     public List<TeamChatRoomListDto> getTeamChatRoomList(String uuid) {
-        List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findAllByMemberUuid(uuid);
-
-        return null;
+        // uuid 를 통해 멤버 객체가져온다 => 멤버 객체를 통해 채팅방 리스트를 가져온다 => 채팅방 리스트를 dto 로 변환한다
+        return teamChatMemberJpaRepository.findAllByMemberUuid(uuid).stream()
+                .map(member -> new TeamChatRoomListDto(
+                        member.getTeamChatRoom().getRoomNumber(),
+                        member.getTeamChatRoom().getRoomName()))
+                .toList();
     }
 
     @Override
     public List<TeamChatRoomRecruitDto> getTeamChatRoomRecruitList() {
         List<TeamChatRoom> teamChatRoomList = teamChatRoomJpaRepository.findAll();
-
+        //팀챗룸을 가져오고 그에 해당하는 멤버들을 가져와서 dto 로 변환한다
         return teamChatRoomList.stream()
                 .map(teamChatRoom -> {
                     List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findByTeamChatRoomId(teamChatRoom.getId());

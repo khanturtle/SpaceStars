@@ -8,4 +8,5 @@ import lombok.Setter;
 public class TeamChatRoomResVo {
     private int index;
     private String roomNumber;
+    private String roomName;
 }

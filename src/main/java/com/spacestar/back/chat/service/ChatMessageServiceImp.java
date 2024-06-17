@@ -109,9 +109,6 @@ public class ChatMessageServiceImp implements ChatMessageService {
                 .build());
     }
 
-
-
-
     @Override
     public RecentMessageDto getRecentMessage(String uuid, String roomNumber) {
         /**
@@ -120,11 +117,29 @@ public class ChatMessageServiceImp implements ChatMessageService {
          * 2-2 제일 마지막 메시지도 가져오기
          * 3. 최근 메시지가 없으면 exception 발생
          */
+        Optional<ChatMessageCollection> optionalExitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid);
 
-        ChatMessageCollection exitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_EXITTIME));
+        // 없으면 빈 리스트 반환
+        if (optionalExitMessage.isEmpty()) {
+            return RecentMessageDto.builder()
+                    .unReadCount(0)
+                    .lastChatMessage("")
+                    .createdAt(null)
+                    .build();
+        }
+
+        ChatMessageCollection exitMessage = optionalExitMessage.get();
         Instant exitTime = exitMessage.getExitTime();
         List<ChatMessageCollection> unreadMessages = chatMessageRepository.findUnreadMessage(roomNumber, exitTime);
+
+        // unreadMessages가 비어있는지 확인
+        if (unreadMessages.isEmpty()) {
+            return RecentMessageDto.builder()
+                    .unReadCount(0)
+                    .lastChatMessage("")
+                    .createdAt(null)
+                    .build();
+        }
 
         // 999개 이상이면 999까지만
         int unReadCount = Math.min(unreadMessages.size(), 999);
