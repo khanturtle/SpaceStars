@@ -8,6 +8,7 @@ import { useWebSocket } from '@/components/providers/socket-provider'
 
 import styles from './chat.module.css'
 import ChatInputBox from './ChatInputBox'
+import { ChatMessageType } from '@/types/ChatType'
 
 export default function ChatRoomContainer({
   roomNumber,
@@ -16,7 +17,7 @@ export default function ChatRoomContainer({
   roomNumber: string
   UUID: string
 }) {
-  const [chatLog, setChatLog] = useState([])
+  const [msgLog, setMsgLog] = useState<ChatMessageType[]>([])
 
   const stompClient = useWebSocket()
 
@@ -24,6 +25,8 @@ export default function ChatRoomContainer({
   const message = {
     senderUuid: UUID,
   }
+
+  // TODO: 이전 메시지 받아와서 위로 보여주기
 
   /** 채팅 소켓 연결 */
   useEffect(() => {
@@ -33,8 +36,7 @@ export default function ChatRoomContainer({
         `/sub/one-to-one/${roomNumber}`,
         (message) => {
           const payload = JSON.parse(message.body)
-          console.log('p', payload)
-          // setChatLog((prev) => [...prev, payload])
+          setMsgLog((prev) => [...prev, payload])
         },
         {},
       )
@@ -62,10 +64,9 @@ export default function ChatRoomContainer({
   return (
     <div className={styles.chatroom}>
       {/* <div className={styles.header}>ㅇㅅㅇ</div> */}
-      <div className={styles.msg}>
-        {chatLog}
-        {roomNumber}
-      </div>
+
+      {/* TODO: 이거 스타일 */}
+      <div className={styles.msg}>{msgLog.map((msg) => msg.content)}</div>
 
       <ChatInputBox roomNumber={roomNumber} UUID={UUID}>
         <ChatInputBox.IconBtn

@@ -8,17 +8,9 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { RoomType } from '@/apis/chat'
-import { RoomInfoType } from '@/types/ChatType'
+import { ChatMessageType, RoomInfoType } from '@/types/ChatType'
 import { useWebSocket } from '@/components/providers/socket-provider'
 import { convertToKoreanTime } from '@/hooks/convertToLocaleTime'
-
-export interface ChatMessageType {
-  roomNumber: string
-  senderUuid: string
-  content: string
-  messageType: 'TEXT' | 'IMAGE'
-  createdAt: string
-}
 
 export default function MessageItem({
   item,
@@ -42,6 +34,13 @@ export default function MessageItem({
   const createdAtLocale = convertToKoreanTime(
     roomInfo.recentMessage?.createdAt as string,
   )
+
+  /** 현재 채팅방이면, 안 읽은 메시지 0 */
+  useEffect(() => {
+    if (item.roomNumber === currentRoomNumber) {
+      setUnReadCount(0)
+    }
+  }, [])
 
   /** 최근 메시지 소켓 연결 */
   useEffect(() => {
@@ -69,7 +68,9 @@ export default function MessageItem({
   return (
     <Link
       href={`/dashboard/chat/${item.roomNumber}`}
-      className="flex items-center gap-4 px-2 py-2 transition-colors duration-300 rounded-md hover:bg-gray-100"
+      className={`flex items-center gap-4 px-2 py-2 transition-colors duration-300 rounded-md hover:bg-gray-100
+        ${item.roomNumber === currentRoomNumber ? 'bg-gray-100 hover:bg-gray-200 border-gray-300' : 'hover:bg-gray-100 border-gray-200'}
+        `}
     >
       <div className="relative w-12 h-12">
         {/* FIXME: 메인 프로필 사진이 없으면, 기본 이미지 */}

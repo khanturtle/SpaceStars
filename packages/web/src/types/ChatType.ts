@@ -5,3 +5,11 @@ export interface RoomInfoType {
   peerProfileImage: string | undefined
   recentMessage: RecentMessageType | undefined
 }
+
+export interface ChatMessageType {
+  roomNumber: string
+  senderUuid: string
+  content: string
+  messageType: 'TEXT' | 'IMAGE'
+  createdAt: string
+}

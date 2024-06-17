@@ -18,7 +18,7 @@ export async function createChat(token: string, userUUID: string) {
       }),
     })
   } catch (err) {
-    console.error(err)
+    // console.error(err)
   }
 }
 
@@ -48,7 +48,7 @@ export async function getChatRooms(): Promise<RoomType[]> {
     }
     throw new Error('Failed get chatRooms')
   } catch (err) {
-    console.error(err)
+    // console.error(err)
     return []
   }
 }
@@ -57,7 +57,7 @@ export interface RoomDetailType {
   index: number
   memberUuid: string
 }
-/** 1:1 방 정보 조회 */
+/** 1:1 방 참여자 조회 */
 export async function getRoomDetail(
   roomUuid: string,
 ): Promise<RoomDetailType[]> {
@@ -81,7 +81,7 @@ export async function getRoomDetail(
     }
     throw new Error('Failed get chatRoom Detail')
   } catch (err) {
-    console.error(err)
+    // console.error(err)
     return []
   }
 }
@@ -106,6 +106,7 @@ export async function getRecentMessage(
           'Content-Type': 'application/json',
           Authorization: token ? token : '',
         },
+        next: { tags: ['recentMessage'] },
       },
     )
     const data = await response.json()

@@ -18,11 +18,9 @@ const InputItem = ({
   const stompClient = useWebSocket()
 
   /** 메시지 전송 */
-  // FIXME: url 수정
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // console.log(chat, stompClient)
-    if (chat !== '' && stompClient) {
+    if (chat.trim() !== '' && stompClient) {
       stompClient.send(
         `/pub/one-to-one/${roomNumber}`,
         {},
@@ -38,11 +36,11 @@ const InputItem = ({
 
   return (
     <form
-      className="flex flex-1 justify-between gap-3.5 pl-2.5"
+      className="w-full inline-flex flex-row justify-between gap-3.5 pl-2.5"
       onSubmit={handleSubmit}
     >
       <input
-        className="inline-block w-full flex-grow-1 bg-[color:var(--White-50,#fff)] text-[#161616] text-sm not-italic font-normal leading-[normal] px-5 py-2 input-reset chat-placeholder"
+        className="input-reset flex-1 bg-[color:var(--White-50,#fff)] text-[#161616] text-sm not-italic font-normal leading-[normal] px-5 py-2 chat-placeholder"
         type="text"
         placeholder="Write a message..."
         value={chat}
