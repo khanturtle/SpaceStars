@@ -78,4 +78,13 @@ public class MemberController {
                 mapper.map(memberService.findMemberInfo(uuid), MemberInfoResVo.class));
     }
 
+    @Operation(summary = "회원 정보 조회")
+    @GetMapping("/info/{uuid}")
+    public ResponseEntity<MemberInfoResVo> findYourMemberInfo(@PathVariable("uuid") String targetUuid){
+
+        return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_SELECT_SUCCESS,
+                mapper.map(memberService.findMemberInfo(targetUuid), MemberInfoResVo.class));
+    }
+
+
 }
