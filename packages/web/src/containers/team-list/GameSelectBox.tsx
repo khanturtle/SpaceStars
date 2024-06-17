@@ -2,17 +2,22 @@
 
 import { useRouter } from 'next/navigation'
 
-import { CheckIcon, GameListButton } from '@packages/ui'
+import { GameListButton } from '@packages/ui'
+
+import { GameType } from '@/apis/game'
+import { gamesImageUrl } from '@/apis/state'
+import useDrag from '@/hooks/useDrag'
 
 import styles from './teamList.module.css'
 
-import { GameType } from '@/apis/game'
-import { gamesImageUrl } from './state'
-
-const GameItem = ({game, currentGame, onClick}: {
+const GameItem = ({
+  game,
+  currentGame,
+  onClick,
+}: {
   game: GameType
   currentGame: string
-  onClick: (gameId: string) => void
+  onClick: (game: GameType) => void
 }) => {
   const gameImageUrl = gamesImageUrl[game.gameId]
 
@@ -21,17 +26,16 @@ const GameItem = ({game, currentGame, onClick}: {
     gameLogo: gameImageUrl.gameLogoImage,
     gameName: game.gameName,
   }
-    
+
   return (
-      <GameListButton
-      // FIXME: game 데이터 수정
+    <GameListButton
+      className="min-w-[164px]"
       item={item}
-      onClick={() => onClick}
+      onClick={() => onClick(game)}
       isClicked={currentGame === game.gameName}
     />
   )
 }
-
 
 export default function GameSelectBox({
   games,
@@ -41,20 +45,39 @@ export default function GameSelectBox({
   searchParams: { [key: string]: string }
 }) {
   const router = useRouter()
+  const {
+    isDragging,
+    handleMouseDown,
+    handleMouseUp,
+    handleMouseMove,
+    divRef,
+  } = useDrag()
 
   const UpdateGame = (item: GameType) => {
+    if (!isDragging) {
+      return
+    }
     const currentParams = new URLSearchParams(searchParams)
     currentParams.set('game', item.gameName)
     router.push(`?${currentParams.toString()}`)
   }
-  console.log(games)
 
   return (
-    // TODO: 터치 스크롤 구현
-    <div className={`${styles.gameList}`}>
+    <div
+      className={`${styles.gameList}`}
+      ref={divRef}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+    >
       {games &&
         games.map((game) => (
-          <GameItem key={game.index} game={game} currentGame={searchParams.game} onClick={()  => UpdateGame(game)} />
+          <GameItem
+            key={game.index}
+            game={game}
+            currentGame={searchParams.game}
+            onClick={() => UpdateGame(game)}
+          />
         ))}
     </div>
   )

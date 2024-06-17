@@ -40,20 +40,6 @@
   border-radius: 15px;
 }
 
-.gameList {
-  display: flex;
-  gap: 9px;
-  overflow-x: auto;
-  white-space: nowrap;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.gameList::-webkit-scrollbar {
-  display: none;
-}
-
 /* SubSelectBox.css */
 .subTitle {
   font-family: Poppins;
@@ -84,100 +70,35 @@
   gap: 10px;
 }
 
-/* GameItem */
-.game-button-container {
-  --color-click: #7d12ff;
-
+/* GameSelectBox.css */
+.gameList {
+  height: 68px;
+  padding: 4px 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  gap: 9px;
+  overflow-x: auto;
+  overflow-y: unset;
+  white-space: nowrap;
 
-  position: relative;
-  display: inline-block;
-  outline: none;
-  border: 0;
-  vertical-align: middle;
-  text-decoration: none;
-  font-family: inherit;
-  text-align: center;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
-  .button-image {
-    position: relative;
-    display: flex;
-    width: 100px;
-    height: 100px;
-    padding: auto;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-
-    border-radius: 15px;
-    background-color: var(--White-50, #fff);
-
-    z-index: 10;
-  }
-
-  .image-container {
-    position: relative;
-    width: 80px;
-    height: auto;
-    object-fit: cover;
-  }
-
-  .button-bottom {
-    position: absolute;
-    top: 60px;
-    width: 100%;
-    height: 62px;
-    flex-shrink: 0;
-
-    border-radius: 15px;
-    background-color: var(--Alto-400, #adadad);
-    z-index: 5;
-
-    text-align: end;
-  }
-
-  .button-text {
-    position: relative;
-    color: var(--White-50, #fff);
-    text-align: center;
-    font-size: 11px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    padding-top: 3px;
-    z-index: 10;
-  }
-
-  &:active .button-image {
-    top: 16px;
-  }
-  &:hover .button-bottom,
-  &:active .button-bottom {
-    background-color: var(--color-click, #7d12ff);
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
-.game-button-container.clicked {
-  .button-image {
-    top: 16px;
-  }
-  .button-bottom {
-    background-color: var(--color-click, #7d12ff);
-  }
+.gameList {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
 }
-.button-clicked {
-  position: absolute;
-  top: 0;
-  right: -10px;
-
-  z-index: 10;
-  width: 44px;
-  height: 44px;
-  border-radius: 9999px;
-  background-color: var(--color-click, #7d12ff);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.gameList img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
 }
+
+/* GameSelectBox.css */

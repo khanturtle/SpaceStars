@@ -50,7 +50,9 @@ export const options: NextAuthOptions = {
     // TODO: 백엔드 엑세스토큰이랑 만료시간 맞춰서 로그아웃 또는 세션 연장 처리
     async jwt({ token, user, trigger, session }) {
       if (user) {
-        token.data = user.data
+        token.data = {
+          ...user.data,
+        }
       }
       if (trigger === 'update') {
         token.data = { ...(token.data || {}), ...session.data }
@@ -58,7 +60,12 @@ export const options: NextAuthOptions = {
       return token
     },
     async session({ session, token }) {
-      session.user = token
+      session.user = {
+        picture: token.picture,
+        data: token.data || {},
+        ...session.user,
+      }
+
       return session
     },
   },

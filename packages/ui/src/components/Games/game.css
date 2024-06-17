@@ -111,7 +111,7 @@
   border-radius: 15px;
   border: 1px solid #bb86fc;
 
-  background: var(--White-50, #fff);
+  background-color: var(--White-50, #fff);
 }
 
 /* GameListButton.css */

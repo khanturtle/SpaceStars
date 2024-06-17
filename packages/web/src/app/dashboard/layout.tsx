@@ -7,10 +7,10 @@ export default async function layout({
   children: React.ReactNode
 }) {
   return (
-    <div className="relative flex w-full h-full">
+    <main className="flex w-full h-[calc(100vh_-_100px)] overflow-hidden mx-auto my-0">
       <Sidebar />
       {children}
       <RightSidebar />
-    </div>
+    </main>
   )
 }
