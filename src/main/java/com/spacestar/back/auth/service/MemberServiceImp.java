@@ -4,6 +4,7 @@ import com.spacestar.back.auth.domain.Member;
 import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.res.MemberInfoResDto;
 import com.spacestar.back.auth.dto.res.NicknameResDto;
+import com.spacestar.back.auth.dto.res.QuickAuthInfoResDto;
 import com.spacestar.back.auth.dto.res.UuidResDto;
 import com.spacestar.back.auth.enums.UnregisterType;
 import com.spacestar.back.auth.repository.MemberRepository;
@@ -14,14 +15,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class MemberServiceImp implements MemberService{
 
     private final MemberRepository memberRepository;
 
+    @Transactional
     @Override
     public void withdrawal(String uuid) {
 
@@ -40,6 +44,7 @@ public class MemberServiceImp implements MemberService{
                 .build());
     }
 
+    @Transactional
     @Override
     public void withdrawalForce(String uuid) {
 
@@ -59,6 +64,7 @@ public class MemberServiceImp implements MemberService{
     }
 
 
+    @Transactional
     @Override
     public void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto) {
 
@@ -105,5 +111,18 @@ public class MemberServiceImp implements MemberService{
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
                 .build();
+    }
+
+    @Override
+    public QuickAuthInfoResDto findQuickAuthInfo(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        //나이 계산
+        LocalDate today = LocalDate.now();
+        int age = today.getYear() - member.getBirth().getYear();
+
+        return QuickAuthInfoResDto.converter(age, member.getGender());
     }
 }
