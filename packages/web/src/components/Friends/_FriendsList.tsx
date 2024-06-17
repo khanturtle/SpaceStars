@@ -1,5 +1,5 @@
 import styles from './friends.module.css'
-import { OnlineFriends } from './OnlineFriends'
+import OnlineFriends from './OnlineFriends'
 
 export default function FriendsList({
   title = 'Friends',
