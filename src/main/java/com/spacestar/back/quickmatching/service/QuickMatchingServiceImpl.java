@@ -8,12 +8,15 @@ import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
 import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
 import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
+import com.spacestar.back.quickmatching.vo.res.ProfileResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -27,7 +30,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Transactional
 public class QuickMatchingServiceImpl implements QuickMatchingService {
-
+    private final RestTemplate restTemplate;
     private final RedisTemplate<String, String> redisTemplate;
     private final QuickMatchingRepository quickMatchingRepository;
     private final ObjectMapper objectMapper;
@@ -40,6 +43,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         redisTemplate.opsForZSet().add(reqDto.getGameName(), uuid, System.currentTimeMillis());
         doQuickMatch(reqDto.getGameName(), uuid);
     }
+
     //기존에 대기큐에 있던 사용자와 매칭 실시
     public void doQuickMatch(String gameName, String uuid) {
         Set<ZSetOperations.TypedTuple<String>> waitingMembers = redisTemplate.opsForZSet().rangeWithScores(gameName, 0, -1);
@@ -71,9 +75,20 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
     //사용자 간에 매치 점수 계산
     private int calculateScore(String matchFromMember, String matchToMember) {
-        //todo kafka 되면 유저 정보 토대로 점수 계산
-        return 50;
+        int score = 0;
+        score += mbtiScore(getProfile(matchFromMember).getMbtiId(), getProfile(matchToMember).getMbtiId());
+//        score += gamePreferenceScore(getProfile(matchFromMember).getGamePreference_Id(), getProfile(matchToMember).getGamePreference_Id());
+//        score += reportScore(getProfile(matchFromMember).getReportCount(), getProfile(matchToMember).getReportCount());
+        return score;
     }
+
+    private ProfileResDto getProfile(String memberUuid) {
+        memberUuid = "8fd4310e-9443-430e-bc3b-8803ae2a692d";
+        String url = "http://15.165.68.220:8085/api/v1/profile/liked-game/" + memberUuid;
+        // GET 요청 보내기
+        return restTemplate.exchange(url, HttpMethod.GET, null, ProfileResDto.class).getBody();
+    }
+
 
     //수락 대기 큐 진입
     public void enterMatchQueue(String matchFromMember, String matchToMember) {
@@ -89,7 +104,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
     //UUID로 SSE 연결
     @Override
-    public SseEmitter connect(QuickMatchingEnterReqDto reqDto,String uuid) {
+    public SseEmitter connect(QuickMatchingEnterReqDto reqDto, String uuid) {
         SseEmitter sseEmitter = new SseEmitter(300_000L);
 
         final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
@@ -114,9 +129,9 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     public void acceptQuickMatch(String uuid) {
         Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
         assert quickMatchingMembers != null;
-        acceptMatchingStatus(uuid,quickMatchingMembers);
-
+        acceptMatchingStatus(uuid, quickMatchingMembers);
     }
+
     private void acceptMatchingStatus(String uuid, Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers) {
         for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
             try {
@@ -138,13 +153,15 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             }
         }
     }
+
     //거절처리
     @Override
     public void rejectQuickMatch(String uuid) {
         Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
         assert quickMatchingMembers != null;
-        rejectMatchingStatus(uuid,quickMatchingMembers);
+        rejectMatchingStatus(uuid, quickMatchingMembers);
     }
+
     private void rejectMatchingStatus(String uuid, Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers) {
         for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
             try {
@@ -166,6 +183,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             }
         }
     }
+
     //큐 수락 여부 확인 후 수락한 사용자 대기열에서 삭제
     @Override
     public QuickMatchingResDto completeQuickMatch(String uuid, QuickMatchingEnterReqDto reqDto) {
@@ -190,14 +208,15 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 //수락큐에서 제거
                 redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
                 //다시 대기큐에 넣기
-                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchFromMember"), System.currentTimeMillis()-10000);
-                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchToMember"), System.currentTimeMillis()-10000);
+                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchFromMember"), System.currentTimeMillis() - 10000);
+                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchToMember"), System.currentTimeMillis() - 10000);
             }
         } catch (IOException e) {
             log.error("Failed to complete quick match", e);
         }
         return null;
     }
+
     //양쪽 다 수락 상태인지 확인
     private boolean isMatchingCompleted(String uuid, Map<String, Object> data) {
         return (uuid.equals(data.get("matchFromMember")) || uuid.equals(data.get("matchToMember"))) &&
@@ -238,5 +257,169 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 .reconnectTime(3000L);
 
         sseEmitters.forEach(sseEmitter -> sendEvent(sseEmitter, sseEventBuilder));
+    }
+
+
+    public int mbtiScore(long myMbtiId, long yourMbtiId) {
+        if (myMbtiId == 0L || yourMbtiId == 0L) return 0;
+        String myMbtiName = toMbtiName((int) myMbtiId);
+        String yourMbtiName = toMbtiName((int) yourMbtiId);
+        int score = 0;
+
+        switch (myMbtiName) {
+            case "INFP":
+                if (yourMbtiName.equals("ENFJ") || yourMbtiName.equals("ENTJ")) score = 20;
+                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("INTJ") ||
+                        yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP")) score = 16;
+                else score = 4;
+                break;
+            case "ENFP":
+                if (yourMbtiName.equals("ENFJ") || yourMbtiName.equals("ENTJ")) score = 20;
+                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("INTJ") ||
+                        yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP")) score = 16;
+                else score = 4;
+                break;
+            case "INFJ":
+                if (yourMbtiName.equals("ENFP") || yourMbtiName.equals("ENTP")) score = 20;
+                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("INTJ") ||
+                        yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP")) score = 16;
+                else score = 4;
+                break;
+            case "ENFJ":
+                if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ISFP")) score = 20;
+                else if (yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("INTJ") ||
+                        yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
+                    score = 16;
+                else score = 4;
+                break;
+            case "INTJ":
+                if (yourMbtiName.equals("ENFP") || yourMbtiName.equals("ENTP")) score = 20;
+                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("INTJ") ||
+                        yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
+                    score = 16;
+                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
+                    score = 12;
+                else score = 8;
+                break;
+            case "ENTJ":
+                if (yourMbtiName.equals("INFP") || yourMbtiName.equals("INTP")) score = 20;
+                else if (yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("INTJ") ||
+                        yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ENTP")) score = 16;
+                else score = 12;
+                break;
+            case "INTP":
+                if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ESTJ")) score = 20;
+                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") ||
+                        yourMbtiName.equals("INTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
+                    score = 16;
+                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
+                    score = 12;
+                else score = 8;
+                break;
+            case "ENTP":
+                if (yourMbtiName.equals("INFJ") || yourMbtiName.equals("INTJ")) score = 20;
+                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ENFP") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("ENTJ") ||
+                        yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP")) score = 16;
+                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
+                    score = 12;
+                else score = 8;
+                break;
+            case "ISFP":
+                if (yourMbtiName.equals("ENFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ESTJ"))
+                    score = 20;
+                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP") ||
+                        yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ISTJ")) score = 12;
+                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
+                    score = 8;
+                else score = 4;
+                break;
+            case "ESFP":
+                if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ISTJ")) score = 20;
+                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP") ||
+                        yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ESTJ")) score = 12;
+                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
+                    score = 8;
+                else score = 4;
+                break;
+            case "ISTP":
+                if (yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ESTJ")) score = 20;
+                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP") ||
+                        yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ISTJ")) score = 12;
+                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
+                    score = 8;
+                else score = 4;
+                break;
+            case "ESTP":
+                if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ISTJ")) score = 20;
+                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP") ||
+                        yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ESTJ")) score = 12;
+                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
+                    score = 8;
+                else score = 4;
+                break;
+            case "ISFJ":
+                if (yourMbtiName.equals("ESFP") || yourMbtiName.equals("ESTP")) score = 20;
+                else if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ISTJ") || yourMbtiName.equals("ESTJ"))
+                    score = 16;
+                else if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ISFP") || yourMbtiName.equals("ISTP"))
+                    score = 12;
+                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
+                    score = 8;
+                else score = 4;
+                break;
+            case "ESFJ":
+                if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ISTP")) score = 20;
+                else if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ISTJ") || yourMbtiName.equals("ESTJ"))
+                    score = 16;
+                else if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ESTP"))
+                    score = 12;
+                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
+                    score = 8;
+                else score = 4;
+                break;
+            case "ISTJ":
+                if (yourMbtiName.equals("ESFP") || yourMbtiName.equals("ESTP")) score = 20;
+                else if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ISTJ") || yourMbtiName.equals("ESTJ"))
+                    score = 16;
+                else if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ISFP") || yourMbtiName.equals("ISTP"))
+                    score = 12;
+                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
+                    score = 8;
+                else score = 4;
+                break;
+            case "ESTJ":
+                if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("INTP"))
+                    score = 20;
+                else if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ISTJ") || yourMbtiName.equals("ESTJ"))
+                    score = 16;
+                else if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ESTP"))
+                    score = 12;
+                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTP")) score += 8;
+                else score = 4;
+                break;
+        }
+        return score;
+    }
+
+    private String toMbtiName(int mbtiID) {
+        return switch (mbtiID) {
+            case 1 -> "ISTJ";
+            case 2 -> "ISFJ";
+            case 3 -> "INFJ";
+            case 4 -> "INTJ";
+            case 5 -> "ISTP";
+            case 6 -> "ISFP";
+            case 7 -> "INFP";
+            case 8 -> "INTP";
+            case 9 -> "ESTP";
+            case 10 -> "ESFP";
+            case 11 -> "ENFP";
+            case 12 -> "ENTP";
+            case 13 -> "ESTJ";
+            case 14 -> "ESFJ";
+            case 15 -> "ENFJ";
+            case 16 -> "ENTJ";
+            default -> null;
+        };
     }
 }
