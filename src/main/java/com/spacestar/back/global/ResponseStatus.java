@@ -15,8 +15,10 @@ public enum ResponseStatus {
 
     INTERNAL_SERVER_ERROR(900, "Internal server error"),
 
-    TOKEN_NOT_VALID( 2002, "토큰이 유효하지 않습니다.");
-//    TOKEN_NULL(false, 2003, "토큰이 존재하지 않습니다."),
+    /**
+     * 2000: mbti
+     **/
+    NOT_EXIST_MBTI(2000,"존재하지 않는 mbti입니다." );
 
     private final int code;
     private final String message;
