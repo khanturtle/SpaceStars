@@ -32,7 +32,7 @@ public class ChatMessageController {
 
 
     // 전체 채팅 내역 조회 (페이지 네이션)
-    @Operation(summary = "전체 채팅 내역 조회", description = "채팅방의 전체 채팅 내역을 조회합니다.")
+    @Operation(summary = "읽은 채팅 내역 조회", description = "채팅방의 읽은 채팅 내역을 조회합니다.")
     @GetMapping("/message/{roomNumber}")
     public ResponseEntity<List<MessageResVo>> getReadMessage(@RequestHeader String uuid,
                                                              @PathVariable String roomNumber,
@@ -43,7 +43,7 @@ public class ChatMessageController {
         List<MessageDto> chatMessageVos = chatMessageService.getReadMessage(uuid, roomNumber,pageable);
         List<MessageResVo> messageResVos = ConvertToIndexVo.convertAndIndex(chatMessageVos, MessageResVo.class, mapper);
 
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS, messageResVos);
+        return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_MESSAGE_LIST_SUCCESS, messageResVos);
     }
 
     // 안 읽은 메시지 내역 조회
@@ -54,7 +54,7 @@ public class ChatMessageController {
         List<MessageDto> chatMessageVos = chatMessageService.getUnreadMessage(uuid, roomNumber);
         List<MessageResVo> messageResVos = ConvertToIndexVo.convertAndIndex(chatMessageVos, MessageResVo.class, mapper);
 
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS, messageResVos);
+        return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_UNREAD_MESSAGE_LIST_SUCCESS, messageResVos);
     }
 
     // 최근 메시지 조회
@@ -65,7 +65,7 @@ public class ChatMessageController {
         RecentMessageDto recentMessageDto = chatMessageService.getRecentMessage(uuid, roomNumber);
         RecentMessageResVo recentMessageResVo = mapper.map(recentMessageDto, RecentMessageResVo.class);
 
-        return new ResponseEntity<>(ResponseSuccess.SUCCESS, recentMessageResVo);
+        return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_RECENT_MESSAGE_SUCCESS, recentMessageResVo);
     }
 
 }
