@@ -3,7 +3,7 @@ package com.spacestar.back.quickmatching.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
-import com.spacestar.back.quickmatching.domain.QuickMatchStatus;
+import com.spacestar.back.quickmatching.converter.QuickMatchingConverter;
 import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
 import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
@@ -36,6 +36,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final RedisTemplate<String, String> redisTemplate;
     private final QuickMatchingRepository quickMatchingRepository;
     private final ObjectMapper objectMapper;
+
     @Value("${spring.application.profile-url}")
     private String profileUrl;
     @Value("${spring.application.auth-url}")
@@ -43,6 +44,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     //SSE
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
 
+    private final long tenSecBefore = System.currentTimeMillis()-10000;
     //대기큐진입
     @Override
     public void enterQuickMatching(String uuid, QuickMatchingEnterReqDto reqDto) {
@@ -62,9 +64,11 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             for (ZSetOperations.TypedTuple<String> tuple : waitingMembers) {
                 String matchMemberUuid = tuple.getValue();
                 score = calculateScore(uuid, matchMemberUuid);
-                if (score > maxScore && score >= 50) {
+                if (score > maxScore) {
                     maxScore = score;
-                    matchedMemberUuid = matchMemberUuid;
+                    if(maxScore>=60){
+                        matchedMemberUuid = matchMemberUuid;
+                    }
                 }
             }
         }
@@ -97,10 +101,10 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         int ageDifference = Math.abs(myAge - yourAge); // 나이 차이
 
         // 나이 차이가 0이면 최대 점수를 반환하고, 차이가 커질수록 점수가 줄어듭니다.
-        // 예를 들어, 나이 차이가 1이면 90점, 차이가 2이면 80점 등으로 계산합니다.
+        // 예를 들어, 나이 차이가 1이면 36점, 차이가 2이면 32점 등으로 계산합니다.
         int score = maxScore - (ageDifference * 4);
 
-        // 점수가 0보다 작을 수 없으므로, 최소 점수는 0으로 설정합니다.
+        // 최소 점수는 0으로 설정
         if (score < 0) {
             score = 0;
         }
@@ -108,28 +112,20 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         return score;
     }
 
-
+    //RestTemplate으로 프로필 서비스 호출
     private ProfileResDto getProfile(String memberUuid) {
         String url = profileUrl + memberUuid;
-        //RestTemplate으로 프로필 서비스 호출
         return restTemplate.exchange(url, HttpMethod.GET, null, ProfileResDto.class).getBody();
     }
-
+    //RestTemplate으로 Auth 서비스 호출
     private AuthResDto getAuth(String memberUuid) {
         String url = authUrl + memberUuid;
-        //RestTemplate으로 프로필 서비스 호출
         return restTemplate.exchange(url, HttpMethod.GET, null, AuthResDto.class).getBody();
     }
 
     //수락 대기 큐 진입
     public void enterMatchQueue(String matchFromMember, String matchToMember) {
-        QuickMatching quickMatching = QuickMatching.builder()
-                .id(matchFromMember + matchToMember)
-                .matchFromMember(matchFromMember)
-                .matchToMember(matchToMember)
-                .matchFromMemberStatus(QuickMatchStatus.WAIT)
-                .matchToMemberStatus(QuickMatchStatus.WAIT)
-                .build();
+        QuickMatching quickMatching = QuickMatchingConverter.toEntity(matchFromMember,matchToMember);
         quickMatchingRepository.save(quickMatching);
     }
 
@@ -172,12 +168,12 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                     data.put("matchFromMemberStatus", "ACCEPTED");
                     String updatedValue = objectMapper.writeValueAsString(data);
                     redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
-                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
+                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tenSecBefore);
                 } else if (uuid.equals(data.get("matchToMember"))) {
                     data.put("matchToMemberStatus", "ACCEPTED");
                     String updatedValue = objectMapper.writeValueAsString(data);
                     redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
-                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
+                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tenSecBefore);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -202,12 +198,12 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                     data.put("matchFromMemberStatus", "REJECT");
                     String updatedValue = objectMapper.writeValueAsString(data);
                     redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
-                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
+                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tenSecBefore);
                 } else if (uuid.equals(data.get("matchToMember"))) {
                     data.put("matchToMemberStatus", "REJECT");
                     String updatedValue = objectMapper.writeValueAsString(data);
                     redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
-                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tuple.getScore());
+                    redisTemplate.opsForZSet().add("QuickMatching", updatedValue, tenSecBefore);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -239,8 +235,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 //수락큐에서 제거
                 redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
                 //다시 대기큐에 넣기
-                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchFromMember"), System.currentTimeMillis() - 10000);
-                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchToMember"), System.currentTimeMillis() - 10000);
+                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchFromMember"), tenSecBefore);
+                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchToMember"), tenSecBefore);
             }
         } catch (IOException e) {
             log.error("Failed to complete quick match", e);
