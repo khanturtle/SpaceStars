@@ -186,38 +186,23 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public void addProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
 
-        // 메인 사진 유무 확인
-        ProfileImage profileMainImage = profileImageRepository.findByUuidAndMain(uuid, true);
+        //기존 메인 이미지 가져오기
+        ProfileImage mainImage = profileImageRepository.findByUuidAndMain(uuid, true);
+        boolean isAddMain = profileImageReqDto.isMain();
 
-        // 메인 사진이 없을 경우 -> 추가한 사진이 메인
-        if (profileMainImage == null) {
-            profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true, profileImageReqDto.getProfileImageUrl()));
-        } else {
-            ProfileImage profileImage = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl());
-
-
-            // 추가된 사진이 메인인 경우
-            if (profileImageReqDto.isMain()) {
-                // 메인 사진이 있을 경우
-                if (profileMainImage != null) {
-                    profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, profileMainImage.getId(), false, profileMainImage.getProfileImageUrl()));
-                }
-
-                // 메인으로 할 사진이 원래 있는 사진인 경우
-                if (profileImage != null) {
-                    profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, profileImage.getId(), true, profileImage.getProfileImageUrl()));
-                } else {
-                    // 새로운 사진이 메인인 경우
-                    profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true, profileImageReqDto.getProfileImageUrl()));
-                }
-            }
-            //메인 아님
-            else {
-                profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, false, profileImageReqDto.getProfileImageUrl()));
-            }
+        // 메인 이미지가 설정될 필요가 있을 때
+        if (isAddMain && mainImage != null){
+            //기존 메인 이미지를 일반 이미지로 변경
+            demoteMainImage(mainImage);
+        } else if(mainImage == null){
+            isAddMain = true;
         }
 
+        // 이미지 추가 또는 업데이트
+        addOrUpdateProfileImage(uuid, profileImageReqDto, isAddMain);
+
     }
+
 
     //프로필 사진 삭제
     @Transactional
@@ -228,7 +213,7 @@ public class ProfileServiceImp implements ProfileService {
 
         //메인 사진 삭제
         if (profileImage.getProfileImageUrl().equals(profileImageDeleteReqDto.getProfileImageUrl())) {
-            log.info("메인 사진 삭제");
+
             profileImageRepository.delete(profileImage);
             //이전 이미지가 메인이 됨
             ProfileImage newMain = profileImageRepository.findLastByUuid(uuid);
@@ -241,7 +226,7 @@ public class ProfileServiceImp implements ProfileService {
         }
         //일반 사진 삭제
         else {
-            log.info("일반 사진 삭제");
+
             ProfileImage beDelete = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageDeleteReqDto.getProfileImageUrl());
             profileImageRepository.delete(beDelete);
         }
@@ -282,6 +267,32 @@ public class ProfileServiceImp implements ProfileService {
         return ProfileExistResDto.builder()
                 .isExist(true)
                 .build();
+    }
+
+    // 프로필 이미지 메서드
+    private void addOrUpdateProfileImage(String uuid, ProfileImageReqDto profileImageReqDto, boolean isAddMain) {
+
+        ProfileImage existImage = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl());
+
+        if (existImage == null){
+            //새 이미지 추가
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, null, isAddMain, profileImageReqDto.getProfileImageUrl()));
+        }
+        else {
+            // 이미 존재하는 이미지를 업데이트
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, existImage.getId(), isAddMain, existImage.getProfileImageUrl()));
+        }
+    }
+
+    private void demoteMainImage(ProfileImage mainImage) {
+
+        //기존 메인 이미지의 메인 속성을 false로 업데이트
+        profileImageRepository.save(ProfileImageReqDto.updateImage(
+                mainImage.getUuid(),
+                mainImage.getId(),
+                false,
+                mainImage.getProfileImageUrl()));
+
     }
 
     /***
