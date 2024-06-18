@@ -21,7 +21,7 @@ public class MemberInfoReqDto {
     private LocalDate birth;
     private boolean infoAgree;
 
-    public static Member updateToEntity(Long id, String uuid, String email, MemberInfoReqDto memberInfoReqDto) {
+    public static Member updateToEntity(Long id, String uuid, String email, boolean isProfile, MemberInfoReqDto memberInfoReqDto) {
 
         return Member.builder()
                 .id(id)
@@ -32,6 +32,7 @@ public class MemberInfoReqDto {
                 .birth(memberInfoReqDto.getBirth())
                 .unregister(UnregisterType.MEMBER)
                 .infoAgree(memberInfoReqDto.isInfoAgree())
+                .isProfile(isProfile)
                 .build();
     }
 }
