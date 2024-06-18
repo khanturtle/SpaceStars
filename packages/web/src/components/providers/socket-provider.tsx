@@ -26,7 +26,9 @@ export default function WebSocketProvider({
 }: {
   children: ReactNode
 }) {
-  const [stompClient, setStompClient] = useState<CompatClient | null>(null)
+  const [stompClient, setStompClient] = useState<CompatClient | undefined>(
+    undefined,
+  )
 
   useEffect(() => {
     const socket = new SockJS(`${process.env.NEXT_PUBLIC_API_URL_V1}/wschat`)
