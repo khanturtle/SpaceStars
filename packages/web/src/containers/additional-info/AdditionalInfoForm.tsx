@@ -14,6 +14,7 @@ import { createUser } from '@/apis/createUser'
 
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
+import { createProfileImage } from '@/apis/profileImage'
 
 // MALE,FEMALE,OTHER
 export const genderList = [
@@ -85,17 +86,61 @@ export default function AdditionalInfoForm() {
   /** 닉네임 중복검사 */
   const handleCheckNickname = async () => {
     const isNicknameAvailable = await checkNickname(nickname)
-
-    setIsAvailable(isNicknameAvailable.exist)
+    setIsAvailable(!isNicknameAvailable.exist)
     // FIXME: alert 말고 다른 걸로 유효성 표시
     alert(isNicknameAvailable.message)
   }
 
-  useEffect(() => {
-    if (state.status === 200) {
-      // 프로필 사진 업로드
+  /** 로그인으로 토큰 받아오기 */
+  async function getToken() {
+    let accessToken
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+          }),
+        },
+      ).then((r) => r.json())
 
-      // 회원가입 성공 후 로그인
+      if (res.code === 200) {
+        accessToken = res.result.accessToken
+        return accessToken
+      }
+    } catch (err) {
+      console.error('getToken error', err)
+    }
+  }
+
+  /** 기본 이미지를 프로필에 추가 */
+  const signUpWithImage = async () => {
+    try {
+      // api로 로그인 -> AccessToken 받아오기
+      const token = await getToken()
+
+      // 기본 이미지를 메인 프로필로 지정하기
+      const profile = {
+        profileImageUrl:
+          'https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/space-star-bucket/default-image.jpg',
+        main: true,
+      }
+      createProfileImage(profile, token)
+    } catch (err) {
+      console.error('signUp error', err)
+    }
+  }
+
+  useEffect(() => {
+    // 회원가입 성공
+    if (state.status === 200) {
+      signUpWithImage()
+
+      // 로그인 후 dashboard로 이동
       signIn('kakao', { redirect: true, callbackUrl: '/dashboard' })
     } else if (state.status !== 0) {
       // FIXME: 유효성 에러 표시

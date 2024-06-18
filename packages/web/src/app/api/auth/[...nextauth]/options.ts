@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import { getMainProfileImg } from '@/apis/profileImage'
 import { NextAuthOptions } from 'next-auth'
 import KakaoProvider from 'next-auth/providers/kakao'
 
@@ -26,7 +27,12 @@ export const options: NextAuthOptions = {
 
       // 회원이면, 회원 정보 저장 및 로그인
       if (res.code === 200) {
+        // 회원 정보 저장
         user.data = res.result
+
+        // TODO: 대표 프로필 사진 가져오기
+        getMainProfileImg()
+
         return true
       }
       /** 회원이 아니면, 회원가입 페이지로 이동
