@@ -4,12 +4,13 @@ package com.spacestar.back.alarm.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spacestar.back.alarm.service.AlarmServiceImpl;
-import com.spacestar.back.alarm.vo.AlarmListResVo;
+import com.spacestar.back.alarm.vo.res.AlarmListResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.kafka.message.MatchingMessage;
@@ -30,11 +31,15 @@ public class AlarmController {
 
 	private final AlarmServiceImpl alarmService;
 	private final ModelMapper modelMapper;
-
 	private final Sinks.Many<MatchingMessage> sink;
 
+	@PostMapping
+	@Operation
+	public ResponseEntity<Void> addAlarm(@RequestHeader("UUID") String uuid){
+		return null;
+	}
 	//알림 리스트 조회 API
-	@GetMapping
+	@GetMapping("/list")
 	@Operation(summary = "알림 목록 조회")
 	public ResponseEntity<AlarmListResVo> getAlarmList(@RequestHeader("UUID") String uuid){
 

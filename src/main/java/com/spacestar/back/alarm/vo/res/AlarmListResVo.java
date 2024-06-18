@@ -1,4 +1,4 @@
-package com.spacestar.back.alarm.vo;
+package com.spacestar.back.alarm.vo.res;
 
 import java.util.List;
 

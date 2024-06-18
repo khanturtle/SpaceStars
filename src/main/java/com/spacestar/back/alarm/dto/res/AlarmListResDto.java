@@ -1,4 +1,4 @@
-package com.spacestar.back.alarm.dto;
+package com.spacestar.back.alarm.dto.res;
 
 import java.util.List;
 

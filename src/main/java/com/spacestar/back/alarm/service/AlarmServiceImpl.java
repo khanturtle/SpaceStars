@@ -6,8 +6,8 @@ import java.util.stream.IntStream;
 import org.springframework.stereotype.Service;
 
 import com.spacestar.back.alarm.domain.Alarm;
-import com.spacestar.back.alarm.dto.AlarmListResDto;
-import com.spacestar.back.alarm.dto.AlarmResDto;
+import com.spacestar.back.alarm.dto.res.AlarmListResDto;
+import com.spacestar.back.alarm.dto.res.AlarmResDto;
 import com.spacestar.back.alarm.repository.AlarmMongoRepository;
 
 import lombok.RequiredArgsConstructor;

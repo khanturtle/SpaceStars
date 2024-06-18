@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Document(collection = "alarms")
-public class Alarm{
+public class Alarm extends GlobalTime{
 
 	@Id
 	private String id;
