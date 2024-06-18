@@ -15,6 +15,8 @@ README.md
 .editorconfig
 
 packages/ui/.storybook/
+packages/ui/src/components/**/*.stories.ts
+
 packages/ui/README.md
 
 .yarn/*
