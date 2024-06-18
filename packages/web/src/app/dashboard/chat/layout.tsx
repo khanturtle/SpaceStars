@@ -61,7 +61,6 @@ async function getRoomInfo(
   const peerProfileImageData = getMainProfileImgByUuid(peerUuid)
 
   // 최근 메시지 static 조회
-  // FIXME: 이거 아직 오류
   const recentMessageData = getRecentMessage(roomNumber)
 
   const [peerProfile, peerProfileImage, recentMessage] = await Promise.all([
@@ -86,6 +85,16 @@ export default async function layout({
   // 1:1 방 목록
   const rooms = await getChatRooms()
 
+  const roomInfos = await Promise.all(
+    rooms.map(async (room) => {
+      const roomInfo = await getRoomInfo(room.roomNumber, room.otherMemberUuid)
+      return {
+        ...room,
+        ...roomInfo,
+      }
+    }),
+  )
+
   return (
     <section className="relative flex flex-row w-full h-full">
       <div className="messages-container">
@@ -94,17 +103,20 @@ export default async function layout({
         <OnlineFriends friends={tmpFriends} />
 
         <MessageContainer>
-          {rooms.map(async (room) => {
-            const roomInfo = await getRoomInfo(
-              room.roomNumber,
-              room.otherMemberUuid,
-            )
-
+          {roomInfos.map((roomInfo) => {
             return (
               <MessageContainer.Item
-                key={room.index}
-                item={room}
-                roomInfo={roomInfo}
+                key={roomInfo.index}
+                item={{
+                  index: roomInfo.index,
+                  roomNumber: roomInfo.roomNumber,
+                  otherMemberUuid: roomInfo.otherMemberUuid,
+                }}
+                roomInfo={{
+                  peerName: roomInfo.peerName,
+                  peerProfileImage: roomInfo.peerProfileImage,
+                  recentMessage: roomInfo.recentMessage,
+                }}
               />
             )
           })}
