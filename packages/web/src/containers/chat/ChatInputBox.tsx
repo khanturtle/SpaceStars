@@ -2,7 +2,13 @@ import { useWebSocket } from '@/components/providers/socket-provider'
 import { SendIcon } from '@packages/ui'
 import { ChangeEvent, useState } from 'react'
 
-const InputItem = () => {
+const InputItem = ({
+  roomNumber,
+  UUID,
+}: {
+  roomNumber: string
+  UUID: string
+}) => {
   const [chat, setChat] = useState<string>('')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -12,23 +18,29 @@ const InputItem = () => {
   const stompClient = useWebSocket()
 
   /** 메시지 전송 */
-  // FIXME: url 수정
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(chat, stompClient)
-    if (chat !== '' && stompClient) {
-      stompClient.send('채팅 전송', {}, JSON.stringify(chat))
+    if (chat.trim() !== '' && stompClient) {
+      stompClient.send(
+        `/pub/one-to-one/${roomNumber}`,
+        {},
+        JSON.stringify({
+          senderUuid: UUID,
+          content: chat,
+          messageType: 'TEXT',
+        }),
+      )
       setChat('')
     }
   }
 
   return (
     <form
-      className="flex flex-1 justify-between gap-3.5 pl-2.5"
+      className="w-full inline-flex flex-row justify-between gap-3.5 pl-2.5"
       onSubmit={handleSubmit}
     >
       <input
-        className="inline-block w-full flex-grow-1 bg-[color:var(--White-50,#fff)] text-[#161616] text-sm not-italic font-normal leading-[normal] px-5 py-2 input-reset chat-placeholder"
+        className="input-reset flex-1 bg-[color:var(--White-50,#fff)] text-[#161616] text-sm not-italic font-normal leading-[normal] px-5 py-2 chat-placeholder"
         type="text"
         placeholder="Write a message..."
         value={chat}
@@ -53,14 +65,18 @@ const InputItem = () => {
 
 export default function ChatInputBox({
   children,
+  roomNumber,
+  UUID,
 }: {
   children: React.ReactNode
+  roomNumber: string
+  UUID: string
 }) {
   return (
     <div className="bg-[color:var(--White-50,#fff)] w-full h-[90px] flex items-center relative px-[50px] py-4">
       {children}
 
-      <InputItem />
+      <InputItem roomNumber={roomNumber} UUID={UUID} />
     </div>
   )
 }

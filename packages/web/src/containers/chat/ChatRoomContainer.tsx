@@ -1,32 +1,63 @@
 'use client'
 
-import { useWebSocket } from '@/components/providers/socket-provider'
-import { EmojiIcon, FileIcon } from '@packages/ui'
-import { Frame } from '@stomp/stompjs'
 import { useEffect, useState } from 'react'
+
+import { EmojiIcon, FileIcon } from '@packages/ui'
+
+import { useWebSocket } from '@/components/providers/socket-provider'
+import { ChatMessageType } from '@/types/ChatType'
+
 import styles from './chat.module.css'
 import ChatInputBox from './ChatInputBox'
 
-export default function ChatRoomContainer() {
-  const [chatLog, setChatLog] = useState([])
+import ChatLogList from '../chat-room/ChatLogList'
+
+export default function ChatRoomContainer({
+  roomNumber,
+  UUID,
+}: {
+  roomNumber: string
+  UUID: string
+}) {
+  const [msgLog, setMsgLog] = useState<ChatMessageType[]>([])
 
   const stompClient = useWebSocket()
 
+  // 입 퇴장 메시지
+  const message = {
+    senderUuid: UUID,
+  }
+
+  // TODO: 이전 메시지 받아와서 위로 보여주기
+
   /** 채팅 소켓 연결 */
-  // FIXME: url 수정
   useEffect(() => {
     if (stompClient) {
+      /** 채팅방 구독 */
       const subscription = stompClient.subscribe(
-        '채팅 소켓 구독',
-        function handleMessageFunction(frame: Frame) {
-          const receivedChat = JSON.parse(frame.body)
-          // setChatLog((prev) => [...prev, receivedChat])
+        `/sub/one-to-one/${roomNumber}`,
+        (message) => {
+          const payload = JSON.parse(message.body)
+          setMsgLog((prev) => [...prev, payload])
         },
         {},
       )
 
+      /** 채팅방 입장 */
+      stompClient.send(
+        `/pub/one-to-one/join/${roomNumber}`,
+        {},
+        JSON.stringify(message),
+      )
+
       return () => {
         subscription.unsubscribe()
+        /** 채팅방 퇴장 */
+        stompClient.send(
+          `/pub/one-to-one/exit/${roomNumber}`,
+          {},
+          JSON.stringify(message),
+        )
       }
     }
     return undefined
@@ -34,10 +65,11 @@ export default function ChatRoomContainer() {
 
   return (
     <div className={styles.chatroom}>
-      <div className={styles.header}>ㅇㅅㅇ</div>
-      <div className={styles.msg}>{chatLog}</div>
+      {/* <div className={styles.header}>ㅇㅅㅇ</div> */}
 
-      <ChatInputBox>
+      <ChatLogList msgLog={msgLog} UUID={UUID} />
+
+      <ChatInputBox roomNumber={roomNumber} UUID={UUID}>
         <ChatInputBox.IconBtn
           icon={<FileIcon />}
           handleClick={() => console.log('file')}
