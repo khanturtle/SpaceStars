@@ -23,7 +23,7 @@ public interface ProfileService {
 
     void addProfileImage(String uuid, ProfileImageReqDto profileImageReqDto);
 
-    ProfileExistResDto existProfile(String uuid);
+    Void existProfile(String uuid);
 
     ProfileSwipeResDto findSwipeRecommend(String uuid);
 

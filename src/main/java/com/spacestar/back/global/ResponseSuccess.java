@@ -20,7 +20,7 @@ public enum ResponseSuccess {
     PROFILE_LIKED_GAME_SELECT_SUCCESS(200, "좋아하는 게임 조회 성공"),
     PROFILE_PLAY_GAME_SELECT_SUCCESS(200, "내가 하는 게임 조회 성공" ),
     PROFILE_IMAGE_ADD_SUCCESS(200,"프로필 사진 추가 성공" ),
-    PROFILE_EXIST_SUCCESS(200,"프로필 존재 여부 조회 성공" ),
+    PROFILE_EXIST_SUCCESS(200,"프로필 생성 성공" ),
     PROFILE_IMAGE_DELETE_SUCCESS(200,"프로필 사진 삭제 성공" ),
 
     //friend
