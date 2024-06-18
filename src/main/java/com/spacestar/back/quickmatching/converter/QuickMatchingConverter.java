@@ -5,7 +5,7 @@ import com.spacestar.back.quickmatching.domain.QuickMatching;
 
 public class QuickMatchingConverter {
 
-    public QuickMatching toEntity(String matchFromMember,String matchToMember) {
+    public static QuickMatching toEntity(String matchFromMember,String matchToMember) {
         return QuickMatching.builder()
                 .id(matchFromMember + matchToMember)
                 .matchFromMember(matchFromMember)
