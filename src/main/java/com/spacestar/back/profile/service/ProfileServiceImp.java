@@ -2,6 +2,7 @@ package com.spacestar.back.profile.service;
 
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.kafka.ProfileDto;
 import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.domain.ProfileImage;
 import com.spacestar.back.profile.dto.req.*;
@@ -13,6 +14,8 @@ import com.thoughtworks.xstream.XStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spacestar.back.profile.domain.LikedGame;
@@ -37,6 +40,9 @@ public class ProfileServiceImp implements ProfileService {
     private final PlayGameRepository playGameRepository;
     private final ProfileImageRepository profileImageRepository;
     private final ModelMapper mapper;
+
+    private final KafkaTemplate<String, ProfileDto> kafkaTemplate;
+    private static final String TOPIC = "dev.profile-service.profile-create";
 
     /**
      * 프로필 정보 (프로필, 좋아하는게임, 내가 하는게임)
@@ -191,10 +197,10 @@ public class ProfileServiceImp implements ProfileService {
         boolean isAddMain = profileImageReqDto.isMain();
 
         // 메인 이미지가 설정될 필요가 있을 때
-        if (isAddMain && mainImage != null){
+        if (isAddMain && mainImage != null) {
             //기존 메인 이미지를 일반 이미지로 변경
             demoteMainImage(mainImage);
-        } else if(mainImage == null){
+        } else if (mainImage == null) {
             isAddMain = true;
         }
 
@@ -236,37 +242,19 @@ public class ProfileServiceImp implements ProfileService {
     //로그인 시 프로필 존재 유무판단
     @Transactional
     @Override
-    public ProfileExistResDto existProfile(String uuid) {
+    public void existProfile(String uuid) {
 
-        Optional<Profile> profile = profileRepository.findByUuid(uuid);
-        List<LikedGame> likedGame = likedGameRepository.findAllByUuid(uuid);
-        List<PlayGame> playGame = playGameRepository.findAllByUuid(uuid);
+        //기본 프로필 생성
+        profileRepository.save(Profile.builder()
+                .uuid(uuid)
+                .exp(0L)
+                .reportCount(0)
+                .swipe(true)
+                .build());
 
-        if (profile.isEmpty()) {
-
-            //기본 프로필 생성
-            profileRepository.save(Profile.builder()
-                    .uuid(uuid)
-                    .exp(0L)
-                    .reportCount(0)
-                    .swipe(true)
-                    .build());
-
-            return ProfileExistResDto.builder()
-                    .isExist(false)
-                    .build();
-        }
-
-        //좋아하는 게임, 플레이한 게임이 없을 경우
-        if (likedGame.isEmpty() || playGame.isEmpty()) {
-            return ProfileExistResDto.builder()
-                    .isExist(false)
-                    .build();
-        }
-
-        return ProfileExistResDto.builder()
-                .isExist(true)
-                .build();
+        // 카프카로 프로필 생성 알림
+        ProfileDto profileDto = new ProfileDto(uuid, true);
+        kafkaTemplate.send(TOPIC, profileDto);
     }
 
     // 프로필 이미지 메서드
@@ -274,11 +262,10 @@ public class ProfileServiceImp implements ProfileService {
 
         ProfileImage existImage = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl());
 
-        if (existImage == null){
+        if (existImage == null) {
             //새 이미지 추가
             profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, null, isAddMain, profileImageReqDto.getProfileImageUrl()));
-        }
-        else {
+        } else {
             // 이미 존재하는 이미지를 업데이트
             profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, existImage.getId(), isAddMain, existImage.getProfileImageUrl()));
         }
@@ -305,7 +292,7 @@ public class ProfileServiceImp implements ProfileService {
         Profile profile = profileRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
-        PlayGame playGame = playGameRepository.findByUuidAndMain(uuid,true);
+        PlayGame playGame = playGameRepository.findByUuidAndMain(uuid, true);
 
         return QuickMemberInfoResDto.converter(profile.getGamePreferenceId(), profile.getMbtiId(), playGame.getGameId(), profile.getReportCount());
     }

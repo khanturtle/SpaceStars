@@ -186,13 +186,13 @@ public class ProfileController {
     }
 
     @Tag(name = "Profile", description = "프로필")
-    @Operation(summary = "로그인 시 프로필 존재 유무 확인")
-    @Description("프로필 존재 유무 확인 후 없으면 기본 프로필 생성" + "게임 빈 칸이면 false, 모두 채워져 있으면 true")
-    @GetMapping("/exist")
-    public ResponseEntity<ProfileExistResVo> existProfile(@RequestHeader("UUID") String uuid) {
+    @Operation(summary = "최초 로그인 시 프로필 생성")
+    @Description("로그인 시 isProfile이 false인 경우(최초 로그인인 경우)에만 호출")
+    @PostMapping("/exist")
+    public ResponseEntity<Void> existProfile(@RequestHeader("UUID") String uuid) {
 
-        return new ResponseEntity<>(ResponseSuccess.PROFILE_EXIST_SUCCESS,
-                mapper.map(profileService.existProfile(uuid), ProfileExistResVo.class));
+        profileService.existProfile(uuid);
+        return new ResponseEntity<>(ResponseSuccess.PROFILE_EXIST_SUCCESS);
     }
 
     @Tag(name = "Profile", description = "프로필")
