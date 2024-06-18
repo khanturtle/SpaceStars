@@ -1,8 +1,9 @@
 package com.spacestar.back.teamChat.dto;
 
-import com.spacestar.back.chat.enums.ParticpationType;
+import com.spacestar.back.chat.enums.teamParticipationType;
 import com.spacestar.back.teamChat.domain.entity.TeamChatMember;
 import com.spacestar.back.teamChat.domain.entity.TeamChatRoom;
+import com.spacestar.back.teamChat.enums.TeamParticipationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,14 +21,15 @@ public class TeamChatMemberDto {
 
     private Boolean ownerStatus;
 
-    private ParticpationType particpationType;
+    private TeamParticipationType teamParticipationType;
 
     public static TeamChatMember toEntity(TeamChatRoom teamChatRoom, String memberUuid, Boolean ownerStatus){
         return TeamChatMember.builder()
                 .teamChatRoom(teamChatRoom)
                 .memberUuid(memberUuid)
                 .ownerStatus(ownerStatus)
-                .particpationType(ParticpationType.JOINED)
+                .teamParticipationType(TeamParticipationType.JOINED)
                 .build();
+
     }
 }

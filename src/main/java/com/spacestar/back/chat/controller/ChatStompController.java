@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @Tag(name = "Chat", description = "1:1 채팅(전송)")
-//@RequestMapping("/chat")
 public class ChatStompController {
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messageTemplate;

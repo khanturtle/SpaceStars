@@ -1,5 +1,6 @@
 package com.spacestar.back.teamChat.service;
 
+import com.spacestar.back.teamChat.dto.TeamChatRoomDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomListDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomRecruitDto;
 import com.spacestar.back.teamChat.dto.req.TeamChatRoomReqDto;
@@ -16,4 +17,8 @@ public interface TeamChatRoomService {
     List<TeamChatRoomListDto> getTeamChatRoomList(String uuid);
 
     List<TeamChatRoomRecruitDto> getTeamChatRoomRecruitList();
+
+    TeamChatRoomDto getTeamChatRoomDetail(String roomNumber);
+
+    void joinTeamChatRoom(String uuid, String roomNumber, String password);
 }

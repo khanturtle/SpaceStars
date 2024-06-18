@@ -3,7 +3,7 @@ package com.spacestar.back.chat.dto;
 
 import com.spacestar.back.chat.domain.entity.ChatMember;
 import com.spacestar.back.chat.domain.entity.ChatRoom;
-import com.spacestar.back.chat.enums.ParticpationType;
+import com.spacestar.back.chat.enums.teamParticipationType;
 import lombok.*;
 
 @Getter
@@ -13,14 +13,14 @@ import lombok.*;
 public class ChatMemberDto {
     ChatRoom chatRoom;
     String memberUuid;
-    ParticpationType particpationType;
+    teamParticipationType participationType;
 
 
-    public static ChatMember toEntity(ChatRoom chatRoom, String memberUuid, ParticpationType particpationType){
+    public static ChatMember toEntity(ChatRoom chatRoom, String memberUuid, teamParticipationType participationType){
         return ChatMember.builder()
                 .chatRoom(chatRoom)
                 .memberUuid(memberUuid)
-                .particpationType(particpationType)
+                .particpationType(participationType)
                 .build();
     }
 
