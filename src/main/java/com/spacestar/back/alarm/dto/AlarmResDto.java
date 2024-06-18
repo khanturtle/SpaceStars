@@ -15,6 +15,5 @@ import lombok.NoArgsConstructor;
 public class AlarmResDto {
 	private int index;
 	private String senderUuid;
-	private LocalDateTime createdAt;
 	private CheckStatus checkStatus;
 }

@@ -10,6 +10,4 @@ import lombok.Getter;
 public class AlarmListResDto {
 
 	List<AlarmResDto> alarmList;
-
-
 }

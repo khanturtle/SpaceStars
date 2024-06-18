@@ -1,30 +1,24 @@
 package com.spacestar.back.alarm.domain;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.spacestar.back.alarm.enums.AlarmType;
 import com.spacestar.back.alarm.enums.CheckStatus;
 import com.spacestar.back.global.GlobalTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
 @NoArgsConstructor
 @Document(collection = "alarms")
-public class Alarm extends GlobalTime {
+public class Alarm{
 
 	@Id
 	private String id;
-	@NotNull
 	private String receiverUuid;
 	@NotNull
 	private String senderUuid;

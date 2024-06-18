@@ -12,6 +12,5 @@ public class AlarmResVo {
 
 	private int index;
 	private String senderUuid;
-	private LocalDateTime createdAt;
 	private CheckStatus checkStatus;
 }
