@@ -35,8 +35,7 @@ export default function WebSocketProvider({
 
     client.connect(
       {},
-      (frame: any) => {
-        console.log('Connected to WebSocket:', frame)
+      () => {
         setStompClient(client)
       },
       (error: any) => {
