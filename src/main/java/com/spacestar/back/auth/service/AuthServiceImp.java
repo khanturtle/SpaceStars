@@ -80,6 +80,7 @@ public class AuthServiceImp implements AuthService {
                 .infoAgree(member.isInfoAgree())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
+                .isProfile(member.isProfile())
                 .build();
 
     }

@@ -24,4 +24,6 @@ public class MemberLoginResDto {
     private boolean infoAgree;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private boolean isProfile;
 }
