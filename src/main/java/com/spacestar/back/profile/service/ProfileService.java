@@ -34,4 +34,6 @@ public interface ProfileService {
     void updatePlayGameInfo(String uuid, List<PlayGameInfoReqDto> playGameInfoReqDtos);
 
     QuickMemberInfoResDto quickMemberInfo(String uuid);
+
+    MainGameResDto getMainGameId(String uuid);
 }
