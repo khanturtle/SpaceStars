@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.spacestar.back.alarm.enums.AlarmType;
 import com.spacestar.back.alarm.enums.CheckStatus;
-import com.spacestar.back.global.GlobalTime;
+import com.spacestar.back.global.GlobalCreateTime;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Document(collection = "alarms")
-public class Alarm extends GlobalTime{
+public class Alarm extends GlobalCreateTime {
 
 	@Id
 	private String id;
