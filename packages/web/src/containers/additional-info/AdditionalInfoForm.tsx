@@ -15,6 +15,8 @@ import { createUser } from '@/apis/createUser'
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
 import { createProfileImage } from '@/apis/profileImage'
+import { AuthType } from '@/types/AuthType'
+import { createNewProfile } from '@/apis/profile'
 
 // MALE,FEMALE,OTHER
 export const genderList = [
@@ -92,8 +94,7 @@ export default function AdditionalInfoForm() {
   }
 
   /** 로그인으로 토큰 받아오기 */
-  async function getToken() {
-    let accessToken
+  async function getToken(): Promise<AuthType | undefined> {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/login`,
@@ -109,11 +110,28 @@ export default function AdditionalInfoForm() {
       ).then((r) => r.json())
 
       if (res.code === 200) {
-        accessToken = res.result.accessToken
-        return accessToken
+        return res.result
       }
     } catch (err) {
       console.error('getToken error', err)
+    }
+  }
+
+  /** 프로필 생성 */
+  const createProfile = async () => {
+    try {
+      // api로 로그인 -> AccessToken, profile 여부 받아오기
+      const user = await getToken()
+      if (user) {
+        const { accessToken, profile } = user
+
+        // 프로필이 false이면, 프로필 생성 api 호출
+        if (!profile) {
+          createNewProfile(accessToken)
+        }
+      }
+    } catch (err) {
+      console.error('createProfile error', err)
     }
   }
 
@@ -121,15 +139,18 @@ export default function AdditionalInfoForm() {
   const signUpWithImage = async () => {
     try {
       // api로 로그인 -> AccessToken 받아오기
-      const token = await getToken()
+      const user = await getToken()
+      if (user) {
+        const { accessToken } = user
 
-      // 기본 이미지를 메인 프로필로 지정하기
-      const profile = {
-        profileImageUrl:
-          'https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/space-star-bucket/default-image.jpg',
-        main: true,
+        // 기본 이미지를 메인 프로필로 지정하기
+        const profile = {
+          profileImageUrl:
+            'https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/space-star-bucket/default-image.jpg',
+          main: true,
+        }
+        createProfileImage(profile, accessToken)
       }
-      createProfileImage(profile, token)
     } catch (err) {
       console.error('signUp error', err)
     }
@@ -139,6 +160,7 @@ export default function AdditionalInfoForm() {
     // 회원가입 성공
     if (state.status === 200) {
       signUpWithImage()
+      createProfile()
 
       // 로그인 후 dashboard로 이동
       signIn('kakao', { redirect: true, callbackUrl: '/dashboard' })
