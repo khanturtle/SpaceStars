@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  siteUrl: 'https://spacestars.kr',
+  generateRobotsTxt: true,
   images: {
     domains: [
       't1.kakaocdn.net',
