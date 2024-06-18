@@ -186,9 +186,9 @@ public class ProfileController {
     }
 
     @Tag(name = "Profile", description = "프로필")
-    @Operation(summary = "로그인 시 프로필 존재 유무 확인")
+    @Operation(summary = "최초 로그인 시 프로필 생성")
     @Description("로그인 시 isProfile이 false인 경우(최초 로그인인 경우)에만 호출")
-    @GetMapping("/exist")
+    @PostMapping("/exist")
     public ResponseEntity<Void> existProfile(@RequestHeader("UUID") String uuid) {
 
         profileService.existProfile(uuid);

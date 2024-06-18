@@ -3,8 +3,6 @@ package com.spacestar.back.profile.service;
 
 import com.spacestar.back.profile.dto.req.*;
 import com.spacestar.back.profile.dto.res.*;
-import com.spacestar.back.profile.vo.req.LikedGameInfoReqVo;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,7 +21,7 @@ public interface ProfileService {
 
     void addProfileImage(String uuid, ProfileImageReqDto profileImageReqDto);
 
-    Void existProfile(String uuid);
+    void existProfile(String uuid);
 
     ProfileSwipeResDto findSwipeRecommend(String uuid);
 

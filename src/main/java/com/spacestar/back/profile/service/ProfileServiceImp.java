@@ -2,6 +2,7 @@ package com.spacestar.back.profile.service;
 
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.kafka.ProfileDto;
 import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.domain.ProfileImage;
 import com.spacestar.back.profile.dto.req.*;
@@ -13,6 +14,8 @@ import com.thoughtworks.xstream.XStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spacestar.back.profile.domain.LikedGame;
@@ -37,6 +40,9 @@ public class ProfileServiceImp implements ProfileService {
     private final PlayGameRepository playGameRepository;
     private final ProfileImageRepository profileImageRepository;
     private final ModelMapper mapper;
+
+    private final KafkaTemplate<String, ProfileDto> kafkaTemplate;
+    private static final String TOPIC = "dev.profile-service.profile-create";
 
     /**
      * 프로필 정보 (프로필, 좋아하는게임, 내가 하는게임)
@@ -236,7 +242,7 @@ public class ProfileServiceImp implements ProfileService {
     //로그인 시 프로필 존재 유무판단
     @Transactional
     @Override
-    public Void existProfile(String uuid) {
+    public void existProfile(String uuid) {
 
         //기본 프로필 생성
         profileRepository.save(Profile.builder()
@@ -246,7 +252,9 @@ public class ProfileServiceImp implements ProfileService {
                 .swipe(true)
                 .build());
 
-
+        // 카프카로 프로필 생성 알림
+        ProfileDto profileDto = new ProfileDto(uuid, true);
+        kafkaTemplate.send(TOPIC, profileDto);
     }
 
     // 프로필 이미지 메서드
