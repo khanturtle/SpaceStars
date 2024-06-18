@@ -1,20 +1,19 @@
 import type { Metadata, Viewport } from 'next'
+import { getServerSession } from 'next-auth'
+import { options } from './api/auth/[...nextauth]/options'
 
 import '@packages/ui/index.css'
 
 import '@/styles/globals.css'
 import '@/styles/fonts.css'
 import '@/styles/colors.css'
-import { Avatar } from '@packages/ui'
-import { getServerSession } from 'next-auth/next'
 
-import { options } from '@/app/api/auth/[...nextauth]/options'
+import { getMainProfileImg } from '@/apis/profileImage'
 
 import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
 import WebSocketProvider from '@/components/providers/socket-provider'
-import Gutter from '@/components/Gutter'
 import { ToastProvider } from '@/components/Toast/toast'
 
 export const metadata: Metadata = {
@@ -50,11 +49,9 @@ export default async function RootLayout({
   children: React.ReactNode
   modal: React.ReactNode
 }>) {
+  // 대표 프로필 받아오기
   const session = await getServerSession(options)
-  // TODO: 프로필 이미지 수정
-  const profileImage =
-    session?.user?.picture ||
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
+  const profileImageUrl = await getMainProfileImg()
 
   return (
     <html lang="ko">
@@ -69,19 +66,7 @@ export default async function RootLayout({
           <ToastProvider>
             <WebSocketProvider>
               <ModalProvider>
-                <header>
-                  <Navbar>
-                    <Gutter className="flex-1" />
-
-                    <Navbar.RightBox>
-                      {session?.user ? (
-                        <Avatar image_url={profileImage} />
-                      ) : (
-                        <Navbar.LoginButton />
-                      )}
-                    </Navbar.RightBox>
-                  </Navbar>
-                </header>
+                <Navbar session={session} profileImageUrl={profileImageUrl} />
 
                 {children}
                 {modal}
