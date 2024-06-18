@@ -5,11 +5,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spacestar.back.alarm.dto.req.AlarmAddReqDto;
 import com.spacestar.back.alarm.service.AlarmServiceImpl;
+import com.spacestar.back.alarm.vo.req.AlarmAddReqVo;
 import com.spacestar.back.alarm.vo.res.AlarmListResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
@@ -34,9 +37,11 @@ public class AlarmController {
 	private final Sinks.Many<MatchingMessage> sink;
 
 	@PostMapping
-	@Operation
-	public ResponseEntity<Void> addAlarm(@RequestHeader("UUID") String uuid){
-		return null;
+	@Operation(summary = "알림 생성")
+	public ResponseEntity<Void> addAlarm(@RequestHeader("UUID") String uuid,
+										@RequestBody AlarmAddReqVo alarmAddReqVo){
+		alarmService.addAlarm(uuid, modelMapper.map(alarmAddReqVo, AlarmAddReqDto.class));
+		return new ResponseEntity<>(ResponseSuccess.ALARM_INSERT_SUCCESS);
 	}
 	//알림 리스트 조회 API
 	@GetMapping("/list")
@@ -49,6 +54,7 @@ public class AlarmController {
 
 	// 매칭 알림 실시간 수신
 	@GetMapping(value ="/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@Operation(summary = "실시간 알림 SSE 입장")
 	public Flux<MatchingMessage> matchingEvents(@RequestHeader("UUID") String uuid){
 		log.info("Received UUID: {}", uuid);
 		return sink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()));

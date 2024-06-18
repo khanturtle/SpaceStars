@@ -6,8 +6,10 @@ import com.ctc.wstx.shaded.msv_core.datatype.xsd.DateType;
 import com.spacestar.back.alarm.enums.CheckStatus;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class AlarmResVo {
 
 	private int index;
