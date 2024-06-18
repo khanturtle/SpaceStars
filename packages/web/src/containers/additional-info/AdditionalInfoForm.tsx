@@ -14,7 +14,7 @@ import { createUser } from '@/apis/createUser'
 
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
-import { createProfileImage } from '@/apis/profileImage'
+import { createProfileImage } from '@/apis/createProfileImage'
 import { AuthType } from '@/types/AuthType'
 import { createNewProfile } from '@/apis/profile'
 

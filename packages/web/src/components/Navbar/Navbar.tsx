@@ -46,7 +46,9 @@ export default function Navbar({
         {/* Right */}
         <NavRightBox>
           {session?.user ? (
-            <Avatar image_url={profileImage} />
+            <Link href="/dashboard/my-page">
+              <Avatar image_url={profileImage} />
+            </Link>
           ) : (
             <LoginButton />
           )}

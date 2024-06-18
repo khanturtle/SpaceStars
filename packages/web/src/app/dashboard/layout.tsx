@@ -5,7 +5,6 @@ import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
 
-
 export default async function layout({
   children,
 }: {
@@ -13,8 +12,8 @@ export default async function layout({
 }) {
   const session = await getServerSession(options)
 
-  console.log(session)
-  
+  console.log("여긴 대시보드 레이아웃", session)
+
   return (
     <main className="flex w-full h-[calc(100vh_-_100px)] overflow-hidden mx-auto my-0">
       <Sidebar />
