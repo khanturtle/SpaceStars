@@ -4,6 +4,7 @@ package com.spacestar.back.alarm.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -14,6 +15,7 @@ import com.spacestar.back.alarm.dto.req.AlarmAddReqDto;
 import com.spacestar.back.alarm.service.AlarmServiceImpl;
 import com.spacestar.back.alarm.vo.req.AlarmAddReqVo;
 import com.spacestar.back.alarm.vo.res.AlarmListResVo;
+import com.spacestar.back.alarm.vo.res.AlarmStateResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.kafka.message.MatchingMessage;
@@ -59,8 +61,14 @@ public class AlarmController {
 		log.info("Received UUID: {}", uuid);
 		return sink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()));
 	}
-	//Todo
-	//알림 상태 조회 API
+
+	@GetMapping(value = "/state")
+	@Operation(summary = "알림 상태 조회")
+	public ResponseEntity<AlarmStateResVo> getAlarmState(@RequestHeader("UUID") String uuid,
+			@PathVariable("id") String id){
+		return new ResponseEntity<>(ResponseSuccess.ALARM_STATE_SELECT_SUCCESS,
+				modelMapper.map(alarmService.getAlarmState(uuid, id), AlarmStateResVo.class));
+	}
 
 	//Todo
 	//알림 전송 API

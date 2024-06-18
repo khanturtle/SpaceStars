@@ -17,4 +17,5 @@ public class AlarmResVo {
 	private String senderUuid;
 	private CheckStatus checkStatus;
 	private AlarmType alarmType;
+	private String content;
 }

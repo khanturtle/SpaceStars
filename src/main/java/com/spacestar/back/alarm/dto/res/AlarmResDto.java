@@ -18,4 +18,5 @@ public class AlarmResDto {
 	private String senderUuid;
 	private CheckStatus checkStatus;
 	private AlarmType alarmType;
+	private String content;
 }

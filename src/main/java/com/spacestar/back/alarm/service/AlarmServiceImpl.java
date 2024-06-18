@@ -9,7 +9,10 @@ import com.spacestar.back.alarm.domain.Alarm;
 import com.spacestar.back.alarm.dto.req.AlarmAddReqDto;
 import com.spacestar.back.alarm.dto.res.AlarmListResDto;
 import com.spacestar.back.alarm.dto.res.AlarmResDto;
+import com.spacestar.back.alarm.dto.res.AlarmStateResDto;
 import com.spacestar.back.alarm.repository.AlarmMongoRepository;
+import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +39,18 @@ public class AlarmServiceImpl implements AlarmService {
 								.senderUuid(alarms.get(i).getSenderUuid())
 								.checkStatus(alarms.get(i).getCheckStatus())
 								.alarmType(alarms.get(i).getAlarmType())
+								.content(alarms.get(i).getContent())
 								.build()).toList())
+				.build();
+	}
+
+	@Override
+	public AlarmStateResDto getAlarmState(String uuid, String id){
+		Alarm alarm = alarmRepository.findByReceiverUuidAndId(uuid, id)
+				.orElseThrow(()-> new GlobalException(ResponseStatus.NOT_EXIST_ALARM));
+
+		return AlarmStateResDto.builder()
+				.checkStatus(alarm.getCheckStatus())
 				.build();
 	}
 }
