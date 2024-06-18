@@ -216,7 +216,7 @@ public class ProfileController {
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "대표 게임 id 조회")
-    @GetMapping("/main-game-id")
+    @GetMapping("/main-game")
     public ResponseEntity<MainGameResVo> getMainGameId(@RequestHeader("UUID") String uuid) {
 
         return new ResponseEntity<>(ResponseSuccess.MAIN_GAME_ID_SELECT_SUCCESS,
