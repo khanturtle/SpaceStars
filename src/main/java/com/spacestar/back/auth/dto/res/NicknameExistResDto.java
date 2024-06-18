@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class NicknameExistResDto {
 
     private boolean isExist;
+    private String message;
 }

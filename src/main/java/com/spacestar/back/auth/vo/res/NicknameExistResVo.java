@@ -6,5 +6,6 @@ import lombok.*;
 public class NicknameExistResVo {
 
     private boolean isExist;
+    private String message;
 
 }

@@ -93,10 +93,12 @@ public class AuthServiceImp implements AuthService {
             if (member.isPresent()) {
                 return NicknameExistResDto.builder()
                         .isExist(true)
+                        .message("이미 존재하는 닉네임입니다.")
                         .build();
             } else {
                 return NicknameExistResDto.builder()
                         .isExist(false)
+                        .message("사용 가능한 닉네임입니다.")
                         .build();
             }
     }
