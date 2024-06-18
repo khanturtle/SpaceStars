@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -41,7 +42,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     //SSE
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
 
-    private final long tenSecBefore = System.currentTimeMillis()-10000;
+    private final long tenSecBefore = System.currentTimeMillis() - 10000;
+
     //대기큐진입
     @Override
     public void enterQuickMatching(String uuid, QuickMatchingEnterReqDto reqDto) {
@@ -61,12 +63,15 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             for (ZSetOperations.TypedTuple<String> tuple : waitingMembers) {
                 String matchMemberUuid = tuple.getValue();
                 score = calculateScore(uuid, matchMemberUuid);
+                score += (int) (System.currentTimeMillis()-tuple.getScore()) / 10000;
+                System.out.println("LocalDateTime.now() = " + LocalDateTime.now());
                 if (score > maxScore) {
                     maxScore = score;
-                    if(maxScore>=60){
+                    if (maxScore >= 60) {
                         matchedMemberUuid = matchMemberUuid;
                     }
                 }
+                System.out.println("score = " + score);
             }
         }
         //매치된 사람 있으면 대기큐에서 제거 후 수락큐로 진입
@@ -96,10 +101,10 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
     private int genderScore(String myGender, String yourGender) {
         int score = 0;
-        if(myGender.equals("OTHERS")||yourGender.equals("OTHERS")){
+        if (myGender.equals("OTHERS") || yourGender.equals("OTHERS")) {
             return score;
         }
-        if(!myGender.equals(yourGender)){
+        if (!myGender.equals(yourGender)) {
             score = 10;
         }
         return score;
@@ -126,6 +131,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         String url = profileUrl + memberUuid;
         return restTemplate.exchange(url, HttpMethod.GET, null, ProfileResDto.class).getBody();
     }
+
     //RestTemplate으로 Auth 서비스 호출
     private AuthResDto getAuth(String memberUuid) {
         String url = authUrl + memberUuid;
@@ -134,7 +140,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
     //수락 대기 큐 진입
     public void enterMatchQueue(String matchFromMember, String matchToMember) {
-        QuickMatching quickMatching = QuickMatchingConverter.toEntity(matchFromMember,matchToMember);
+        QuickMatching quickMatching = QuickMatchingConverter.toEntity(matchFromMember, matchToMember);
         quickMatchingRepository.save(quickMatching);
     }
 
