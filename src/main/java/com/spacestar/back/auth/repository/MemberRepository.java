@@ -15,4 +15,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByUuid(String uuid);
 
     Optional<Member> findByNickname(String nickname);
+
+    @Transactional
+    @Modifying
+    @Query("update Member m set m.isProfile = :isProfile where m.id = :id")
+    void updateIsProfile(@Param("id") Long id, @Param("isProfile") boolean isProfile);
 }

@@ -10,8 +10,10 @@ import com.spacestar.back.auth.enums.UnregisterType;
 import com.spacestar.back.auth.repository.MemberRepository;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.kafka.ProfileDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,7 @@ public class MemberServiceImp implements MemberService{
                 .gender(null)
                 .unregister(UnregisterType.DELETED)
                 .infoAgree(false)
+                .isProfile(false)
                 .build());
     }
 
@@ -60,6 +63,7 @@ public class MemberServiceImp implements MemberService{
                 .gender(null)
                 .unregister(UnregisterType.BLACKLIST)
                 .infoAgree(false)
+                .isProfile(false)
                 .build());
     }
 
@@ -70,7 +74,7 @@ public class MemberServiceImp implements MemberService{
 
         Member member = memberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
-        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(), memberInfoReqDto));
+        memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(),member.isProfile(), memberInfoReqDto));
     }
 
     @Transactional(readOnly = true)
@@ -125,4 +129,17 @@ public class MemberServiceImp implements MemberService{
 
         return QuickAuthInfoResDto.converter(age, member.getGender());
     }
+
+    @Transactional
+    @KafkaListener(topics = "dev.profile-service.profile-create", groupId = "isProfile-consumer-group")
+    public void consume(ProfileDto profileDto){
+        log.info("ProfileDto: {}", profileDto);
+
+        Member member = memberRepository.findByUuid(profileDto.getUuid())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        memberRepository.updateIsProfile(member.getId(), true);
+
+    }
+
 }
