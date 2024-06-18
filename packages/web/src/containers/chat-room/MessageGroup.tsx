@@ -53,7 +53,7 @@ export default function MessageGroup({
   messages: ChatMessageType[]
   UUID: string
 }) {
-  const type = messages[0].senderUuid === UUID ? 'sent' : 'received'
+  const type = messages && messages[0].senderUuid === UUID ? 'sent' : 'received'
   const time = getConvertToKoreanHM(messages[messages.length - 1].createdAt)
 
   return (
