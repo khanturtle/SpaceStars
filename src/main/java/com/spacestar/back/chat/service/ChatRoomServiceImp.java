@@ -24,6 +24,7 @@ public class ChatRoomServiceImp implements ChatRoomService {
     private final ChatRoomJPARepository chatRoomJPARepository;
     private final ChatMemberJPARepository chatMemberJPARepository;
     private final ChatMemberService chatMemberService;
+    private final ChatMessageService chatMessageService;
 
     @Override
     public void addChatRoom(String uuid, String receiverUuid) {
@@ -35,7 +36,9 @@ public class ChatRoomServiceImp implements ChatRoomService {
         // 채팅방에 참여자 추가
         chatMemberService.addMemberToChatRoom(chatRoom, uuid);
         chatMemberService.addMemberToChatRoom(chatRoom, receiverUuid);
-
+        // 참여자 퇴장시간 추가
+        chatMessageService.addChatExit(roomNumber, uuid);
+        chatMessageService.addChatExit(roomNumber, receiverUuid);
     }
 
     // 본인이 참여한 채팅방 목록 조회
