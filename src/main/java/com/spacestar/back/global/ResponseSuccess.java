@@ -22,6 +22,7 @@ public enum ResponseSuccess {
     PROFILE_IMAGE_ADD_SUCCESS(200,"프로필 사진 추가 성공" ),
     PROFILE_EXIST_SUCCESS(200,"프로필 생성 성공" ),
     PROFILE_IMAGE_DELETE_SUCCESS(200,"프로필 사진 삭제 성공" ),
+    MAIN_GAME_ID_SELECT_SUCCESS(200, "메인 게임 ID 조회 성공"),
 
     //friend
     FRIEND_ADD_SUCCESS(200, "친구 신청 성공"),

@@ -244,6 +244,8 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public void existProfile(String uuid) {
 
+        Optional<Profile> profile = profileRepository.findByUuid(uuid);
+
         //기본 프로필 생성
         profileRepository.save(Profile.builder()
                 .uuid(uuid)
@@ -295,6 +297,25 @@ public class ProfileServiceImp implements ProfileService {
         PlayGame playGame = playGameRepository.findByUuidAndMain(uuid, true);
 
         return QuickMemberInfoResDto.converter(profile.getGamePreferenceId(), profile.getMbtiId(), playGame.getGameId(), profile.getReportCount());
+    }
+
+    //메인 게임 조회
+    @Override
+    public MainGameResDto getMainGameId(String uuid) {
+
+        PlayGame playGame = playGameRepository.findByUuidAndMain(uuid, true);
+
+        if (playGame != null){
+            return MainGameResDto.builder()
+                    .mainId(playGame.getGameId())
+                    .build();
+        }
+        else {
+            return MainGameResDto.builder()
+                    .mainId(null)
+                    .build();
+        }
+
     }
 
 }
