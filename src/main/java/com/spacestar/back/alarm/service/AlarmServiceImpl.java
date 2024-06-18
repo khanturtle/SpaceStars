@@ -35,6 +35,7 @@ public class AlarmServiceImpl implements AlarmService {
 								.index(i)
 								.senderUuid(alarms.get(i).getSenderUuid())
 								.checkStatus(alarms.get(i).getCheckStatus())
+								.alarmType(alarms.get(i).getAlarmType())
 								.build()).toList())
 				.build();
 	}
