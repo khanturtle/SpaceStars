@@ -9,11 +9,13 @@ import { Avatar } from '@packages/ui'
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
+
 import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
 import WebSocketProvider from '@/components/providers/socket-provider'
 import Gutter from '@/components/Gutter'
+import { ToastProvider } from '@/components/Toast/toast'
 
 export const metadata: Metadata = {
   title: '우주별: 우리 주변의 별별 사람들',
@@ -64,26 +66,28 @@ export default async function RootLayout({
       </head>
       <body>
         <AuthSession>
-          <WebSocketProvider>
-            <ModalProvider>
-              <header>
-                <Navbar>
-                  <Gutter className="flex-1" />
+          <ToastProvider>
+            <WebSocketProvider>
+              <ModalProvider>
+                <header>
+                  <Navbar>
+                    <Gutter className="flex-1" />
 
-                  <Navbar.RightBox>
-                    {session?.user ? (
-                      <Avatar image_url={profileImage} />
-                    ) : (
-                      <Navbar.LoginButton />
-                    )}
-                  </Navbar.RightBox>
-                </Navbar>
-              </header>
+                    <Navbar.RightBox>
+                      {session?.user ? (
+                        <Avatar image_url={profileImage} />
+                      ) : (
+                        <Navbar.LoginButton />
+                      )}
+                    </Navbar.RightBox>
+                  </Navbar>
+                </header>
 
-              {children}
-              {modal}
-            </ModalProvider>
-          </WebSocketProvider>
+                {children}
+                {modal}
+              </ModalProvider>
+            </WebSocketProvider>
+          </ToastProvider>
         </AuthSession>
       </body>
     </html>

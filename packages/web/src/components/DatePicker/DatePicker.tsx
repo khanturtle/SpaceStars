@@ -21,7 +21,6 @@ interface DatePickerCustomProps {
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
 }
 
-// TODO: UI 커스텀
 export default function CustomDatePicker({
   id,
   date,
@@ -33,11 +32,19 @@ export default function CustomDatePicker({
         <Button
           variant="outline"
           className={cn(
-            'h-[60px] w-full justify-between text-left font-normal',
+            'h-[60px] w-full justify-between text-left font-normal border border-[color:var(--White-50,#fff)] border-solid rounded-[10px]',
             !date && 'text-muted-foreground',
           )}
+          style={{ background: 'rgba(255, 255, 255, 0.5)' }}
         >
-          {date ? format(date, 'yyyy-MM-dd') : <span>날짜 선택</span>}
+          <div className="flex flex-col items-start justify-center w-full">
+            <legend className="text-[color:var(--secondary-text-color,#666)] text-xs not-italic font-normal leading-[170%]">
+              생년월일
+            </legend>
+            <div className="text-[color:var(--main-color,#111)] text-base not-italic font-normal leading-[170%] w-full border-[none]">
+              {date ? format(date, 'yyyy-MM-dd') : <span>날짜 선택</span>}
+            </div>
+          </div>
 
           <div>
             <CalendarIcon />

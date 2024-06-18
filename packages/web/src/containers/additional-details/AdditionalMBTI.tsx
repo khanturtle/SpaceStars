@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
 import {
   Select,
@@ -7,8 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { getMbtiList } from '@/apis/data'
 
 // TODO: API 받아오기
+
 const MBTIOptions = [
   { id: 1, value: 'ISTJ', label: 'ISTJ' },
   { id: 2, value: 'ISFJ', label: 'ISFJ' },
@@ -39,6 +41,16 @@ export default function AdditionalMBTI({
     const mbtiIdToNumber = Number(value)
     setMbtiId(mbtiIdToNumber)
   }
+
+  // TODO: 테스트
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getMbtiList()
+      console.log(data)
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <Select

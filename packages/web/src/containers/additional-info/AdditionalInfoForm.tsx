@@ -2,25 +2,27 @@
 
 import { useSearchParams } from 'next/navigation'
 
+import { signIn } from 'next-auth/react'
+
 import { ChangeEvent, useEffect, useState } from 'react'
+import { useFormState } from 'react-dom'
 
 import { Button, Checkbox, Input, Select } from '@packages/ui'
-import { signIn } from 'next-auth/react'
-import { useFormState } from 'react-dom'
 
 import { checkNickname } from '@/apis/auth'
 import { createUser } from '@/apis/createUser'
+
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
 
 // MALE,FEMALE,OTHER
-const genderOptions = [
+export const genderList = [
   { value: 'MALE', label: '남자' },
   { value: 'FEMALE', label: '여자' },
-  { value: 'OTHER', label: '비공개' },
+  { value: 'OTHER', label: '기타' },
 ]
 
-/** 닉네임 중복검사 */
+/** 닉네임 입력창 */
 const NicknameInput = ({
   value,
   onChange,
@@ -53,11 +55,7 @@ const NicknameInput = ({
   )
 }
 
-const initialState = {
-  status: 0,
-  message: '',
-}
-
+// TODO: 유효성 검사: 닉네임, 성별 선택 여부, 생년월일 선택 여부, 개인정보 동의 여부
 export default function AdditionalInfoForm() {
   const query = useSearchParams()
 
@@ -71,6 +69,11 @@ export default function AdditionalInfoForm() {
   const [birth, setBirth] = useState<Date | undefined>(new Date())
   const [isChecked, setIsChecked] = useState(false)
 
+  const initialState = {
+    status: 0,
+    message: '',
+  }
+
   const createUserWithMore = createUser.bind(null, imageUrl, isAvailable)
   const [state, formAction] = useFormState(createUserWithMore, initialState)
 
@@ -79,21 +82,19 @@ export default function AdditionalInfoForm() {
     setIsAvailable(false)
   }
 
+  /** 닉네임 중복검사 */
   const handleCheckNickname = async () => {
-    // TODO: 여기에 닉네임 유효성 검사도 넣어야 함.
     const isNicknameAvailable = await checkNickname(nickname)
-    setIsAvailable(isNicknameAvailable)
 
+    setIsAvailable(isNicknameAvailable.exist)
     // FIXME: alert 말고 다른 걸로 유효성 표시
-    if (isNicknameAvailable) {
-      alert('사용할 수 있는 닉네임입니다.')
-    } else {
-      alert('이미 사용중인 닉네임입니다.')
-    }
+    alert(isNicknameAvailable.message)
   }
 
   useEffect(() => {
     if (state.status === 200) {
+      // 프로필 사진 업로드
+
       // 회원가입 성공 후 로그인
       signIn('kakao', { redirect: true, callbackUrl: '/dashboard' })
     } else if (state.status !== 0) {
@@ -121,10 +122,10 @@ export default function AdditionalInfoForm() {
         />
 
         <Select
-          className={`${styles['input-box']} z-10`}
+          className={`z-10 w-full h-[60px] rounded-[10px] text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] ${styles['input-box']} ${styles.select}`}
           id="gender"
           label="성별"
-          options={genderOptions}
+          options={genderList}
           selectedOption={gender}
           onChange={(value: string) => setGender(value)}
         />
