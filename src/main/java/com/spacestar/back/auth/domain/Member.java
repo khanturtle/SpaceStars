@@ -43,8 +43,10 @@ public class Member extends GlobalTime {
     @NotNull
     private boolean infoAgree;
 
+    private boolean isProfile;
+
     @Builder
-    public Member(Long id, String uuid, String email, String nickname, LocalDate birth, GenderType gender, UnregisterType unregister, boolean infoAgree) {
+    public Member(Long id, String uuid, String email, String nickname, LocalDate birth, GenderType gender, UnregisterType unregister, boolean infoAgree, boolean isProfile) {
         this.id = id;
         this.uuid = uuid;
         this.email = email;
@@ -53,6 +55,7 @@ public class Member extends GlobalTime {
         this.gender = gender;
         this.unregister = unregister;
         this.infoAgree = infoAgree;
+        this.isProfile = isProfile;
     }
 
 }

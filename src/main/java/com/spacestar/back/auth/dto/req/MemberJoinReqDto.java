@@ -34,6 +34,7 @@ public class MemberJoinReqDto {
                 .gender(memberJoinReqDto.getGender())
                 .unregister(UnregisterType.MEMBER)
                 .infoAgree(memberJoinReqDto.isInfoAgree())
+                .isProfile(false)
                 .build();
     }
 
@@ -48,6 +49,7 @@ public class MemberJoinReqDto {
                 .gender(memberJoinReqDto.getGender())
                 .unregister(UnregisterType.MEMBER)
                 .infoAgree(memberJoinReqDto.isInfoAgree())
+                .isProfile(false)
                 .build();
     }
 
