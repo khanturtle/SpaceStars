@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class ProfileImageReqDto {
 
     private String profileImageUrl;
+    private boolean main;
 
 
     public static ProfileImage addNewImage(String uuid, boolean b, String profileImageUrl) {

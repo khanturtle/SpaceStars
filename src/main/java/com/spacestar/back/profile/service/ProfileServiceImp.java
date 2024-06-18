@@ -160,7 +160,7 @@ public class ProfileServiceImp implements ProfileService {
 
         //역순
         List<ProfileImageListResDto> dtoList = new ArrayList<>(IntStream.range(0, profileImages.size())
-                .mapToObj(index -> ProfileImageListResDto.convertToDto(profileImages.size()-index-1, profileImages.get(index)))
+                .mapToObj(index -> ProfileImageListResDto.convertToDto(profileImages.size() - index - 1, profileImages.get(index)))
                 .toList());
         Collections.reverse(dtoList);
         return dtoList;
@@ -171,8 +171,14 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public ProfileMainImageResDto findMainProfileImage(String uuid) {
 
-        return mapper.map(
-                profileImageRepository.findByUuidAndMain(uuid, true), ProfileMainImageResDto.class);
+        ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
+        ProfileMainImageResDto profileMainImageResDto = ProfileMainImageResDto.builder()
+                .profileImageUrl(null)
+                .build();
+        if (profileImage != null) {
+            profileMainImageResDto = mapper.map(profileImage, ProfileMainImageResDto.class);
+        }
+        return profileMainImageResDto;
     }
 
     //프로필 사진 추가
@@ -180,36 +186,48 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public void addProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
 
-        ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
+        //기존 메인 이미지 가져오기
+        ProfileImage mainImage = profileImageRepository.findByUuidAndMain(uuid, true);
+        boolean isAddMain = profileImageReqDto.isMain();
 
-        //메인 사진 비활성화
-        if (profileImage != null) {
-            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, profileImage.getId(), false, profileImage.getProfileImageUrl()));
+        // 메인 이미지가 설정될 필요가 있을 때
+        if (isAddMain && mainImage != null){
+            //기존 메인 이미지를 일반 이미지로 변경
+            demoteMainImage(mainImage);
+        } else if(mainImage == null){
+            isAddMain = true;
         }
-        //가장 최근 사진이 메인 프로필
-        profileImageRepository.save(ProfileImageReqDto.addNewImage(uuid, true, profileImageReqDto.getProfileImageUrl()));
+
+        // 이미지 추가 또는 업데이트
+        addOrUpdateProfileImage(uuid, profileImageReqDto, isAddMain);
 
     }
+
 
     //프로필 사진 삭제
     @Transactional
     @Override
-    public void deleteProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
+    public void deleteProfileImage(String uuid, ProfileImageDeleteReqDto profileImageDeleteReqDto) {
 
         ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
 
         //메인 사진 삭제
-        if (profileImage.getProfileImageUrl().equals(profileImageReqDto.getProfileImageUrl())) {
-            log.info("메인 사진 삭제");
+        if (profileImage.getProfileImageUrl().equals(profileImageDeleteReqDto.getProfileImageUrl())) {
+
             profileImageRepository.delete(profileImage);
             //이전 이미지가 메인이 됨
             ProfileImage newMain = profileImageRepository.findLastByUuid(uuid);
-            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, newMain.getId(), true, newMain.getProfileImageUrl()));
+
+            if (newMain != null) {
+                profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, newMain.getId(), true, newMain.getProfileImageUrl()));
+            }
+
+
         }
         //일반 사진 삭제
         else {
-            log.info("일반 사진 삭제");
-            ProfileImage beDelete = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl());
+
+            ProfileImage beDelete = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageDeleteReqDto.getProfileImageUrl());
             profileImageRepository.delete(beDelete);
         }
 
@@ -249,6 +267,32 @@ public class ProfileServiceImp implements ProfileService {
         return ProfileExistResDto.builder()
                 .isExist(true)
                 .build();
+    }
+
+    // 프로필 이미지 메서드
+    private void addOrUpdateProfileImage(String uuid, ProfileImageReqDto profileImageReqDto, boolean isAddMain) {
+
+        ProfileImage existImage = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl());
+
+        if (existImage == null){
+            //새 이미지 추가
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, null, isAddMain, profileImageReqDto.getProfileImageUrl()));
+        }
+        else {
+            // 이미 존재하는 이미지를 업데이트
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, existImage.getId(), isAddMain, existImage.getProfileImageUrl()));
+        }
+    }
+
+    private void demoteMainImage(ProfileImage mainImage) {
+
+        //기존 메인 이미지의 메인 속성을 false로 업데이트
+        profileImageRepository.save(ProfileImageReqDto.updateImage(
+                mainImage.getUuid(),
+                mainImage.getId(),
+                false,
+                mainImage.getProfileImageUrl()));
+
     }
 
     /***

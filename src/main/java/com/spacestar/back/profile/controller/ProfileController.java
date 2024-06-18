@@ -179,9 +179,9 @@ public class ProfileController {
     @Operation(summary = "프로필 사진 삭제")
     @DeleteMapping("/image")
     public ResponseEntity<Void> deleteProfileImage(@RequestHeader("UUID") String uuid,
-                                                   @RequestBody ProfileImageReqVo profileImageReqVo) {
+                                                   @RequestBody ProfileImageDeleteReqVo profileImageDeleteReqVo) {
 
-        profileService.deleteProfileImage(uuid, mapper.map(profileImageReqVo, ProfileImageReqDto.class));
+        profileService.deleteProfileImage(uuid, mapper.map(profileImageDeleteReqVo, ProfileImageDeleteReqDto.class));
         return new ResponseEntity<>(ResponseSuccess.PROFILE_IMAGE_DELETE_SUCCESS);
     }
 
