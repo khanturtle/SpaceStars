@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   description:
     '다양한 게임을 즐기며 새로운 친구를 만날 수 있는 커뮤니티 플랫폼',
   keywords: ['게임', '우주', '플랫폼', '엔터테인먼트', '콘텐츠'],
+  metadataBase: new URL('https://spacestars.kr'),
   openGraph: {
     type: 'website',
     url: 'https://spacestars.kr',
@@ -55,6 +56,12 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="RF3jYM4llYmMJX3IkZbGaclTJ74I2LihgTOlqjsqppg"
+        />
+      </head>
       <body>
         <AuthSession>
           <WebSocketProvider>

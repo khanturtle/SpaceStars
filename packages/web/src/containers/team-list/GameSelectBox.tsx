@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { GameListButton } from '@packages/ui'
 
 import { GameType } from '@/apis/game'
-import { gamesImageUrl } from '@/apis/state'
 import useDrag from '@/hooks/useDrag'
 
 import styles from './teamList.module.css'
@@ -19,11 +18,9 @@ const GameItem = ({
   currentGame: string
   onClick: (game: GameType) => void
 }) => {
-  const gameImageUrl = gamesImageUrl[game.gameId]
-
   const item = {
-    gameImage: gameImageUrl.gameImage,
-    gameLogo: gameImageUrl.gameLogoImage,
+    gameImage: game.gameImage,
+    gameLogo: game.gameLogoImage,
     gameName: game.gameName,
   }
 
