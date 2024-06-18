@@ -56,6 +56,12 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="RF3jYM4llYmMJX3IkZbGaclTJ74I2LihgTOlqjsqppg"
+        />
+      </head>
       <body>
         <AuthSession>
           <WebSocketProvider>
