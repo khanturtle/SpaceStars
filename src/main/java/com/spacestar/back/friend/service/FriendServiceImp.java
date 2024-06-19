@@ -3,7 +3,9 @@ package com.spacestar.back.friend.service;
 import com.spacestar.back.friend.domain.Friend;
 import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.FriendListResDto;
+import com.spacestar.back.friend.dto.res.FriendNowResDto;
 import com.spacestar.back.friend.dto.res.FriendRequestResDto;
+import com.spacestar.back.friend.enums.FriendNowType;
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
 import com.spacestar.back.global.GlobalException;
@@ -16,11 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.spacestar.back.friend.enums.FriendType.FRIEND;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class FriendServiceImp implements FriendService{
+public class FriendServiceImp implements FriendService {
 
     private final FriendRepository friendRepository;
 
@@ -28,11 +32,9 @@ public class FriendServiceImp implements FriendService{
     @Override
     public void addFriend(String uuid, FriendUuidReqDto friendUuidReqDto) {
 
-        if (friendRepository.findByFriendUuidAndUuid(friendUuidReqDto.getFriendUuid(), uuid) != null){
+        if (friendRepository.findByFriendUuidAndUuid(friendUuidReqDto.getFriendUuid(), uuid) != null) {
             throw new GlobalException(ResponseStatus.ALREADY_EXIST_FRIEND_REQUEST);
-        }
-
-        else {
+        } else {
             //내가 친구 신청
             Friend me = Friend.builder()
                     .friendType(FriendType.SENDER)
@@ -60,10 +62,10 @@ public class FriendServiceImp implements FriendService{
         List<Friend> friendList = friendRepository.findByUuid(uuid);
         List<String> friendUuidList = new ArrayList<>();
 
-        for (Friend friend : friendList){
+        for (Friend friend : friendList) {
 
             //친구일 경우에만
-            if (friend.getFriendType() == FriendType.FRIEND)
+            if (friend.getFriendType() == FRIEND)
                 friendUuidList.add(friend.getFriendUuid());
         }
 
@@ -78,7 +80,7 @@ public class FriendServiceImp implements FriendService{
         List<Friend> friendList = friendRepository.findByUuid(uuid);
         List<String> friendRequestUuidList = new ArrayList<>();
 
-        for (Friend friend : friendList){
+        for (Friend friend : friendList) {
             //내가 받은 요청만
             if (friend.getFriendType() == FriendType.RECEIVER)
                 friendRequestUuidList.add(friend.getFriendUuid());
@@ -97,7 +99,7 @@ public class FriendServiceImp implements FriendService{
         //친구로 상태 변화
         Friend realFriend = Friend.builder()
                 .id(friend.getId())
-                .friendType(FriendType.FRIEND)
+                .friendType(FRIEND)
                 .friendUuid(friend.getFriendUuid())
                 .uuid(friend.getUuid())
                 .build();
@@ -109,7 +111,7 @@ public class FriendServiceImp implements FriendService{
 
         Friend realFriend2 = Friend.builder()
                 .id(friend2.getId())
-                .friendType(FriendType.FRIEND)
+                .friendType(FRIEND)
                 .friendUuid(friend2.getFriendUuid())
                 .uuid(friend2.getUuid())
                 .build();
@@ -125,6 +127,30 @@ public class FriendServiceImp implements FriendService{
 
         Friend friend2 = friendRepository.findByFriendUuidAndUuid(uuid, friendUuidReqDto.getFriendUuid());
         friendRepository.delete(friend2);
+    }
+
+    //친구 상태 확인
+    @Override
+    public FriendNowResDto isFriendRequest(String uuid, String targetUuid) {
+
+        Friend friend = friendRepository.findByFriendUuidAndUuid(targetUuid, uuid);
+
+        if (friend == null) {
+            return FriendNowResDto.builder()
+                    .friendType(FriendNowType.NONE)
+                    .build();
+        } else {
+            if (friend.getFriendType() == FRIEND) {
+                return FriendNowResDto.builder()
+                        .friendType(FriendNowType.FRIEND)
+                        .build();
+            } else {
+                return FriendNowResDto.builder()
+                        .friendType(FriendNowType.WAIT)
+                        .build();
+
+            }
+        }
     }
 }
 
