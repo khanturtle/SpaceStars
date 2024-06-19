@@ -1,5 +1,8 @@
 import { getIsFriend } from '@/apis/getFriends'
-import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
+import {
+  getMainProfileImageByUuid,
+  getProfileImagesByUuid,
+} from '@/apis/getProfileImage'
 import Modal from '@/components/modal/modal'
 import ProfileLayout from '@/containers/profile-modal/profileLayout'
 
@@ -7,14 +10,16 @@ import ProfileLayout from '@/containers/profile-modal/profileLayout'
 async function getAllProfileData(uuid: string) {
   // 대표 프로필 사진
   const mainProfileData = getMainProfileImageByUuid(uuid)
+  const profileImagesData = getProfileImagesByUuid(uuid)
 
   // 친구 여부 확인
   const isFriendData = getIsFriend(uuid)
 
   const [result] = await Promise.all([
-    Promise.all([mainProfileData, isFriendData]).then(
-      ([mainProfile, isFriend]) => ({
-        ...mainProfile,
+    Promise.all([mainProfileData, profileImagesData, isFriendData]).then(
+      ([mainProfile, profileImages, isFriend]) => ({
+        ...mainProfile?.result,
+        profileImages: profileImages?.result ?? [],
         ...isFriend?.result,
       }),
     ),

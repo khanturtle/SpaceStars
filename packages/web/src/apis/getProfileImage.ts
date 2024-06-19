@@ -79,7 +79,7 @@ export async function getProfileImages(
 export async function getMainProfileImageByUuid(
   uuid: string,
   _token?: string,
-): Promise<ProfileImageType | undefined | null> {
+): Promise<(ApiResponseType & { result: ProfileImageType }) | undefined> {
   let token
 
   if (_token) {
@@ -89,8 +89,6 @@ export async function getMainProfileImageByUuid(
     token = session?.user?.data.accessToken
   }
 
-  if (!token) return undefined
-
   try {
     const response = await fetch(`${BASE_URL}/main/${uuid}`, {
       headers: {
@@ -98,21 +96,21 @@ export async function getMainProfileImageByUuid(
         Authorization: token ? token : '',
       },
     })
-    const data = await response.json()
-    if (!data) {
-      throw new Error('Failed to get main profileImage')
+    if (!response.ok) {
+      throw new Error('Failed to getMainProfileImageByUuid')
     }
-    return data.result
+    return await response.json()
   } catch (error) {
     console.error(error)
     return undefined
   }
 }
+
 /** 프로필 리스트 조회 - UUID */
 export async function getProfileImagesByUuid(
   uuid: string,
   _token?: string,
-): Promise<ProfileImagesType[]> {
+): Promise<(ApiResponseType & { result: ProfileImagesType[] }) | undefined> {
   let token
 
   if (_token) {
@@ -128,19 +126,13 @@ export async function getProfileImagesByUuid(
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
       },
-      next: {
-        tags: ['profileImages'],
-      },
     })
-    const data = await response.json()
-
-    if (data.code !== 200) {
-      throw new Error('Failed to get profileImages')
+    if (!response.ok) {
+      throw new Error('Failed to getProfileImagesByUuid')
     }
-
-    return data.result
+    return await response.json()
   } catch (error) {
     console.error(error)
-    return []
+    return
   }
 }

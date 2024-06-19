@@ -8,6 +8,7 @@ import { RoomInfoType } from '@/types/ChatType'
 import MessageContainer from '@/containers/chat/MessageContainer'
 import SearchBox from '@/containers/chat/SearchBox'
 import OnlineFriends from '@/components/Friends/OnlineFriends'
+import { defaultImage } from '@/store/defaultState'
 
 // TODO: 친구 리스트 가져오기
 const tmpImage =
@@ -72,7 +73,7 @@ async function getRoomInfo(
 
   return {
     peerName: peerProfile?.nickname,
-    peerProfileImage: peerProfileImage?.profileImageUrl,
+    peerProfileImage: peerProfileImage?.result.profileImageUrl ?? defaultImage,
     recentMessage: recentMessage ?? undefined,
   }
 }

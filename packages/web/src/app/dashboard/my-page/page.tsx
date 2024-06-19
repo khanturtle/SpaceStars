@@ -67,7 +67,7 @@ export default async function page() {
       </div>
 
       <div>
-        회원 찾기
+        회원 찾기 테스트
         <SearchUserContainer accessToken={accessToken} />
       </div>
     </div>

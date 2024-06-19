@@ -25,8 +25,8 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
         const profileData = await getProfileByUuid(uuid, token)
         const profileImage = await getMainProfileImageByUuid(uuid, token)
 
-        setNickname(profileData?.nickname ?? 'user')
-        setProfileImage(profileImage?.profileImageUrl ?? '/defaultUrl')
+        setNickname(profileData?.result.nickname ?? 'user')
+        setProfileImage(profileImage?.result.profileImageUrl ?? '/defaultUrl')
       }
     }
     fetchData()

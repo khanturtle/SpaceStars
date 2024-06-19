@@ -9,6 +9,7 @@ import { SearchInput } from '@packages/ui'
 import { getUserByNickname } from '@/apis/member'
 import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
 import Link from 'next/link'
+import { defaultImage } from '@/store/defaultState'
 
 // TODO: 타입 수정
 export default function SearchUserContainer({
@@ -30,20 +31,49 @@ export default function SearchUserContainer({
   const searchUserByNickname = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // 해당 닉네임을 가진 회원의 UUID
-    const res1 = await getUserByNickname(value, accessToken)
+    // 해당 닉네임을 가진 회원의 UUID 찾기
+    const { result } = await getUserByNickname(value, accessToken)
+    console.log(result)
 
     // 회원 UUID로 대표 프로필 이미지 불러오기
-    if (res1.result) {
-      const targetUuid = res1.result.uuid
-      setTargetUuid(res1.result.uuid)
+    // if (res1.result) {
+    //   const targetUuid = res1.result.uuid
+    //   setTargetUuid(res1.result.uuid)
 
-      const res2 = await getMainProfileImageByUuid(targetUuid, accessToken)
-      setTargetNickname(value)
-      setTargetProfile(res2?.profileImageUrl ?? '')
-    } else {
-      setTargetNickname(res1.message)
-    }
+    //   const res2 = await getMainProfileImageByUuid(targetUuid, accessToken)
+    //   setTargetNickname(value)
+    //   setTargetProfile(res2?.result.profileImageUrl ?? '')
+    // } else {
+    //   setTargetNickname(res1.message)
+    // }
+
+    // try {
+    //   // 해당 닉네임을 가진 회원의 UUID 받아오기
+    //   const { result: uuidResult } = await getUserByNickname(value, accessToken)
+
+    //   if (uuidResult) {
+    //     const { uuid } = uuidResult
+
+    //     const { result: imageResult } = await getMainProfileImageByUuid(
+    //       uuid,
+    //       accessToken,
+    //     )
+
+    //     console.log(imageResult)
+
+    //     setTargetUuid(uuid)
+    //     setTargetNickname(value)
+
+    //     setTargetProfile(imageResult?.profileImageUrl || defaultImage)
+    //   } else {
+    //     setTargetNickname('')
+    //     setTargetProfile('')
+    //   }
+    // } catch (error) {
+    //   console.error('Error searching user by nickname:', error)
+    //   setTargetNickname('')
+    //   setTargetProfile('')
+    // }
   }
 
   /** 친구 모달 띄우기 */
