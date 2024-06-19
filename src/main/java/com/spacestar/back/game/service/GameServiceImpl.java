@@ -4,6 +4,7 @@ import com.spacestar.back.game.convertor.GameConvertor;
 import com.spacestar.back.game.dto.req.GameReqDto;
 import com.spacestar.back.game.dto.res.GameOptionResDto;
 import com.spacestar.back.game.dto.res.GameResDto;
+import com.spacestar.back.game.dto.res.GameResDto2;
 import com.spacestar.back.game.repository.GameRepository;
 import com.spacestar.back.gamegenre.domain.GameGenre;
 import com.spacestar.back.gamegenre.repository.GameGenreRepository;
@@ -49,7 +50,7 @@ private final GameGenreRepository gameGenreRepository;
     }
 
     @Override
-    public GameResDto getGame(Long gameId) {
+    public GameResDto2 getGame(Long gameId) {
         return gameRepository.findGame(gameId);
     }
 }

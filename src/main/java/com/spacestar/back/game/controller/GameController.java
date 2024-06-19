@@ -2,10 +2,12 @@ package com.spacestar.back.game.controller;
 
 import com.spacestar.back.game.dto.req.GameReqDto;
 import com.spacestar.back.game.dto.res.GameResDto;
+import com.spacestar.back.game.dto.res.GameResDto2;
 import com.spacestar.back.game.service.GameService;
 import com.spacestar.back.game.vo.req.GameReqVo;
 import com.spacestar.back.game.vo.res.GameOptionResVo;
 import com.spacestar.back.game.vo.res.GameResVo;
+import com.spacestar.back.game.vo.res.GameResVo2;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,9 +38,9 @@ public class GameController {
     }
     @Operation(summary = "게임 단건 조회")
     @GetMapping("/{gameId}")
-    public ResponseEntity<GameResVo> getGame(@PathVariable Long gameId) {
-        GameResDto gameResDto = gameService.getGame(gameId);
-        GameResVo gameResVo = modelMapper.map(gameResDto, GameResVo.class);
+    public ResponseEntity<GameResVo2> getGame(@PathVariable Long gameId) {
+        GameResDto2 gameResDto = gameService.getGame(gameId);
+        GameResVo2 gameResVo = modelMapper.map(gameResDto, GameResVo2.class);
 
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_SUCCESS, gameResVo);
