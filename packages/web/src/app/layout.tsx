@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { getServerSession } from 'next-auth'
+
 import { options } from './api/auth/[...nextauth]/options'
 
 import '@packages/ui/index.css'

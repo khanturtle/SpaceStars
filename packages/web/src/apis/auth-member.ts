@@ -18,7 +18,7 @@ export interface ProfileType {
 export async function getProfile(
   _token?: string,
 ): Promise<ProfileType | undefined> {
-  let token
+  let token: string | undefined
 
   if (_token) {
     token = _token

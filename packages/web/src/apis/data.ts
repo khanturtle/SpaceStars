@@ -1,7 +1,12 @@
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/data`
 
-// FIXME: token 없애면, 그대로 / 안되면, 추가하기
-export async function getMbtiList() {
+export interface MbtiType {
+  id: number
+  mbtiName: string
+}
+
+// FIXME: api 수정되면 확인
+export async function getMbtiList(): Promise<MbtiType[]> {
   try {
     const response = await fetch(`${BASE_URL}/mbti/list`)
     const data = await response.json()
@@ -12,6 +17,6 @@ export async function getMbtiList() {
     return data.result
   } catch (error) {
     console.error(error)
-    return false
+    return []
   }
 }

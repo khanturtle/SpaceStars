@@ -1,4 +1,8 @@
-import { Dispatch, SetStateAction, useEffect } from 'react'
+'use client'
+
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+
+import { getMbtiList, MbtiType } from '@/apis/data'
 
 import {
   Select,
@@ -7,28 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { getMbtiList } from '@/apis/data'
-
-// TODO: API 받아오기
-
-const MBTIOptions = [
-  { id: 1, value: 'ISTJ', label: 'ISTJ' },
-  { id: 2, value: 'ISFJ', label: 'ISFJ' },
-  { id: 3, value: 'INFJ', label: 'INFJ' },
-  { id: 4, value: 'INTJ', label: 'INTJ' },
-  { id: 5, value: 'ISTP', label: 'ISTP' },
-  { id: 6, value: 'ISFP', label: 'ISFP' },
-  { id: 7, value: 'INFP', label: 'INFP' },
-  { id: 8, value: 'INTP', label: 'INTP' },
-  { id: 9, value: 'ESTP', label: 'ESTP' },
-  { id: 10, value: 'ESFP', label: 'ESFP' },
-  { id: 11, value: 'ENFP', label: 'ENFP' },
-  { id: 12, value: 'ENTP', label: 'ENTP' },
-  { id: 13, value: 'ESTJ', label: 'ESTJ' },
-  { id: 14, value: 'ESFJ', label: 'ESFJ' },
-  { id: 15, value: 'ENFJ', label: 'ENFJ' },
-  { id: 16, value: 'ENTJ', label: 'ENTJ' },
-]
 
 export default function AdditionalMBTI({
   mbtiId,
@@ -37,6 +19,8 @@ export default function AdditionalMBTI({
   mbtiId: number | undefined
   setMbtiId: Dispatch<SetStateAction<number | undefined>>
 }) {
+  const [mbtiOptions, setMbtiOptions] = useState<MbtiType[]>([])
+
   const handleValueChange = (value: string) => {
     const mbtiIdToNumber = Number(value)
     setMbtiId(mbtiIdToNumber)
@@ -46,7 +30,7 @@ export default function AdditionalMBTI({
   useEffect(() => {
     const fetchData = async () => {
       const data = await getMbtiList()
-      console.log(data)
+      setMbtiOptions(data)
     }
 
     fetchData()
@@ -65,15 +49,16 @@ export default function AdditionalMBTI({
       </SelectTrigger>
 
       <SelectContent className="relative z-[9999] w-full h-[230px] bg-[white] border-none ">
-        {MBTIOptions.map((item) => (
-          <SelectItem
-            key={item.id}
-            value={item.id.toString()}
-            className="text-base not-italic font-normal leading-[170%] bg-[none] m-0"
-          >
-            {item.value}
-          </SelectItem>
-        ))}
+        {mbtiOptions &&
+          mbtiOptions.map((item) => (
+            <SelectItem
+              key={item.id}
+              value={item.id.toString()}
+              className="text-base not-italic font-normal leading-[170%] bg-[none] m-0"
+            >
+              {item.value}
+            </SelectItem>
+          ))}
       </SelectContent>
     </Select>
   )

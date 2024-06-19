@@ -1,4 +1,4 @@
-// FIXME: 동작X
+// FIXME: s3 업로드 서버로 수정 필요
 
 import { NextApiRequest, NextApiResponse } from 'next'
 
