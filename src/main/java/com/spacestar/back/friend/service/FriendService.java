@@ -2,6 +2,7 @@ package com.spacestar.back.friend.service;
 
 import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.FriendListResDto;
+import com.spacestar.back.friend.dto.res.FriendNowResDto;
 import com.spacestar.back.friend.dto.res.FriendRequestResDto;
 import com.spacestar.back.friend.dto.res.IsFriendResDto;
 
@@ -16,5 +17,9 @@ public interface FriendService {
 
     void rejectFriend(String uuid, FriendUuidReqDto friendUuidReqDto);
 
+    FriendNowResDto isFriendRequest(String uuid, String targetUuid);
+
+
     IsFriendResDto isFriend(String uuid, String targetUuid);
+
 }

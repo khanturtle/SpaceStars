@@ -4,6 +4,7 @@ import com.spacestar.back.friend.service.FriendService;
 import com.spacestar.back.friend.vo.req.FriendUuidReqVo;
 import com.spacestar.back.friend.vo.req.IsFriendResVo;
 import com.spacestar.back.friend.vo.res.FriendListResVo;
+import com.spacestar.back.friend.vo.res.FriendNowResVo;
 import com.spacestar.back.friend.vo.res.FriendRequestResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
@@ -87,5 +88,13 @@ public class FreindController {
                 mapper.map(friendService.isFriend(uuid, targetUuid), IsFriendResVo.class));
     }
 
+    @Operation(summary = "친구 회원 상호 상태 확인")
+    @GetMapping("/is-friend/request/{targetUuid}")
+    public ResponseEntity<FriendNowResVo> isFriendRequest(@RequestHeader("UUID") String uuid,
+                                                          @PathVariable String targetUuid) {
 
+        return new ResponseEntity<>(ResponseSuccess.FRIEND_NOW_SELECT_SUCCESS,
+                mapper.map(friendService.isFriendRequest(uuid, targetUuid), FriendNowResVo.class));
+
+    }
 }

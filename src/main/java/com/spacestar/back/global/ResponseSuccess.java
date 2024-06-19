@@ -31,6 +31,7 @@ public enum ResponseSuccess {
     FRIEND_ACCEPT_SUCCESS(200,"친구 요청 수락" ),
     FRIEND_REJECT_SUCCESS(200, "친구 요청 거절"),
     FRIEND_DELETE_SUCCESS(200,"친구 삭제 성공" ),
+    FRIEND_NOW_SELECT_SUCCESS(200,"친구 현재 상태 조회 성공" ),
     FRIEND_IS_FRIEND_SUCCESS(200,"친구 여부 조회 성공" ),
 
     //report
@@ -44,6 +45,7 @@ public enum ResponseSuccess {
 
     //select
     QUICK_MEMBER_INFO_SELECT_SUCCESS(200, "빠른 회원 정보 조회 성공");
+
 
 
 
