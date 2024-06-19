@@ -2,10 +2,3 @@
   display: flex;
   justify-content: space-evenly;
 }
-
-.d {
-  @apply flex flex-col justify-center gap-[100px];
-}
-.a {
-  @apply flex justify-center;
-}
