@@ -12,6 +12,7 @@ import com.spacestar.back.quickmatching.dto.res.AuthResDto;
 import com.spacestar.back.quickmatching.dto.res.ProfileResDto;
 import com.spacestar.back.quickmatching.feignClient.AuthClient;
 import com.spacestar.back.quickmatching.feignClient.ProfileClient;
+import com.spacestar.back.quickmatching.repository.MatchingScoresRepository;
 import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,6 +35,7 @@ import java.util.Set;
 public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final RedisTemplate<String, String> redisTemplate;
     private final QuickMatchingRepository quickMatchingRepository;
+    private final MatchingScoresRepository matchingScoresRepository;
     private final ObjectMapper objectMapper;
     //FeignClient
     private final ProfileClient profileClient;
@@ -64,7 +65,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 String matchMemberUuid = tuple.getValue();
                 score = calculateScore(uuid, matchMemberUuid);
                 score += (int) (System.currentTimeMillis() - tuple.getScore()) / 10000;
-                System.out.println("LocalDateTime.now() = " + LocalDateTime.now());
                 if (score > maxScore) {
                     maxScore = score;
                     if (maxScore >= 60) {
@@ -106,7 +106,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     private int genderScore(String myGender, String yourGender) {
-        System.out.println("myGender = " + myGender);
         int score = 0;
         if (myGender.equals("OTHERS") || yourGender.equals("OTHERS")) {
             return score;
@@ -120,7 +119,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private int ageScore(int myAge, int yourAge) {
         int maxScore = 24; // 최대 점수
         int ageDifference = Math.abs(myAge - yourAge); // 나이 차이
-        System.out.println("myAge = " + myAge);
         // 나이 차이가 0이면 최대 점수를 반환하고, 차이가 커질수록 점수가 줄어듭니다.
         // 예를 들어, 나이 차이가 1이면 44점, 차이가 2이면 40점 등으로 계산합니다.
         int score = maxScore - (ageDifference * 2);
@@ -318,165 +316,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
 
     public int mbtiScore(long myMbtiId, long yourMbtiId) {
-        System.out.println("myMbtiId = " + myMbtiId);
-        String myMbtiName = toMbtiName((int) myMbtiId);
-        String yourMbtiName = toMbtiName((int) yourMbtiId);
-        int score = 0;
-
-        switch (myMbtiName) {
-            case "INFP":
-                if (yourMbtiName.equals("ENFJ") || yourMbtiName.equals("ENTJ")) score = 20;
-                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("INTJ") ||
-                        yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP")) score = 16;
-                else score = 4;
-                break;
-            case "ENFP":
-                if (yourMbtiName.equals("ENFJ") || yourMbtiName.equals("ENTJ")) score = 20;
-                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("INTJ") ||
-                        yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP")) score = 16;
-                else score = 4;
-                break;
-            case "INFJ":
-                if (yourMbtiName.equals("ENFP") || yourMbtiName.equals("ENTP")) score = 20;
-                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("INTJ") ||
-                        yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP")) score = 16;
-                else score = 4;
-                break;
-            case "ENFJ":
-                if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ISFP")) score = 20;
-                else if (yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("INTJ") ||
-                        yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
-                    score = 16;
-                else score = 4;
-                break;
-            case "INTJ":
-                if (yourMbtiName.equals("ENFP") || yourMbtiName.equals("ENTP")) score = 20;
-                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("INTJ") ||
-                        yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
-                    score = 16;
-                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
-                    score = 12;
-                else score = 8;
-                break;
-            case "ENTJ":
-                if (yourMbtiName.equals("INFP") || yourMbtiName.equals("INTP")) score = 20;
-                else if (yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("INTJ") ||
-                        yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ENTP")) score = 16;
-                else score = 12;
-                break;
-            case "INTP":
-                if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ESTJ")) score = 20;
-                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ENFP") || yourMbtiName.equals("INFJ") || yourMbtiName.equals("ENFJ") ||
-                        yourMbtiName.equals("INTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
-                    score = 16;
-                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
-                    score = 12;
-                else score = 8;
-                break;
-            case "ENTP":
-                if (yourMbtiName.equals("INFJ") || yourMbtiName.equals("INTJ")) score = 20;
-                else if (yourMbtiName.equals("INFP") || yourMbtiName.equals("ENFP") || yourMbtiName.equals("ENFJ") || yourMbtiName.equals("ENTJ") ||
-                        yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP")) score = 16;
-                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
-                    score = 12;
-                else score = 8;
-                break;
-            case "ISFP":
-                if (yourMbtiName.equals("ENFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ESTJ"))
-                    score = 20;
-                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP") ||
-                        yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ISTJ")) score = 12;
-                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
-                    score = 8;
-                else score = 4;
-                break;
-            case "ESFP":
-                if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ISTJ")) score = 20;
-                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP") ||
-                        yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ESTJ")) score = 12;
-                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
-                    score = 8;
-                else score = 4;
-                break;
-            case "ISTP":
-                if (yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ESTJ")) score = 20;
-                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP") ||
-                        yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ISTJ")) score = 12;
-                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
-                    score = 8;
-                else score = 4;
-                break;
-            case "ESTP":
-                if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ISTJ")) score = 20;
-                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP") ||
-                        yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ESTJ")) score = 12;
-                else if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("ESTP"))
-                    score = 8;
-                else score = 4;
-                break;
-            case "ISFJ":
-                if (yourMbtiName.equals("ESFP") || yourMbtiName.equals("ESTP")) score = 20;
-                else if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ISTJ") || yourMbtiName.equals("ESTJ"))
-                    score = 16;
-                else if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ISFP") || yourMbtiName.equals("ISTP"))
-                    score = 12;
-                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
-                    score = 8;
-                else score = 4;
-                break;
-            case "ESFJ":
-                if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ISTP")) score = 20;
-                else if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ISTJ") || yourMbtiName.equals("ESTJ"))
-                    score = 16;
-                else if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ESTP"))
-                    score = 12;
-                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
-                    score = 8;
-                else score = 4;
-                break;
-            case "ISTJ":
-                if (yourMbtiName.equals("ESFP") || yourMbtiName.equals("ESTP")) score = 20;
-                else if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ISTJ") || yourMbtiName.equals("ESTJ"))
-                    score = 16;
-                else if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ISFP") || yourMbtiName.equals("ISTP"))
-                    score = 12;
-                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("INTP") || yourMbtiName.equals("ENTP"))
-                    score = 8;
-                else score = 4;
-                break;
-            case "ESTJ":
-                if (yourMbtiName.equals("ISFP") || yourMbtiName.equals("ISTP") || yourMbtiName.equals("INTP"))
-                    score = 20;
-                else if (yourMbtiName.equals("ISFJ") || yourMbtiName.equals("ESFJ") || yourMbtiName.equals("ISTJ") || yourMbtiName.equals("ESTJ"))
-                    score = 16;
-                else if (yourMbtiName.equals("ENTJ") || yourMbtiName.equals("ESFP") || yourMbtiName.equals("ESTP"))
-                    score = 12;
-                else if (yourMbtiName.equals("INTJ") || yourMbtiName.equals("ENTP")) score += 8;
-                else score = 4;
-                break;
-        }
-        return score;
-    }
-
-    private String toMbtiName(int mbtiID) {
-        return switch (mbtiID) {
-            case 1 -> "ISTJ";
-            case 2 -> "ISFJ";
-            case 3 -> "INFJ";
-            case 4 -> "INTJ";
-            case 5 -> "ISTP";
-            case 6 -> "ISFP";
-            case 7 -> "INFP";
-            case 8 -> "INTP";
-            case 9 -> "ESTP";
-            case 10 -> "ESFP";
-            case 11 -> "ENFP";
-            case 12 -> "ENTP";
-            case 13 -> "ESTJ";
-            case 14 -> "ESFJ";
-            case 15 -> "ENFJ";
-            case 16 -> "ENTJ";
-            default -> null;
-        };
+        return matchingScoresRepository.getScore(myMbtiId, yourMbtiId);
     }
 }
