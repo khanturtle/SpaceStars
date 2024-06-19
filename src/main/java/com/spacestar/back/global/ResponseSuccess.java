@@ -33,6 +33,7 @@ public enum ResponseSuccess {
     FRIEND_DELETE_SUCCESS(200,"친구 삭제 성공" ),
     FRIEND_NOW_SELECT_SUCCESS(200,"친구 현재 상태 조회 성공" ),
     FRIEND_IS_FRIEND_SUCCESS(200,"친구 여부 조회 성공" ),
+    FRIEND_SEND_SELECT_SUCCESS(200,"보낸 친구 요청 목록 조회 성공" ),
 
     //report
     REPORT_ADD_SUCCESS(HttpStatus.OK.value(),"신고 성공"),

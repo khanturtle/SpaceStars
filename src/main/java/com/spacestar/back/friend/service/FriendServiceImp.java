@@ -2,10 +2,7 @@ package com.spacestar.back.friend.service;
 
 import com.spacestar.back.friend.domain.Friend;
 import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
-import com.spacestar.back.friend.dto.res.FriendListResDto;
-import com.spacestar.back.friend.dto.res.FriendNowResDto;
-import com.spacestar.back.friend.dto.res.FriendRequestResDto;
-import com.spacestar.back.friend.dto.res.IsFriendResDto;
+import com.spacestar.back.friend.dto.res.*;
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
 import com.spacestar.back.global.GlobalException;
@@ -173,6 +170,24 @@ public class FriendServiceImp implements FriendService {
                     .build();
         }
 
+
+    }
+
+    @Override
+    public FriendSendResDto getFriendSendList(String uuid) {
+
+        List<Friend> friendList = friendRepository.findByUuid(uuid);
+        List<String> friendSendUuidList = new ArrayList<>();
+
+        for (Friend friend : friendList){
+            // 내가 보낸 요청만
+            if (friend.getFriendType() == SENDER)
+                friendSendUuidList.add(friend.getFriendUuid());
+        }
+
+        return FriendSendResDto.builder()
+                .friendSendUuidList(friendSendUuidList)
+                .build();
 
     }
 }

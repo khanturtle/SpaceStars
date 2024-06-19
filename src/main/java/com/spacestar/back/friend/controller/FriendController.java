@@ -6,6 +6,7 @@ import com.spacestar.back.friend.vo.req.IsFriendResVo;
 import com.spacestar.back.friend.vo.res.FriendListResVo;
 import com.spacestar.back.friend.vo.res.FriendNowResVo;
 import com.spacestar.back.friend.vo.res.FriendRequestResVo;
+import com.spacestar.back.friend.vo.res.FriendSendResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -96,5 +97,13 @@ public class FriendController {
         return new ResponseEntity<>(ResponseSuccess.FRIEND_NOW_SELECT_SUCCESS,
                 mapper.map(friendService.isFriendRequest(uuid, targetUuid), FriendNowResVo.class));
 
+    }
+
+    @Operation(summary = "내가 보낸 친구 요청 목록")
+    @GetMapping("/request/send")
+    public ResponseEntity<FriendSendResVo> getFriendSendList(@RequestHeader("UUID") String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.FRIEND_SEND_SELECT_SUCCESS,
+                mapper.map(friendService.getFriendSendList(uuid), FriendSendResVo.class));
     }
 }
