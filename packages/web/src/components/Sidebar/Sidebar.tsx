@@ -22,6 +22,11 @@ const SIDE_LINK = [
     title: '채팅',
     href: '/dashboard/chat',
   },
+  {
+    index: 4,
+    title: '추천 친구',
+    href: '/dashboard/swipe',
+  },
 ]
 
 const SideBarItem = ({ item }: { item: any }) => {
