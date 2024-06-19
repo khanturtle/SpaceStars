@@ -1,7 +1,7 @@
 import { getProfileByUuid } from '@/apis/getAuth'
 import { getChatRooms, getRecentMessage } from '@/apis/chat'
 import { TmpFriendType } from '@/apis/getFriends'
-import { getMainProfileImgByUuid } from '@/apis/getProfileImage'
+import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
 
 import { RoomInfoType } from '@/types/ChatType'
 
@@ -58,7 +58,7 @@ async function getRoomInfo(
 ): Promise<RoomInfoType> {
   // 상대방 이름 / 메인 프로필 사진
   const peerProfileData = getProfileByUuid(peerUuid)
-  const peerProfileImageData = getMainProfileImgByUuid(peerUuid)
+  const peerProfileImageData = getMainProfileImageByUuid(peerUuid)
 
   // 최근 메시지 static 조회
   const recentMessageData = getRecentMessage(roomNumber)

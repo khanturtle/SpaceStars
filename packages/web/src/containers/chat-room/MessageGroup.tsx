@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 
 import { useEffect, useState } from 'react'
 
-import { getMainProfileImgByUuid } from '@/apis/getProfileImage'
+import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
 import { getProfileByUuid } from '@/apis/getAuth'
 
 import { ChatMessageType } from '@/types/ChatType'
@@ -23,7 +23,7 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
       if (session) {
         const token = session?.user?.data.accessToken
         const profileData = await getProfileByUuid(uuid, token)
-        const profileImage = await getMainProfileImgByUuid(uuid, token)
+        const profileImage = await getMainProfileImageByUuid(uuid, token)
 
         setNickname(profileData?.nickname ?? 'user')
         setProfileImage(profileImage?.profileImageUrl ?? '/defaultUrl')

@@ -1,12 +1,12 @@
 import { getIsFriend } from '@/apis/getFriends'
-import { getMainProfileImgByUuid } from '@/apis/getProfileImage'
+import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
 import Modal from '@/components/modal/modal'
 import ProfileLayout from '@/containers/profile-modal/profileLayout'
 
 // TODO: 모달로 이동
 async function getAllProfileData(uuid: string) {
   // 대표 프로필 사진
-  const mainProfileData = getMainProfileImgByUuid(uuid)
+  const mainProfileData = getMainProfileImageByUuid(uuid)
 
   // 친구 여부 확인
   const isFriendData = getIsFriend(uuid)

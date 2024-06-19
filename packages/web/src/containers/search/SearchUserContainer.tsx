@@ -7,7 +7,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { SearchInput } from '@packages/ui'
 
 import { getUserByNickname } from '@/apis/member'
-import { getMainProfileImgByUuid } from '@/apis/getProfileImage'
+import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
 import Link from 'next/link'
 
 // TODO: 타입 수정
@@ -38,7 +38,7 @@ export default function SearchUserContainer({
       const targetUuid = res1.result.uuid
       setTargetUuid(res1.result.uuid)
 
-      const res2 = await getMainProfileImgByUuid(targetUuid, accessToken)
+      const res2 = await getMainProfileImageByUuid(targetUuid, accessToken)
       setTargetNickname(value)
       setTargetProfile(res2?.profileImageUrl ?? '')
     } else {

@@ -9,13 +9,15 @@ import '@/styles/globals.css'
 import '@/styles/fonts.css'
 import '@/styles/colors.css'
 
-import { getMainProfileImg } from '@/apis/getProfileImage'
+import { getMainProfileImage } from '@/apis/getProfileImage'
 
 import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
 import WebSocketProvider from '@/components/providers/socket-provider'
 import { ToastProvider } from '@/components/Toast/toast'
+
+import { defaultImage } from '@/store/defaultState'
 
 export const metadata: Metadata = {
   title: '우주별: 우리 주변의 별별 사람들',
@@ -52,7 +54,11 @@ export default async function RootLayout({
 }>) {
   // 대표 프로필 받아오기
   const session = await getServerSession(options)
-  const profileImageUrl = await getMainProfileImg()
+  const profileMainImageData = await getMainProfileImage()
+
+  const profileImageUrl = profileMainImageData
+    ? profileMainImageData.result.profileImageUrl
+    : defaultImage
 
   return (
     <html lang="ko">

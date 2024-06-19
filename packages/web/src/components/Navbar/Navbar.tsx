@@ -1,9 +1,10 @@
-import { Session } from 'next-auth'
 import Link from 'next/link'
+
+import { Session } from 'next-auth'
 
 import { Avatar, LogoIcon, LogoName } from '@packages/ui'
 
-import { ProfileImageType } from '@/apis/getProfileImage'
+import { defaultImage } from '@/store/defaultState'
 
 import { LoginButton } from './NavbarItem'
 
@@ -18,12 +19,8 @@ export default function Navbar({
   profileImageUrl,
 }: {
   session: Session | null
-  profileImageUrl: ProfileImageType | undefined
+  profileImageUrl: string | null
 }) {
-  const profileImage = profileImageUrl
-    ? profileImageUrl.profileImageUrl
-    : '/images/default-image.jpg'
-
   return (
     <header>
       <nav className="h-[100px] w-full flex flex-row items-center bg-[color:var(--White-50,#fff)] sticky z-[1000] px-[54px] py-5 border-b-[#ddd] border-b border-solid left-0 top-0">
@@ -47,7 +44,7 @@ export default function Navbar({
         <NavRightBox>
           {session?.user ? (
             <Link href="/dashboard/my-page">
-              <Avatar image_url={profileImage} />
+              <Avatar image_url={profileImageUrl ?? defaultImage} />
             </Link>
           ) : (
             <LoginButton />

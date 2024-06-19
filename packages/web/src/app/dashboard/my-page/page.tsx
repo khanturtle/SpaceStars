@@ -3,10 +3,11 @@ import { getServerSession } from 'next-auth'
 
 import { getAuthProfile } from '@/apis/getAuth'
 import { getLikedGame, getPlayGame, getProfileInfo } from '@/apis/getProfile'
-import { getMainProfileImg, getProfileImages } from '@/apis/getProfileImage'
+import { getMainProfileImage, getProfileImages } from '@/apis/getProfileImage'
 import ProfileImageUpload from '@/containers/my-page/ProfileImageUpload'
 import Image from 'next/image'
 import SearchUserContainer from '@/containers/search/SearchUserContainer'
+import { defaultImage } from '@/store/defaultState'
 
 async function getMyProfile(accessToken: string) {
   const authProfileData = getAuthProfile()
@@ -14,21 +15,33 @@ async function getMyProfile(accessToken: string) {
   const playGameData = getPlayGame(accessToken)
   const likedGameIdsData = getLikedGame(accessToken)
 
+  const mainProfileImageData = getMainProfileImage()
+
   const [result] = await Promise.all([
     Promise.all([
       authProfileData,
       profileInfoData,
       playGameData,
       likedGameIdsData,
-    ]).then(([authProfile, profileInfo, playGame, likedGameIds]) => ({
-      authProfile: { ...authProfile?.result },
-      profileInfo: { ...profileInfo?.result },
-      playGames: playGame?.result,
-      likedGameIds: likedGameIds?.result.likedGameIdList,
-    })),
+      mainProfileImageData,
+    ]).then(
+      ([
+        authProfile,
+        profileInfo,
+        playGame,
+        likedGameIds,
+        mainProfileImage,
+      ]) => ({
+        authProfile: { ...authProfile?.result },
+        profileInfo: { ...profileInfo?.result },
+        playGames: playGame?.result,
+        likedGameIds: likedGameIds?.result.likedGameIdList,
+        mainProfileImage:
+          mainProfileImage?.result?.profileImageUrl ?? defaultImage,
+      }),
+    ),
   ])
 
-  // console.log(result)
   return result
 }
 
@@ -38,7 +51,6 @@ export default async function page() {
 
   const profileAll = await getMyProfile(accessToken)
 
-  const mainProfileImg = await getMainProfileImg()
   const profileImages = await getProfileImages()
 
   const defaultImage = '/images/default-images.jpg'
@@ -48,7 +60,6 @@ export default async function page() {
     <div>
       {JSON.stringify(profileAll)}
       <hr />
-      <div>대표 프로필: {JSON.stringify(mainProfileImg)}</div>
       <div>
         프로필들: {JSON.stringify(profileImages)}
         {profileImages.map((item) => (

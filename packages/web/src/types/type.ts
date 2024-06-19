@@ -17,7 +17,6 @@ export interface MainGameType {
   gameNickname: number | null
   main: boolean
 }
-
 export interface ProfileInfoType {
   introduction: string | null
   gamePreferenceId: number | null
@@ -26,11 +25,20 @@ export interface ProfileInfoType {
   reportCount: number
   swipe: boolean
 }
-
 export interface PlayGameType extends MainGameType {
   index: number
 }
-
 export interface LikedGameIdType {
   likedGameIdList: number[]
 }
+// Profile
+
+// ProfileImage
+export interface ProfileImageType {
+  profileImageUrl: string | null
+}
+export interface ProfileImagesType extends ProfileImageType {
+  index: number
+  mainImage: boolean
+}
+// ProfileImage

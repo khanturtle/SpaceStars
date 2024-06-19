@@ -1,22 +1,20 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
+import { ApiResponseType, ProfileImageType } from '@/types/type'
 
-const ProfileImg_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/profile/image`
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/profile/image`
 
-export interface ProfileImageType {
-  profileImageUrl: string | null
-}
 export interface ProfileImagesType extends ProfileImageType {
   index: number
   mainImage: boolean
 }
 
 /** 대표 프로필 조회 - 나 */
-export async function getMainProfileImg(
+export async function getMainProfileImage(
   _token?: string,
-): Promise<ProfileImageType | undefined> {
-  let token
+): Promise<(ApiResponseType & { result: ProfileImageType }) | undefined> {
+  let token = ''
 
   if (_token) {
     token = _token
@@ -24,27 +22,24 @@ export async function getMainProfileImg(
     const session = await getServerSession(options)
     token = session?.user?.data.accessToken
   }
-  if (!token) return undefined
 
   try {
-    const response = await fetch(`${ProfileImg_BASE_URL}/main`, {
+    const response = await fetch(`${BASE_URL}/main`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
       },
     })
-    const data = await response.json()
-
-    if (!data) {
-      throw new Error('Failed to get main profileImage')
+    if (!response.ok) {
+      throw new Error('Failed to getMainProfileImage')
     }
-
-    return data.result
+    return await response.json()
   } catch (error) {
     console.error(error)
     return undefined
   }
 }
+
 /** 프로필 리스트 조회 - 나 */
 export async function getProfileImages(
   _token?: string,
@@ -59,7 +54,7 @@ export async function getProfileImages(
   }
 
   try {
-    const response = await fetch(`${ProfileImg_BASE_URL}`, {
+    const response = await fetch(`${BASE_URL}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
@@ -70,11 +65,10 @@ export async function getProfileImages(
     })
     const data = await response.json()
 
-    if (data.code !== 200) {
-      throw new Error('Failed to get profileImages')
+    if (!response.ok) {
+      throw new Error('Failed to getProfileImages')
     }
-
-    return data.result
+    return await response.json()
   } catch (error) {
     console.error(error)
     return []
@@ -82,7 +76,7 @@ export async function getProfileImages(
 }
 
 /** 대표 프로필 조회 - UUID */
-export async function getMainProfileImgByUuid(
+export async function getMainProfileImageByUuid(
   uuid: string,
   _token?: string,
 ): Promise<ProfileImageType | undefined | null> {
@@ -98,7 +92,7 @@ export async function getMainProfileImgByUuid(
   if (!token) return undefined
 
   try {
-    const response = await fetch(`${ProfileImg_BASE_URL}/main/${uuid}`, {
+    const response = await fetch(`${BASE_URL}/main/${uuid}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
@@ -129,7 +123,7 @@ export async function getProfileImagesByUuid(
   }
 
   try {
-    const response = await fetch(`${ProfileImg_BASE_URL}/${uuid}`, {
+    const response = await fetch(`${BASE_URL}/${uuid}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
