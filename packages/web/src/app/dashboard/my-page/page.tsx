@@ -9,7 +9,7 @@ import ProfileImageUpload from '@/containers/my-page/ProfileImageUpload'
 import SearchUserContainer from '@/containers/search/SearchUserContainer'
 import { defaultImage } from '@/store/defaultState'
 
-async function getMyProfile(accessToken: string) {
+async function getAllProfileData(accessToken: string) {
   const authProfileData = getAuthProfile()
   const profileInfoData = getProfileInfo()
 
@@ -54,7 +54,7 @@ export default async function page() {
   const session = await getServerSession(options)
   const { accessToken } = session?.user?.data || {}
 
-  const profileAll = await getMyProfile(accessToken)
+  const profileAll = await getAllProfileData(accessToken)
 
   // TODO:
   return (

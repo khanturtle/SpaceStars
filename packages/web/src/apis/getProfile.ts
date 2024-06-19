@@ -14,8 +14,17 @@ const MEMBER_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/profile`
 
 /** 로그인 시, 대표게임 유무 확인하기 */
 export async function getMainGame(
-  token: string,
+  _token?: string,
 ): Promise<(ApiResponseType & { result: MainGameType }) | undefined> {
+  let token = ''
+
+  if (_token) {
+    token = _token
+  } else {
+    const session = await getServerSession(options)
+    token = session?.user?.data.accessToken
+  }
+
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/main-game`, {
       method: 'GET',
@@ -31,7 +40,7 @@ export async function getMainGame(
     return await response.json()
   } catch (e) {
     console.error(e)
-    return undefined
+    return
   }
 }
 
@@ -62,13 +71,23 @@ export async function getProfileInfo(
     return await response.json()
   } catch (e) {
     console.error(e)
-    return undefined
+    return
   }
 }
+
 /** 내가 하는 게임 조회 - 나 */
 export async function getPlayGame(
-  token: string,
+  _token?: string,
 ): Promise<(ApiResponseType & { result: PlayGameType[] }) | undefined> {
+  let token = ''
+
+  if (_token) {
+    token = _token
+  } else {
+    const session = await getServerSession(options)
+    token = session?.user?.data.accessToken
+  }
+
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/play-game`, {
       method: 'GET',
@@ -83,14 +102,23 @@ export async function getPlayGame(
     return await response.json()
   } catch (e) {
     console.error(e)
-    return undefined
+    return
   }
 }
 
 /** 좋아하는 게임 조회 - 나 */
 export async function getLikedGame(
-  token: string,
+  _token?: string,
 ): Promise<(ApiResponseType & { result: LikedGameIdType }) | undefined> {
+  let token = ''
+
+  if (_token) {
+    token = _token
+  } else {
+    const session = await getServerSession(options)
+    token = session?.user?.data.accessToken
+  }
+
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/liked-game`, {
       method: 'GET',
@@ -105,6 +133,6 @@ export async function getLikedGame(
     return await response.json()
   } catch (e) {
     console.error(e)
-    return undefined
+    return
   }
 }

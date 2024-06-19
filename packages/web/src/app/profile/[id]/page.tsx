@@ -17,13 +17,11 @@ import { defaultImage } from '@/store/defaultState'
 
 /** uuid로 모든 정보 받아오기 */
 async function getAllProfileDataByUuid(uuid: string) {
-  // 회원 정보
   const authProfileData = getProfileByUuid(uuid)
   const profileInfoData = getProfileInfoByUuid(uuid)
   const playGameData = getPlayGameByUuid(uuid)
   const likedGameIdsData = getLikedGameByUuid(uuid)
 
-  // 대표 프로필 사진
   const mainProfileImageData = getMainProfileImageByUuid(uuid)
   const profileImagesData = getProfileImagesByUuid(uuid)
 
