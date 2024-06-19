@@ -1,6 +1,6 @@
 package com.spacestar.back.friend.dto.res;
 
-import com.spacestar.back.friend.enums.FriendNowType;
+import com.spacestar.back.friend.enums.FriendType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FriendNowResDto {
 
-    private FriendNowType friendType;
+    private FriendType friendType;
 }

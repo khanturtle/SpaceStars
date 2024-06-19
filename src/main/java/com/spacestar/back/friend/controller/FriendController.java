@@ -21,7 +21,7 @@ import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 @Tag(name = "Friend", description = "친구")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/friend")
-public class FreindController {
+public class FriendController {
 
     private final FriendService friendService;
     private final ModelMapper mapper;

@@ -5,7 +5,6 @@ import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.FriendListResDto;
 import com.spacestar.back.friend.dto.res.FriendNowResDto;
 import com.spacestar.back.friend.dto.res.FriendRequestResDto;
-import com.spacestar.back.friend.enums.FriendNowType;
 import com.spacestar.back.friend.dto.res.IsFriendResDto;
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.spacestar.back.friend.enums.FriendType.FRIEND;
+import static com.spacestar.back.friend.enums.FriendType.*;
 
 @Service
 @Slf4j
@@ -39,7 +38,7 @@ public class FriendServiceImp implements FriendService {
         } else {
             //내가 친구 신청
             Friend me = Friend.builder()
-                    .friendType(FriendType.SENDER)
+                    .friendType(SENDER)
                     .uuid(uuid)
                     .friendUuid(friendUuidReqDto.getFriendUuid())
                     .build();
@@ -139,17 +138,23 @@ public class FriendServiceImp implements FriendService {
 
         if (friend == null) {
             return FriendNowResDto.builder()
-                    .friendType(FriendNowType.NONE)
+                    .friendType(NONE)
                     .build();
         }
 
-        if (friend.getFriendType() == FRIEND) {
+        else if (friend.getFriendType() == FRIEND) {
             return FriendNowResDto.builder()
-                    .friendType(FriendNowType.FRIEND)
+                    .friendType(FriendType.FRIEND)
                     .build();
+
+        } else if (friend.getFriendType() == SENDER) {
+            return FriendNowResDto.builder()
+                    .friendType(FriendType.SENDER)
+                    .build();
+
         }
         return FriendNowResDto.builder()
-                .friendType(FriendNowType.WAIT)
+                .friendType(FriendType.RECEIVER)
                 .build();
     }
 

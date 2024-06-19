@@ -4,5 +4,6 @@ public enum FriendType {
 
     FRIEND,
     SENDER,
-    RECEIVER
+    RECEIVER,
+    NONE
 }
