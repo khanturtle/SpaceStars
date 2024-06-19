@@ -11,8 +11,7 @@ export default function SearchUserBox() {
   const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
 
-    const res = await getUserByNickname(e.target.value)
-    console.log(res)
+    // const res = await getUserByNickname(e.target.value)
   }
 
   return (
