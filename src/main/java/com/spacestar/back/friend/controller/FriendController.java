@@ -79,7 +79,7 @@ public class FriendController {
     }
 
     @Operation(summary = "친구 삭제")
-    @DeleteMapping("/")
+    @DeleteMapping
     public ResponseEntity<Void> deleteFriend(@RequestHeader("UUID") String uuid,
                                              @RequestBody FriendUuidReqVo friendUuidReqVo) {
         friendService.rejectFriend(uuid, mapper.map(friendUuidReqVo, FriendUuidReqDto.class));
