@@ -1,21 +1,15 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
-import { ApiResponseType } from '@/types/type'
+import { ApiResponseType, FriendType } from '@/types/type'
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/friend`
 
-export interface IsFriendType extends ApiResponseType {
-  result: {
-    isFriend: boolean
-  }
-}
-
-/** 친구 여부 조회 */
-export async function getIsFriend(
+/** 회원 상호 상태 조회 */
+export async function getFriendType(
   uuid: string,
   _token?: string,
-): Promise<IsFriendType | undefined> {
+): Promise<(ApiResponseType & { result: FriendType }) | undefined> {
   let token
 
   if (_token) {
@@ -24,10 +18,9 @@ export async function getIsFriend(
     const session = await getServerSession(options)
     token = session?.user?.data.accessToken
   }
-  if (!token) return undefined
 
   try {
-    const response = await fetch(`${BASE_URL}/is-friend/${uuid}`, {
+    const response = await fetch(`${BASE_URL}/is-friend/request/${uuid}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
@@ -42,7 +35,7 @@ export async function getIsFriend(
     return data
   } catch (error) {
     console.error(error)
-    return undefined
+    return
   }
 }
 

@@ -7,7 +7,7 @@ export interface ApiTokenErrorType {
   error: string
 }
 
-// auth
+// --auth
 export interface ProfileType {
   email: string
   nickname: string
@@ -17,9 +17,9 @@ export interface ProfileType {
   createdAt: string
   updatedAt: string
 }
-// auth
+// auth--
 
-// Profile
+// --Profile
 export interface MainGameType {
   gameId: number | null
   tierId: number | null
@@ -43,9 +43,9 @@ export interface PlayGameType extends MainGameType {
 export interface LikedGameIdType {
   likedGameIdList: number[]
 }
-// Profile
+// Profile--
 
-// ProfileImage
+// --ProfileImage
 export interface ProfileImageType {
   profileImageUrl: string | null
 }
@@ -53,8 +53,13 @@ export interface ProfileImagesType extends ProfileImageType {
   index: number
   mainImage: boolean
 }
-// ProfileImage
+// ProfileImage--
 
-// member
+// --member
+// member--
 
-// member
+// --friend
+export type FriendType = {
+  friendType: 'FRIEND' | 'SENDER' | 'RECEIVER' | 'NONE'
+}
+// friend--
