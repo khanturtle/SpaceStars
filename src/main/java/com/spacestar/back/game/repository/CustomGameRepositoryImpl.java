@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.spacestar.back.game.domain.QGame;
 import com.spacestar.back.game.dto.res.GameOptionResDto;
 import com.spacestar.back.game.dto.res.GameResDto;
+import com.spacestar.back.game.dto.res.GameResDto2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -58,5 +59,20 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
                 .from(qGame)
                 .where(qGame.id.eq(gameId))
                 .fetchOne());
+    }
+
+    @Override
+    public GameResDto2 findGame(Long gameId) {
+        QGame qGame = QGame.game;
+
+        return query.select(Projections.constructor(GameResDto2.class,
+                        qGame.name,
+                        qGame.gameImage,
+                        qGame.nameKor,
+                        qGame.gameLogoImage,
+                        qGame.id))
+                .from(qGame)
+                .where(qGame.id.eq(gameId))
+                .fetchOne();
     }
 }
