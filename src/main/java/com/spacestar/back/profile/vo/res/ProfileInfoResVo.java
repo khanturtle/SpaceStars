@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class ProfileInfoResVo {
 
-    private String introduce;
+    private String introduction;
     private Long gamePreferenceId;
     private Long mbtiId;
     private Long exp;

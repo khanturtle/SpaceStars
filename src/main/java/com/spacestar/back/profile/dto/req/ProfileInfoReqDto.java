@@ -20,6 +20,7 @@ public class ProfileInfoReqDto {
 
     private String introduction;
     private Long mbtiId;
+    private boolean swipe;
 
     public static Profile updateProfileInfo(Profile profile, ProfileInfoReqDto profileInfoReqDto) {
 
@@ -31,6 +32,7 @@ public class ProfileInfoReqDto {
                 .mbtiId(profileInfoReqDto.getMbtiId())
                 .exp(profile.getExp())
                 .reportCount(profile.getReportCount())
+                .swipe(profileInfoReqDto.isSwipe())
                 .build();
     }
 }

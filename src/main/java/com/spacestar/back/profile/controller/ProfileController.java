@@ -203,16 +203,7 @@ public class ProfileController {
         return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_SELECT_SUCCESS,
                 mapper.map(profileService.findSwipeRecommend(uuid), ProfileSwipeResVo.class));
     }
-
-    @Tag(name = "Profile", description = "프로필")
-    @Operation(summary = "스와이프 추천 여부 변경")
-    @PatchMapping("/swipe/recommend")
-    public ResponseEntity<Void> swipeRecommendUpdate(@RequestHeader("UUID") String uuid,
-                                                     @RequestBody ProfileSwipeResVo profileSwipeResVo) {
-
-        profileService.updateSwipeRecommend(uuid, mapper.map(profileSwipeResVo, ProfileSwipeResDto.class));
-        return new ResponseEntity<>(ResponseSuccess.SWIPE_RECOMMEND_UPDATE_SUCCESS);
-    }
+    
 
     @Tag(name = "Profile", description = "프로필")
     @Operation(summary = "대표 게임 id 조회")

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProfileInfoResDto {
 
-    private String introduce;
+    private String introduction;
     private Long gamePreferenceId;
     private Long mbtiId;
     private Long exp;
@@ -22,7 +22,7 @@ public class ProfileInfoResDto {
     public static ProfileInfoResDto toDto(Profile profile) {
 
         return ProfileInfoResDto.builder()
-                .introduce(profile.getIntroduce())
+                .introduction(profile.getIntroduce())
                 .gamePreferenceId(profile.getGamePreferenceId())
                 .mbtiId(profile.getMbtiId())
                 .exp(profile.getExp())
