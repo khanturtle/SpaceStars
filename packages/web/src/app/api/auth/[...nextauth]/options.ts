@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import { getMainProfileImg } from '@/apis/profileImage'
 import { NextAuthOptions } from 'next-auth'
 import KakaoProvider from 'next-auth/providers/kakao'
 
@@ -26,7 +27,9 @@ export const options: NextAuthOptions = {
 
       // 회원이면, 회원 정보 저장 및 로그인
       if (res.code === 200) {
+        // 회원 정보 저장
         user.data = res.result
+
         return true
       }
       /** 회원이 아니면, 회원가입 페이지로 이동
@@ -36,8 +39,6 @@ export const options: NextAuthOptions = {
         const kakaoProfile = {
           email: profile?.kakao_account?.email as string,
           nickname: profile?.kakao_account?.profile?.nickname as string,
-          profileImage: profile?.kakao_account?.profile
-            ?.profile_image_url as string,
         }
 
         // throw new Error('UserSignUpRequired')
@@ -47,7 +48,7 @@ export const options: NextAuthOptions = {
 
       throw new Error('API Request Failed')
     },
-    // TODO: 백엔드 엑세스토큰이랑 만료시간 맞춰서 로그아웃 또는 세션 연장 처리
+    // 백엔드 엑세스토큰이랑 만료시간 맞춰서 로그아웃 또는 세션 처리
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.data = {
@@ -61,7 +62,6 @@ export const options: NextAuthOptions = {
     },
     async session({ session, token }) {
       session.user = {
-        picture: token.picture,
         data: token.data || {},
         ...session.user,
       }

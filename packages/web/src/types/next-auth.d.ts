@@ -3,7 +3,6 @@ import { DefaultSession, DefaultUser, DefaultProfile } from 'next-auth'
 declare module 'next-auth' {
   interface Session {
     user?: {
-      picture?: string | null
       data: {
         [key: string]: any
       }

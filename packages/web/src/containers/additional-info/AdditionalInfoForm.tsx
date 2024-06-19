@@ -2,25 +2,30 @@
 
 import { useSearchParams } from 'next/navigation'
 
+import { signIn } from 'next-auth/react'
+
 import { ChangeEvent, useEffect, useState } from 'react'
+import { useFormState } from 'react-dom'
 
 import { Button, Checkbox, Input, Select } from '@packages/ui'
-import { signIn } from 'next-auth/react'
-import { useFormState } from 'react-dom'
 
 import { checkNickname } from '@/apis/auth'
 import { createUser } from '@/apis/createUser'
+
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
+import { createProfileImage } from '@/apis/createProfileImage'
+import { AuthType } from '@/types/AuthType'
+import { createNewProfile } from '@/apis/profile'
 
 // MALE,FEMALE,OTHER
-const genderOptions = [
+export const genderList = [
   { value: 'MALE', label: '남자' },
   { value: 'FEMALE', label: '여자' },
-  { value: 'OTHER', label: '비공개' },
+  { value: 'OTHER', label: '기타' },
 ]
 
-/** 닉네임 중복검사 */
+/** 닉네임 입력창 */
 const NicknameInput = ({
   value,
   onChange,
@@ -53,11 +58,7 @@ const NicknameInput = ({
   )
 }
 
-const initialState = {
-  status: 0,
-  message: '',
-}
-
+// TODO: 유효성 검사: 닉네임, 성별 선택 여부, 생년월일 선택 여부, 개인정보 동의 여부
 export default function AdditionalInfoForm() {
   const query = useSearchParams()
 
@@ -71,6 +72,11 @@ export default function AdditionalInfoForm() {
   const [birth, setBirth] = useState<Date | undefined>(new Date())
   const [isChecked, setIsChecked] = useState(false)
 
+  const initialState = {
+    status: 0,
+    message: '',
+  }
+
   const createUserWithMore = createUser.bind(null, imageUrl, isAvailable)
   const [state, formAction] = useFormState(createUserWithMore, initialState)
 
@@ -79,22 +85,84 @@ export default function AdditionalInfoForm() {
     setIsAvailable(false)
   }
 
+  /** 닉네임 중복검사 */
   const handleCheckNickname = async () => {
-    // TODO: 여기에 닉네임 유효성 검사도 넣어야 함.
     const isNicknameAvailable = await checkNickname(nickname)
-    setIsAvailable(isNicknameAvailable)
-
+    setIsAvailable(!isNicknameAvailable.exist)
     // FIXME: alert 말고 다른 걸로 유효성 표시
-    if (isNicknameAvailable) {
-      alert('사용할 수 있는 닉네임입니다.')
-    } else {
-      alert('이미 사용중인 닉네임입니다.')
+    alert(isNicknameAvailable.message)
+  }
+
+  /** 로그인으로 토큰 받아오기 */
+  async function getToken(): Promise<AuthType | undefined> {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+          }),
+        },
+      ).then((r) => r.json())
+
+      if (res.code === 200) {
+        return res.result
+      }
+    } catch (err) {
+      console.error('getToken error', err)
+    }
+  }
+
+  /** 프로필 생성 */
+  const createProfile = async () => {
+    try {
+      // api로 로그인 -> AccessToken, profile 여부 받아오기
+      const user = await getToken()
+      if (user) {
+        const { accessToken, profile } = user
+
+        // 프로필이 false이면, 프로필 생성 api 호출
+        if (!profile) {
+          createNewProfile(accessToken)
+        }
+      }
+    } catch (err) {
+      console.error('createProfile error', err)
+    }
+  }
+
+  /** 기본 이미지를 프로필에 추가 */
+  const signUpWithImage = async () => {
+    try {
+      // api로 로그인 -> AccessToken 받아오기
+      const user = await getToken()
+      if (user) {
+        const { accessToken } = user
+
+        // 기본 이미지를 메인 프로필로 지정하기
+        const profile = {
+          profileImageUrl:
+            'https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/space-star-bucket/default-image.jpg',
+          main: true,
+        }
+        createProfileImage(profile, accessToken)
+      }
+    } catch (err) {
+      console.error('signUp error', err)
     }
   }
 
   useEffect(() => {
+    // 회원가입 성공
     if (state.status === 200) {
-      // 회원가입 성공 후 로그인
+      signUpWithImage()
+      createProfile()
+
+      // 로그인 후 dashboard로 이동
       signIn('kakao', { redirect: true, callbackUrl: '/dashboard' })
     } else if (state.status !== 0) {
       // FIXME: 유효성 에러 표시
@@ -121,10 +189,10 @@ export default function AdditionalInfoForm() {
         />
 
         <Select
-          className={`${styles['input-box']} z-10`}
+          className={`z-10 w-full h-[60px] rounded-[10px] text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] ${styles['input-box']} ${styles.select}`}
           id="gender"
           label="성별"
-          options={genderOptions}
+          options={genderList}
           selectedOption={gender}
           onChange={(value: string) => setGender(value)}
         />
