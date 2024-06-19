@@ -5,7 +5,11 @@ import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.FriendListResDto;
 import com.spacestar.back.friend.dto.res.FriendNowResDto;
 import com.spacestar.back.friend.dto.res.FriendRequestResDto;
+<<<<<<< HEAD
 import com.spacestar.back.friend.enums.FriendNowType;
+=======
+import com.spacestar.back.friend.dto.res.IsFriendResDto;
+>>>>>>> a15bd3f460bdbbd3084933c92baefa50dbd98ec2
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
 import com.spacestar.back.global.GlobalException;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.spacestar.back.friend.enums.FriendType.FRIEND;
 
@@ -129,6 +134,7 @@ public class FriendServiceImp implements FriendService {
         friendRepository.delete(friend2);
     }
 
+<<<<<<< HEAD
     //친구 상태 확인
     @Override
     public FriendNowResDto isFriendRequest(String uuid, String targetUuid) {
@@ -151,6 +157,25 @@ public class FriendServiceImp implements FriendService {
 
             }
         }
+=======
+    @Override
+    public IsFriendResDto isFriend(String uuid, String targetUuid) {
+
+        Optional<Friend> friend = friendRepository.findByUuidAndFriendUuid(targetUuid, uuid);
+
+        if (friend.isPresent()){
+            return IsFriendResDto.builder()
+                    .isFriend(true)
+                    .build();
+        }
+        else {
+            return IsFriendResDto.builder()
+                    .isFriend(false)
+                    .build();
+        }
+
+
+>>>>>>> a15bd3f460bdbbd3084933c92baefa50dbd98ec2
     }
 }
 

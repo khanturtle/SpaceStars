@@ -14,26 +14,24 @@ import lombok.NoArgsConstructor;
 public class ProfileImageReqDto {
 
     private String profileImageUrl;
-    private boolean mainImage;
-    private int idx;
+    private boolean main;
 
-    public ProfileImage updateImage(String uuid, ProfileImage profileImage, ProfileImageReqDto profileImageReqDto) {
+
+    public static ProfileImage addNewImage(String uuid, boolean b, String profileImageUrl) {
         return ProfileImage.builder()
-                .id(profileImage.getId())
                 .uuid(uuid)
-                .profileImageUrl(profileImageReqDto.getProfileImageUrl())
-                .main(profileImageReqDto.isMainImage())
-                .idx(profileImageReqDto.getIdx())
+                .profileImageUrl(profileImageUrl)
+                .main(b)
                 .build();
-
     }
 
-    public ProfileImage addNewImage(String uuid, ProfileImageReqDto profileImageReqDto) {
+
+    public static ProfileImage updateImage(String uuid, Long id, boolean b, String profileImageUrl) {
         return ProfileImage.builder()
+                .id(id)
                 .uuid(uuid)
-                .profileImageUrl(profileImageReqDto.getProfileImageUrl())
-                .main(profileImageReqDto.isMainImage())
-                .idx(profileImageReqDto.getIdx())
+                .profileImageUrl(profileImageUrl)
+                .main(b)
                 .build();
     }
 }

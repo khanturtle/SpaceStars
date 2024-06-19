@@ -34,8 +34,11 @@ public class Profile extends GlobalTime {
 
     private boolean swipe;
 
+    //게임 프로필 모달창 확인용
+    private boolean mainGameProfile;
+
     @Builder
-    public Profile(Long id, String uuid, String introduce, Long gamePreferenceId, Long mbtiId, Long exp, int reportCount, boolean swipe) {
+    public Profile(Long id, String uuid, String introduce, Long gamePreferenceId, Long mbtiId, Long exp, int reportCount, boolean swipe,boolean mainGameProfile) {
         this.id = id;
         this.uuid = uuid;
         this.introduce = introduce;
@@ -44,6 +47,7 @@ public class Profile extends GlobalTime {
         this.exp = exp;
         this.reportCount = reportCount;
         this.swipe = swipe;
+        this.mainGameProfile = mainGameProfile;
     }
 
 }

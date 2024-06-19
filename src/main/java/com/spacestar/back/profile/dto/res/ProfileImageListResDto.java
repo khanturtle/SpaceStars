@@ -15,7 +15,6 @@ public class ProfileImageListResDto {
     private int index;
     private String profileImageUrl;
     private boolean mainImage;
-    private int imageIdx;
 
     public static ProfileImageListResDto convertToDto(int i, ProfileImage profileImage) {
 
@@ -23,7 +22,6 @@ public class ProfileImageListResDto {
                 .index(i)
                 .profileImageUrl(profileImage.getProfileImageUrl())
                 .mainImage(profileImage.isMain())
-                .imageIdx(profileImage.getIdx())
                 .build();
     }
 }

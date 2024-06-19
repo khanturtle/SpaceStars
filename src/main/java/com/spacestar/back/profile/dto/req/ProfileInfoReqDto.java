@@ -19,22 +19,19 @@ import java.util.List;
 public class ProfileInfoReqDto {
 
     private String introduction;
-
     private Long mbtiId;
-    private Long gamePreferenceId;
-    private Long mainGameId;
-
-    private List<Long> likedGameIds;
-    private List<ProfilePlayGameInfoReqDto> playGameIds;
     private boolean swipe;
 
-    public Profile updateToEntity(Long id, String uuid, ProfileInfoReqDto profileInfoReqDto) {
+    public static Profile updateProfileInfo(Profile profile, ProfileInfoReqDto profileInfoReqDto) {
+
         return Profile.builder()
-                .id(id)
-                .uuid(uuid)
+                .id(profile.getId())
+                .uuid(profile.getUuid())
                 .introduce(profileInfoReqDto.getIntroduction())
+                .gamePreferenceId(profile.getGamePreferenceId())
                 .mbtiId(profileInfoReqDto.getMbtiId())
-                .gamePreferenceId(profileInfoReqDto.getGamePreferenceId())
+                .exp(profile.getExp())
+                .reportCount(profile.getReportCount())
                 .swipe(profileInfoReqDto.isSwipe())
                 .build();
     }

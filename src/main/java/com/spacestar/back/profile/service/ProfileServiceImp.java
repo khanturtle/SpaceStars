@@ -2,28 +2,32 @@ package com.spacestar.back.profile.service;
 
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.kafka.ProfileDto;
 import com.spacestar.back.profile.domain.Profile;
 import com.spacestar.back.profile.domain.ProfileImage;
-import com.spacestar.back.profile.dto.req.KakaoProfileImageReqDto;
-import com.spacestar.back.profile.dto.req.ProfileImageReqDto;
+import com.spacestar.back.profile.dto.req.*;
 import com.spacestar.back.profile.dto.res.*;
 import com.spacestar.back.profile.repository.ProfileImageRepository;
 import com.spacestar.back.profile.repository.ProfileRepository;
+import com.spacestar.back.profile.vo.req.LikedGameInfoReqVo;
+import com.thoughtworks.xstream.XStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spacestar.back.profile.domain.LikedGame;
 import com.spacestar.back.profile.domain.PlayGame;
-import com.spacestar.back.profile.dto.req.ProfileInfoReqDto;
-import com.spacestar.back.profile.dto.req.ProfilePlayGameInfoReqDto;
 import com.spacestar.back.profile.repository.LikedGameRepository;
 import com.spacestar.back.profile.repository.PlayGameRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Service
 @Slf4j
@@ -37,6 +41,12 @@ public class ProfileServiceImp implements ProfileService {
     private final ProfileImageRepository profileImageRepository;
     private final ModelMapper mapper;
 
+    private final KafkaTemplate<String, ProfileDto> kafkaTemplate;
+    private static final String TOPIC = "dev.profile-service.profile-create";
+
+    /**
+     * 프로필 정보 (프로필, 좋아하는게임, 내가 하는게임)
+     **/
     //프로필 정보 수정
     @Transactional
     @Override
@@ -45,45 +55,46 @@ public class ProfileServiceImp implements ProfileService {
         Profile profile = profileRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
-        //프로필 정보 수정
-        profileRepository.save(profileInfoReqDto.updateToEntity(profile.getId(), profile.getUuid(), profileInfoReqDto));
+        profileRepository.save(ProfileInfoReqDto.updateProfileInfo(profile, profileInfoReqDto));
+    }
 
-        //내가 좋아하는 게임
-        if (profileInfoReqDto.getLikedGameIds().isEmpty()) {
-            likedGameRepository.deleteAllByUuid(uuid);
-        } else {
-            //좋아하는 게임 삭제
-            likedGameRepository.deleteAllByUuid(uuid);
+    //좋아하는 게임 정보 수정
+    @Transactional
+    @Override
+    public void updateLikedGameInfo(String uuid, LikedGameInfoReqDto likedGameInfoReqDto) {
 
-            //좋아하는 게임 추가
-            for (Long ids : profileInfoReqDto.getLikedGameIds()) {
+        List<LikedGame> likedGameList = likedGameRepository.findAllByUuid(uuid);
 
-                LikedGame likeGame = LikedGame.builder()
-                        .gameId(ids)
+        //기존 좋아하는 게임 삭제
+        likedGameRepository.deleteAllByUuid(uuid);
+
+        //새로운 좋아하는 게임 추가
+        List<LikedGame> likedGames = likedGameInfoReqDto.getLikedGameIdList().stream()
+                .map(gameId -> LikedGame.builder()
                         .uuid(uuid)
-                        .build();
+                        .gameId(gameId)
+                        .build())
+                .toList();
 
-                likedGameRepository.save(likeGame);
-            }
-        }
+        likedGameRepository.saveAll(likedGames);
+    }
 
-        //내가 플레이한 게임
-        if (profileInfoReqDto.getPlayGameIds().isEmpty()) {
-            playGameRepository.deleteAllByUuid(uuid);
-        } else {
-            //플레이한 게임 삭제
-            playGameRepository.deleteAllByUuid(uuid);
+    //내가 하는 게임 정보 수정
+    @Transactional
+    @Override
+    public void updatePlayGameInfo(String uuid, List<PlayGameInfoReqDto> playGameInfoReqDtos) {
 
-            //플레이한 게임 추가
-            for (ProfilePlayGameInfoReqDto profilePlayGameInfoReqDto : profileInfoReqDto.getPlayGameIds()) {
-                //메인 게임 수정
-                if (profileInfoReqDto.getMainGameId().equals(profilePlayGameInfoReqDto.getGameId())) {
-                    playGameRepository.save(profilePlayGameInfoReqDto.toEntity(uuid, true, profilePlayGameInfoReqDto));
-                } else {
-                    playGameRepository.save(profilePlayGameInfoReqDto.toEntity(uuid, false, profilePlayGameInfoReqDto));
-                }
-            }
-        }
+        List<PlayGame> playGameList = playGameRepository.findAllByUuid(uuid);
+
+        //기존 내가 하는 게임 삭제
+        playGameRepository.deleteAllByUuid(uuid);
+
+        //새로운 내가 하는 게임 추가
+        List<PlayGame> playGames = playGameInfoReqDtos.stream()
+                .map(playGameInfoReqDto -> PlayGameInfoReqDto.toEntity(uuid, playGameInfoReqDto))
+                .toList();
+
+        playGameRepository.saveAll(playGames);
     }
 
     //프로필 정보 조회
@@ -101,15 +112,12 @@ public class ProfileServiceImp implements ProfileService {
     public ProfileLikedGameResDto getLikedGame(String uuid) {
 
         List<LikedGame> likedGameIds = likedGameRepository.findAllByUuid(uuid);
-        List<Long> likedGameIdList = new ArrayList<>();
 
-        for (LikedGame likedGame : likedGameIds) {
-            likedGameIdList.add(likedGame.getGameId());
-        }
+        List<Long> likedGameIdList = likedGameIds.stream()
+                .map(LikedGame::getGameId)
+                .toList();
 
-        return ProfileLikedGameResDto.builder()
-                .likedGameIdList(likedGameIdList)
-                .build();
+        return new ProfileLikedGameResDto(likedGameIdList);
     }
 
     // 내가 하는 게임 조회
@@ -117,120 +125,10 @@ public class ProfileServiceImp implements ProfileService {
     public List<ProfilePlayGameInfoResDto> getPlayGame(String uuid) {
 
         List<PlayGame> playGameIds = playGameRepository.findAllByUuid(uuid);
-        List<ProfilePlayGameInfoResDto> profilePlayGameInfoResDtoList = new ArrayList<>();
 
-        int index = 0;
-        for (PlayGame playGame : playGameIds) {
-            profilePlayGameInfoResDtoList.add(ProfilePlayGameInfoResDto.toDto(playGame, index));
-            index++;
-        }
-        return profilePlayGameInfoResDtoList;
-
-    }
-
-    //프로필 이미지 수정
-    @Transactional
-    @Override
-    public void updateProfileImages(String uuid, List<ProfileImageReqDto> profileImageReqDtos) {
-
-        List<ProfileImage> profileImages = profileImageRepository.findAllByUuid(uuid);
-
-        //사진 삭제
-        for (ProfileImage profileImage : profileImages) {
-            boolean check = false;
-            for (ProfileImageReqDto profileImageReqDto : profileImageReqDtos) {
-                if (profileImage.getProfileImageUrl().equals(profileImageReqDto.getProfileImageUrl())) {
-                    check = true;
-                    break;
-                }
-            }
-            if (!check) {
-                profileImageRepository.delete(profileImage);
-            }
-        }
-
-        // 사진 저장
-        for (ProfileImageReqDto profileImageReqDto : profileImageReqDtos) {
-            boolean check = false;
-            for (ProfileImage profileImage : profileImages) {
-                //사진 존재
-                if (profileImageReqDto.getProfileImageUrl().equals(profileImage.getProfileImageUrl())) {
-                    profileImageRepository.save(profileImageReqDto.updateImage(uuid,profileImage, profileImageReqDto));
-                    check = true;
-                }
-            }
-            //사진 존재하지 않음
-            if (!check) {
-                profileImageRepository.save(profileImageReqDto.addNewImage(uuid, profileImageReqDto));
-
-            }
-        }
-    }
-
-    //프로필 이미지 리스트 조회
-    @Override
-    public List<ProfileImageListResDto> findProfileImageList(String uuid) {
-
-        List<ProfileImageListResDto> profileImageListResDtos = new ArrayList<>();
-
-        int i = 0;
-        for (ProfileImage profileImage : profileImageRepository.findAllByUuid(uuid)) {
-            profileImageListResDtos.add(ProfileImageListResDto.convertToDto(i, profileImage));
-            i++;
-        }
-        return profileImageListResDtos;
-    }
-
-    //프로필 메인 이미지 조회
-    @Override
-    public ProfileMainImageResDto findMainProfileImage(String uuid) {
-
-        return mapper.map(
-                profileImageRepository.findByUuidAndMain(uuid, true), ProfileMainImageResDto.class);
-    }
-
-    // 회원가입 시 카카오 프로필 사진 저장
-    @Transactional
-    @Override
-    public void addProfileImage(String uuid, KakaoProfileImageReqDto kakaoProfileImageReqDto) {
-
-        profileImageRepository.save(kakaoProfileImageReqDto.addNewImage(uuid, kakaoProfileImageReqDto));
-    }
-
-    //로그인 시 프로필 존재 유무판단
-    @Transactional
-    @Override
-    public ProfileExistResDto existProfile(String uuid) {
-
-        Optional<Profile> profile = profileRepository.findByUuid(uuid);
-        List<LikedGame> likedGame = likedGameRepository.findAllByUuid(uuid);
-        List<PlayGame> playGame = playGameRepository.findAllByUuid(uuid);
-
-        if (profile.isEmpty()){
-
-            //기본 프로필 생성
-            profileRepository.save(Profile.builder()
-                    .uuid(uuid)
-                    .exp(0L)
-                    .reportCount(0)
-                    .swipe(true)
-                    .build());
-
-            return ProfileExistResDto.builder()
-                    .isExist(false)
-                    .build();
-        }
-
-        //좋아하는 게임, 플레이한 게임이 없을 경우
-        if (likedGame.isEmpty() || playGame.isEmpty()) {
-            return ProfileExistResDto.builder()
-                    .isExist(false)
-                    .build();
-        }
-
-        return ProfileExistResDto.builder()
-                .isExist(true)
-                .build();
+        return IntStream.range(0, playGameIds.size())
+                .mapToObj(index -> ProfilePlayGameInfoResDto.toDto(playGameIds.get(index), index))
+                .toList();
     }
 
     //스와이프 추천 여부 조회
@@ -253,7 +151,169 @@ public class ProfileServiceImp implements ProfileService {
         Profile profile = profileRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
 
-        profileRepository.updateSwipe(uuid,profileSwipeResDto.isSwipe());
+        profileRepository.updateSwipe(uuid, profileSwipeResDto.isSwipe());
+    }
+
+
+    /**
+     * 프로필 사진
+     **/
+    //프로필 이미지 리스트 조회
+    @Override
+    public List<ProfileImageListResDto> findProfileImageList(String uuid) {
+
+        List<ProfileImage> profileImages = profileImageRepository.findAllByUuid(uuid);
+
+        //역순
+        List<ProfileImageListResDto> dtoList = new ArrayList<>(IntStream.range(0, profileImages.size())
+                .mapToObj(index -> ProfileImageListResDto.convertToDto(profileImages.size() - index - 1, profileImages.get(index)))
+                .toList());
+        Collections.reverse(dtoList);
+        return dtoList;
+
+    }
+
+    //프로필 메인 이미지 조회
+    @Override
+    public ProfileMainImageResDto findMainProfileImage(String uuid) {
+
+        ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
+        ProfileMainImageResDto profileMainImageResDto = ProfileMainImageResDto.builder()
+                .profileImageUrl(null)
+                .build();
+        if (profileImage != null) {
+            profileMainImageResDto = mapper.map(profileImage, ProfileMainImageResDto.class);
+        }
+        return profileMainImageResDto;
+    }
+
+    //프로필 사진 추가
+    @Transactional
+    @Override
+    public void addProfileImage(String uuid, ProfileImageReqDto profileImageReqDto) {
+
+        //기존 메인 이미지 가져오기
+        ProfileImage mainImage = profileImageRepository.findByUuidAndMain(uuid, true);
+        boolean isAddMain = profileImageReqDto.isMain();
+
+        // 메인 이미지가 설정될 필요가 있을 때
+        if (isAddMain && mainImage != null) {
+            //기존 메인 이미지를 일반 이미지로 변경
+            demoteMainImage(mainImage);
+        } else if (mainImage == null) {
+            isAddMain = true;
+        }
+
+        // 이미지 추가 또는 업데이트
+        addOrUpdateProfileImage(uuid, profileImageReqDto, isAddMain);
+
+    }
+
+
+    //프로필 사진 삭제
+    @Transactional
+    @Override
+    public void deleteProfileImage(String uuid, ProfileImageDeleteReqDto profileImageDeleteReqDto) {
+
+        ProfileImage profileImage = profileImageRepository.findByUuidAndMain(uuid, true);
+
+        //메인 사진 삭제
+        if (profileImage.getProfileImageUrl().equals(profileImageDeleteReqDto.getProfileImageUrl())) {
+
+            profileImageRepository.delete(profileImage);
+            //이전 이미지가 메인이 됨
+            ProfileImage newMain = profileImageRepository.findLastByUuid(uuid);
+
+            if (newMain != null) {
+                profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, newMain.getId(), true, newMain.getProfileImageUrl()));
+            }
+
+
+        }
+        //일반 사진 삭제
+        else {
+
+            ProfileImage beDelete = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageDeleteReqDto.getProfileImageUrl());
+            profileImageRepository.delete(beDelete);
+        }
+
+    }
+
+    //로그인 시 프로필 존재 유무판단
+    @Transactional
+    @Override
+    public void existProfile(String uuid) {
+
+        Optional<Profile> profile = profileRepository.findByUuid(uuid);
+
+        //기본 프로필 생성
+        profileRepository.save(Profile.builder()
+                .uuid(uuid)
+                .exp(0L)
+                .reportCount(0)
+                .swipe(true)
+                .build());
+
+        // 카프카로 프로필 생성 알림
+        ProfileDto profileDto = new ProfileDto(uuid, true);
+        kafkaTemplate.send(TOPIC, profileDto);
+    }
+
+    // 프로필 이미지 메서드
+    private void addOrUpdateProfileImage(String uuid, ProfileImageReqDto profileImageReqDto, boolean isAddMain) {
+
+        ProfileImage existImage = profileImageRepository.findByUuidAndProfileImageUrl(uuid, profileImageReqDto.getProfileImageUrl());
+
+        if (existImage == null) {
+            //새 이미지 추가
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, null, isAddMain, profileImageReqDto.getProfileImageUrl()));
+        } else {
+            // 이미 존재하는 이미지를 업데이트
+            profileImageRepository.save(ProfileImageReqDto.updateImage(uuid, existImage.getId(), isAddMain, existImage.getProfileImageUrl()));
+        }
+    }
+
+    private void demoteMainImage(ProfileImage mainImage) {
+
+        //기존 메인 이미지의 메인 속성을 false로 업데이트
+        profileImageRepository.save(ProfileImageReqDto.updateImage(
+                mainImage.getUuid(),
+                mainImage.getId(),
+                false,
+                mainImage.getProfileImageUrl()));
+
+    }
+
+    /***
+     * 퀵 프로필 조회
+     */
+
+    @Override
+    public QuickMemberInfoResDto quickMemberInfo(String uuid) {
+
+        Profile profile = profileRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_PROFILE));
+
+        PlayGame playGame = playGameRepository.findByUuidAndMain(uuid, true);
+
+        return QuickMemberInfoResDto.converter(profile.getGamePreferenceId(), profile.getMbtiId(), playGame.getGameId(), profile.getReportCount());
+    }
+
+    //메인 게임 조회
+    @Override
+    public MainGameResDto getMainGameId(String uuid) {
+
+        PlayGame playGame = playGameRepository.findByUuidAndMain(uuid, true);
+
+        if (playGame != null){
+            return MainGameResDto.toDto(playGame);
+        }
+        else {
+            return MainGameResDto.builder()
+                    .gameId(null)
+                    .build();
+        }
+
     }
 
 }

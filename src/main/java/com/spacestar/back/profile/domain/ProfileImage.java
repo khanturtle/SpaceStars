@@ -24,22 +24,12 @@ public class ProfileImage {
     @NotNull
     private boolean main;
 
-    private int idx;
 
     @Builder
-    public ProfileImage(Long id, String uuid, String profileImageUrl, boolean main, int idx) {
+    public ProfileImage(Long id, String uuid, String profileImageUrl, boolean main) {
         this.id = id;
         this.uuid = uuid;
         this.profileImageUrl = profileImageUrl;
         this.main = main;
-        this.idx = idx;
-    }
-
-    @Builder
-    public ProfileImage(String uuid, String profileImageUrl, boolean main, int idx) {
-        this.uuid = uuid;
-        this.profileImageUrl = profileImageUrl;
-        this.main = main;
-        this.idx = idx;
     }
 }

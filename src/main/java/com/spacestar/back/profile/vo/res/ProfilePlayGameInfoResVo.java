@@ -12,4 +12,5 @@ public class ProfilePlayGameInfoResVo {
     private Long classId;
     private Long serverId;
     private String gameNickname;
+    private boolean main;
 }
