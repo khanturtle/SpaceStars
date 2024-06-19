@@ -15,9 +15,27 @@ export interface ProfileType {
 }
 
 /** 내 정보 받아오기 */
-export async function getProfile(): Promise<ProfileType | undefined> {
+export async function getProfile(
+  _token?: string,
+): Promise<ProfileType | undefined> {
+  let token: string | undefined
+
+  if (_token) {
+    token = _token
+  } else {
+    const session = await getServerSession(options)
+    token = session?.user?.data.accessToken
+  }
+
+  if (!token) return undefined
+
   try {
-    const response = await fetch(`${MEMBER_BASE_URL}/info`)
+    const response = await fetch(`${MEMBER_BASE_URL}/info`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? token : '',
+      },
+    })
     const data = await response.json()
     if (data.code === 200) {
       return data.result

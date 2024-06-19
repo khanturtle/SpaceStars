@@ -22,7 +22,7 @@ export default async function page({
   params: { roomNumber: string }
 }) {
   // FIXME: 안됨
-  revalidateTag('recentMessage')
+  // revalidateTag('recentMessage')
   const session = await getServerSession(options)
   const UUID = session?.user?.data.uuid
 

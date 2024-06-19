@@ -5,10 +5,11 @@ export async function checkNickname(nickname: string) {
   try {
     const response = await fetch(`${AUTH_BASE_URL}/nickname/${nickname}`)
     const data = await response.json()
+
     if (!data) {
       throw new Error('Failed to check nickname')
     }
-    return !data.result.exist
+    return data.result
   } catch (error) {
     console.error(error)
     return false
