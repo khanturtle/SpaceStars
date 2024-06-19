@@ -8,15 +8,19 @@ import ProfileImageUpload from '@/containers/my-page/ProfileImageUpload'
 import Image from 'next/image'
 import SearchUserContainer from '@/containers/search/SearchUserContainer'
 
-async function getMyProfile() {
+async function getMyProfile(accessToken: string) {
   const authProfileData = getAuthProfile()
-
-  // const memberData = getProfileInfo(accessToken)
+  const profileInfoData = getProfileInfo(accessToken)
+  const playGameData = getPlayGame(accessToken)
 
   const [result] = await Promise.all([
-    Promise.all([authProfileData]).then(([authProfile]) => ({
-      ...authProfile?.result,
-    })),
+    Promise.all([authProfileData, profileInfoData, playGameData]).then(
+      ([authProfile, profileInfo, playGame]) => ({
+        authProfile: { ...authProfile?.result },
+        profileInfo: { ...profileInfo?.result },
+        playGames: playGame?.result,
+      }),
+    ),
   ])
 
   console.log(result)
@@ -26,11 +30,8 @@ export default async function page() {
   const session = await getServerSession(options)
   const { accessToken } = session?.user?.data || {}
 
-  await getMyProfile()
+  await getMyProfile(accessToken)
 
-  const member = await getProfileInfo(accessToken)
-
-  const playGame = await getPlayGame(accessToken)
   const likedGame = await getLikedGame(accessToken)
 
   const mainProfileImg = await getMainProfileImg()
@@ -41,8 +42,6 @@ export default async function page() {
   // TODO:
   return (
     <div>
-      <div>Member: {JSON.stringify(member)}</div>
-      <div>내가하는 게임: {JSON.stringify(playGame)}</div>
       <div>좋아하는 게임: {JSON.stringify(likedGame)}</div>
 
       <div>대표 프로필: {JSON.stringify(mainProfileImg)}</div>
