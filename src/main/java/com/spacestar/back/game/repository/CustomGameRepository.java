@@ -11,4 +11,6 @@ public interface CustomGameRepository {
     List<GameResDto> findAllGameNames();
 
     Optional<GameOptionResDto> findGameOption(Long gameId);
+
+    GameResDto findGame(Long gameId);
 }

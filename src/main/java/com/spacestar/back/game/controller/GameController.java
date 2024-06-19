@@ -31,6 +31,14 @@ public class GameController {
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAMES_SUCCESS, gameResVos);
     }
+    @GetMapping("/{gameId}")
+    public ResponseEntity<GameResVo> getGame(@PathVariable Long gameId) {
+        GameResDto gameResDto = gameService.getGame(gameId);
+        GameResVo gameResVo = modelMapper.map(gameResDto, GameResVo.class);
+
+        return new ResponseEntity<>(
+                ResponseSuccess.GET_GAME_SUCCESS, gameResVo);
+    }
 
     @GetMapping("/option/{gameId}")
     public ResponseEntity<GameOptionResVo> getGameOption(@PathVariable Long gameId) {

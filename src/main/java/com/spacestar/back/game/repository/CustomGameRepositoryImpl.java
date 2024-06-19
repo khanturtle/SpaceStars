@@ -59,4 +59,19 @@ public class CustomGameRepositoryImpl implements CustomGameRepository {
                 .where(qGame.id.eq(gameId))
                 .fetchOne());
     }
+
+    @Override
+    public GameResDto findGame(Long gameId) {
+        QGame qGame = QGame.game;
+
+        return query.select(Projections.constructor(GameResDto.class,
+                        qGame.name,
+                        qGame.gameImage,
+                        qGame.nameKor,
+                        qGame.gameLogoImage,
+                        qGame.id))
+                .from(qGame)
+                .where(qGame.id.eq(gameId))
+                .fetchOne();
+    }
 }

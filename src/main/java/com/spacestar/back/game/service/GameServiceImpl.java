@@ -47,4 +47,9 @@ private final GameGenreRepository gameGenreRepository;
     public void deleteGame(Long gameId) {
         gameRepository.deleteById(gameId);
     }
+
+    @Override
+    public GameResDto getGame(Long gameId) {
+        return gameRepository.findGame(gameId);
+    }
 }
