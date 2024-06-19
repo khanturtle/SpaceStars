@@ -138,9 +138,8 @@ export const DevModalOpen = () => {
   useEffect(() => {
     const fetchData = async (token: string) => {
       const data = await getMainGame(token)
-      // FIXME: API 수정되면 확인
-      // if (data.code === 200 && !data.result.isExist) {
-      if (data.code === 200 && !data.result.isExist) {
+
+      if (!data?.result.main) {
         // false인 경우, 모달 열기
         openModal(
           <div

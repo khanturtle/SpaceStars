@@ -16,8 +16,7 @@ export interface MainGameType extends ApiResponseType {
   }
 }
 /** 로그인 시, 대표게임 유무 확인하기 */
-// FIXME: API 생성되면 확인
-export async function getMainGame(token: string) {
+export async function getMainGame(token: string): Promise<MainGameType | undefined> {
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/main-game`, {
       method: 'GET',
@@ -26,14 +25,14 @@ export async function getMainGame(token: string) {
         Authorization: token ? token : '',
       },
     })
-    if (response.status === 404) {
+    if (!response.ok) {
       throw new Error('서버 확인')
     }
-    console.log(response)
+
     return await response.json()
   } catch (e) {
     console.error(e)
-    return false
+    return undefined
   }
 }
 
