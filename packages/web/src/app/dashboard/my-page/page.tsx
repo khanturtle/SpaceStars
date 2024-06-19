@@ -5,7 +5,6 @@ import { getProfile } from '@/apis/auth-member'
 import { getLikedGame, getPlayGame, getProfileInfo } from '@/apis/profile'
 import { getMainProfileImg, getProfileImages } from '@/apis/profileImage'
 import ProfileImageUpload from '@/containers/my-page/ProfileImageUpload'
-import Upload from '@/components/test/upload'
 import Image from 'next/image'
 
 export default async function page() {
