@@ -24,34 +24,35 @@ public class AlarmServiceImpl implements AlarmService {
 
 	// 알림 추가
 	@Override
-	public void addAlarm(String uuid, AlarmAddReqDto alarmAddReqDto){
+	public void addAlarm(String uuid, AlarmAddReqDto alarmAddReqDto) {
 		alarmRepository.save(AlarmAddReqDto.toEntity(uuid, alarmAddReqDto));
 	}
+
 	// 알림 리스트 조회
 	@Override
 	public AlarmListResDto getAlarmList(String uuid) {
 
 		List<Alarm> alarms = alarmRepository.findByReceiverUuid(uuid);
 		return AlarmListResDto.builder()
-				.alarmList(IntStream.range(0, alarms.size())
-						.mapToObj(i -> AlarmResDto.builder()
-								.index(i)
-								.senderUuid(alarms.get(i).getSenderUuid())
-								.checkStatus(alarms.get(i).getCheckStatus())
-								.alarmType(alarms.get(i).getAlarmType())
-								.content(alarms.get(i).getContent())
-								.build()).toList())
-				.build();
+			.alarmList(IntStream.range(0, alarms.size())
+				.mapToObj(i -> AlarmResDto.builder()
+					.index(i)
+					.senderUuid(alarms.get(i).getSenderUuid())
+					.checkStatus(alarms.get(i).getCheckStatus())
+					.alarmType(alarms.get(i).getAlarmType())
+					.content(alarms.get(i).getContent())
+					.build()).toList())
+			.build();
 	}
-	
+
 	// 알림 상태 조회
 	@Override
-	public AlarmStateResDto getAlarmState(String uuid, String id){
+	public AlarmStateResDto getAlarmState(String uuid, String id) {
 		Alarm alarm = alarmRepository.findByReceiverUuidAndId(uuid, id)
-				.orElseThrow(()-> new GlobalException(ResponseStatus.NOT_EXIST_ALARM));
+			.orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_ALARM));
 
 		return AlarmStateResDto.builder()
-				.checkStatus(alarm.getCheckStatus())
-				.build();
+			.checkStatus(alarm.getCheckStatus())
+			.build();
 	}
 }
