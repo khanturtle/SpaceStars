@@ -1,21 +1,16 @@
 package com.spacestar.back.global;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
-@EntityListeners(AuditingEntityListener.class)
 @Getter
-@MappedSuperclass
 public abstract class GlobalCreateTime {
 
     @CreatedDate
-    @Column(updatable = false)
+    @Field("created_at")
     private LocalDateTime createdAt;
 
 }
