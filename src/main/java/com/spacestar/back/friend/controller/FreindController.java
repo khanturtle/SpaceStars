@@ -81,7 +81,7 @@ public class FreindController {
     @Operation(summary = "친구 유무 검색")
     @GetMapping("/is-friend/{targetUuid}")
     public ResponseEntity<IsFriendResVo> isFriend(@RequestHeader("UUID") String uuid,
-                                                  @RequestParam("targetUuid") String targetUuid){
+                                                  @PathVariable("targetUuid") String targetUuid){
 
         return new ResponseEntity<>(ResponseSuccess.FRIEND_IS_FRIEND_SUCCESS,
                 mapper.map(friendService.isFriend(uuid, targetUuid), IsFriendResVo.class));
