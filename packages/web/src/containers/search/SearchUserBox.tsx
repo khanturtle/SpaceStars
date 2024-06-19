@@ -3,13 +3,16 @@
 import React, { ChangeEvent, useState } from 'react'
 
 import { SearchInput } from '@packages/ui'
+import { getUserByNickname } from '@/apis/member'
 
 export default function SearchUserBox() {
   const [value, setValue] = useState<string>('')
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
-    console.log(value)
+
+    const res = await getUserByNickname(e.target.value)
+    console.log(res)
   }
 
   return (
@@ -20,6 +23,8 @@ export default function SearchUserBox() {
         value={value}
         onChange={handleSearch}
       />
+
+      <div>결과</div>
     </div>
   )
 }
