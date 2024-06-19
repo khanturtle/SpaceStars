@@ -2,20 +2,21 @@ package com.spacestar.back.quickmatching.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.quickmatching.converter.QuickMatchingConverter;
 import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
 import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
-import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
 import com.spacestar.back.quickmatching.dto.res.AuthResDto;
 import com.spacestar.back.quickmatching.dto.res.ProfileResDto;
+import com.spacestar.back.quickmatching.feignClient.AuthClient;
+import com.spacestar.back.quickmatching.feignClient.ProfileClient;
+import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +24,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -34,11 +38,9 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final RedisTemplate<String, String> redisTemplate;
     private final QuickMatchingRepository quickMatchingRepository;
     private final ObjectMapper objectMapper;
-
-    @Value("${spring.application.profile-url}")
-    private String profileUrl;
-    @Value("${spring.application.auth-url}")
-    private String authUrl;
+    //FeignClient
+    private final ProfileClient profileClient;
+    private final AuthClient authClient;
     //SSE
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
 
@@ -63,7 +65,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             for (ZSetOperations.TypedTuple<String> tuple : waitingMembers) {
                 String matchMemberUuid = tuple.getValue();
                 score = calculateScore(uuid, matchMemberUuid);
-                score += (int) (System.currentTimeMillis()-tuple.getScore()) / 10000;
+                score += (int) (System.currentTimeMillis() - tuple.getScore()) / 10000;
                 System.out.println("LocalDateTime.now() = " + LocalDateTime.now());
                 if (score > maxScore) {
                     maxScore = score;
@@ -89,17 +91,24 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     //매칭 우선 순위 : 내가 하는 게임 >>>> 게임 성향 >> 연령대 >>>> mbti >>>>>>>성별
     private int calculateScore(String matchFromMember, String matchToMember) {
         int score = 0;
-//        score += mainGameScore(getProfile(matchFromMember).getMainGameId(), getProfile(matchToMember).getMainGameId());
-//        score += gamePreferenceScore(getProfile(matchFromMember).getGamePreferenceId(), getProfile(matchToMember).getGamePreferenceId());
-        score += ageScore(getAuth(matchFromMember).getAge(), getAuth(matchToMember).getAge());
-        score += mbtiScore(getProfile(matchFromMember).getMbtiId(), getProfile(matchToMember).getMbtiId());
-        score += genderScore(getAuth(matchFromMember).getGender(), getAuth(matchToMember).getGender());
+
+        ProfileResDto myProfile = getProfile(matchFromMember);
+        ProfileResDto yourProfile = getProfile(matchToMember);
+        AuthResDto myAuth = getAuth(matchFromMember);
+        AuthResDto yourAuth = getAuth(matchToMember);
+//        score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
+//        score += gamePreferenceScore(myProfile.getGamePreferenceId(), myProfile.getGamePreferenceId());
+        if (myProfile.getMbtiId() != null) score += mbtiScore(myProfile.getMbtiId(), yourProfile.getMbtiId());
+        score += ageScore(myAuth.getAge(), yourAuth.getAge());
+        score += genderScore(myAuth.getGender(), yourAuth.getGender());
+
         //신고 당한 횟수 만큼 점수 깎기
-        score -= (getProfile(matchFromMember).getReportCount() + getProfile(matchToMember).getReportCount());
+        score -= (myProfile.getReportCount() + yourProfile.getReportCount());
         return score;
     }
 
     private int genderScore(String myGender, String yourGender) {
+        System.out.println("myGender = " + myGender);
         int score = 0;
         if (myGender.equals("OTHERS") || yourGender.equals("OTHERS")) {
             return score;
@@ -111,31 +120,39 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     private int ageScore(int myAge, int yourAge) {
-        int maxScore = 40; // 최대 점수
+        int maxScore = 24; // 최대 점수
         int ageDifference = Math.abs(myAge - yourAge); // 나이 차이
-
+        System.out.println("myAge = " + myAge);
         // 나이 차이가 0이면 최대 점수를 반환하고, 차이가 커질수록 점수가 줄어듭니다.
-        // 예를 들어, 나이 차이가 1이면 36점, 차이가 2이면 32점 등으로 계산합니다.
-        int score = maxScore - (ageDifference * 4);
-
+        // 예를 들어, 나이 차이가 1이면 44점, 차이가 2이면 40점 등으로 계산합니다.
+        int score = maxScore - (ageDifference * 2);
         // 최소 점수는 0으로 설정
         if (score < 0) {
             score = 0;
         }
-
         return score;
     }
 
     //RestTemplate으로 프로필 서비스 호출
     private ProfileResDto getProfile(String memberUuid) {
-        String url = profileUrl + memberUuid;
-        return restTemplate.exchange(url, HttpMethod.GET, null, ProfileResDto.class).getBody();
+        org.springframework.http.ResponseEntity<ResponseEntity<ProfileResDto>> response = profileClient.getProfile(memberUuid);
+        ResponseEntity<ProfileResDto> body = response.getBody();
+        if (body == null || body.result() == null) {
+            System.out.println("Profile data is missing or null for memberUuid: " + memberUuid);
+            return new ProfileResDto();  // 기본값 반환
+        }
+        return body.result();
     }
 
     //RestTemplate으로 Auth 서비스 호출
     private AuthResDto getAuth(String memberUuid) {
-        String url = authUrl + memberUuid;
-        return restTemplate.exchange(url, HttpMethod.GET, null, AuthResDto.class).getBody();
+        org.springframework.http.ResponseEntity<ResponseEntity<AuthResDto>> response = authClient.getAuth(memberUuid);
+        ResponseEntity<AuthResDto> body = response.getBody();
+        if (body == null || body.result() == null) {
+            System.out.println("Auth data is missing or null for memberUuid: " + memberUuid);
+            return new AuthResDto();  // 기본값 반환
+        }
+        return body.result();
     }
 
     //수락 대기 큐 진입
@@ -303,7 +320,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
 
     public int mbtiScore(long myMbtiId, long yourMbtiId) {
-        if (myMbtiId == 0L || yourMbtiId == 0L) return 0;
+        System.out.println("myMbtiId = " + myMbtiId);
         String myMbtiName = toMbtiName((int) myMbtiId);
         String yourMbtiName = toMbtiName((int) yourMbtiId);
         int score = 0;

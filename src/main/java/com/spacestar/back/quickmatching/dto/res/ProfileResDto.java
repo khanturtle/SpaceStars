@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class ProfileResDto {
-    private long gamePreferenceId;
-    private long mbtiId;
-    private long mainGameId;
+    private Long gamePreferenceId;
+    private Long mbtiId;
+    private Long mainGameId;
     private int reportCount;
 }
