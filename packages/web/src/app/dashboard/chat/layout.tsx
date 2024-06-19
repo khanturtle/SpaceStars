@@ -72,7 +72,7 @@ async function getRoomInfo(
   console.log('chat-recent-message', recentMessage)
 
   return {
-    peerName: peerProfile?.nickname,
+    peerName: peerProfile?.result.nickname,
     peerProfileImage: peerProfileImage?.result.profileImageUrl ?? defaultImage,
     recentMessage: recentMessage ?? undefined,
   }

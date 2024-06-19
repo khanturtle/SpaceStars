@@ -7,6 +7,18 @@ export interface ApiTokenErrorType {
   error: string
 }
 
+// auth
+export interface ProfileType {
+  email: string
+  nickname: string
+  birth: string
+  gender: string
+  infoAgree: boolean
+  createdAt: string
+  updatedAt: string
+}
+// auth
+
 // Profile
 export interface MainGameType {
   gameId: number | null

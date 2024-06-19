@@ -12,7 +12,7 @@ export async function getUuidByNickname(
 ): Promise<
   (ApiResponseType & { result: { uuid: string | null } }) | undefined
 > {
-  let token: ''
+  let token = ''
 
   if (_token) {
     token = _token

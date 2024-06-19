@@ -1,3 +1,7 @@
+import { getServerSession } from 'next-auth/next'
+
+import { options } from '@/app/api/auth/[...nextauth]/options'
+
 import {
   ApiResponseType,
   LikedGameIdType,
@@ -33,8 +37,17 @@ export async function getMainGame(
 
 /** 프로필 정보 조회 - 나 */
 export async function getProfileInfo(
-  token: string,
+  _token?: string,
 ): Promise<(ApiResponseType & { result: ProfileInfoType }) | undefined> {
+  let token = ''
+
+  if (_token) {
+    token = _token
+  } else {
+    const session = await getServerSession(options)
+    token = session?.user?.data.accessToken
+  }
+
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/info`, {
       method: 'GET',
@@ -52,7 +65,6 @@ export async function getProfileInfo(
     return undefined
   }
 }
-
 /** 내가 하는 게임 조회 - 나 */
 export async function getPlayGame(
   token: string,

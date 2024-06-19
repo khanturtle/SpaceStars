@@ -11,7 +11,7 @@ import { defaultImage } from '@/store/defaultState'
 
 async function getMyProfile(accessToken: string) {
   const authProfileData = getAuthProfile()
-  const profileInfoData = getProfileInfo(accessToken)
+  const profileInfoData = getProfileInfo()
 
   const playGameData = getPlayGame(accessToken)
   const likedGameIdsData = getLikedGame(accessToken)
@@ -31,14 +31,14 @@ async function getMyProfile(accessToken: string) {
       ([
         authProfile,
         profileInfo,
-        playGame,
+        playGames,
         likedGameIds,
         mainProfileImage,
         profileImages,
       ]) => ({
         authProfile: { ...authProfile?.result },
         profileInfo: { ...profileInfo?.result },
-        playGames: playGame?.result,
+        playGames: playGames?.result,
         likedGameIds: likedGameIds?.result.likedGameIdList,
         mainProfileImage:
           mainProfileImage?.result?.profileImageUrl ?? defaultImage,
