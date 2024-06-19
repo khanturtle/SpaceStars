@@ -1,15 +1,18 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
+import { ApiResponseType } from '@/types/type'
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/member`
 
 /** 닉네임으로 회원 찾기 */
-export async function getUserByNickname(
+export async function getUuidByNickname(
   targetNickname: string,
   _token?: string,
-) {
-  let token: string | undefined
+): Promise<
+  (ApiResponseType & { result: { uuid: string | null } }) | undefined
+> {
+  let token: ''
 
   if (_token) {
     token = _token
@@ -18,8 +21,6 @@ export async function getUserByNickname(
     token = session?.user?.data.accessToken
   }
 
-  if (!token) return undefined
-
   try {
     const response = await fetch(`${BASE_URL}/uuid/${targetNickname}`, {
       headers: {
@@ -27,12 +28,12 @@ export async function getUserByNickname(
         Authorization: token ? token : '',
       },
     })
-    const data = await response.json()
 
-    if (!data) {
-      throw new Error('Failed to get user by nickname')
+    if (!response.ok) {
+      throw new Error('Failed to getUuidByNickname')
     }
-    return data
+
+    return await response.json()
   } catch (error) {
     console.error(error)
     return

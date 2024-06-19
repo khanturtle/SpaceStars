@@ -6,7 +6,7 @@ import React, { ChangeEvent, useState } from 'react'
 
 import { SearchInput } from '@packages/ui'
 
-import { getUserByNickname } from '@/apis/member'
+import { getUuidByNickname } from '@/apis/getMember'
 import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
 import Link from 'next/link'
 import { defaultImage } from '@/store/defaultState'
@@ -21,59 +21,52 @@ export default function SearchUserContainer({
   const [targetUuid, setTargetUuid] = useState<string>('')
   const [targetNickname, setTargetNickname] = useState<string>('')
   const [targetProfile, setTargetProfile] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
     setTargetNickname('')
     setTargetProfile('')
+    setMessage('')
   }
 
   const searchUserByNickname = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // 해당 닉네임을 가진 회원의 UUID 찾기
-    const { result } = await getUserByNickname(value, accessToken)
-    console.log(result)
+    try {
+      let response
 
-    // 회원 UUID로 대표 프로필 이미지 불러오기
-    // if (res1.result) {
-    //   const targetUuid = res1.result.uuid
-    //   setTargetUuid(res1.result.uuid)
+      // 해당 닉네임을 가진 회원의 UUID 찾기
+      response = await getUuidByNickname(value, accessToken)
 
-    //   const res2 = await getMainProfileImageByUuid(targetUuid, accessToken)
-    //   setTargetNickname(value)
-    //   setTargetProfile(res2?.result.profileImageUrl ?? '')
-    // } else {
-    //   setTargetNickname(res1.message)
-    // }
+      if (!response) {
+        throw new Error('Failed to getUuidByNickname')
+      }
 
-    // try {
-    //   // 해당 닉네임을 가진 회원의 UUID 받아오기
-    //   const { result: uuidResult } = await getUserByNickname(value, accessToken)
+      if (response.result !== null) {
+        const targetUuid = response.result.uuid!
 
-    //   if (uuidResult) {
-    //     const { uuid } = uuidResult
+        // 회원 UUID로 대표 프로필 이미지 가져오기
+        response = await getMainProfileImageByUuid(targetUuid, accessToken)
 
-    //     const { result: imageResult } = await getMainProfileImageByUuid(
-    //       uuid,
-    //       accessToken,
-    //     )
+        // state 저장
+        setTargetNickname(value)
+        setTargetUuid(targetUuid)
+        setTargetProfile(response?.result?.profileImageUrl ?? defaultImage)
+      } else {
+        setMessage(response.message)
+        setTargetNickname('')
+        setTargetUuid('')
+        setTargetProfile('')
+      }
+    } catch {
+      // TODO: 서버 에러 경고
+      setMessage('다시 시도해주세요.')
 
-    //     console.log(imageResult)
-
-    //     setTargetUuid(uuid)
-    //     setTargetNickname(value)
-
-    //     setTargetProfile(imageResult?.profileImageUrl || defaultImage)
-    //   } else {
-    //     setTargetNickname('')
-    //     setTargetProfile('')
-    //   }
-    // } catch (error) {
-    //   console.error('Error searching user by nickname:', error)
-    //   setTargetNickname('')
-    //   setTargetProfile('')
-    // }
+      setTargetNickname('')
+      setTargetUuid('')
+      setTargetProfile('')
+    }
   }
 
   /** 친구 모달 띄우기 */
@@ -91,6 +84,7 @@ export default function SearchUserContainer({
         <button type="submit">검색</button>
       </form>
       <div>
+        {message}
         결과: <br />
         <Link href={`/profile/${targetUuid}`} onClick={handleOpenProfile}>
           {targetProfile && (
