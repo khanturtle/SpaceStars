@@ -1,4 +1,4 @@
-import { getProfileByUuid } from '@/apis/auth-member'
+import { getProfileByUuid } from '@/apis/getAuth'
 import { getChatRooms, getRecentMessage } from '@/apis/chat'
 import { TmpFriendType } from '@/apis/getFriends'
 import { getMainProfileImgByUuid } from '@/apis/getProfileImage'

@@ -1,4 +1,4 @@
-import { getProfileByUuid } from '@/apis/auth-member'
+import { getProfileByUuid } from '@/apis/getAuth'
 import { getRoomDetail } from '@/apis/chat'
 import { getMainProfileImg } from '@/apis/getProfileImage'
 import { options } from '@/app/api/auth/[...nextauth]/options'

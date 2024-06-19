@@ -9,14 +9,14 @@ import { useFormState } from 'react-dom'
 
 import { Button, Checkbox, Input, Select } from '@packages/ui'
 
-import { checkNickname } from '@/apis/auth'
+import { checkNickname } from '@/apis/auth-sign'
 import { createUser } from '@/apis/createUser'
 
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
 import { createProfileImage } from '@/apis/createProfileImage'
 import { AuthType } from '@/types/AuthType'
-import { createNewProfile } from '@/apis/profile'
+import { createNewProfile } from '@/apis/createProfile'
 
 // MALE,FEMALE,OTHER
 export const genderList = [

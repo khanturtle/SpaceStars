@@ -1,18 +1,33 @@
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import { getServerSession } from 'next-auth'
 
-import { getProfile } from '@/apis/auth-member'
-import { getLikedGame, getPlayGame, getProfileInfo } from '@/apis/profile'
+import { getAuthProfile } from '@/apis/getAuth'
+import { getLikedGame, getPlayGame, getProfileInfo } from '@/apis/getProfile'
 import { getMainProfileImg, getProfileImages } from '@/apis/getProfileImage'
 import ProfileImageUpload from '@/containers/my-page/ProfileImageUpload'
 import Image from 'next/image'
 import SearchUserContainer from '@/containers/search/SearchUserContainer'
 
+async function getMyProfile() {
+  const authProfileData = getAuthProfile()
+
+  // const memberData = getProfileInfo(accessToken)
+
+  const [result] = await Promise.all([
+    Promise.all([authProfileData]).then(([authProfile]) => ({
+      ...authProfile?.result,
+    })),
+  ])
+
+  console.log(result)
+}
+
 export default async function page() {
   const session = await getServerSession(options)
   const { accessToken } = session?.user?.data || {}
 
-  const auth = await getProfile()
+  await getMyProfile()
+
   const member = await getProfileInfo(accessToken)
 
   const playGame = await getPlayGame(accessToken)
@@ -21,10 +36,11 @@ export default async function page() {
   const mainProfileImg = await getMainProfileImg()
   const profileImages = await getProfileImages()
 
+  const defaultImage = '/images/default-images.jpg'
+
   // TODO:
   return (
     <div>
-      <div>auth: {JSON.stringify(auth)}</div>
       <div>Member: {JSON.stringify(member)}</div>
       <div>내가하는 게임: {JSON.stringify(playGame)}</div>
       <div>좋아하는 게임: {JSON.stringify(likedGame)}</div>
@@ -35,8 +51,8 @@ export default async function page() {
         {profileImages.map((item) => (
           <Image
             key={item.index}
-            src={item.profileImageUrl}
-            alt={item.profileImageUrl}
+            src={item.profileImageUrl || defaultImage}
+            alt={item.profileImageUrl || defaultImage}
             width={30}
             height={30}
           />

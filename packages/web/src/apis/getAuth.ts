@@ -1,21 +1,24 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
+import { ApiResponseType } from '@/types/type'
 
 const MEMBER_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/member`
 
-export interface ProfileType {
-  email: string
-  nickname: string
-  birth: string
-  gender: string
-  infoAgree: boolean
-  createdAt: string
-  updatedAt: string
+export interface ProfileType extends ApiResponseType {
+  result: {
+    email: string
+    nickname: string
+    birth: string
+    gender: string
+    infoAgree: boolean
+    createdAt: string
+    updatedAt: string
+  }
 }
 
 /** 내 정보 받아오기 */
-export async function getProfile(
+export async function getAuthProfile(
   _token?: string,
 ): Promise<ProfileType | undefined> {
   let token: string | undefined
@@ -37,8 +40,9 @@ export async function getProfile(
       },
     })
     const data = await response.json()
-    if (data.code === 200) {
-      return data.result
+
+    if (data) {
+      return data
     }
   } catch (error) {
     console.error(error)

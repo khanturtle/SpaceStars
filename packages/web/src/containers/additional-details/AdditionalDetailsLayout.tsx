@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from 'react'
 
 import { ArrowIcon } from '@packages/ui'
 
-import { getMainGame } from '@/apis/profile'
+import { getMainGame } from '@/apis/getProfile'
 import FormLayout from '@/components/form/formLayout'
 import { ModalContext } from '@/components/providers/modal-provider'
 import { useGameStore, useSelectedOption } from '@/store/gameStore'

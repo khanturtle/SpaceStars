@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 import { getMainProfileImgByUuid } from '@/apis/getProfileImage'
-import { getProfileByUuid } from '@/apis/auth-member'
+import { getProfileByUuid } from '@/apis/getAuth'
 
 import { ChatMessageType } from '@/types/ChatType'
 import { getConvertToKoreanHM } from '@/hooks/convertToLocaleTime'
