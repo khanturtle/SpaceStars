@@ -23,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -64,6 +61,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             for (ZSetOperations.TypedTuple<String> tuple : waitingMembers) {
                 String matchMemberUuid = tuple.getValue();
                 score = calculateScore(uuid, matchMemberUuid);
+                //점수에 대기시간 더해주기
                 score += (int) (System.currentTimeMillis() - tuple.getScore()) / 10000;
                 if (score > maxScore) {
                     maxScore = score;
@@ -94,9 +92,16 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         ProfileResDto yourProfile = getProfile(matchToMember);
         AuthResDto myAuth = getAuth(matchFromMember);
         AuthResDto yourAuth = getAuth(matchToMember);
-//        score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
-//        score += gamePreferenceScore(myProfile.getGamePreferenceId(), myProfile.getGamePreferenceId());
-        if (myProfile.getMbtiId() != null) score += mbtiScore(myProfile.getMbtiId(), yourProfile.getMbtiId());
+        //각각 메인게임 ID, 게임성향ID, MBTI ID가 존재할때만 연산해서 점수 더해줌
+        if (myProfile.getMainGameId() != null && yourProfile.getMainGameId() != null) {
+            score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
+        }
+        if (myProfile.getGamePreferenceId() != null && yourProfile.getGamePreferenceId() != null) {
+            score += gamePreferenceScore(myProfile.getGamePreferenceId(), myProfile.getGamePreferenceId());
+        }
+        if (myProfile.getMbtiId() != null && yourProfile.getMbtiId() != null)
+            score += mbtiScore(myProfile.getMbtiId(), yourProfile.getMbtiId());
+
         score += ageScore(myAuth.getAge(), yourAuth.getAge());
         score += genderScore(myAuth.getGender(), yourAuth.getGender());
 
@@ -105,11 +110,22 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         return score;
     }
 
+    //메인 게임이 같으면 10점 추가
+    private int mainGameScore(Long myMainGameId, Long yourMainGameId) {
+        int score = 0;
+        if (Objects.equals(myMainGameId, yourMainGameId)) {
+            score += 10;
+            return score;
+        }
+        return score;
+    }
+
+
     private int genderScore(String myGender, String yourGender) {
         int score = 0;
         if (myGender.equals("OTHERS") || yourGender.equals("OTHERS")) {
             return score;
-        }
+        }//이성이면 10점
         if (!myGender.equals(yourGender)) {
             score = 10;
         }
@@ -129,7 +145,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         return score;
     }
 
-    //RestTemplate으로 프로필 서비스 호출
+    //FeignClient로 Profile 서비스 호출
     private ProfileResDto getProfile(String memberUuid) {
         org.springframework.http.ResponseEntity<ResponseEntity<ProfileResDto>> response = profileClient.getProfile(memberUuid);
         ResponseEntity<ProfileResDto> body = response.getBody();
@@ -140,7 +156,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         return body.result();
     }
 
-    //RestTemplate으로 Auth 서비스 호출
+    //FeignClient로 Auth 서비스 호출
     private AuthResDto getAuth(String memberUuid) {
         org.springframework.http.ResponseEntity<ResponseEntity<AuthResDto>> response = authClient.getAuth(memberUuid);
         ResponseEntity<AuthResDto> body = response.getBody();
@@ -317,5 +333,9 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
     public int mbtiScore(long myMbtiId, long yourMbtiId) {
         return matchingScoresRepository.getScore(myMbtiId, yourMbtiId);
+    }
+
+    private int gamePreferenceScore(Long myGamePreferenceId, Long yourGamePreferenceId) {
+        return matchingScoresRepository.getScore(myGamePreferenceId, yourGamePreferenceId);
     }
 }
