@@ -6,6 +6,7 @@ import { getLikedGame, getPlayGame, getProfileInfo } from '@/apis/profile'
 import { getMainProfileImg, getProfileImages } from '@/apis/profileImage'
 import ProfileImageUpload from '@/containers/my-page/ProfileImageUpload'
 import Image from 'next/image'
+import SearchUserBox from '@/containers/search/SearchUserBox'
 
 export default async function page() {
   const session = await getServerSession(options)
@@ -45,6 +46,11 @@ export default async function page() {
       <div>
         프로필 추가 테스트
         <ProfileImageUpload />
+      </div>
+
+      <div>
+        회원 찾기
+        <SearchUserBox />
       </div>
     </div>
   )
