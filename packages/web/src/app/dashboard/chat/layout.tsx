@@ -1,7 +1,7 @@
 import { getProfileByUuid } from '@/apis/auth-member'
 import { getChatRooms, getRecentMessage } from '@/apis/chat'
-import { TmpFriendType } from '@/apis/friends'
-import { getMainProfileImgByUuid } from '@/apis/profileImage'
+import { TmpFriendType } from '@/apis/getFriends'
+import { getMainProfileImgByUuid } from '@/apis/getProfileImage'
 
 import { RoomInfoType } from '@/types/ChatType'
 

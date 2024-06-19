@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth'
 
 import { getProfile } from '@/apis/auth-member'
 import { getLikedGame, getPlayGame, getProfileInfo } from '@/apis/profile'
-import { getMainProfileImg, getProfileImages } from '@/apis/profileImage'
+import { getMainProfileImg, getProfileImages } from '@/apis/getProfileImage'
 import ProfileImageUpload from '@/containers/my-page/ProfileImageUpload'
 import Image from 'next/image'
 import SearchUserContainer from '@/containers/search/SearchUserContainer'

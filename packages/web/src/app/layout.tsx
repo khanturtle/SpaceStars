@@ -9,7 +9,7 @@ import '@/styles/globals.css'
 import '@/styles/fonts.css'
 import '@/styles/colors.css'
 
-import { getMainProfileImg } from '@/apis/profileImage'
+import { getMainProfileImg } from '@/apis/getProfileImage'
 
 import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'

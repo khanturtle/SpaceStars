@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 
-import { TmpFriendType } from '@/apis/friends'
+import { TmpFriendType } from '@/apis/getFriends'
 import useDrag from '@/hooks/useDrag'
 
 import styles from './friends.module.css'

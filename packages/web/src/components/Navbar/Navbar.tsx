@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { Avatar, LogoIcon, LogoName } from '@packages/ui'
 
-import { ProfileImageType } from '@/apis/profileImage'
+import { ProfileImageType } from '@/apis/getProfileImage'
 
 import { LoginButton } from './NavbarItem'
 

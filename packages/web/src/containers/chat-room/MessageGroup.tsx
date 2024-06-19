@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 
 import { useEffect, useState } from 'react'
 
-import { getMainProfileImgByUuid } from '@/apis/profileImage'
+import { getMainProfileImgByUuid } from '@/apis/getProfileImage'
 import { getProfileByUuid } from '@/apis/auth-member'
 
 import { ChatMessageType } from '@/types/ChatType'

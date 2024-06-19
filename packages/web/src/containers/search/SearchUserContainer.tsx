@@ -7,7 +7,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { SearchInput } from '@packages/ui'
 
 import { getUserByNickname } from '@/apis/member'
-import { getMainProfileImgByUuid } from '@/apis/profileImage'
+import { getMainProfileImgByUuid } from '@/apis/getProfileImage'
 import Link from 'next/link'
 
 // TODO: 타입 수정
