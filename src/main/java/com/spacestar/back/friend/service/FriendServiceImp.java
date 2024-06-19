@@ -5,11 +5,8 @@ import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.FriendListResDto;
 import com.spacestar.back.friend.dto.res.FriendNowResDto;
 import com.spacestar.back.friend.dto.res.FriendRequestResDto;
-<<<<<<< HEAD
 import com.spacestar.back.friend.enums.FriendNowType;
-=======
 import com.spacestar.back.friend.dto.res.IsFriendResDto;
->>>>>>> a15bd3f460bdbbd3084933c92baefa50dbd98ec2
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
 import com.spacestar.back.global.GlobalException;
