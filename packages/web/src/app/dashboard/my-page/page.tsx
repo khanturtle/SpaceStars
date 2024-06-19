@@ -12,27 +12,31 @@ async function getMyProfile(accessToken: string) {
   const authProfileData = getAuthProfile()
   const profileInfoData = getProfileInfo(accessToken)
   const playGameData = getPlayGame(accessToken)
+  const likedGameIdsData = getLikedGame(accessToken)
 
   const [result] = await Promise.all([
-    Promise.all([authProfileData, profileInfoData, playGameData]).then(
-      ([authProfile, profileInfo, playGame]) => ({
-        authProfile: { ...authProfile?.result },
-        profileInfo: { ...profileInfo?.result },
-        playGames: playGame?.result,
-      }),
-    ),
+    Promise.all([
+      authProfileData,
+      profileInfoData,
+      playGameData,
+      likedGameIdsData,
+    ]).then(([authProfile, profileInfo, playGame, likedGameIds]) => ({
+      authProfile: { ...authProfile?.result },
+      profileInfo: { ...profileInfo?.result },
+      playGames: playGame?.result,
+      likedGameIds: likedGameIds?.result.likedGameIdList,
+    })),
   ])
 
-  console.log(result)
+  // console.log(result)
+  return result
 }
 
 export default async function page() {
   const session = await getServerSession(options)
   const { accessToken } = session?.user?.data || {}
 
-  await getMyProfile(accessToken)
-
-  const likedGame = await getLikedGame(accessToken)
+  const profileAll = await getMyProfile(accessToken)
 
   const mainProfileImg = await getMainProfileImg()
   const profileImages = await getProfileImages()
@@ -42,8 +46,8 @@ export default async function page() {
   // TODO:
   return (
     <div>
-      <div>좋아하는 게임: {JSON.stringify(likedGame)}</div>
-
+      {JSON.stringify(profileAll)}
+      <hr />
       <div>대표 프로필: {JSON.stringify(mainProfileImg)}</div>
       <div>
         프로필들: {JSON.stringify(profileImages)}

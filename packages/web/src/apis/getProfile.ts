@@ -1,13 +1,12 @@
 import {
   ApiResponseType,
+  LikedGameIdType,
   MainGameType,
   PlayGameType,
   ProfileInfoType,
 } from '@/types/type'
 
 const MEMBER_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/profile`
-
-// TODO: Promise Type 지정하기
 
 /** 로그인 시, 대표게임 유무 확인하기 */
 export async function getMainGame(
@@ -35,7 +34,7 @@ export async function getMainGame(
 /** 프로필 정보 조회 - 나 */
 export async function getProfileInfo(
   token: string,
-): Promise<(ApiResponseType & ProfileInfoType) | undefined> {
+): Promise<(ApiResponseType & { result: ProfileInfoType }) | undefined> {
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/info`, {
       method: 'GET',
@@ -76,8 +75,10 @@ export async function getPlayGame(
   }
 }
 
-/** 좋아하는 게임 조회 */
-export async function getLikedGame(token: string) {
+/** 좋아하는 게임 조회 - 나 */
+export async function getLikedGame(
+  token: string,
+): Promise<(ApiResponseType & { result: LikedGameIdType }) | undefined> {
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/liked-game`, {
       method: 'GET',
@@ -86,12 +87,12 @@ export async function getLikedGame(token: string) {
         Authorization: token ? token : '',
       },
     })
-    const data = await response.json()
-    if (data.code === 200) {
-      return data.result
+    if (!response.ok) {
+      throw new Error('Failed to getLikedGame')
     }
+    return await response.json()
   } catch (e) {
     console.error(e)
-    return false
+    return undefined
   }
 }

@@ -19,16 +19,18 @@ export interface MainGameType {
 }
 
 export interface ProfileInfoType {
-  result: {
-    introduction: string | null
-    gamePreferenceId: number | null
-    mbtiId: number | null
-    exp: number
-    reportCount: number
-    swipe: boolean
-  }
+  introduction: string | null
+  gamePreferenceId: number | null
+  mbtiId: number | null
+  exp: number
+  reportCount: number
+  swipe: boolean
 }
 
 export interface PlayGameType extends MainGameType {
   index: number
+}
+
+export interface LikedGameIdType {
+  likedGameIdList: number[]
 }
