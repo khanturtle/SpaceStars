@@ -6,6 +6,7 @@ WORKDIR /app
 COPY .yarn .yarn
 COPY .yarnrc.yml .yarnrc.yml
 COPY package.json package.json
+COPY yarn.lock yarn.lock
 COPY packages/ui/package.json packages/ui/package.json
 COPY packages/web/package.json packages/web/package.json
 
@@ -26,6 +27,7 @@ WORKDIR /app
 COPY --from=ui-builder /app/packages/ui/package.json packages/ui/package.json
 COPY --from=ui-builder /app/packages/web/package.json packages/web/package.json
 COPY --from=ui-builder /app/.yarn .yarn
+COPY --from=ui-builder /app/yarn.lock yarn.lock
 COPY --from=ui-builder /app/.yarnrc.yml .yarnrc.yml
 COPY --from=ui-builder /app/package.json package.json
 COPY --from=ui-builder /app/.pnp.loader.mjs .pnp.loader.mjs
