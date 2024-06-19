@@ -56,7 +56,7 @@ export default function AdditionalMBTI({
               value={item.id.toString()}
               className="text-base not-italic font-normal leading-[170%] bg-[none] m-0"
             >
-              {item.value}
+              {item.mbtiName}
             </SelectItem>
           ))}
       </SelectContent>
