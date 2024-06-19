@@ -45,7 +45,7 @@ public class FreindController {
     }
 
     @Operation(summary = "친구 요청 목록")
-    @GetMapping("request")
+    @GetMapping("/request")
     public ResponseEntity<FriendRequestResVo> getFriendRequestList(@RequestHeader("UUID") String uuid){
 
         return new ResponseEntity<>(ResponseSuccess.FRIEND_REQUEST_SELECT_SUCCESS,

@@ -141,30 +141,28 @@ public class FriendServiceImp implements FriendService {
             return FriendNowResDto.builder()
                     .friendType(FriendNowType.NONE)
                     .build();
-        } else {
-            if (friend.getFriendType() == FRIEND) {
-                return FriendNowResDto.builder()
-                        .friendType(FriendNowType.FRIEND)
-                        .build();
-            } else {
-                return FriendNowResDto.builder()
-                        .friendType(FriendNowType.WAIT)
-                        .build();
-
-            }
         }
+
+        if (friend.getFriendType() == FRIEND) {
+            return FriendNowResDto.builder()
+                    .friendType(FriendNowType.FRIEND)
+                    .build();
+        }
+        return FriendNowResDto.builder()
+                .friendType(FriendNowType.WAIT)
+                .build();
     }
+
     @Override
     public IsFriendResDto isFriend(String uuid, String targetUuid) {
 
         Optional<Friend> friend = friendRepository.findByUuidAndFriendUuid(targetUuid, uuid);
 
-        if (friend.isPresent()){
+        if (friend.isPresent()) {
             return IsFriendResDto.builder()
                     .isFriend(true)
                     .build();
-        }
-        else {
+        } else {
             return IsFriendResDto.builder()
                     .isFriend(false)
                     .build();
