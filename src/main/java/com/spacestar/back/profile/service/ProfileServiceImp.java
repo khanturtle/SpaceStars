@@ -306,13 +306,11 @@ public class ProfileServiceImp implements ProfileService {
         PlayGame playGame = playGameRepository.findByUuidAndMain(uuid, true);
 
         if (playGame != null){
-            return MainGameResDto.builder()
-                    .mainId(playGame.getGameId())
-                    .build();
+            return MainGameResDto.toDto(playGame);
         }
         else {
             return MainGameResDto.builder()
-                    .mainId(null)
+                    .gameId(null)
                     .build();
         }
 
