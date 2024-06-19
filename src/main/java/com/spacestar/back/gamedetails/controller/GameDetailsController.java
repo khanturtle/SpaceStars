@@ -19,19 +19,22 @@ import com.spacestar.back.gamedetails.vo.res.GamePositionResVo;
 import com.spacestar.back.gamedetails.vo.res.GameServerResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Game Details", description = "게임 세부 정보")
 @RestController
 @RequestMapping("/api/v1/game")
 @RequiredArgsConstructor
 public class GameDetailsController {
     private final ModelMapper modelMapper;
     private final GameDetailsService gameDetailsService;
-
+    @Operation(summary = "게임 직업 조회")
     @GetMapping("/class/{gameId}")
     public ResponseEntity<List<GameClassResVo>> getGameClass(@PathVariable Long gameId) {
         List<GameClassResDto> gameClassResDtos = gameDetailsService.getGameClass(gameId);
@@ -43,7 +46,7 @@ public class GameDetailsController {
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_CLASS_SUCCESS, gameClassResVos);
     }
-
+    @Operation(summary = "게임 포지션 조회")
     @GetMapping("/position/{gameId}")
     public ResponseEntity<List<GamePositionResVo>> getGamePosition(@PathVariable Long gameId) {
         List<GamePositionResDto> gamePositionResDtos = gameDetailsService.getGamePosition(gameId);
@@ -55,7 +58,7 @@ public class GameDetailsController {
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_POSITION_SUCCESS, gamePositionResVos);
     }
-
+    @Operation(summary = "게임 서버 조회")
     @GetMapping("/server/{gameId}")
     public ResponseEntity<List<GameServerResVo>> getGameServer(@PathVariable Long gameId) {
         List<GameServerResDto> gameServerResDtos = gameDetailsService.getGameServer(gameId);
@@ -67,7 +70,7 @@ public class GameDetailsController {
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_SERVER_SUCCESS, gameServerResVos);
     }
-
+    @Operation(summary = "게임 티어 조회")
     @GetMapping("/tier/{gameId}")
     public ResponseEntity<List<GameTierResVo>> getGameTier(@PathVariable Long gameId) {
         List<GameTierResDto> gameTierResDtos = gameDetailsService.getGameTier(gameId);
@@ -79,7 +82,7 @@ public class GameDetailsController {
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_TIER_SUCCESS, gameTierResVos);
     }
-
+    @Operation(summary = "게임 직업 조회")
     @PostMapping("/class/{gameId}")
     public ResponseEntity<Void> addGameClass(@PathVariable Long gameId,
                                              @RequestBody GameClassReqVo gameClassReqVo) {
