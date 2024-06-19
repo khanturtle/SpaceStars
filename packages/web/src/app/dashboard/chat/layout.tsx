@@ -1,13 +1,14 @@
-import { getProfileByUuid } from '@/apis/auth-member'
+import { getProfileByUuid } from '@/apis/getAuth'
 import { getChatRooms, getRecentMessage } from '@/apis/chat'
-import { TmpFriendType } from '@/apis/friends'
-import { getMainProfileImgByUuid } from '@/apis/profileImage'
+import { TmpFriendType } from '@/apis/getFriends'
+import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
 
 import { RoomInfoType } from '@/types/ChatType'
 
 import MessageContainer from '@/containers/chat/MessageContainer'
 import SearchBox from '@/containers/chat/SearchBox'
 import OnlineFriends from '@/components/Friends/OnlineFriends'
+import { defaultImage } from '@/store/defaultState'
 
 // TODO: 친구 리스트 가져오기
 const tmpImage =
@@ -58,7 +59,7 @@ async function getRoomInfo(
 ): Promise<RoomInfoType> {
   // 상대방 이름 / 메인 프로필 사진
   const peerProfileData = getProfileByUuid(peerUuid)
-  const peerProfileImageData = getMainProfileImgByUuid(peerUuid)
+  const peerProfileImageData = getMainProfileImageByUuid(peerUuid)
 
   // 최근 메시지 static 조회
   const recentMessageData = getRecentMessage(roomNumber)
@@ -71,8 +72,8 @@ async function getRoomInfo(
   console.log('chat-recent-message', recentMessage)
 
   return {
-    peerName: peerProfile?.nickname,
-    peerProfileImage: peerProfileImage?.profileImageUrl,
+    peerName: peerProfile?.result.nickname,
+    peerProfileImage: peerProfileImage?.result.profileImageUrl ?? defaultImage,
     recentMessage: recentMessage ?? undefined,
   }
 }

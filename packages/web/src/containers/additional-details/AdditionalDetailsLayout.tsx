@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from 'react'
 
 import { ArrowIcon } from '@packages/ui'
 
-import { getMainGame } from '@/apis/profile'
+import { getMainGame } from '@/apis/getProfile'
 import FormLayout from '@/components/form/formLayout'
 import { ModalContext } from '@/components/providers/modal-provider'
 import { useGameStore, useSelectedOption } from '@/store/gameStore'
@@ -138,9 +138,8 @@ export const DevModalOpen = () => {
   useEffect(() => {
     const fetchData = async (token: string) => {
       const data = await getMainGame(token)
-      // FIXME: API 수정되면 확인
-      // if (data.code === 200 && !data.result.isExist) {
-      if (data.code === 200 && !data.result.isExist) {
+
+      if (data && !data?.result.main) {
         // false인 경우, 모달 열기
         openModal(
           <div

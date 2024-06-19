@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { getMainProfileImg } from '@/apis/profileImage'
+import { getMainProfileImage } from '@/apis/getProfileImage'
 import { NextAuthOptions } from 'next-auth'
 import KakaoProvider from 'next-auth/providers/kakao'
 

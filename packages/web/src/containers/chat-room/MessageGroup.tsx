@@ -4,8 +4,8 @@ import { useSession } from 'next-auth/react'
 
 import { useEffect, useState } from 'react'
 
-import { getMainProfileImgByUuid } from '@/apis/profileImage'
-import { getProfileByUuid } from '@/apis/auth-member'
+import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
+import { getProfileByUuid } from '@/apis/getAuth'
 
 import { ChatMessageType } from '@/types/ChatType'
 import { getConvertToKoreanHM } from '@/hooks/convertToLocaleTime'
@@ -23,10 +23,10 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
       if (session) {
         const token = session?.user?.data.accessToken
         const profileData = await getProfileByUuid(uuid, token)
-        const profileImage = await getMainProfileImgByUuid(uuid, token)
+        const profileImage = await getMainProfileImageByUuid(uuid, token)
 
-        setNickname(profileData?.nickname ?? 'user')
-        setProfileImage(profileImage?.profileImageUrl ?? '/defaultUrl')
+        setNickname(profileData?.result.nickname ?? 'user')
+        setProfileImage(profileImage?.result.profileImageUrl ?? '/defaultUrl')
       }
     }
     fetchData()

@@ -1,24 +1,15 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
+import { ApiResponseType, ProfileType } from '@/types/type'
 
 const MEMBER_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/member`
 
-export interface ProfileType {
-  email: string
-  nickname: string
-  birth: string
-  gender: string
-  infoAgree: boolean
-  createdAt: string
-  updatedAt: string
-}
-
 /** 내 정보 받아오기 */
-export async function getProfile(
+export async function getAuthProfile(
   _token?: string,
-): Promise<ProfileType | undefined> {
-  let token: string | undefined
+): Promise<(ApiResponseType & { result: ProfileType }) | undefined> {
+  let token = ''
 
   if (_token) {
     token = _token
@@ -27,8 +18,6 @@ export async function getProfile(
     token = session?.user?.data.accessToken
   }
 
-  if (!token) return undefined
-
   try {
     const response = await fetch(`${MEMBER_BASE_URL}/info`, {
       headers: {
@@ -36,13 +25,15 @@ export async function getProfile(
         Authorization: token ? token : '',
       },
     })
-    const data = await response.json()
-    if (data.code === 200) {
-      return data.result
+
+    if (!response.ok) {
+      throw new Error('Failed to getAuthProfile')
     }
+
+    return await response.json()
   } catch (error) {
     console.error(error)
-    return undefined
+    return
   }
 }
 
@@ -50,8 +41,8 @@ export async function getProfile(
 export async function getProfileByUuid(
   uuid: string,
   _token?: string,
-): Promise<ProfileType | undefined> {
-  let token
+): Promise<(ApiResponseType & { result: ProfileType }) | undefined> {
+  let token = ''
 
   if (_token) {
     token = _token
@@ -67,12 +58,13 @@ export async function getProfileByUuid(
         Authorization: token ? token : '',
       },
     })
-    const data = await response.json()
-    if (data.code === 200) {
-      return data.result
+    if (!response.ok) {
+      throw new Error('Failed to getProfileByUuid')
     }
+
+    return await response.json()
   } catch (error) {
     console.error(error)
-    return undefined
+    return
   }
 }
