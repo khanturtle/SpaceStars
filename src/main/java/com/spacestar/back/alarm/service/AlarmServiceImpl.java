@@ -43,7 +43,8 @@ public class AlarmServiceImpl implements AlarmService {
 								.build()).toList())
 				.build();
 	}
-
+	
+	// 알림 상태 조회
 	@Override
 	public AlarmStateResDto getAlarmState(String uuid, String id){
 		Alarm alarm = alarmRepository.findByReceiverUuidAndId(uuid, id)

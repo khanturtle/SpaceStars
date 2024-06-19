@@ -62,7 +62,7 @@ public class AlarmController {
 		return sink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()));
 	}
 
-	@GetMapping(value = "/state")
+	@GetMapping(value = "/state/{id}")
 	@Operation(summary = "알림 상태 조회")
 	public ResponseEntity<AlarmStateResVo> getAlarmState(@RequestHeader("UUID") String uuid,
 			@PathVariable("id") String id){
