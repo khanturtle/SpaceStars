@@ -131,7 +131,6 @@ public class FriendServiceImp implements FriendService {
         friendRepository.delete(friend2);
     }
 
-<<<<<<< HEAD
     //친구 상태 확인
     @Override
     public FriendNowResDto isFriendRequest(String uuid, String targetUuid) {
@@ -154,7 +153,7 @@ public class FriendServiceImp implements FriendService {
 
             }
         }
-=======
+    }
     @Override
     public IsFriendResDto isFriend(String uuid, String targetUuid) {
 
@@ -172,7 +171,6 @@ public class FriendServiceImp implements FriendService {
         }
 
 
->>>>>>> a15bd3f460bdbbd3084933c92baefa50dbd98ec2
     }
 }
 
