@@ -21,15 +21,20 @@ export async function getUserByNickname(
   if (!token) return undefined
 
   try {
-    const response = await fetch(`${BASE_URL}/uuid/${targetNickname}`)
+    const response = await fetch(`${BASE_URL}/uuid/${targetNickname}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? token : '',
+      },
+    })
     const data = await response.json()
-    console.log(data)
+
     if (!data) {
       throw new Error('Failed to get user by nickname')
     }
-    return data.result
+    return data
   } catch (error) {
     console.error(error)
-    return []
+    return
   }
 }

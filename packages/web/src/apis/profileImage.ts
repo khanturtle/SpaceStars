@@ -105,7 +105,7 @@ export async function getMainProfileImgByUuid(
       },
     })
     const data = await response.json()
-    if (data.code !== 200) {
+    if (!data) {
       throw new Error('Failed to get main profileImage')
     }
     return data.result
