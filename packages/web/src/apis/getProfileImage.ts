@@ -1,14 +1,13 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
-import { ApiResponseType, ProfileImageType } from '@/types/type'
+import {
+  ApiResponseType,
+  ProfileImagesType,
+  ProfileImageType,
+} from '@/types/type'
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/profile/image`
-
-export interface ProfileImagesType extends ProfileImageType {
-  index: number
-  mainImage: boolean
-}
 
 /** 대표 프로필 조회 - 나 */
 export async function getMainProfileImage(
@@ -29,6 +28,9 @@ export async function getMainProfileImage(
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
       },
+      next: {
+        tags: ['profileImage'],
+      },
     })
     if (!response.ok) {
       throw new Error('Failed to getMainProfileImage')
@@ -43,8 +45,8 @@ export async function getMainProfileImage(
 /** 프로필 리스트 조회 - 나 */
 export async function getProfileImages(
   _token?: string,
-): Promise<ProfileImagesType[]> {
-  let token
+): Promise<(ApiResponseType & { result: ProfileImagesType[] }) | undefined> {
+  let token = ''
 
   if (_token) {
     token = _token
@@ -63,15 +65,13 @@ export async function getProfileImages(
         tags: ['profileImages'],
       },
     })
-    const data = await response.json()
-
     if (!response.ok) {
       throw new Error('Failed to getProfileImages')
     }
     return await response.json()
   } catch (error) {
     console.error(error)
-    return []
+    return undefined
   }
 }
 
