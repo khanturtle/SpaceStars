@@ -8,5 +8,6 @@ import java.util.List;
 @Getter
 public class FriendRequestResVo {
 
-    private List<String> friendRequestUuidList;
+    private int index;
+    private String friendRequestUuid;
 }

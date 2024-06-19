@@ -13,5 +13,15 @@ import java.util.List;
 @Builder
 public class FriendRequestResDto {
 
-    private List<String> friendRequestUuidList;
+    private int index;
+    private String friendRequestUuid;
+
+    public static FriendRequestResDto toDto(int i, String friendRequestUuid) {
+        return FriendRequestResDto.builder()
+                .index(i)
+                .friendRequestUuid(friendRequestUuid)
+                .build();
+    }
+
+
 }

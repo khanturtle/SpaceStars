@@ -7,5 +7,6 @@ import java.util.List;
 @Getter
 public class FriendListResVo {
 
-    private List<String> friendUuidList;
+    private int index;
+    private String friendUuid;
 }

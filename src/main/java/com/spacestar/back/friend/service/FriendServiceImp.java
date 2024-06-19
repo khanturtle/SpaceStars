@@ -5,8 +5,10 @@ import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.*;
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
+import com.spacestar.back.friend.vo.res.FriendListResVo;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.profile.dto.res.ProfilePlayGameInfoResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static com.spacestar.back.friend.enums.FriendType.*;
 
@@ -55,38 +58,35 @@ public class FriendServiceImp implements FriendService {
 
     //친구 목록 조회
     @Override
-    public FriendListResDto getFriendList(String uuid) {
+    public List<FriendListResDto> getFriendList(String uuid) {
 
         List<Friend> friendList = friendRepository.findByUuid(uuid);
-        List<String> friendUuidList = new ArrayList<>();
 
-        for (Friend friend : friendList) {
+        List<String> friendList2 = friendList.stream()
+                .filter(friend -> friend.getFriendType() == FRIEND)
+                .map(Friend::getFriendUuid)
+                .toList();
 
-            //친구일 경우에만
-            if (friend.getFriendType() == FRIEND)
-                friendUuidList.add(friend.getFriendUuid());
-        }
+        return IntStream.range(0, friendList2.size())
+                .mapToObj(i -> FriendListResDto.toDto(i, friendList2.get(i)))
+                .toList();
 
-        return FriendListResDto.builder()
-                .friendUuidList(friendUuidList)
-                .build();
     }
 
     @Override
-    public FriendRequestResDto getFriendRequestList(String uuid) {
+    public List<FriendRequestResDto> getFriendRequestList(String uuid) {
 
         List<Friend> friendList = friendRepository.findByUuid(uuid);
-        List<String> friendRequestUuidList = new ArrayList<>();
 
-        for (Friend friend : friendList) {
-            //내가 받은 요청만
-            if (friend.getFriendType() == FriendType.RECEIVER)
-                friendRequestUuidList.add(friend.getFriendUuid());
-        }
+        List<String> friendRequestList = friendList.stream()
+                .filter(friend -> friend.getFriendType() == RECEIVER)
+                .map(Friend::getFriendUuid)
+                .toList();
 
-        return FriendRequestResDto.builder()
-                .friendRequestUuidList(friendRequestUuidList)
-                .build();
+        return IntStream.range(0, friendRequestList.size())
+                .mapToObj(i -> FriendRequestResDto.toDto(i, friendRequestList.get(i)))
+                .toList();
+
     }
 
     @Override
@@ -156,39 +156,18 @@ public class FriendServiceImp implements FriendService {
     }
 
     @Override
-    public IsFriendResDto isFriend(String uuid, String targetUuid) {
-
-        Optional<Friend> friend = friendRepository.findByUuidAndFriendUuid(targetUuid, uuid);
-
-        if (friend.isPresent()) {
-            return IsFriendResDto.builder()
-                    .isFriend(true)
-                    .build();
-        } else {
-            return IsFriendResDto.builder()
-                    .isFriend(false)
-                    .build();
-        }
-
-
-    }
-
-    @Override
-    public FriendSendResDto getFriendSendList(String uuid) {
+    public List<FriendSendResDto> getFriendSendList(String uuid) {
 
         List<Friend> friendList = friendRepository.findByUuid(uuid);
-        List<String> friendSendUuidList = new ArrayList<>();
 
-        for (Friend friend : friendList){
-            // 내가 보낸 요청만
-            if (friend.getFriendType() == SENDER)
-                friendSendUuidList.add(friend.getFriendUuid());
-        }
+        List<String> friendSendList = friendList.stream()
+                .filter(friend -> friend.getFriendType() == SENDER)
+                .map(Friend::getFriendUuid)
+                .toList();
 
-        return FriendSendResDto.builder()
-                .friendSendUuidList(friendSendUuidList)
-                .build();
-
+        return IntStream.range(0, friendSendList.size())
+                .mapToObj(i -> FriendSendResDto.toDto(i, friendSendList.get(i)))
+                .toList();
     }
 }
 

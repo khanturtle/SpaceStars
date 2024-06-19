@@ -4,12 +4,14 @@ import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.*;
 import com.spacestar.back.friend.vo.res.FriendSendResVo;
 
+import java.util.List;
+
 public interface FriendService {
     void addFriend(String uuid, FriendUuidReqDto friendUuidReqDto);
 
-    FriendListResDto getFriendList(String uuid);
+    List<FriendListResDto> getFriendList(String uuid);
 
-    FriendRequestResDto getFriendRequestList(String uuid);
+    List<FriendRequestResDto> getFriendRequestList(String uuid);
 
     void acceptFriend(String uuid, FriendUuidReqDto friendUuidReqDto);
 
@@ -18,7 +20,5 @@ public interface FriendService {
     FriendNowResDto isFriendRequest(String uuid, String targetUuid);
 
 
-    IsFriendResDto isFriend(String uuid, String targetUuid);
-
-    FriendSendResDto getFriendSendList(String uuid);
+    List<FriendSendResDto> getFriendSendList(String uuid);
 }
