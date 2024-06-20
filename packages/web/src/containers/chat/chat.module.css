@@ -1,3 +1,18 @@
+/* MessageContainer.css */
+.messages-container {
+  width: 380px;
+  height: calc(100vh - 100px);
+  padding: 0 50px;
+  background-color: var(--White-50, #fff);
+  overflow-y: scroll;
+}
+/* TODO: 스크롤바 커스텀 */
+.messages-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* MessageContainer.css */
+
 .chatroom {
   width: 100%;
   height: calc(100vh - 100px);

@@ -15,18 +15,6 @@ body {
   color: #b0bfca;
 }
 
-.messages-container {
-  width: 380px;
-  height: calc(100vh - 100px);
-  padding: 0 50px;
-  background-color: var(--White-50, #fff);
-  overflow-y: scroll;
-}
-/* TODO: 스크롤바 커스텀 */
-.messages-container::-webkit-scrollbar {
-  display: none;
-}
-
 /* 스크롤 없음 */
 .scroll-none::-webkit-scrollbar {
   display: none;
@@ -39,7 +27,8 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
-img {
+img,
+a {
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;

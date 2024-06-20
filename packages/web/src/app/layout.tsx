@@ -52,10 +52,10 @@ export default async function RootLayout({
   children: React.ReactNode
   modal: React.ReactNode
 }>) {
-  // 대표 프로필 받아오기
   const session = await getServerSession(options)
-  const profileMainImageData = await getMainProfileImage()
 
+  // 세션이 있으면, 대표 프로필
+  const profileMainImageData = session ? await getMainProfileImage() : undefined
   const profileImageUrl = profileMainImageData
     ? profileMainImageData.result.profileImageUrl
     : defaultImage

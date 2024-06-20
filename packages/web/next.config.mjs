@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  env: {
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+  },
   images: {
-    domains: [
-      't1.kakaocdn.net',
-      'space-star-bucket.s3.ap-northeast-2.amazonaws.com',
-      's3-alpha-sig.figma.com',
-    ],
+    domains: ['space-star-bucket.s3.ap-northeast-2.amazonaws.com'],
   },
   experimental: {
     externalDir: true,
