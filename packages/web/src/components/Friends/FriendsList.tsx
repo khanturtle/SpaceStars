@@ -1,12 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { FriendsListType } from '@/types/type'
-
-interface friendsWithBasicDataType extends FriendsListType {
-  profileImageUrl: string
-  nickname: string
-}
+import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
 const FriendsList = ({ items }: { items: friendsWithBasicDataType[] }) => {
   return (
@@ -60,7 +55,7 @@ const UserItem = ({
 const Status = ({ status }: { status: boolean }) => {
   return (
     <div
-      className={`w-2 h-2 ml-2 rounded-[50%] ${status ? 'bg-[#7fd222]' : 'bg-[#606a8d]'}`}
+      className={`w-2 h-2 ml-2 rounded-full ${status ? 'bg-[color:var(--online,#3bcd23)]' : 'bg-[#606a8d]'}`}
     />
   )
 }

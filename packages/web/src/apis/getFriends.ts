@@ -70,11 +70,3 @@ export async function getFriendsList(
     return
   }
 }
-
-// FIXME: 나중에 삭제
-export interface TmpFriendType {
-  index: number
-  name: string
-  online: boolean
-  image_url: string
-}

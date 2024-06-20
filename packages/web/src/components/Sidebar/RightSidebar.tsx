@@ -1,14 +1,8 @@
-import Image from 'next/image'
+import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
-import { FriendsListType } from '@/types/type'
-
-import styles from './Sidebar.module.css'
 import FriendsList from '../Friends/FriendsList'
 
-interface friendsWithBasicDataType extends FriendsListType {
-  profileImageUrl: string
-  nickname: string
-}
+import styles from './Sidebar.module.css'
 
 export default function RightSidebar({
   friendsList,

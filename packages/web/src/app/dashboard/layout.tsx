@@ -1,26 +1,7 @@
 import RightSidebar from '@/components/Sidebar/RightSidebar'
 import Sidebar from '@/components/Sidebar/Sidebar'
 
-import { getServerSession } from 'next-auth/next'
-
-import { options } from '@/app/api/auth/[...nextauth]/options'
-import { getFriendsList } from '@/apis/getFriends'
-import { getBasicUserData } from '@/lib/getUserData'
-
-async function getFriendsDataList() {
-  const friendsListResult = await getFriendsList()
-  const friendsList = friendsListResult?.result
-  if (!friendsList) return []
-
-  const friendsWithBasicData = await Promise.all(
-    friendsList.map(async (friend) => {
-      const data = await getBasicUserData(friend.friendUuid)
-      return { ...friend, ...data }
-    }),
-  )
-
-  return friendsWithBasicData
-}
+import { getFriendsDataList } from '@/lib/getFriendsData'
 
 export default async function layout({
   children,
