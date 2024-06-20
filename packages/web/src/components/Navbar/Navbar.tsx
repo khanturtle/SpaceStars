@@ -19,7 +19,7 @@ export default function Navbar({
   profileImageUrl,
 }: {
   session: Session | null
-  profileImageUrl: string | null
+  profileImageUrl: string | null | undefined
 }) {
   return (
     <header>
