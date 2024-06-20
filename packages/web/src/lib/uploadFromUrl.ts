@@ -9,8 +9,8 @@ export async function uploadToS3(file: File, fileName: string) {
   const s3 = new S3Client({
     region: process.env.NEXT_PUBLIC_AWS_REGION as string,
     credentials: {
-      accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID as string,
-      secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY as string,
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
     },
   })
 
