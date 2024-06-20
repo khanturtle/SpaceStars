@@ -58,10 +58,15 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         assert waitingMembers != null;
         //대기중인 사용자가 2명 이상일 경우 실행
         if (waitingMembers.size() >= 2) {
-            for (ZSetOperations.TypedTuple<String> tuple : waitingMembers) {
+            // Set을 List로 변환
+            List<ZSetOperations.TypedTuple<String>> waitingMembersList = new ArrayList<>(waitingMembers);
+
+            // 마지막 인덱스를 제외하고 순회
+            for (int i = 0; i < waitingMembersList.size() - 1; i++) {
+                ZSetOperations.TypedTuple<String> tuple = waitingMembersList.get(i);
                 String matchMemberUuid = tuple.getValue();
                 score = calculateScore(uuid, matchMemberUuid);
-                //점수에 대기시간 더해주기
+                // 점수에 대기시간 더해주기
                 score += (int) (System.currentTimeMillis() - tuple.getScore()) / 10000;
                 if (score > maxScore) {
                     maxScore = score;
@@ -75,6 +80,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         //매치된 사람 있으면 대기큐에서 제거 후 수락큐로 진입
         //+ SSE로 매치 되었다고 알려줌
         if (matchedMemberUuid != null) {
+            System.out.println(uuid + "와 " + matchedMemberUuid + "가 매치되었습니다.");
             redisTemplate.opsForZSet().remove(gameName, uuid);
             redisTemplate.opsForZSet().remove(gameName, matchedMemberUuid);
             enterMatchQueue(uuid, matchedMemberUuid);
@@ -92,7 +98,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         ProfileResDto yourProfile = getProfile(matchToMember);
         AuthResDto myAuth = getAuth(matchFromMember);
         AuthResDto yourAuth = getAuth(matchToMember);
-        //각각 메인게임 ID, 게임성향ID, MBTI ID가 존재할때만 연산해서 점수 더해줌
+        //각각 메인게임 ID, 게임성향ID, MBTI ID가 존재할 때만 연산해서 점수 더해줌
         if (myProfile.getMainGameId() != null && yourProfile.getMainGameId() != null) {
             score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
         }
