@@ -4,9 +4,11 @@ import com.spacestar.back.chat.domain.entity.ChatMember;
 import com.spacestar.back.chat.domain.entity.ChatRoom;
 import com.spacestar.back.chat.dto.ChatRoomDetailDto;
 import com.spacestar.back.chat.dto.ChatRoomDto;
+import com.spacestar.back.chat.dto.ChatRoomNumberDto;
 import com.spacestar.back.chat.repository.ChatMemberJPARepository;
 import com.spacestar.back.chat.repository.ChatRoomJPARepository;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,9 +29,18 @@ public class ChatRoomServiceImp implements ChatRoomService {
     private final ChatMessageService chatMessageService;
 
     @Override
-    public void addChatRoom(String uuid, String receiverUuid) {
+    public ChatRoomNumberDto addChatRoom(String uuid, String receiverUuid) {
+        // 채팅방이 이미 존재하는지 확인
+        Optional<ChatRoom> optionalChatRoom = chatRoomJPARepository.findChatRoomByUuids(uuid, receiverUuid);
+
+        if (optionalChatRoom.isPresent()) {
+            return ChatRoomNumberDto.fromEntity(optionalChatRoom.get());
+        }
+
         String roomNumber = UUID.randomUUID().toString();
         ChatRoom chatRoom = ChatRoomDto.toEntity(roomNumber);
+
+
         // 채팅방 생성
         chatRoomJPARepository.save(chatRoom);
         log.info(receiverUuid,"receiverUuid");
@@ -39,6 +50,8 @@ public class ChatRoomServiceImp implements ChatRoomService {
         // 참여자 퇴장시간 추가
         chatMessageService.addChatExit(roomNumber, uuid);
         chatMessageService.addChatExit(roomNumber, receiverUuid);
+
+        return ChatRoomNumberDto.fromEntity(chatRoom);
     }
 
     // 본인이 참여한 채팅방 목록 조회

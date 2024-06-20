@@ -9,7 +9,9 @@ import java.util.List;
 @Repository
 public interface ChatMemberJPARepository extends JpaRepository<ChatMember, Long> {
 
-    public List<ChatMember> findAllByMemberUuid(String memberUuid);
+    List<ChatMember> findAllByMemberUuid(String memberUuid);
 
-    public List<ChatMember> findAllByChatRoom(ChatRoom chatRoom);
+    List<ChatMember> findAllByChatRoom(ChatRoom chatRoom);
+
+
 }

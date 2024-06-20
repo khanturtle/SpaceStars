@@ -1,5 +1,6 @@
 package com.spacestar.back.chat.controller;
 
+import com.spacestar.back.chat.dto.ChatRoomNumberDto;
 import com.spacestar.back.converter.ConvertToIndexVo;
 import com.spacestar.back.chat.dto.ChatRoomDetailDto;
 import com.spacestar.back.chat.dto.ChatRoomDto;
@@ -30,10 +31,10 @@ public class ChatRoomController {
     // 1:1 채팅방 생성
     @Operation(summary = "1:1 채팅방 생성", description = "상대방과 1:1 채팅방을 생성합니다.")
     @PostMapping("/chatroom/create")
-    public ResponseEntity<Void> addChatRoom(@RequestHeader String uuid, @RequestBody ReceiverUuidReqVo receiverUuid) {
+    public ResponseEntity<ChatRoomNumberDto> addChatRoom(@RequestHeader String uuid, @RequestBody ReceiverUuidReqVo receiverUuid) {
         ReceiverUuidDto receiverUuidDto = mapper.map(receiverUuid, ReceiverUuidDto.class);
-        chatRoomService.addChatRoom(uuid, receiverUuidDto.getReceiverUuid());
-        return new ResponseEntity<>(ResponseSuccess.CREATE_CHATROOM_SUCCESS);
+        ChatRoomNumberDto chatRoomNumberDto = chatRoomService.addChatRoom(uuid, receiverUuidDto.getReceiverUuid());
+        return new ResponseEntity<>(ResponseSuccess.CREATE_CHATROOM_SUCCESS, chatRoomNumberDto);
     }
 
     // 본인이 참여한 (1:1) 채팅방 목록 조회
