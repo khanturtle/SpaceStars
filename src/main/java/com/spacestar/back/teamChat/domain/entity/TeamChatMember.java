@@ -1,6 +1,5 @@
 package com.spacestar.back.teamChat.domain.entity;
 
-import com.spacestar.back.chat.enums.teamParticipationType;
 import com.spacestar.back.global.GlobalTime;
 import com.spacestar.back.teamChat.enums.TeamParticipationType;
 import jakarta.persistence.*;

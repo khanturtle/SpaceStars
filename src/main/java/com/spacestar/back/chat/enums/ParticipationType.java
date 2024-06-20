@@ -1,6 +1,6 @@
 package com.spacestar.back.chat.enums;
 
-public enum teamParticipationType {
+public enum ParticipationType {
     BANNED,
     LEFT,
     JOINED

@@ -143,7 +143,7 @@ public class ChatMessageServiceImp implements ChatMessageService {
 
         // 999개 이상이면 999까지만
         int unReadCount = Math.min(unreadMessages.size(), 999);
-        ChatMessageCollection recentMessage = unreadMessages.get(0);
+        ChatMessageCollection recentMessage = chatMessageRepository.findRecentMessage(roomNumber);
 
         // 마지막 메시지가 텍스트면 content, 아니면 사진을 보냈습니다
         String lastChatMessage = (recentMessage.getMessageType() == MessageType.TEXT) ?

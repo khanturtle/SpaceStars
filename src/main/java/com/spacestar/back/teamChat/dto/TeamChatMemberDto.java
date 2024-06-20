@@ -1,6 +1,5 @@
 package com.spacestar.back.teamChat.dto;
 
-import com.spacestar.back.chat.enums.teamParticipationType;
 import com.spacestar.back.teamChat.domain.entity.TeamChatMember;
 import com.spacestar.back.teamChat.domain.entity.TeamChatRoom;
 import com.spacestar.back.teamChat.enums.TeamParticipationType;
