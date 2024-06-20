@@ -1,4 +1,4 @@
-package com.spacestar.back.quickmatching.dto.res;
+package com.spacestar.back.feignClient.dto.res;
 
 import lombok.Getter;
 

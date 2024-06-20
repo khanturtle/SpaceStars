@@ -1,7 +1,7 @@
 package com.spacestar.back.quickmatching.service;
 
-import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
-import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
+import com.spacestar.back.quickmatching.dto.req.QuickMatchingEnterReqDto;
+import com.spacestar.back.quickmatching.dto.res.QuickMatchingResDto;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface QuickMatchingService {

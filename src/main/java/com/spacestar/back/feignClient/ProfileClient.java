@@ -1,6 +1,6 @@
-package com.spacestar.back.quickmatching.feignClient;
+package com.spacestar.back.feignClient;
 
-import com.spacestar.back.quickmatching.dto.res.ProfileResDto;
+import com.spacestar.back.feignClient.dto.res.ProfileResDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.spacestar.back.quickmatching.dto;
+package com.spacestar.back.quickmatching.dto.req;
 
 import lombok.Getter;
 

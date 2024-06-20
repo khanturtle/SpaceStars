@@ -1,8 +1,8 @@
 package com.spacestar.back.quickmatching.controller;
 
-import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
+import com.spacestar.back.quickmatching.dto.req.QuickMatchingEnterReqDto;
 import com.spacestar.back.quickmatching.service.QuickMatchingService;
-import com.spacestar.back.quickmatching.vo.QuickMatchingEnterReqVo;
+import com.spacestar.back.quickmatching.vo.req.QuickMatchingEnterReqVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
