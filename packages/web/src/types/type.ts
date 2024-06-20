@@ -62,4 +62,8 @@ export interface ProfileImagesType extends ProfileImageType {
 export type FriendType = {
   friendType: 'FRIEND' | 'SENDER' | 'RECEIVER' | 'NONE'
 }
+export interface FriendsListType {
+  index: number
+  friendUuid: string
+}
 // friend--

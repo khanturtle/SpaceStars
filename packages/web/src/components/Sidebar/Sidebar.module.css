@@ -39,10 +39,13 @@
 }
 
 .side-title {
-  color: #5c5e6e;
-  font-size: 15px;
-  font-weight: 600;
   margin-bottom: 20px;
+
+  color: var(--Text-100, #1a1a1a);
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 160%;
 }
 
 .side-menu {
@@ -124,63 +127,4 @@
   .right-side.active {
     transform: translatex(0);
   }
-}
-
-.user {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.user + .user {
-  margin-top: 18px;
-}
-
-.user-img img {
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
-}
-
-.user-img {
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  margin-right: 15px;
-  position: relative;
-
-  border: 2px solid var(--Main-Color-1, #6a64e9);
-}
-.user-img.offline {
-  border: 2px solid var(--Stroke, #ddd);
-}
-
-.username {
-  display: flex;
-  flex: 1;
-  align-items: center;
-}
-.username p {
-  font-size: 14px;
-
-  flex: 1;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-}
-
-.user-status {
-  background-color: #7fd222;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-left: 8px;
-}
-.user-status.offline {
-  background-color: #606a8d;
-}
-.user-status.idle {
-  background-color: #dd1c20;
 }
