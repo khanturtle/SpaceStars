@@ -1,17 +1,15 @@
 package com.spacestar.back.quickmatching.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spacestar.back.feignClient.dto.res.AuthResDto;
+import com.spacestar.back.feignClient.dto.res.ProfileResDto;
+import com.spacestar.back.feignClient.service.FeignClientService;
 import com.spacestar.back.global.GlobalException;
-import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.quickmatching.converter.QuickMatchingConverter;
 import com.spacestar.back.quickmatching.domain.QuickMatching;
 import com.spacestar.back.quickmatching.dto.req.QuickMatchingEnterReqDto;
 import com.spacestar.back.quickmatching.dto.res.QuickMatchingResDto;
-import com.spacestar.back.feignClient.dto.res.AuthResDto;
-import com.spacestar.back.feignClient.dto.res.ProfileResDto;
-import com.spacestar.back.feignClient.AuthClient;
-import com.spacestar.back.feignClient.ProfileClient;
 import com.spacestar.back.quickmatching.repository.MatchingScoresRepository;
 import com.spacestar.back.quickmatching.repository.QuickMatchingRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +33,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final MatchingScoresRepository matchingScoresRepository;
     private final ObjectMapper objectMapper;
     //FeignClient
-    private final ProfileClient profileClient;
-    private final AuthClient authClient;
+    private final FeignClientService feignClientService;
     //SSE
     private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
 
@@ -94,10 +91,10 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private int calculateScore(String matchFromMember, String matchToMember) {
         int score = 0;
 
-        ProfileResDto myProfile = getProfile(matchFromMember);
-        ProfileResDto yourProfile = getProfile(matchToMember);
-        AuthResDto myAuth = getAuth(matchFromMember);
-        AuthResDto yourAuth = getAuth(matchToMember);
+        ProfileResDto myProfile = feignClientService.getProfile(matchFromMember);
+        ProfileResDto yourProfile = feignClientService.getProfile(matchToMember);
+        AuthResDto myAuth = feignClientService.getAuth(matchFromMember);
+        AuthResDto yourAuth = feignClientService.getAuth(matchToMember);
         //각각 메인게임 ID, 게임성향ID, MBTI ID가 존재할 때만 연산해서 점수 더해줌
         if (myProfile.getMainGameId() != null && yourProfile.getMainGameId() != null) {
             score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
@@ -152,26 +149,26 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     //FeignClient로 Profile 서비스 호출
-    private ProfileResDto getProfile(String memberUuid) {
-        org.springframework.http.ResponseEntity<ResponseEntity<ProfileResDto>> response = profileClient.getProfile(memberUuid);
-        ResponseEntity<ProfileResDto> body = response.getBody();
-        if (body == null || body.result() == null) {
-            System.out.println("Profile data is missing or null for memberUuid: " + memberUuid);
-            return new ProfileResDto();  // 기본값 반환
-        }
-        return body.result();
-    }
-
-    //FeignClient로 Auth 서비스 호출
-    private AuthResDto getAuth(String memberUuid) {
-        org.springframework.http.ResponseEntity<ResponseEntity<AuthResDto>> response = authClient.getAuth(memberUuid);
-        ResponseEntity<AuthResDto> body = response.getBody();
-        if (body == null || body.result() == null) {
-            System.out.println("Auth data is missing or null for memberUuid: " + memberUuid);
-            return new AuthResDto();  // 기본값 반환
-        }
-        return body.result();
-    }
+//    private ProfileResDto getProfile(String memberUuid) {
+//        org.springframework.http.ResponseEntity<ResponseEntity<ProfileResDto>> response = profileClient.getProfile(memberUuid);
+//        ResponseEntity<ProfileResDto> body = response.getBody();
+//        if (body == null || body.result() == null) {
+//            System.out.println("Profile data is missing or null for memberUuid: " + memberUuid);
+//            return new ProfileResDto();  // 기본값 반환
+//        }
+//        return body.result();
+//    }
+//
+//    //FeignClient로 Auth 서비스 호출
+//    private AuthResDto getAuth(String memberUuid) {
+//        org.springframework.http.ResponseEntity<ResponseEntity<AuthResDto>> response = authClient.getAuth(memberUuid);
+//        ResponseEntity<AuthResDto> body = response.getBody();
+//        if (body == null || body.result() == null) {
+//            System.out.println("Auth data is missing or null for memberUuid: " + memberUuid);
+//            return new AuthResDto();  // 기본값 반환
+//        }
+//        return body.result();
+//    }
 
     //수락 대기 큐 진입
     public void enterMatchQueue(String matchFromMember, String matchToMember) {

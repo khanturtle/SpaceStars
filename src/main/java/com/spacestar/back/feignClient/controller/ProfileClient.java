@@ -1,4 +1,4 @@
-package com.spacestar.back.feignClient;
+package com.spacestar.back.feignClient.controller;
 
 import com.spacestar.back.feignClient.dto.res.ProfileResDto;
 import org.springframework.cloud.openfeign.FeignClient;
