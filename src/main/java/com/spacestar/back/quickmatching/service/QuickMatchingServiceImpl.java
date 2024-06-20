@@ -46,6 +46,70 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         doQuickMatch(reqDto.getGameName(), uuid);
     }
 
+    //UUID로 SSE 연결
+    @Override
+    public SseEmitter connect(QuickMatchingEnterReqDto reqDto, String uuid) {
+        SseEmitter sseEmitter = new SseEmitter(300_000L);
+
+        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
+                .name("connect")
+                .data("connected!")
+                .reconnectTime(3000L);
+
+        sendEvent(sseEmitter, sseEventBuilder);
+
+        Set<SseEmitter> sseEmitters = container.getOrDefault(uuid, new HashSet<>());
+
+        sseEmitters.add(sseEmitter);
+        container.put(uuid, sseEmitters);
+        sseEmitter.onCompletion(() -> {
+            sseEmitters.remove(sseEmitter);
+        });
+        return sseEmitter;
+    }
+
+    //수락처리
+    @Override
+    public void acceptQuickMatch(String uuid) {
+        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
+        assert quickMatchingMembers != null;
+        acceptMatchingStatus(uuid, quickMatchingMembers);
+    }
+
+
+
+    //거절처리
+    @Override
+    public void rejectQuickMatch(String uuid) {
+        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
+        assert quickMatchingMembers != null;
+        rejectMatchingStatus(uuid, quickMatchingMembers);
+    }
+
+
+    //큐 수락 여부 확인 후 수락한 사용자 대기열에서 삭제
+    @Override
+    public QuickMatchingResDto completeQuickMatch(String uuid, QuickMatchingEnterReqDto reqDto) {
+        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
+
+        if (quickMatchingMembers != null) {
+            for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
+                return completeMatchForMember(uuid, reqDto, tuple);
+            }
+        }
+        throw new GlobalException(ResponseStatus.WAITING_MEMBER_NOT_EXIST);
+    }
+
+    //큐 돌리는 도중 취소
+    @Override
+    public void quitQuickMatching(String uuid, QuickMatchingEnterReqDto reqDto) {
+        Double score = redisTemplate.opsForZSet().score(reqDto.getGameName(), uuid);
+
+        if (score != null) {
+            redisTemplate.opsForZSet().remove(reqDto.getGameName(), uuid);
+        } else throw new GlobalException(ResponseStatus.WAITING_MEMBER_NOT_EXIST);
+    }
+
     //기존에 대기큐에 있던 사용자와 매칭 실시
     public void doQuickMatch(String gameName, String uuid) {
         Set<ZSetOperations.TypedTuple<String>> waitingMembers = redisTemplate.opsForZSet().rangeWithScores(gameName, 0, -1);
@@ -123,7 +187,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         return score;
     }
 
-
     private int genderScore(String myGender, String yourGender) {
         int score = 0;
         if (myGender.equals("OTHERS") || yourGender.equals("OTHERS")) {
@@ -148,27 +211,13 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         return score;
     }
 
-    //FeignClient로 Profile 서비스 호출
-//    private ProfileResDto getProfile(String memberUuid) {
-//        org.springframework.http.ResponseEntity<ResponseEntity<ProfileResDto>> response = profileClient.getProfile(memberUuid);
-//        ResponseEntity<ProfileResDto> body = response.getBody();
-//        if (body == null || body.result() == null) {
-//            System.out.println("Profile data is missing or null for memberUuid: " + memberUuid);
-//            return new ProfileResDto();  // 기본값 반환
-//        }
-//        return body.result();
-//    }
-//
-//    //FeignClient로 Auth 서비스 호출
-//    private AuthResDto getAuth(String memberUuid) {
-//        org.springframework.http.ResponseEntity<ResponseEntity<AuthResDto>> response = authClient.getAuth(memberUuid);
-//        ResponseEntity<AuthResDto> body = response.getBody();
-//        if (body == null || body.result() == null) {
-//            System.out.println("Auth data is missing or null for memberUuid: " + memberUuid);
-//            return new AuthResDto();  // 기본값 반환
-//        }
-//        return body.result();
-//    }
+    public int mbtiScore(long myMbtiId, long yourMbtiId) {
+        return matchingScoresRepository.getScore(myMbtiId, yourMbtiId);
+    }
+
+    private int gamePreferenceScore(Long myGamePreferenceId, Long yourGamePreferenceId) {
+        return matchingScoresRepository.getScore(myGamePreferenceId, yourGamePreferenceId);
+    }
 
     //수락 대기 큐 진입
     public void enterMatchQueue(String matchFromMember, String matchToMember) {
@@ -176,36 +225,25 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         quickMatchingRepository.save(quickMatching);
     }
 
-    //UUID로 SSE 연결
-    @Override
-    public SseEmitter connect(QuickMatchingEnterReqDto reqDto, String uuid) {
-        SseEmitter sseEmitter = new SseEmitter(300_000L);
-
-        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
-                .name("connect")
-                .data("connected!")
-                .reconnectTime(3000L);
-
-        sendEvent(sseEmitter, sseEventBuilder);
-
-        Set<SseEmitter> sseEmitters = container.getOrDefault(uuid, new HashSet<>());
-
-        sseEmitters.add(sseEmitter);
-        container.put(uuid, sseEmitters);
-        sseEmitter.onCompletion(() -> {
-            sseEmitters.remove(sseEmitter);
-        });
-        return sseEmitter;
+    private QuickMatchingResDto completeMatchForMember(String uuid, QuickMatchingEnterReqDto reqDto, ZSetOperations.TypedTuple<String> tuple) {
+        try {
+            Map<String, Object> data = objectMapper.readValue(tuple.getValue(), Map.class);
+            if (isMatchingCompleted(uuid, data)) {
+                redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
+                removeMatchedMembersFromQueue(reqDto, data);
+                return QuickMatchingResDto.builder().memberUuid(uuid).build();
+            } else {
+                //수락큐에서 제거
+                redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
+                //다시 대기큐에 넣기
+                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchFromMember"), tenSecBefore);
+                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchToMember"), tenSecBefore);
+            }
+        } catch (IOException e) {
+            log.error("Failed to complete quick match", e);
+        }
+        return null;
     }
-
-    //수락처리
-    @Override
-    public void acceptQuickMatch(String uuid) {
-        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
-        assert quickMatchingMembers != null;
-        acceptMatchingStatus(uuid, quickMatchingMembers);
-    }
-
     private void acceptMatchingStatus(String uuid, Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers) {
         for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
             try {
@@ -226,14 +264,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 e.printStackTrace();
             }
         }
-    }
-
-    //거절처리
-    @Override
-    public void rejectQuickMatch(String uuid) {
-        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
-        assert quickMatchingMembers != null;
-        rejectMatchingStatus(uuid, quickMatchingMembers);
     }
 
     private void rejectMatchingStatus(String uuid, Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers) {
@@ -258,39 +288,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         }
     }
 
-    //큐 수락 여부 확인 후 수락한 사용자 대기열에서 삭제
-    @Override
-    public QuickMatchingResDto completeQuickMatch(String uuid, QuickMatchingEnterReqDto reqDto) {
-        Set<ZSetOperations.TypedTuple<String>> quickMatchingMembers = redisTemplate.opsForZSet().rangeWithScores("QuickMatching", 0, -1);
-
-        if (quickMatchingMembers != null) {
-            for (ZSetOperations.TypedTuple<String> tuple : quickMatchingMembers) {
-                return completeMatchForMember(uuid, reqDto, tuple);
-            }
-        }
-        throw new GlobalException(ResponseStatus.WAITING_MEMBER_NOT_EXIST);
-    }
-
-    private QuickMatchingResDto completeMatchForMember(String uuid, QuickMatchingEnterReqDto reqDto, ZSetOperations.TypedTuple<String> tuple) {
-        try {
-            Map<String, Object> data = objectMapper.readValue(tuple.getValue(), Map.class);
-            if (isMatchingCompleted(uuid, data)) {
-                redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
-                removeMatchedMembersFromQueue(reqDto, data);
-                return QuickMatchingResDto.builder().memberUuid(uuid).build();
-            } else {
-                //수락큐에서 제거
-                redisTemplate.opsForZSet().remove("QuickMatching", tuple.getValue());
-                //다시 대기큐에 넣기
-                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchFromMember"), tenSecBefore);
-                redisTemplate.opsForZSet().add(reqDto.getGameName(), (String) data.get("matchToMember"), tenSecBefore);
-            }
-        } catch (IOException e) {
-            log.error("Failed to complete quick match", e);
-        }
-        return null;
-    }
-
     //양쪽 다 수락 상태인지 확인
     private boolean isMatchingCompleted(String uuid, Map<String, Object> data) {
         return (uuid.equals(data.get("matchFromMember")) || uuid.equals(data.get("matchToMember"))) &&
@@ -302,16 +299,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         redisTemplate.opsForZSet().remove(reqDto.getGameName(), data.get("matchFromMember"));
         redisTemplate.opsForZSet().remove(reqDto.getGameName(), data.get("matchToMember"));
     }
-
-    @Override
-    public void quitQuickMatching(String uuid, QuickMatchingEnterReqDto reqDto) {
-        Double score = redisTemplate.opsForZSet().score(reqDto.getGameName(), uuid);
-
-        if (score != null) {
-            redisTemplate.opsForZSet().remove(reqDto.getGameName(), uuid);
-        } else throw new GlobalException(ResponseStatus.WAITING_MEMBER_NOT_EXIST);
-    }
-
 
     private static void sendEvent(final SseEmitter sseEmitter,
                                   final SseEmitter.SseEventBuilder sseEventBuilder) {
@@ -331,14 +318,5 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 .reconnectTime(3000L);
 
         sseEmitters.forEach(sseEmitter -> sendEvent(sseEmitter, sseEventBuilder));
-    }
-
-
-    public int mbtiScore(long myMbtiId, long yourMbtiId) {
-        return matchingScoresRepository.getScore(myMbtiId, yourMbtiId);
-    }
-
-    private int gamePreferenceScore(Long myGamePreferenceId, Long yourGamePreferenceId) {
-        return matchingScoresRepository.getScore(myGamePreferenceId, yourGamePreferenceId);
     }
 }
