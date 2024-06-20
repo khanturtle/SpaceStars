@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class FeignClientServiceImpl implements FeignClientService{
     private final ProfileClient profileClient;
     private final AuthClient authClient;
+    @Override
     public ProfileResDto getProfile(String memberUuid) {
         org.springframework.http.ResponseEntity<ResponseEntity<ProfileResDto>> response = profileClient.getProfile(memberUuid);
         ResponseEntity<ProfileResDto> body = response.getBody();
@@ -21,6 +22,7 @@ public class FeignClientServiceImpl implements FeignClientService{
         return body.result();
     }
 
+    @Override
     //FeignClient로 Auth 서비스 호출
     public AuthResDto getAuth(String memberUuid) {
         org.springframework.http.ResponseEntity<ResponseEntity<AuthResDto>> response = authClient.getAuth(memberUuid);
