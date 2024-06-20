@@ -6,15 +6,15 @@ import ChatRoomContainer from '@/containers/chat/ChatRoomContainer'
 import { getServerSession } from 'next-auth'
 import { revalidateTag } from 'next/cache'
 
-async function getRoomData(roomNumber: string) {
-  const session = await getServerSession(options)
-  const UUID = session?.user?.data.uuid
+// async function getRoomData(roomNumber: string) {
+//   const session = await getServerSession(options)
+//   const UUID = session?.user?.data.uuid
 
-  // 채팅 참여자
-  const members = await getRoomDetail(roomNumber)
-  console.log(members)
-  const memberUuid = members.find((m) => m.memberUuid === UUID)?.memberUuid
-}
+//   // 채팅 참여자
+//   const members = await getRoomDetail(roomNumber)
+//   console.log(members)
+//   const memberUuid = members.find((m) => m.memberUuid === UUID)?.memberUuid
+// }
 
 export default async function page({
   params,
@@ -27,7 +27,7 @@ export default async function page({
   const UUID = session?.user?.data.uuid
 
   const roomNumber = params.roomNumber
-  const roomData = await getRoomData(roomNumber)
+  // const roomData = await getRoomData(roomNumber)
 
   return (
     <section className="flex-1">

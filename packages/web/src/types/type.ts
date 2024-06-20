@@ -67,3 +67,15 @@ export interface FriendsListType {
   friendUuid: string
 }
 // friend--
+
+// --chatroom
+export interface ChatRoomType {
+  index: number
+  roomNumber: string
+  otherMemberUuid: string
+}
+export interface ChatRoomMemberType {
+  index: number
+  memberUuid: string
+}
+// chatroom--

@@ -7,7 +7,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const targetUuid = params.id
   const allProfile = await getAllProfileDataByUuid(targetUuid)
 
-  console.log(allProfile)
+  // console.log(allProfile)
   return (
     <Modal>
       <ProfileLayout profileData={allProfile} />

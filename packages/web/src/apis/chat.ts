@@ -1,34 +1,12 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
+import { ChatRoomMemberType, ChatRoomType } from '@/types/type'
 
 const CHAT_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/chat`
 
-/** 1:1 방 생성하기 */
-export async function createChat(token: string, userUUID: string) {
-  try {
-    await fetch(`${CHAT_BASE_URL}/one-to-one/chatroom/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? token : '',
-      },
-      body: JSON.stringify({
-        receiverUuid: userUUID,
-      }),
-    })
-  } catch (err) {
-    // console.error(err)
-  }
-}
-
-export interface RoomType {
-  index: number
-  roomNumber: string
-  otherMemberUuid: string
-}
 /** 1:1 방 리스트 조회 */
-export async function getChatRooms(): Promise<RoomType[]> {
+export async function getChatRooms(): Promise<ChatRoomType[]> {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
 
@@ -41,26 +19,23 @@ export async function getChatRooms(): Promise<RoomType[]> {
         Authorization: token ? token : '',
       },
     })
-    const data = await response.json()
 
-    if (data.code === 200) {
-      return data.result
+    if (!response.ok) {
+      throw new Error('Failed to getChatRooms')
     }
-    throw new Error('Failed get chatRooms')
+
+    const data = await response.json()
+    return data.result
   } catch (err) {
     // console.error(err)
     return []
   }
 }
 
-export interface RoomDetailType {
-  index: number
-  memberUuid: string
-}
 /** 1:1 방 참여자 조회 */
-export async function getRoomDetail(
+export async function getRoomMember(
   roomUuid: string,
-): Promise<RoomDetailType[]> {
+): Promise<ChatRoomMemberType[]> {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
 
@@ -74,12 +49,12 @@ export async function getRoomDetail(
         },
       },
     )
-    const data = await response.json()
 
-    if (data.code === 200) {
-      return data.result
+    if (!response.ok) {
+      throw new Error('Failed to getRoomDetail')
     }
-    throw new Error('Failed get chatRoom Detail')
+    const data = await response.json()
+    return data.result
   } catch (err) {
     // console.error(err)
     return []
