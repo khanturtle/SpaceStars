@@ -1,5 +1,7 @@
 package com.spacestar.back.swipe.service;
 
+import com.spacestar.back.kafka.message.MatchingMessage;
+import com.spacestar.back.kafka.service.KafkaService;
 import com.spacestar.back.swipe.converter.SwipeConverter;
 import com.spacestar.back.swipe.dto.req.SwipeReqDto;
 import com.spacestar.back.swipe.dto.res.SwipeCountResDto;
@@ -14,9 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SwipeServiceImpl implements SwipeService {
     private final SwipeRepository swipeRepository;
+    private final KafkaService kafkaService;
 
     @Override
     public void addSwipe(SwipeReqDto swipeReqDto, String uuid) {
+        kafkaService.sendMessage(MatchingMessage.toMatchingMessage(uuid, swipeReqDto));
         swipeRepository.save(SwipeConverter.toEntity(swipeReqDto, uuid));
         //Todo 요청을 보내면 추천인 목록에서 제외 시켜야함 (거절시 처럼 Redis에 저장해야할듯?)
     }
