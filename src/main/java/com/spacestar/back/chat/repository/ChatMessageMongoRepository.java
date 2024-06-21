@@ -36,5 +36,5 @@ public interface ChatMessageMongoRepository extends MongoRepository<ChatMessageC
     Page<ChatMessageCollection> findReadMessage(String roomNumber , Instant exitTime, Pageable pageable);
 
     @Query(value="{ 'roomNumber' : ?0 }", sort="{ 'createdAt' : -1 }")
-    ChatMessageCollection findRecentMessage(String roomNumber);
+    Optional<ChatMessageCollection> findRecentMessage(String roomNumber);
 }

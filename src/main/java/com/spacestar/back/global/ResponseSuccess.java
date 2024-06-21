@@ -21,7 +21,7 @@ public enum ResponseSuccess {
     GET_CHATROOM_MESSAGE_LIST_SUCCESS(306, "채팅방 메시지 목록 조회 성공"),
     GET_CHATROOM_UNREAD_MESSAGE_LIST_SUCCESS(307, "안 읽은 메시지 목록 조회 성공"),
     GET_CHATROOM_RECENT_MESSAGE_SUCCESS(308, "최근 메시지 조회 성공"),
-
+    GET_CHATROOM_RECENT_MESSAGE_COUNT_SUCCESS(309, "최근 메시지 개수 조회 성공"),
 
 
     CREATE_TEAM_CHATROOM_SUCCESS(401, "팀 채팅방 생성 성공"),

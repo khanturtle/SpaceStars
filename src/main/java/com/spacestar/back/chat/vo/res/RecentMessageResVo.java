@@ -8,9 +8,10 @@ import java.time.Instant;
 @Getter
 @Setter
 public class RecentMessageResVo {
+
+    private String senderUuid;
+
     private String lastChatMessage;
 
     private Instant createdAt;
-
-    private int unReadCount;
 }

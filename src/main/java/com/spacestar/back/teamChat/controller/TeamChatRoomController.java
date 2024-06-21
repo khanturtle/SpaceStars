@@ -63,7 +63,7 @@ public class TeamChatRoomController {
 
     @Operation(summary = "팀 채팅방 상세 조회", description = "팀 채팅방 상세 정보를 조회합니다.")
     @GetMapping("/chatroom/{roomNumber}")
-    public ResponseEntity<?> getTeamChatRoomDetail(@PathVariable String roomNumber) {
+    public ResponseEntity<TeamChatRoomDetailResVo> getTeamChatRoomDetail(@PathVariable String roomNumber) {
         TeamChatRoomDto teamChatRoomDto = teamChatRoomService.getTeamChatRoomDetail(roomNumber);
         TeamChatRoomDetailResVo teamChatRoomDetailResVo = mapper.map(teamChatRoomDto, TeamChatRoomDetailResVo.class);
         return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_DETAIL_SUCCESS,teamChatRoomDetailResVo);
@@ -72,11 +72,11 @@ public class TeamChatRoomController {
 
     @Operation(summary = "팀 채팅방 참가하기", description = "팀 채팅방을 참가합니다.")
     @PostMapping("/chatroom/join/{roomNumber}")
-    public ResponseEntity<?> joinTeamChatRoom(@RequestHeader String uuid,
+    public ResponseEntity<Void> joinTeamChatRoom(@RequestHeader String uuid,
                                               @PathVariable String roomNumber,@RequestBody TeamChatRoomReqVo teamChatRoomReqVo){
         String Password = teamChatRoomReqVo.getPassword();
         teamChatRoomService.joinTeamChatRoom(uuid, roomNumber,Password);
-        return new ResponseEntity<>(ResponseSuccess.JOIN_TEAM_CHATROOM_SUCCESS, null);
+        return new ResponseEntity<>(ResponseSuccess.JOIN_TEAM_CHATROOM_SUCCESS);
     }
 
 }
