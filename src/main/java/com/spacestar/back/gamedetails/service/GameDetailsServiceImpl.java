@@ -174,4 +174,12 @@ public class GameDetailsServiceImpl implements GameDetailsService {
         );
         return GameOptionResDto.toDto(gamePosition);
     }
+
+    @Override
+    public GameOptionResDto getGameServerDetail(Long optionId) {
+        GameServer gameServer = serverRepository.findById(optionId).orElseThrow(
+                () -> new GlobalException(ResponseStatus.SUCCESS)
+        );
+        return GameOptionResDto.toDto(gameServer);
+    }
 }

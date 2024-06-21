@@ -43,7 +43,7 @@ public class GameOptionController {
 
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_CLASS_SUCCESS,
-                mapper.map(gameDetailsService.getGameClassDetail(optionId), GameOptionResVo.class));
+                mapper.map(gameDetailsService.getGameServerDetail(optionId), GameOptionResVo.class));
     }
     @Operation(summary = "게임 티어 정보 조회")
     @GetMapping("/tier/{optionId}")

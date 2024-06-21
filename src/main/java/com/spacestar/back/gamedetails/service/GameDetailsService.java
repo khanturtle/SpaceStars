@@ -36,4 +36,6 @@ public interface GameDetailsService {
     GameOptionResDto getGameClassDetail(Long optionId);
 
     GameOptionResDto getGamePositionDetail(Long optionId);
+
+    GameOptionResDto getGameServerDetail(Long optionId);
 }
