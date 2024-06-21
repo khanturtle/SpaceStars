@@ -2,11 +2,11 @@ package com.spacestar.back.quickmatching.controller;
 
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
-import com.spacestar.back.quickmatching.dto.QuickMatchingEnterReqDto;
-import com.spacestar.back.quickmatching.dto.QuickMatchingResDto;
+import com.spacestar.back.quickmatching.dto.req.QuickMatchingEnterReqDto;
+import com.spacestar.back.quickmatching.dto.res.QuickMatchingResDto;
 import com.spacestar.back.quickmatching.service.QuickMatchingService;
-import com.spacestar.back.quickmatching.vo.QuickMatchingEnterReqVo;
-import com.spacestar.back.quickmatching.vo.QuickMatchingResVo;
+import com.spacestar.back.quickmatching.vo.req.QuickMatchingEnterReqVo;
+import com.spacestar.back.quickmatching.vo.res.QuickMatchingResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
