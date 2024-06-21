@@ -17,6 +17,6 @@ public class KafkaServiceImpl implements KafkaService{
 	@Override
 	public void sendMessage(MatchingMessage message){
 
-		kafkaTemplate.send("matching", message);
+		kafkaTemplate.send("dev.matching-service.match-request", message);
 	}
 }
