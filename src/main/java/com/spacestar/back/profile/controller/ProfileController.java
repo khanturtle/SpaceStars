@@ -214,7 +214,7 @@ public class ProfileController {
                 mapper.map(profileService.getMainGameId(uuid), MainGameResVo.class));
     }
 
-    @Tag(name = "Select", description = "조회용")
+    @Tag(name = "Select", description = "빠른매칭 조회용")
     @Operation(summary = "빠른 매칭용 사용자 정보 조회")
     @GetMapping("/quick-matching/{uuid}")
     public ResponseEntity<QuickMemberInfoResVo> quickMemberInfo(@PathVariable("uuid") String uuid){
@@ -223,5 +223,13 @@ public class ProfileController {
                 mapper.map(profileService.quickMemberInfo(uuid), QuickMemberInfoResVo.class));
     }
 
-
+    @Tag(name = "Select", description = "스와이프 조회용")
+    @Operation(summary = "스와이프용 전체 사용자 정보 조회")
+    @GetMapping("/swipe")
+    public ResponseEntity<List<SwipeMemberInfoResVo>> swipeMemberInfos(){
+        return new ResponseEntity<>(ResponseSuccess.QUICK_MEMBER_INFO_SELECT_SUCCESS,
+                profileService.swipeMemberInfos().stream()
+                        .map(swipeMemberInfoResDto -> mapper.map(swipeMemberInfoResDto, SwipeMemberInfoResVo.class))
+                        .toList());
+    }
 }
