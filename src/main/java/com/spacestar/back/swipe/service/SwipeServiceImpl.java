@@ -1,5 +1,6 @@
 package com.spacestar.back.swipe.service;
 
+import com.spacestar.back.feignClient.service.FeignClientService;
 import com.spacestar.back.kafka.message.MatchingMessage;
 import com.spacestar.back.kafka.service.KafkaService;
 import com.spacestar.back.swipe.converter.SwipeConverter;
@@ -17,6 +18,7 @@ import java.util.List;
 public class SwipeServiceImpl implements SwipeService {
     private final SwipeRepository swipeRepository;
     private final KafkaService kafkaService;
+    private final FeignClientService feignClientService;
 
     @Override
     public void addSwipe(SwipeReqDto swipeReqDto, String uuid) {
@@ -58,5 +60,11 @@ public class SwipeServiceImpl implements SwipeService {
         return SwipeCountResDto.builder()
                 .count(swipeRepository.countSwipe(uuid))
                 .build();
+    }
+
+    @Override
+    public void getSwipeMembers(String uuid) {
+        //todo 아래값 리스트로
+        System.out.println(feignClientService.getOpenAi(uuid));
     }
 }

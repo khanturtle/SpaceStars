@@ -22,4 +22,5 @@ public interface SwipeService {
 
     SwipeCountResDto countSwipe(String uuid);
 
+    void getSwipeMembers(String uuid);
 }

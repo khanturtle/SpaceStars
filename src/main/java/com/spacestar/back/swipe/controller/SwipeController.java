@@ -8,6 +8,7 @@ import com.spacestar.back.swipe.service.SwipeService;
 import com.spacestar.back.swipe.vo.req.SwipeReqVo;
 import com.spacestar.back.swipe.vo.res.SwipeCountResVo;
 import com.spacestar.back.swipe.vo.res.SwipeListResVo;
+import com.spacestar.back.swipe.vo.res.SwipeResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Tag(name = "Swipe", description = "스와이프    ")
+@Tag(name = "Swipe", description = "스와이프")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/swipe")
 public class SwipeController {
     private final SwipeService swipeService;
     private final ModelMapper mapper;
+
+    @Operation(summary = "스와이프 목록 조회")
+    @GetMapping
+    public ResponseEntity<List<SwipeResVo>> getSwipeMembers(@RequestHeader("UUID") String uuid) {
+        swipeService.getSwipeMembers(uuid);
+
+        return new ResponseEntity<>(ResponseSuccess.SWIPE_GET_SUCCESS,null);
+    }
 
     @Operation(summary = "스와이프 요청 보내기")
     @PostMapping("/add")

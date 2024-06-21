@@ -1,9 +1,10 @@
-package com.spacestar.back.feignClient.dto.res;
+package com.spacestar.back.feignClient.vo.res;
 
 import lombok.Getter;
 
 @Getter
-public class ProfileResDto {
+public class SwipeMemberInfoResVo {
+    private String uuid;
     private Long gamePreferenceId;
     private Long mbtiId;
     private Long mainGameId;
@@ -11,8 +12,9 @@ public class ProfileResDto {
 
     @Override
     public String toString() {
-        return "ProfileResDto{" +
-                "gamePreferenceId=" + gamePreferenceId +
+        return "SwipeMemberInfoResVo{" +
+                "uuid='" + uuid + '\'' +
+                ", gamePreferenceId=" + gamePreferenceId +
                 ", mbtiId=" + mbtiId +
                 ", mainGameId=" + mainGameId +
                 ", reportCount=" + reportCount +
