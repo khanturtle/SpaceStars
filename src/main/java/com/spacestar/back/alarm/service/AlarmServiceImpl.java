@@ -58,7 +58,10 @@ public class AlarmServiceImpl implements AlarmService {
 
 	// 알림 읽음 처리
 	@Override
-	public void modifyAlarm(String alarmId){
-		alarmRepository.modifyAlarm(alarmId);
+	public void modifyAlarmRead(String alarmId, String uuid){
+		// 변경사항이 없을 경우 : 알림이 존재하지 않거나 && 알림이 이미 읽은 상태인 경우
+		if (alarmRepository.modifyAlarm(alarmId, uuid).getModifiedCount() == 0){
+			throw new GlobalException(ResponseStatus.NOT_MODIFIED_ALARM);
+		}
 	}
 }

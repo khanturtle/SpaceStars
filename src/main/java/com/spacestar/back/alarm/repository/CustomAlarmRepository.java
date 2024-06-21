@@ -1,6 +1,8 @@
 package com.spacestar.back.alarm.repository;
 
+import com.mongodb.client.result.UpdateResult;
+
 public interface CustomAlarmRepository {
 
-	void modifyAlarm(String alarmId);
+	UpdateResult modifyAlarm(String alarmId, String uuid);
 }
