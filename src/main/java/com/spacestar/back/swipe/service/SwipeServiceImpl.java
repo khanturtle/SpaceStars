@@ -7,10 +7,12 @@ import com.spacestar.back.swipe.converter.SwipeConverter;
 import com.spacestar.back.swipe.dto.req.SwipeReqDto;
 import com.spacestar.back.swipe.dto.res.SwipeCountResDto;
 import com.spacestar.back.swipe.dto.res.SwipeListResDto;
+import com.spacestar.back.swipe.dto.res.SwipeResDto;
 import com.spacestar.back.swipe.repository.SwipeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,8 +65,21 @@ public class SwipeServiceImpl implements SwipeService {
     }
 
     @Override
-    public void getSwipeMembers(String uuid) {
+    public List<SwipeResDto> getSwipeMembers(String uuid) {
         //todo 아래값 리스트로
-        System.out.println(feignClientService.getOpenAi(uuid));
+        String response = feignClientService.getOpenAi(uuid);
+        String[] tokens = response.substring(1, response.length() - 1).split(",\\s*");
+
+        // List<SwipeResDto>를 담을 리스트 생성
+        List<SwipeResDto> swipeResDtoList = new ArrayList<>();
+
+        // 각 토큰을 SwipeResDto 객체로 변환하여 리스트에 추가
+        for (String token : tokens) {
+            SwipeResDto swipeResDto = new SwipeResDto();
+            swipeResDto.setMemberUuid(token.trim()); // 공백 제거 후 설정
+            swipeResDtoList.add(swipeResDto);
+        }
+
+        return swipeResDtoList;
     }
 }

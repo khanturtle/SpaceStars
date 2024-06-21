@@ -11,6 +11,4 @@ public class Message {
         this.role = role;
         this.content = content;
     }
-
-    // getters and setters
 }
