@@ -8,9 +8,12 @@ import com.spacestar.back.friend.repository.FriendRepository;
 import com.spacestar.back.friend.vo.res.FriendListResVo;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.kafka.FriendAddDto;
+import com.spacestar.back.kafka.ProfileDto;
 import com.spacestar.back.profile.dto.res.ProfilePlayGameInfoResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,10 @@ import static com.spacestar.back.friend.enums.FriendType.*;
 public class FriendServiceImp implements FriendService {
 
     private final FriendRepository friendRepository;
+
+    private final KafkaTemplate<String, FriendAddDto> kafkaTemplate;
+    private static final String TOPIC = "dev.profile-service.friend-request";
+
 
     //친구 신청
     @Override
@@ -53,6 +60,13 @@ public class FriendServiceImp implements FriendService {
                     .build();
 
             friendRepository.save(friend);
+
+            //친구 신청 받은 사람에게 알림
+            FriendAddDto friendAddDto = FriendAddDto.builder()
+                    .senderUuid(uuid)
+                    .receiverUuid(friendUuidReqDto.getFriendUuid())
+                    .build();
+            kafkaTemplate.send(TOPIC, friendAddDto);
         }
     }
 
