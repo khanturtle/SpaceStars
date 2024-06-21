@@ -1,4 +1,4 @@
-import { GameType } from '@/apis/game'
+import { GameType } from '@/apis/getGame'
 import { LockIcon } from '@packages/ui'
 import GameSelectBox from './GameSelectBox'
 import SubSelectBox from './SubSelectBox'

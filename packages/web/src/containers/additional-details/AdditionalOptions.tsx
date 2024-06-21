@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import { GameType, getGameOptions } from '@/apis/game'
+import { GameType, getGameOptions } from '@/apis/getGame'
 import GameSelectBox from '@/components/game/GameSelectBox'
 import { useGameStore } from '@/store/gameStore'
 

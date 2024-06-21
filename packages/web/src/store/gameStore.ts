@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { GameOptionDetailType, GameType } from '@/apis/game'
+import { GameOptionDetailType, GameType } from '@/apis/getGame'
 
 interface GameState {
   selectedGames: GameType[]

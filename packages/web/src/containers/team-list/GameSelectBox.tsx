@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { GameListButton } from '@packages/ui'
 
-import { GameType } from '@/apis/game'
+import { GameType } from '@/apis/getGame'
 import useDrag from '@/hooks/useDrag'
 
 import styles from './teamList.module.css'

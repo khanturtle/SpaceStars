@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { GameButton } from '@packages/ui'
 
-import { GameType, getGames } from '@/apis/game'
+import { GameType, getGames } from '@/apis/getGame'
 import { useGameStore } from '@/store/gameStore'
 
 function GameSelectButton({ game }: { game: GameType }) {

@@ -7,6 +7,24 @@ export interface ApiTokenErrorType {
   error: string
 }
 
+// --game
+export interface GameType {
+  gameId: number
+  gameNameKor: string
+  gameName: string
+  gameImage: string
+  gameLogoImage: string
+}
+export interface GameTypes {
+  index: number
+  gameId: number
+  gameNameKor: string
+  gameName: string
+  gameImage: string
+  gameLogoImage: string
+}
+// game--
+
 // --auth
 export interface ProfileType {
   email: string
