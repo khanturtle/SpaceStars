@@ -1,4 +1,4 @@
-import { GameType } from '@/apis/getGame'
+import { GameTypes } from '@/types/type'
 import { LockIcon } from '@packages/ui'
 import GameSelectBox from './GameSelectBox'
 import SubSelectBox from './SubSelectBox'
@@ -8,7 +8,7 @@ export default function SelectBoxContainer({
   games,
 }: {
   searchParams: { [key: string]: string }
-  games: GameType[]
+  games: GameTypes[]
 }) {
   return (
     <div>

@@ -2,15 +2,6 @@ import { GameTypes } from '@/types/type'
 
 const GAME_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/game`
 
-// export interface GameType {
-//   index: number
-//   gameId: number
-//   gameNameKor: string
-//   gameName: string
-//   gameImage: string
-//   gameLogoImage: string
-// }
-
 /** 전체 게임 조회 */
 export async function getGames(): Promise<GameTypes[]> {
   try {

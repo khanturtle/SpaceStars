@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react'
 
 import { GameButton } from '@packages/ui'
 
-import { GameType, getGames } from '@/apis/getGame'
+import { getGames } from '@/apis/getGame'
 import { useGameStore } from '@/store/gameStore'
+import { GameTypes } from '@/types/type'
 
-function GameSelectButton({ game }: { game: GameType }) {
+function GameSelectButton({ game }: { game: GameTypes }) {
   const { selectedGames, selectedGamesCount, addGame, removeGame } =
     useGameStore()
 
@@ -40,7 +41,7 @@ function GameSelectButton({ game }: { game: GameType }) {
 }
 
 export default function AdditionalGames() {
-  const [games, setGames] = useState<GameType[]>([])
+  const [games, setGames] = useState<GameTypes[]>([])
 
   useEffect(() => {
     const getGame = async () => {

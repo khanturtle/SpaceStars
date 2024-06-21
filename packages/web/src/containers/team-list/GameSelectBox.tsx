@@ -4,19 +4,19 @@ import { useRouter } from 'next/navigation'
 
 import { GameListButton } from '@packages/ui'
 
-import { GameType } from '@/apis/getGame'
 import useDrag from '@/hooks/useDrag'
 
 import styles from './teamList.module.css'
+import { GameTypes } from '@/types/type'
 
 const GameItem = ({
   game,
   currentGame,
   onClick,
 }: {
-  game: GameType
+  game: GameTypes
   currentGame: string
-  onClick: (game: GameType) => void
+  onClick: (game: GameTypes) => void
 }) => {
   const item = {
     gameImage: game.gameImage,
@@ -38,7 +38,7 @@ export default function GameSelectBox({
   games,
   searchParams,
 }: {
-  games: GameType[]
+  games: GameTypes[]
   searchParams: { [key: string]: string }
 }) {
   const router = useRouter()
@@ -50,7 +50,7 @@ export default function GameSelectBox({
     divRef,
   } = useDrag()
 
-  const UpdateGame = (item: GameType) => {
+  const UpdateGame = (item: GameTypes) => {
     if (!isDragging) {
       return
     }
