@@ -8,6 +8,7 @@ export default function ProfileContainer({
 }: {
   profileData: any
 }) {
+  // console.log(profileData)
   const age = calculateAge(profileData.authProfile.birth)
 
   // 게임 성향 ID -> 게임 성향 결과 받아오기. 없으면, ㄴㄴ
@@ -20,6 +21,9 @@ export default function ProfileContainer({
 
   // 플레이하는 게임 -> ID로 게임 이름 받아오기
   const palyGames = profileData.playGames
+  // 좋아하는 게임
+  const likedGames = profileData.likedGameIds
+
 
   return (
     <section className="bg-[red]">

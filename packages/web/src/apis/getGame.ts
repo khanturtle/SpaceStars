@@ -1,4 +1,4 @@
-import { GameTypes } from '@/types/type'
+import { GameType, GameTypes } from '@/types/type'
 
 const GAME_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/game`
 
@@ -16,6 +16,23 @@ export async function getGames(): Promise<GameTypes[]> {
   } catch (err) {
     console.error(err)
     return []
+  }
+}
+
+/** 단일 게임 조회 */
+export async function getGameById(gameId: number): Promise<GameType | null> {
+  try {
+    const response = await fetch(`${GAME_BASE_URL}/${gameId}`)
+    const data = await response.json()
+
+    if (data.code !== 200) {
+      throw new Error('Failed getGameById')
+    }
+
+    return data.result
+  } catch (err) {
+    console.error(err)
+    return null
   }
 }
 

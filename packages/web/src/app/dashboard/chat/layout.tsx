@@ -30,7 +30,6 @@ export default async function layout({
 }) {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
-
   const friendsList = await getFriendsDataList()
 
   // 1:1 방 목록

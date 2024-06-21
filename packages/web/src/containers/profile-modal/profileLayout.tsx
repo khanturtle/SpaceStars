@@ -1,7 +1,15 @@
+import { GameType } from '@/types/type'
+
 import CreateChatButton from './createChatButton'
 import ProfileContainer from './profileContainer'
 
-export default function ProfileLayout({ profileData }: { profileData: any }) {
+export default function ProfileLayout({
+  profileData,
+  likedGamesInfo,
+}: {
+  profileData: any
+  likedGamesInfo: (GameType | null)[]
+}) {
   // console.log(profileData)
   return (
     <section className="relative h-full flex flex-col items-center px-[204px] py-[120px]">
