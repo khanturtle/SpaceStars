@@ -1,9 +1,9 @@
 package com.spacestar.back.alarm.controller;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,41 +41,42 @@ public class AlarmController {
 	@PostMapping
 	@Operation(summary = "알림 생성")
 	public ResponseEntity<Void> addAlarm(@RequestHeader("UUID") String uuid,
-										@RequestBody AlarmAddReqVo alarmAddReqVo){
+		@RequestBody AlarmAddReqVo alarmAddReqVo) {
 		alarmService.addAlarm(uuid, modelMapper.map(alarmAddReqVo, AlarmAddReqDto.class));
 		return new ResponseEntity<>(ResponseSuccess.ALARM_INSERT_SUCCESS);
 	}
+
 	//알림 리스트 조회 API
 	@GetMapping("/list")
 	@Operation(summary = "알림 목록 조회")
-	public ResponseEntity<AlarmListResVo> getAlarmList(@RequestHeader("UUID") String uuid){
+	public ResponseEntity<AlarmListResVo> getAlarmList(@RequestHeader("UUID") String uuid) {
 
 		return new ResponseEntity<>(ResponseSuccess.ALARM_LIST_SELECT_SUCCESS,
 			modelMapper.map(alarmService.getAlarmList(uuid), AlarmListResVo.class));
 	}
 
 	// 매칭 알림 실시간 수신
-	@GetMapping(value ="/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(value = "/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@Operation(summary = "실시간 알림 SSE 입장")
-	public Flux<MatchingMessage> matchingEvents(@RequestHeader("UUID") String uuid){
+	public Flux<MatchingMessage> matchingEvents(@RequestHeader("UUID") String uuid) {
 		log.info("Received UUID: {}", uuid);
 		return sink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()));
 	}
 
-	@GetMapping(value = "/state/{id}")
+	@GetMapping("/state/{alarmId}")
 	@Operation(summary = "알림 상태 조회")
 	public ResponseEntity<AlarmStateResVo> getAlarmState(@RequestHeader("UUID") String uuid,
-			@PathVariable("id") String id){
+		@PathVariable("alarmId") String alarmId) {
 		return new ResponseEntity<>(ResponseSuccess.ALARM_STATE_SELECT_SUCCESS,
-				modelMapper.map(alarmService.getAlarmState(uuid, id), AlarmStateResVo.class));
+			modelMapper.map(alarmService.getAlarmState(uuid, alarmId), AlarmStateResVo.class));
 	}
 
-	//Todo
-	//알림 전송 API
+	@PatchMapping("/modify/check-status/{alarmId}")
+	@Operation(summary = "알림 상태 수정 (읽음으로 처리)")
+	public ResponseEntity<Void> modifyAlarmCheckStatus(@RequestHeader("UUID") String uuid,
+		@PathVariable("alarmId") String alarmId) {
 
-	//Todo
-	//알림 수락 API
-
-	//Todo
-	//알림 거절 API
+		alarmService.modifyAlarmRead(alarmId, uuid);
+		return new ResponseEntity<>(ResponseSuccess.ALARM_CHECK_STATE_UPDATE_SUCCESS);
+	}
 }
