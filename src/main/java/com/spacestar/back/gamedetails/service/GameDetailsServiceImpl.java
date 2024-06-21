@@ -188,5 +188,6 @@ public class GameDetailsServiceImpl implements GameDetailsService {
         GameTier gameTier = tierRepository.findById(optionId).orElseThrow(
                 () -> new GlobalException(ResponseStatus.GAME_TIER_DETAIL_NOT_FOUND)
         );
-        return GameOptionResDto.toDto(gameTier);    }
+        return GameOptionResDto.toDto(gameTier);
+    }
 }
