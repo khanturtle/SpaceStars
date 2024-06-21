@@ -66,7 +66,6 @@ public class SwipeServiceImpl implements SwipeService {
 
     @Override
     public List<SwipeResDto> getSwipeMembers(String uuid) {
-        //todo 아래값 리스트로
         String response = feignClientService.getOpenAi(uuid);
         String[] tokens = response.substring(1, response.length() - 1).split(",\\s*");
 
