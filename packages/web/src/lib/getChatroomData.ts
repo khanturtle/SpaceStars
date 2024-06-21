@@ -1,4 +1,4 @@
-import { getChatRooms, getRoomMember } from '@/apis/chat'
+import { getChatRooms, getRoomMember } from '@/apis/getChat'
 import { getBasicUserData } from './getUserData'
 
 /** 1:1 채팅방 목록을 정보를 담아 가져오기

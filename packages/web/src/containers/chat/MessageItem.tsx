@@ -12,17 +12,34 @@ import { ChatMessageType, RoomInfoType } from '@/types/ChatType'
 import { useWebSocket } from '@/components/providers/socket-provider'
 import { convertToKoreanTime } from '@/hooks/convertToLocaleTime'
 import { defaultImage } from '@/store/defaultState'
+import { getRecentMessage } from '@/apis/getChatByClient'
 
-export default function MessageItem({ room }: { room: any }) {
-  console.log(room)
-  // const [recentMsg, setRecentMsg] = useState<ChatMessageType>()
+export default function MessageItem({
+  room,
+  token,
+}: {
+  room: any
+  token: string
+}) {
+  const [recentMessage, setRecentMessage] = useState()
+
   // const [unReadCount, setUnReadCount] = useState<number>(
   //   roomInfo.recentMessage?.unReadCount || 0,
   // )
 
-  // 현재 접속한 채팅방
+  // 현재 접속중인 채팅방
   const pathName = usePathname().split('/')
   const currentRoomNumber = pathName[pathName.length - 1]
+
+  /** 최초로 최근 메시지 불러오기 */
+  useEffect(() => {
+    const fetchRecentMessage = async () => {
+      const result = await getRecentMessage(room.roomNumber, token)
+      console.log(room.roomNumber, result)
+    }
+
+    fetchRecentMessage()
+  }, [])
 
   // const stompClient = useWebSocket()
 
@@ -83,14 +100,14 @@ export default function MessageItem({ room }: { room: any }) {
         <h4 className="text-[#161616] text-base not-italic font-semibold leading-[normal]">
           {room.otherMemberInfo.nickname ?? '채팅방'}
         </h4>
-        {/* <span className="text-[#869aa9] text-right text-[10px] not-italic font-normal leading-[normal]">
-          {convertToKoreanTime(recentMsg?.createdAt as string) ??
+        <span className="text-[#869aa9] text-right text-[10px] not-italic font-normal leading-[normal]">
+          13:3
+          {/* {convertToKoreanTime(recentMsg?.createdAt as string) ??
             createdAtLocale ??
-            ''}
-        </span> */}
+            ''} */}
+        </span>
       </div>
       {/* 
-
         <div className="inline-flex items-center justify-between w-full">
           <p
             className={`text-ellipsis whitespace-nowrap overflow-hidden text-xs not-italic font-normal leading-[normal] max-w-[160px] ${unReadCount > 0 ? 'text-[#161616]' : 'text-[#869AA9]'}`}

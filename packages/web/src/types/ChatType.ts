@@ -1,4 +1,4 @@
-import { RecentMessageType } from '@/apis/chat'
+import { RecentMessageType } from '@/apis/getChat'
 
 export interface RoomInfoType {
   peerName: string | undefined

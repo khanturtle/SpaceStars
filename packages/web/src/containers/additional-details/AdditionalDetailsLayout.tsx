@@ -138,7 +138,6 @@ export const DevModalOpen = () => {
   useEffect(() => {
     const fetchData = async (token: string) => {
       const data = await getMainGame(token)
-
       if (data && !data?.result.main) {
         // false인 경우, 모달 열기
         openModal(

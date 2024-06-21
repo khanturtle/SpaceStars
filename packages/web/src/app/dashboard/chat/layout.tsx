@@ -1,5 +1,9 @@
+import { getServerSession } from 'next-auth/next'
+
+import { options } from '@/app/api/auth/[...nextauth]/options'
+
 import { getProfileByUuid } from '@/apis/getAuth'
-import { getChatRooms, getRecentMessage } from '@/apis/chat'
+import { getChatRooms } from '@/apis/getChat'
 import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
 
 import { RoomInfoType } from '@/types/ChatType'
@@ -24,6 +28,9 @@ export default async function layout({
 }: {
   children: React.ReactNode
 }) {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
   const friendsList = await getFriendsDataList()
 
   // 1:1 방 목록
@@ -34,6 +41,7 @@ export default async function layout({
       <MessageContainer
         friendsList={friendsList}
         oneToOneChatRooms={oneToOneChatRooms}
+        token={token}
       />
 
       {/* <MessageContainer>

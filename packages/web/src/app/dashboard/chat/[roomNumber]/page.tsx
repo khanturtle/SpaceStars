@@ -1,5 +1,5 @@
 import { getProfileByUuid } from '@/apis/getAuth'
-import { getRoomDetail } from '@/apis/chat'
+import { getRoomDetail } from '@/apis/getChat'
 import { getMainProfileImage } from '@/apis/getProfileImage'
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import ChatRoomContainer from '@/containers/chat/ChatRoomContainer'
