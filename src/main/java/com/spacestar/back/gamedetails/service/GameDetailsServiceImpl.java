@@ -137,6 +137,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     public void deleteGameServer(Long serverId) {
         serverRepository.deleteById(serverId);
     }
+
     @Transactional
     @Override
     public void addGameTier(Long gameId, GameTierReqDto gameTierReqDto) {
@@ -151,6 +152,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
                 .gameTierNameKor(gameTierReqDto.getGameTierNameKor())
                 .build());
     }
+
     @Transactional
     @Override
     public void deleteGameTier(Long tierId) {
@@ -160,8 +162,16 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     @Override
     public GameOptionResDto getGameClassDetail(Long optionId) {
         GameClass gameClass = classRepository.findById(optionId).orElseThrow(
-                ()->new GlobalException(ResponseStatus.SUCCESS)
+                () -> new GlobalException(ResponseStatus.SUCCESS)
         );
         return GameOptionResDto.toDto(gameClass);
+    }
+
+    @Override
+    public GameOptionResDto getGamePositionDetail(Long optionId) {
+        GamePosition gamePosition = positionRepository.findById(optionId).orElseThrow(
+                () -> new GlobalException(ResponseStatus.SUCCESS)
+        );
+        return GameOptionResDto.toDto(gamePosition);
     }
 }

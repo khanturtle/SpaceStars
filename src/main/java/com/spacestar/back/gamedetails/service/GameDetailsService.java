@@ -34,4 +34,6 @@ public interface GameDetailsService {
     void deleteGameTier(Long tierId);
 
     GameOptionResDto getGameClassDetail(Long optionId);
+
+    GameOptionResDto getGamePositionDetail(Long optionId);
 }

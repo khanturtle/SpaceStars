@@ -29,4 +29,28 @@ public class GameOptionController {
                 ResponseSuccess.GET_GAME_CLASS_SUCCESS,
                 mapper.map(gameDetailsService.getGameClassDetail(optionId), GameOptionResVo.class));
     }
+    @Operation(summary = "게임 포지션 정보 조회")
+    @GetMapping("/position/{optionId}")
+    public ResponseEntity<GameOptionResVo> getGamePosition(@PathVariable Long optionId) {
+
+        return new ResponseEntity<>(
+                ResponseSuccess.GET_GAME_CLASS_SUCCESS,
+                mapper.map(gameDetailsService.getGamePositionDetail(optionId), GameOptionResVo.class));
+    }
+    @Operation(summary = "게임 서버 정보 조회")
+    @GetMapping("/server/{optionId}")
+    public ResponseEntity<GameOptionResVo> getGameServer(@PathVariable Long optionId) {
+
+        return new ResponseEntity<>(
+                ResponseSuccess.GET_GAME_CLASS_SUCCESS,
+                mapper.map(gameDetailsService.getGameClassDetail(optionId), GameOptionResVo.class));
+    }
+    @Operation(summary = "게임 티어 정보 조회")
+    @GetMapping("/tier/{optionId}")
+    public ResponseEntity<GameOptionResVo> getGameTier(@PathVariable Long optionId) {
+
+        return new ResponseEntity<>(
+                ResponseSuccess.GET_GAME_CLASS_SUCCESS,
+                mapper.map(gameDetailsService.getGameClassDetail(optionId), GameOptionResVo.class));
+    }
 }
