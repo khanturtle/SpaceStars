@@ -6,11 +6,14 @@ import com.spacestar.back.feignClient.dto.res.AuthResDto;
 import com.spacestar.back.feignClient.dto.res.ProfileResDto;
 import com.spacestar.back.global.ResponseEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class FeignClientServiceImpl implements FeignClientService{
     private final ProfileClient profileClient;
     private final AuthClient authClient;
+
     @Override
     public ProfileResDto getProfile(String memberUuid) {
         org.springframework.http.ResponseEntity<ResponseEntity<ProfileResDto>> response = profileClient.getProfile(memberUuid);
