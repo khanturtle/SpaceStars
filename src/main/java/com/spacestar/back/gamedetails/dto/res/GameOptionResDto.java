@@ -3,6 +3,7 @@ package com.spacestar.back.gamedetails.dto.res;
 import com.spacestar.back.gamedetails.domain.GameClass;
 import com.spacestar.back.gamedetails.domain.GamePosition;
 import com.spacestar.back.gamedetails.domain.GameServer;
+import com.spacestar.back.gamedetails.domain.GameTier;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -36,6 +37,15 @@ public class GameOptionResDto {
                 .name(gameServer.getGameServerName())
                 .image(gameServer.getGameServerImage())
                 .nameKor(gameServer.getGameServerNameKor())
+                .build();
+    }
+
+    public static GameOptionResDto toDto(GameTier gameTier) {
+        return GameOptionResDto.builder()
+                .id(gameTier.getId())
+                .name(gameTier.getGameTierName())
+                .image(gameTier.getGameTierImage())
+                .nameKor(gameTier.getGameTierNameKor())
                 .build();
     }
 }

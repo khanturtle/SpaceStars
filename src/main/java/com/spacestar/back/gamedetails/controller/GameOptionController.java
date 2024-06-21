@@ -51,6 +51,6 @@ public class GameOptionController {
 
         return new ResponseEntity<>(
                 ResponseSuccess.GET_GAME_CLASS_SUCCESS,
-                mapper.map(gameDetailsService.getGameClassDetail(optionId), GameOptionResVo.class));
+                mapper.map(gameDetailsService.getGameTierDetail(optionId), GameOptionResVo.class));
     }
 }
