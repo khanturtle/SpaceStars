@@ -43,26 +43,6 @@ export default async function layout({
         token={token}
       />
 
-      {/* <MessageContainer>
-          {roomInfos.map((roomInfo) => {
-            return (
-              <MessageContainer.Item
-                key={roomInfo.index}
-                item={{
-                  index: roomInfo.index,
-                  roomNumber: roomInfo.roomNumber,
-                  otherMemberUuid: roomInfo.otherMemberUuid,
-                }}
-                roomInfo={{
-                  peerName: roomInfo.peerName,
-                  peerProfileImage: roomInfo.peerProfileImage,
-                  recentMessage: roomInfo.recentMessage,
-                }}
-              />
-            )
-          })}
-        </MessageContainer> */}
-
       {children}
     </section>
   )

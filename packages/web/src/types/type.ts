@@ -96,4 +96,12 @@ export interface ChatRoomMemberType {
   index: number
   memberUuid: string
 }
+export interface RecentMessageType {
+  senderUuid: string
+  lastChatMessage: string
+  createdAt: string | null
+}
+export interface UnreadMessageCount {
+  unReadMessageCount: number
+}
 // chatroom--

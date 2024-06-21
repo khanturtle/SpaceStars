@@ -1,13 +1,12 @@
+import { RecentMessageType, UnreadMessageCount } from '@/types/type'
+
 const CHAT_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/chat`
 
-export interface RecentMessageType {
-  lastChatMessage: string
-  createdAt: string
-  unReadCount: number
-}
 /** 최근 메시지 조회 */
-// TODO: API 수정 후 동기화
-export async function getRecentMessage(roomUuid: string, token: string) {
+export async function getRecentMessage(
+  roomUuid: string,
+  token: string,
+): Promise<RecentMessageType | null> {
   try {
     const response = await fetch(
       `${CHAT_BASE_URL}/one-to-one/message/recent/${roomUuid}`,
@@ -24,10 +23,35 @@ export async function getRecentMessage(roomUuid: string, token: string) {
     }
 
     const data = await response.json()
-    console.log(data)
-    return data
+    return data.result
   } catch (err) {
     console.error(err)
-    return undefined
+    return null
+  }
+}
+
+/** 1:1 안읽은 메시지 개수 조회 */
+export async function getUnreadMessageCount(
+  roomUuid: string,
+  token: string,
+): Promise<UnreadMessageCount | null> {
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/one-to-one/message/recent/count/${roomUuid}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+      },
+    )
+    if (!response.ok) {
+      throw new Error('Failed to getUnreadMessageCount')
+    }
+    const data = await response.json()
+    return data
+  } catch (err) {
+    // console.error(err)
+    return null
   }
 }

@@ -60,28 +60,3 @@ export async function getRoomMember(
     return []
   }
 }
-
-/** 1:1 안읽은 메시지 개수 조회 */
-export async function getUnreadMessageCount(roomUuid: string, token: string) {
-  try {
-    const response = await fetch(
-      `${CHAT_BASE_URL}/one-to-one/message/recent/count/${roomUuid}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token ? token : '',
-        },
-      },
-    )
-    if (!response.ok) {
-      throw new Error('Failed to getUnreadMessageCount')
-    }
-    const data = await response.json()
-    console.log(data)
-
-    return data
-  } catch (err) {
-    // console.error(err)
-    return []
-  }
-}

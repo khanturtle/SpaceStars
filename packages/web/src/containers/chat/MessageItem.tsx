@@ -7,12 +7,11 @@ import Link from 'next/link'
 
 import { useEffect, useState } from 'react'
 
-// import { RoomType } from '@/apis/chat'
-import { ChatMessageType, RoomInfoType } from '@/types/ChatType'
+import { getRecentMessage, getUnreadMessageCount } from '@/apis/getChatByClient'
 import { useWebSocket } from '@/components/providers/socket-provider'
 import { convertToKoreanTime } from '@/hooks/convertToLocaleTime'
 import { defaultImage } from '@/store/defaultState'
-import { getRecentMessage } from '@/apis/getChatByClient'
+import { RecentMessageType } from '@/types/type'
 
 export default function MessageItem({
   room,
@@ -21,62 +20,66 @@ export default function MessageItem({
   room: any
   token: string
 }) {
-  const [recentMessage, setRecentMessage] = useState()
-
-  // const [unReadCount, setUnReadCount] = useState<number>(
-  //   roomInfo.recentMessage?.unReadCount || 0,
-  // )
+  const [recentMessage, setRecentMessage] = useState<RecentMessageType>()
+  const [unReadCount, setUnReadCount] = useState<number>(0)
 
   // 현재 접속중인 채팅방
   const pathName = usePathname().split('/')
   const currentRoomNumber = pathName[pathName.length - 1]
 
-  /** 최초로 최근 메시지 불러오기 */
+  /** 최초로 최근 메시지, 안읽은 개수 불러오기 */
   useEffect(() => {
     const fetchRecentMessage = async () => {
       const result = await getRecentMessage(room.roomNumber, token)
-      console.log(room.roomNumber, result)
+      if (result) {
+        setRecentMessage(result)
+      }
+
+      const unRead = await getUnreadMessageCount(room.roomNumber, token)
+      if (unRead) {
+        setUnReadCount(unRead.unReadMessageCount)
+      }
     }
 
     fetchRecentMessage()
   }, [])
 
-  // const stompClient = useWebSocket()
+  const stompClient = useWebSocket()
 
-  // /** 한국 시간 변경 */
-  // const createdAtLocale = convertToKoreanTime(
-  //   roomInfo.recentMessage?.createdAt as string,
-  // )
+  /** 현재 채팅방이면, 안 읽은 메시지 초기화 */
+  useEffect(() => {
+    if (room.roomNumber === currentRoomNumber) {
+      setUnReadCount(0)
+    }
+  }, [currentRoomNumber])
 
-  // /** 현재 채팅방이면, 안 읽은 메시지 0 */
-  // useEffect(() => {
-  //   if (item.roomNumber === currentRoomNumber) {
-  //     setUnReadCount(0)
-  //   }
-  // }, [])
+  /** 최근 메시지 소켓 연결 */
+  useEffect(() => {
+    if (stompClient) {
+      /** 채팅방 구독 */
+      const subscription = stompClient.subscribe(
+        `/sub/one-to-one/${room.roomNumber}`,
+        (message) => {
+          const payload = JSON.parse(message.body)
+          setRecentMessage({
+            senderUuid: payload.senderUuid,
+            lastChatMessage: payload.content,
+            createdAt: payload.createdAt,
+          })
 
-  // /** 최근 메시지 소켓 연결 */
-  // useEffect(() => {
-  //   if (stompClient) {
-  //     /** 채팅방 구독 */
-  //     const subscription = stompClient.subscribe(
-  //       `/sub/one-to-one/${item.roomNumber}`,
-  //       (message) => {
-  //         const payload = JSON.parse(message.body)
-  //         setRecentMsg(payload)
-  //         if (item.roomNumber !== currentRoomNumber) {
-  //           setUnReadCount((prev) => prev + 1)
-  //         }
-  //       },
-  //       {},
-  //     )
+          if (room.roomNumber !== currentRoomNumber) {
+            setUnReadCount((prev) => prev + 1)
+          }
+        },
+        {},
+      )
 
-  //     return () => {
-  //       subscription.unsubscribe()
-  //     }
-  //   }
-  //   return undefined
-  // }, [stompClient])
+      return () => {
+        subscription.unsubscribe()
+      }
+    }
+    return undefined
+  }, [stompClient])
 
   return (
     <Link
@@ -95,26 +98,22 @@ export default function MessageItem({
         />
       </div>
 
-      {/* <div className="flex-1"> */}
-      <div className={`mb-1 flex items-start justify-between`}>
-        <h4 className="text-[#161616] text-base not-italic font-semibold leading-[normal]">
-          {room.otherMemberInfo.nickname ?? '채팅방'}
-        </h4>
-        <span className="text-[#869aa9] text-right text-[10px] not-italic font-normal leading-[normal]">
-          13:3
-          {/* {convertToKoreanTime(recentMsg?.createdAt as string) ??
-            createdAtLocale ??
-            ''} */}
-        </span>
-      </div>
-      {/* 
+      <div className="flex-1">
+        <div className={`mb-1 flex items-start justify-between`}>
+          <h4 className="text-[#161616] text-base not-italic font-semibold leading-[normal]">
+            {room.otherMemberInfo.nickname ?? '채팅방'}
+          </h4>
+          <span className="text-[#869aa9] text-right text-[10px] not-italic font-normal leading-[normal]">
+            {recentMessage?.createdAt
+              ? convertToKoreanTime(recentMessage.createdAt)
+              : ''}
+          </span>
+        </div>
         <div className="inline-flex items-center justify-between w-full">
           <p
             className={`text-ellipsis whitespace-nowrap overflow-hidden text-xs not-italic font-normal leading-[normal] max-w-[160px] ${unReadCount > 0 ? 'text-[#161616]' : 'text-[#869AA9]'}`}
           >
-            {recentMsg?.content ??
-              roomInfo.recentMessage?.lastChatMessage ??
-              ''}
+            {recentMessage?.lastChatMessage ?? ''}
           </p>
           {unReadCount > 0 && (
             <div className="w-[23px] h-6 bg-[#f15c45] flex items-center justify-center rounded-lg">
@@ -124,7 +123,7 @@ export default function MessageItem({
             </div>
           )}
         </div>
-      </div> */}
+      </div>
     </Link>
   )
 }
