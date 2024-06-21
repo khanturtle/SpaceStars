@@ -13,6 +13,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
+import com.spacestar.back.kafka.message.FriendMessage;
 import com.spacestar.back.kafka.message.MatchingMessage;
 
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,12 @@ public class KafkaConfig {
 	}
 
 	@Bean
-	public Sinks.Many<MatchingMessage> sink(){
+	public Sinks.Many<MatchingMessage> matchingSink(){
+		return Sinks.many().multicast().onBackpressureBuffer();
+	}
+
+	@Bean
+	public Sinks.Many<FriendMessage> friendSink(){
 		return Sinks.many().multicast().onBackpressureBuffer();
 	}
 }
