@@ -10,8 +10,6 @@ import lombok.Getter;
 public class TeamChatRoomDetailDto {
     private String memberUuid;
 
-
-
     public static TeamChatRoomDetailDto fromEntity(TeamChatMember teamChatMember){
         return TeamChatRoomDetailDto.builder()
                 .memberUuid(teamChatMember.getMemberUuid())

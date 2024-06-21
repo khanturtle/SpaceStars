@@ -123,7 +123,11 @@ public class ChatMessageServiceImp implements ChatMessageService {
                     .createdAt(null)
                     .build();
         }
+        log.info("OpRecentMessage: {}", OpRecentMessage);
+
         ChatMessageCollection recentMessage = OpRecentMessage.get(0);
+
+        log.info("recentMessage: {}", recentMessage);
 
         // 마지막 메시지가 텍스트면 content, 아니면 사진을 보냈습니다
         String lastChatMessage = (recentMessage.getMessageType() == MessageType.TEXT) ?
