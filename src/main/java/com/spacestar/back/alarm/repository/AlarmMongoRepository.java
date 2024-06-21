@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.spacestar.back.alarm.domain.Alarm;
 
-public interface AlarmMongoRepository extends MongoRepository<Alarm, String> {
+public interface AlarmMongoRepository extends MongoRepository<Alarm, String>, CustomAlarmRepository {
 
 	// 모든 알림 조회
 	List<Alarm> findByReceiverUuid(String receiverUuid);

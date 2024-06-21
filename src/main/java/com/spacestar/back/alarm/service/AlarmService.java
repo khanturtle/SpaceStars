@@ -15,9 +15,8 @@ public interface AlarmService {
 	//알림 상태 조회
 	AlarmStateResDto getAlarmState(String uuid, String id);
 
-	//Todo
-	// 알림 삭제
+	void modifyAlarm(String alarmId);
 
 	//Todo
-	// 알림 읽음 처리
+	// 알림 삭제
 }

@@ -70,12 +70,4 @@ public class AlarmController {
 				modelMapper.map(alarmService.getAlarmState(uuid, id), AlarmStateResVo.class));
 	}
 
-	//Todo
-	//알림 전송 API
-
-	//Todo
-	//알림 수락 API
-
-	//Todo
-	//알림 거절 API
 }
