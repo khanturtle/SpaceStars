@@ -15,4 +15,5 @@ public class FriendMessage {
 
 	private String senderUuid;
 	private String receiverUuid;
+	private String content;
 }

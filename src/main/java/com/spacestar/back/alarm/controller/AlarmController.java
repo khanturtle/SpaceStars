@@ -17,6 +17,7 @@ import com.spacestar.back.alarm.service.AlarmServiceImpl;
 import com.spacestar.back.alarm.vo.AlarmListResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import com.spacestar.back.kafka.message.FriendMessage;
 import com.spacestar.back.kafka.message.MatchingMessage;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +37,8 @@ public class AlarmController {
 	private final AlarmServiceImpl alarmService;
 	private final ModelMapper modelMapper;
 
-	private final Sinks.Many<MatchingMessage> sink;
+	private final Sinks.Many<MatchingMessage> matchingSink;
+	private final Sinks.Many<FriendMessage> friendSink;
 
 	//알림 리스트 조회 API
 	@GetMapping
@@ -49,9 +51,13 @@ public class AlarmController {
 
 	// 매칭 알림 실시간 수신
 	@GetMapping(value ="/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<MatchingMessage> matchingEvents(@RequestHeader("UUID") String uuid){
+	public Flux<Object> matchingEvents(@RequestHeader("UUID") String uuid){
 		log.info("Received UUID: {}", uuid);
-		return sink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()));
+		// return sink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()));
+		return Flux.merge(
+			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
+			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
+		);
 	}
 	//Todo
 	//알림 상태 조회 API

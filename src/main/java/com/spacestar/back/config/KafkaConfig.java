@@ -26,21 +26,19 @@ public class KafkaConfig {
 	private final KafkaProperties kafkaProperties;
 
 	@Bean
-	public ConsumerFactory<String, MatchingMessage> consumerFactory(){
+	public ConsumerFactory<String, Object> consumerFactory(){
 
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, "group_1");
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 		props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-		props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, MatchingMessage.class.getName());
 		return new DefaultKafkaConsumerFactory<>(props);
 	}
 
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, MatchingMessage> kafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<String, MatchingMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
+	public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
 		return factory;
 	}

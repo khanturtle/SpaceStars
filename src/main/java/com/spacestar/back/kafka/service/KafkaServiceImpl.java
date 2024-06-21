@@ -20,16 +20,24 @@ public class KafkaServiceImpl implements KafkaService{
 
 	//Matching Topic 에서 메시지를 읽어옴 : Consumer
 	@Override
-	@KafkaListener(topics = "matching", groupId = "group_1")
-	public void MatchingListen(MatchingMessage message){
+	@KafkaListener(topics = "dev.matching-service.match-request", groupId = "group_4")
+	public void matchingListen(MatchingMessage message){
 		log.info("수신 : {}", message);
 		matchingSink.tryEmitNext(message);
 	}
 
 	@Override
-	@KafkaListener(topics = "dev.profile-service.friend-request", groupId = "group_2")
-	public void friendListen(FriendMessage friendMessage){
-		log.info("수신 : {}", friendMessage);
-		friendSink.tryEmitNext(friendMessage);
+	@KafkaListener(topics = "dev.profile-service.friend-request", groupId = "group_14")
+	public void friendListen(FriendMessage message){
+		// log.info("수신 : {}", friendMessage);
+		// friendSink.tryEmitNext(friendMessage);
+
+		try{
+			log.info("수신 : {}", message);
+			friendSink.tryEmitNext(message);
+		}catch (Exception e){
+			log.error("에러 발생: " , e);
+		}
+
 	}
 }

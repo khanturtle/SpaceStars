@@ -6,7 +6,7 @@ import com.spacestar.back.kafka.message.MatchingMessage;
 public interface KafkaService {
 
 	//Matching Topic 메시지를 읽어옴 : Consumer
-	void MatchingListen(MatchingMessage matchingMessageVo);
+	void matchingListen(MatchingMessage message);
 
-	void friendListen(FriendMessage friendMessage);
+	void friendListen(FriendMessage message);
 }
