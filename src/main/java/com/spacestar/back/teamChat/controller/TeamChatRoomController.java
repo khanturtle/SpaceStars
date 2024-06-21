@@ -75,8 +75,10 @@ public class TeamChatRoomController {
     public ResponseEntity<Void> joinTeamChatRoom(@RequestHeader String uuid,
                                               @PathVariable String roomNumber,@RequestBody TeamChatRoomReqVo teamChatRoomReqVo){
         String Password = teamChatRoomReqVo.getPassword();
-        teamChatRoomService.joinTeamChatRoom(uuid, roomNumber,Password);
+        teamChatRoomService.joinTeamChatRoom(uuid, roomNumber, Password);
         return new ResponseEntity<>(ResponseSuccess.JOIN_TEAM_CHATROOM_SUCCESS);
     }
 
+//    @Operation(summary = "팀 채팅방 나가기", description = "팀 채팅방을 나갑니다.")
+//    @
 }
