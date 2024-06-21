@@ -114,7 +114,7 @@ public class ChatMessageServiceImp implements ChatMessageService {
     @Override
     public RecentMessageDto getRecentMessage(String uuid, String roomNumber) {
 
-        Optional<ChatMessageCollection> OpRecentMessage = chatMessageRepository.findRecentMessage(roomNumber);
+        List<ChatMessageCollection> OpRecentMessage = chatMessageRepository.findRecentMessage(roomNumber);
 
         if (OpRecentMessage.isEmpty()) {
             return RecentMessageDto.builder()
@@ -123,7 +123,7 @@ public class ChatMessageServiceImp implements ChatMessageService {
                     .createdAt(null)
                     .build();
         }
-        ChatMessageCollection recentMessage = OpRecentMessage.get();
+        ChatMessageCollection recentMessage = OpRecentMessage.get(0);
 
         // 마지막 메시지가 텍스트면 content, 아니면 사진을 보냈습니다
         String lastChatMessage = (recentMessage.getMessageType() == MessageType.TEXT) ?
