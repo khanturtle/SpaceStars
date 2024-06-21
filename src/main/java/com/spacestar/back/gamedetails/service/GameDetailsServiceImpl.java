@@ -162,7 +162,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     @Override
     public GameOptionResDto getGameClassDetail(Long optionId) {
         GameClass gameClass = classRepository.findById(optionId).orElseThrow(
-                () -> new GlobalException(ResponseStatus.SUCCESS)
+                () -> new GlobalException(ResponseStatus.GAME_CLASS_DETAIL_NOT_FOUND)
         );
         return GameOptionResDto.toDto(gameClass);
     }
@@ -170,7 +170,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     @Override
     public GameOptionResDto getGamePositionDetail(Long optionId) {
         GamePosition gamePosition = positionRepository.findById(optionId).orElseThrow(
-                () -> new GlobalException(ResponseStatus.SUCCESS)
+                () -> new GlobalException(ResponseStatus.GAME_POSITION_DETAIL_NOT_FOUND)
         );
         return GameOptionResDto.toDto(gamePosition);
     }
@@ -178,7 +178,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     @Override
     public GameOptionResDto getGameServerDetail(Long optionId) {
         GameServer gameServer = serverRepository.findById(optionId).orElseThrow(
-                () -> new GlobalException(ResponseStatus.SUCCESS)
+                () -> new GlobalException(ResponseStatus.GAME_SERVER_DETAIL_NOT_FOUND)
         );
         return GameOptionResDto.toDto(gameServer);
     }
@@ -186,7 +186,7 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     @Override
     public GameOptionResDto getGameTierDetail(Long optionId) {
         GameTier gameTier = tierRepository.findById(optionId).orElseThrow(
-                () -> new GlobalException(ResponseStatus.SUCCESS)
+                () -> new GlobalException(ResponseStatus.GAME_TIER_DETAIL_NOT_FOUND)
         );
         return GameOptionResDto.toDto(gameTier);    }
 }

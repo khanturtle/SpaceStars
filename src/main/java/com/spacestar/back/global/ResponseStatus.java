@@ -24,10 +24,13 @@ public enum ResponseStatus {
     GAME_CLASS_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "직업이 없는 게임 입니다."),
     GAME_POSITION_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "포지션이 없는 게임 입니다."),
     GAME_SERVER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "서버가 없는 게임 입니다."),
-    GAME_TIER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "티어가 없는 게임 입니다.");
+    GAME_TIER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "티어가 없는 게임 입니다."),
 
+    GAME_CLASS_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 직업 ID 입니다."),
+    GAME_POSITION_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 포지션 ID 입니다."),
+    GAME_SERVER_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 서버 ID 입니다."),
+    GAME_TIER_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "존재하지 않는 티어 ID 입니다.");
 
-//    TOKEN_NULL(false, 2003, "토큰이 존재하지 않습니다."),
 
 
     private final int code;
