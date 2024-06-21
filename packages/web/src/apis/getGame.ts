@@ -42,7 +42,7 @@ export interface IsOptionType {
   isServer: true
   isTier: false
 }
-/** 게임 옵션 조회 */
+/** 게임 옵션 여부 조회 */
 export async function getGameOptions(
   gameId: number,
 ): Promise<IsOptionType | undefined> {
@@ -68,7 +68,7 @@ export interface GameOptionDetailType {
   name: string
   nameKor: string
 }
-
+/** 게임 옵션 종류 조회 */
 export async function getGameOptionDetail(
   gameId: number,
   option: 'isClass' | 'isPosition' | 'isServer' | 'isTier',

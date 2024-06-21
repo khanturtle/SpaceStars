@@ -10,10 +10,12 @@ export default function ProfileLayout({
   profileData: any
   likedGamesInfo: (GameType | null)[]
 }) {
-  // console.log(profileData)
   return (
     <section className="relative h-full flex flex-col items-center px-[204px] py-[120px]">
-      <ProfileContainer profileData={profileData} />
+      <ProfileContainer
+        profileData={profileData}
+        likedGamesInfo={likedGamesInfo}
+      />
 
       <div>버튼: 친구요청또는삭제또는</div>
       <div>

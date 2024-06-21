@@ -1,12 +1,16 @@
-import { calculateAge } from '@/lib/calculateAge'
 import Image from 'next/image'
+
+import { calculateAge } from '@/lib/calculateAge'
+import { GameType } from '@/types/type'
 
 import styles from './profile.module.css'
 
 export default function ProfileContainer({
   profileData,
+  likedGamesInfo,
 }: {
   profileData: any
+  likedGamesInfo: (GameType | null)[]
 }) {
   // console.log(profileData)
   const age = calculateAge(profileData.authProfile.birth)
@@ -21,9 +25,6 @@ export default function ProfileContainer({
 
   // 플레이하는 게임 -> ID로 게임 이름 받아오기
   const palyGames = profileData.playGames
-  // 좋아하는 게임
-  const likedGames = profileData.likedGameIds
-
 
   return (
     <section className="bg-[red]">
@@ -47,7 +48,20 @@ export default function ProfileContainer({
       </div>
       <div>
         <p>플레이하는 겜쓰 </p>
-        <p>좋아하는 겜쓰 </p>
+        <div>
+          좋아하는 겜쓰
+          {likedGamesInfo &&
+            likedGamesInfo.map((item) => (
+              <div key={'liked' + item?.gameId}>
+                {item?.gameName}
+                <div className="relative w-12 h-12">
+                  {item && (
+                    <Image src={item.gameLogoImage} alt={item.gameName} fill />
+                  )}
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
     </section>
   )

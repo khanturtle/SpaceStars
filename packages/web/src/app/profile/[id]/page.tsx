@@ -1,5 +1,6 @@
 import Modal from '@/components/modal/modal'
 import ProfileLayout from '@/containers/profile-modal/profileLayout'
+import { fetchLikedGames } from '@/lib/fetchGamesData'
 import { getAllProfileDataByUuid } from '@/lib/getAllProfileData'
 
 // TODO: 모달로 이동
@@ -9,9 +10,13 @@ export default async function Page({ params }: { params: { id: string } }) {
   const allProfile = await getAllProfileDataByUuid(targetUuid)
   // console.log(allProfile)
 
+  const likedGames = allProfile.likedGameIds ?? []
+  const likedGamesInfo = await fetchLikedGames(likedGames)
+  console.log(likedGamesInfo)
+
   return (
     <Modal>
-      <ProfileLayout profileData={allProfile} />
+      <ProfileLayout profileData={allProfile} likedGamesInfo={likedGamesInfo} />
     </Modal>
   )
 }

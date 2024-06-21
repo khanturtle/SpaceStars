@@ -39,7 +39,7 @@ export interface ProfileType {
 
 // --Profile
 export interface MainGameType {
-  gameId: number | null
+  gameId: number
   tierId: number | null
   positionId: number | null
   classId: number | null
