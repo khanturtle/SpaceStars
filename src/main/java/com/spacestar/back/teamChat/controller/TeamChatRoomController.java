@@ -5,11 +5,15 @@ import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.teamChat.dto.TeamChatRoomDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomListDto;
+import com.spacestar.back.teamChat.dto.TeamChatRoomNumberDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomRecruitDto;
 import com.spacestar.back.teamChat.dto.req.TeamChatRoomReqDto;
 import com.spacestar.back.teamChat.service.TeamChatRoomService;
+import com.spacestar.back.teamChat.vo.req.TeamChatJoinReqVo;
+import com.spacestar.back.teamChat.vo.req.TeamChatRoomJoinReqVo;
 import com.spacestar.back.teamChat.vo.req.TeamChatRoomReqVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomDetailResVo;
+import com.spacestar.back.teamChat.vo.res.TeamChatRoomNumberResVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomRecruitReqVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomResVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,11 +35,12 @@ public class TeamChatRoomController {
     // 팀 채팅방 생성
     @Operation(summary = "팀 채팅방 생성", description = "팀 채팅방을 생성합니다.")
     @PostMapping("/chatroom/create")
-    public ResponseEntity<Void> addTeamChatRoom(@RequestHeader String uuid,
+    public ResponseEntity<TeamChatRoomNumberResVo> addTeamChatRoom(@RequestHeader String uuid,
                                                 @RequestBody TeamChatRoomReqVo teamChatRoomReqVo) {
         TeamChatRoomReqDto teamChatRoomReqDto = mapper.map(teamChatRoomReqVo, TeamChatRoomReqDto.class);
-        teamChatRoomService.addTeamChatRoom(uuid,teamChatRoomReqDto);
-        return new ResponseEntity<>(ResponseSuccess.CREATE_TEAM_CHATROOM_SUCCESS);
+        TeamChatRoomNumberDto teamChatRoomNumberDto = teamChatRoomService.addTeamChatRoom(uuid,teamChatRoomReqDto);
+        TeamChatRoomNumberResVo teamChatRoomNumberResVo = mapper.map(teamChatRoomNumberDto, TeamChatRoomNumberResVo.class);
+        return new ResponseEntity<>(ResponseSuccess.CREATE_TEAM_CHATROOM_SUCCESS,teamChatRoomNumberResVo);
     }
 
     // 팀 채팅방 목록 조회
@@ -73,9 +78,10 @@ public class TeamChatRoomController {
     @Operation(summary = "팀 채팅방 참가하기", description = "팀 채팅방을 참가합니다.")
     @PostMapping("/chatroom/join/{roomNumber}")
     public ResponseEntity<Void> joinTeamChatRoom(@RequestHeader String uuid,
-                                              @PathVariable String roomNumber,@RequestBody TeamChatRoomReqVo teamChatRoomReqVo){
-        String Password = teamChatRoomReqVo.getPassword();
+                                              @PathVariable String roomNumber,@RequestBody TeamChatRoomJoinReqVo teamChatRoomJoinReqVo){
+        String Password = teamChatRoomJoinReqVo.getPassword();
         teamChatRoomService.joinTeamChatRoom(uuid, roomNumber, Password);
+
         return new ResponseEntity<>(ResponseSuccess.JOIN_TEAM_CHATROOM_SUCCESS);
     }
 

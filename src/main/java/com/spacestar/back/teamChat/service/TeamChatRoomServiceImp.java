@@ -4,10 +4,7 @@ import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.teamChat.domain.entity.TeamChatMember;
 import com.spacestar.back.teamChat.domain.entity.TeamChatRoom;
-import com.spacestar.back.teamChat.dto.TeamChatRoomDetailDto;
-import com.spacestar.back.teamChat.dto.TeamChatRoomDto;
-import com.spacestar.back.teamChat.dto.TeamChatRoomListDto;
-import com.spacestar.back.teamChat.dto.TeamChatRoomRecruitDto;
+import com.spacestar.back.teamChat.dto.*;
 import com.spacestar.back.teamChat.dto.req.TeamChatRoomReqDto;
 import com.spacestar.back.teamChat.repository.TeamChatMemberJpaRepository;
 import com.spacestar.back.teamChat.repository.TeamChatRoomJpaRepository;
@@ -34,14 +31,14 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
     private final TeamChatMemberService teamChatMemberService;
 
     @Override
-    public void addTeamChatRoom(String uuid, TeamChatRoomReqDto teamChatRoomReqDto) {
+    public TeamChatRoomNumberDto addTeamChatRoom(String uuid, TeamChatRoomReqDto teamChatRoomReqDto) {
         String roomNumber = UUID.randomUUID().toString();
         TeamChatRoom teamChatRoom = TeamChatRoomReqDto.toEntity(teamChatRoomReqDto, roomNumber);
         // 채팅방 생성
         teamChatRoomJpaRepository.save(teamChatRoom);
-
         // 채팅방에 참여자 추가 (방장인 경우)
         teamChatMemberService.addMemberToTeamChatRoom(teamChatRoom, uuid, true);
+        return TeamChatRoomNumberDto.builder().roomNumber(roomNumber).build();
 
     }
 
