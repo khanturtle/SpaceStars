@@ -72,7 +72,7 @@ public class ChatMessageController {
 
     @Operation(summary = "최근 메시지 개수 조회", description = "채팅방의 최근 메시지 개수를 조회합니다.")
     @GetMapping("/message/recent/count/{roomNumber}")
-    public ResponseEntity<?> getRecentMessageCount(@RequestHeader String uuid,
+    public ResponseEntity<RecentMessageCountDto> getRecentMessageCount(@RequestHeader String uuid,
                                                          @PathVariable String roomNumber) {
         RecentMessageCountDto recentMessageCount = chatMessageService.getRecentMessageCount(uuid, roomNumber);
 
