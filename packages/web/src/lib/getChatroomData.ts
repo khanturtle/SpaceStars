@@ -1,7 +1,7 @@
 import { getChatRooms, getRoomMember } from '@/apis/getChat'
 import { getBasicUserData } from './getUserData'
 
-/** 1:1 채팅방 목록을 정보를 담아 가져오기
+/** 나의 모든 1:1 채팅방 목록을 정보를 담아 가져오기
  * 채팅방 정보: roomNumber, otherMemberUuid
  * 참여자 정보: memberUuid
  * 상대방 정보: 대표 프로필, 닉네임
@@ -29,4 +29,32 @@ export async function getChatroomDataList() {
   )
 
   return chatroomInfo
+}
+
+/** 나의 1:1 채팅방 중 하나의 정보를 담아 가져오기
+ *  방 참여자 정보: uuid, 프로필사진, 닉네임
+ */
+export type MemberInfoType = {
+  profileImageUrl: string
+  nickname: string
+  index: number
+  memberUuid: string
+}
+export async function getChatroomData(
+  roomNumber: string,
+): Promise<MemberInfoType[]> {
+  // 방 참여자 목록
+  const member = await getRoomMember(roomNumber)
+
+  // 방 참여자의 프로필사진, 닉네임
+  const chatMemberInfos = await Promise.all(
+    member.map(async (m) => {
+      const memberInfo = await getBasicUserData(m.memberUuid)
+      return {
+        ...m,
+        ...memberInfo,
+      }
+    }),
+  )
+  return chatMemberInfos
 }

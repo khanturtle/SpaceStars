@@ -30,8 +30,9 @@ export default async function layout({
 }) {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
-  const friendsList = await getFriendsDataList()
 
+  // 친구 리스트
+  const friendsList = await getFriendsDataList()
   // 1:1 방 목록
   const oneToOneChatRooms = await getChatroomDataList()
 

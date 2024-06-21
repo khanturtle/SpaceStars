@@ -12,11 +12,19 @@ import ChatInputBox from './ChatInputBox'
 
 import ChatLogList from '../chat-room/ChatLogList'
 
+type roomMemberDataType = {
+  profileImageUrl: string
+  nickname: string
+  index: number
+  memberUuid: string
+}
 export default function ChatRoomContainer({
   roomNumber,
+  roomMemberData,
   UUID,
 }: {
   roomNumber: string
+  roomMemberData: roomMemberDataType[]
   UUID: string
 }) {
   const [msgLog, setMsgLog] = useState<ChatMessageType[]>([])
@@ -50,9 +58,9 @@ export default function ChatRoomContainer({
         JSON.stringify(message),
       )
 
+      /** 채팅방 퇴장 */
       return () => {
         subscription.unsubscribe()
-        /** 채팅방 퇴장 */
         stompClient.send(
           `/pub/one-to-one/exit/${roomNumber}`,
           {},
