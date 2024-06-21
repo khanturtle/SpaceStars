@@ -24,7 +24,6 @@ public class TeamChatRoom extends GlobalTime {
 
     private String memo;
 
-
     private int maxMembers;
 
     private Boolean isFinished;
@@ -45,6 +44,7 @@ public class TeamChatRoom extends GlobalTime {
         this.gameId = gameId;
         this.memo = memo;
     }
+
 
 
 }

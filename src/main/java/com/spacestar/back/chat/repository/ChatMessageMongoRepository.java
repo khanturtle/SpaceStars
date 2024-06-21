@@ -17,10 +17,10 @@ public interface ChatMessageMongoRepository extends MongoRepository<ChatMessageC
 
     // exit 이전만 받게 추가 해야 할듯
     @Query("{ roomNumber: ?0, content: {$exists: true} }")
-    public List<ChatMessageCollection> findAllByRoomNumber(String roomNumber);
+    List<ChatMessageCollection> findAllByRoomNumber(String roomNumber);
 
     @Query("{ roomNumber: ?0, senderUuid: ?1, exitTime: { $exists: true } }")
-    public List<ChatMessageCollection> findExitByRoomNumber(String roomNumber,String senderUuid, Sort sort);
+    List<ChatMessageCollection> findExitByRoomNumber(String roomNumber,String senderUuid, Sort sort);
 
 
 
@@ -35,4 +35,6 @@ public interface ChatMessageMongoRepository extends MongoRepository<ChatMessageC
     @Query("{ roomNumber: ?0, createdAt: { $lt: ?1 } }")
     Page<ChatMessageCollection> findReadMessage(String roomNumber , Instant exitTime, Pageable pageable);
 
+    @Query(value="{ 'roomNumber' : ?0 }", sort="{ 'createdAt' : -1 }")
+    Optional<ChatMessageCollection> findRecentMessage(String roomNumber);
 }

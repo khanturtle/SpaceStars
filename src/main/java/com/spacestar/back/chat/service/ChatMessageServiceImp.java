@@ -2,6 +2,7 @@ package com.spacestar.back.chat.service;
 
 import com.spacestar.back.chat.domain.collection.ChatMessageCollection;
 import com.spacestar.back.chat.dto.MessageDto;
+import com.spacestar.back.chat.dto.RecentMessageCountDto;
 import com.spacestar.back.chat.dto.RecentMessageDto;
 import com.spacestar.back.chat.enums.MessageType;
 import com.spacestar.back.chat.repository.ChatMessageMongoRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
@@ -111,20 +113,37 @@ public class ChatMessageServiceImp implements ChatMessageService {
 
     @Override
     public RecentMessageDto getRecentMessage(String uuid, String roomNumber) {
-        /**
-         * 1. uuid와 roomNumber로 최근 나간시간 가져오기
-         * 2. uuid, roomNumber,나간시간 이후 안읽은 메시지 수 카운트
-         * 2-2 제일 마지막 메시지도 가져오기
-         * 3. 최근 메시지가 없으면 exception 발생
-         */
-        Optional<ChatMessageCollection> optionalExitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid);
 
-        // 없으면 빈 리스트 반환
-        if (optionalExitMessage.isEmpty()) {
+        Optional<ChatMessageCollection> OpRecentMessage = chatMessageRepository.findRecentMessage(roomNumber);
+
+        if (OpRecentMessage.isEmpty()) {
             return RecentMessageDto.builder()
-                    .unReadCount(0)
+                    .senderUuid("")
                     .lastChatMessage("")
                     .createdAt(null)
+                    .build();
+        }
+        ChatMessageCollection recentMessage = OpRecentMessage.get();
+
+        // 마지막 메시지가 텍스트면 content, 아니면 사진을 보냈습니다
+        String lastChatMessage = (recentMessage.getMessageType() == MessageType.TEXT) ?
+                recentMessage.getContent() : "사진을 보냈습니다";
+
+        return RecentMessageDto.builder()
+                .senderUuid(recentMessage.getSenderUuid())
+                .lastChatMessage(lastChatMessage)
+                .createdAt(recentMessage.getCreatedAt())
+                .build();
+    }
+
+    @Override
+    public RecentMessageCountDto getRecentMessageCount(String uuid, String roomNumber) {
+        Optional<ChatMessageCollection> optionalExitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid);
+
+//        없으면 빈 리스트 반환
+        if (optionalExitMessage.isEmpty()) {
+            return RecentMessageCountDto.builder()
+                    .UnReadMessageCount(0)
                     .build();
         }
 
@@ -132,28 +151,13 @@ public class ChatMessageServiceImp implements ChatMessageService {
         Instant exitTime = exitMessage.getExitTime();
         List<ChatMessageCollection> unreadMessages = chatMessageRepository.findUnreadMessage(roomNumber, exitTime);
 
-        // unreadMessages가 비어있는지 확인
-        if (unreadMessages.isEmpty()) {
-            return RecentMessageDto.builder()
-                    .unReadCount(0)
-                    .lastChatMessage("")
-                    .createdAt(null)
-                    .build();
-        }
 
-        // 999개 이상이면 999까지만
+//        999개 이상이면 999까지만
         int unReadCount = Math.min(unreadMessages.size(), 999);
-        ChatMessageCollection recentMessage = unreadMessages.get(0);
-
-        // 마지막 메시지가 텍스트면 content, 아니면 사진을 보냈습니다
-        String lastChatMessage = (recentMessage.getMessageType() == MessageType.TEXT) ?
-                recentMessage.getContent() : "사진을 보냈습니다";
-
-        return RecentMessageDto.builder()
-                .unReadCount(unReadCount)
-                .lastChatMessage(lastChatMessage)
-                .createdAt(recentMessage.getCreatedAt())
+        return RecentMessageCountDto.builder()
+                .UnReadMessageCount(unReadCount)
                 .build();
     }
+
 
 }

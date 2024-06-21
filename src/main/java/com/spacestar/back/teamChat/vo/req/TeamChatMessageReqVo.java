@@ -1,11 +1,10 @@
-package com.spacestar.back.chat.vo.req;
-
+package com.spacestar.back.teamChat.vo.req;
 
 import com.spacestar.back.chat.enums.MessageType;
 import lombok.Getter;
 
 @Getter
-public class ChatMessageReqVo {
+public class TeamChatMessageReqVo {
 
     private String senderUuid;
     private String content;

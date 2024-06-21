@@ -1,6 +1,8 @@
 package com.spacestar.back.chat.controller;
 
 
+import com.spacestar.back.chat.dto.ChatMemberDto;
+import com.spacestar.back.chat.dto.RecentMessageCountDto;
 import com.spacestar.back.converter.ConvertToIndexVo;
 import com.spacestar.back.chat.dto.MessageDto;
 import com.spacestar.back.chat.dto.RecentMessageDto;
@@ -58,7 +60,7 @@ public class ChatMessageController {
     }
 
     // 최근 메시지 조회
-    @Operation(summary = "최근 메시지 조회", description = "채팅방의 최근 메시지를 조회합니다.(최근 메시지, 안 읽은 메시지 개수, 시간)")
+    @Operation(summary = "최근 메시지 내용 조회", description = "채팅방의 최근 메시지 내용을 조회합니다.(sender, 내용, 시간)")
     @GetMapping("/message/recent/{roomNumber}")
     public ResponseEntity<RecentMessageResVo> getRecentMessage(@RequestHeader String uuid,
                                                                @PathVariable String roomNumber) {
@@ -66,6 +68,15 @@ public class ChatMessageController {
         RecentMessageResVo recentMessageResVo = mapper.map(recentMessageDto, RecentMessageResVo.class);
 
         return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_RECENT_MESSAGE_SUCCESS, recentMessageResVo);
+    }
+
+    @Operation(summary = "최근 메시지 개수 조회", description = "채팅방의 최근 메시지 개수를 조회합니다.")
+    @GetMapping("/message/recent/count/{roomNumber}")
+    public ResponseEntity<RecentMessageCountDto> getRecentMessageCount(@RequestHeader String uuid,
+                                                         @PathVariable String roomNumber) {
+        RecentMessageCountDto recentMessageCount = chatMessageService.getRecentMessageCount(uuid, roomNumber);
+
+        return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_RECENT_MESSAGE_COUNT_SUCCESS, recentMessageCount);
     }
 
 }

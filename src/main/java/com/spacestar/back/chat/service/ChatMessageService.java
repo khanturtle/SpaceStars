@@ -1,6 +1,7 @@
 package com.spacestar.back.chat.service;
 
 import com.spacestar.back.chat.dto.MessageDto;
+import com.spacestar.back.chat.dto.RecentMessageCountDto;
 import com.spacestar.back.chat.dto.RecentMessageDto;
 import com.spacestar.back.chat.vo.req.ChatMessageReqVo;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +21,8 @@ public interface ChatMessageService {
     List<MessageDto> getUnreadMessage(String uuid, String roomNumber);
 
     RecentMessageDto getRecentMessage(String uuid, String roomNumber);
+
+    RecentMessageCountDto getRecentMessageCount(String uuid, String roomNumber);
+
+
 }

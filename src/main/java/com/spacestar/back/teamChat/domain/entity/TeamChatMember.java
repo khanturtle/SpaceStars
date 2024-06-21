@@ -1,7 +1,7 @@
 package com.spacestar.back.teamChat.domain.entity;
 
-import com.spacestar.back.chat.enums.ParticpationType;
 import com.spacestar.back.global.GlobalTime;
+import com.spacestar.back.teamChat.enums.TeamParticipationType;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,14 +24,13 @@ public class TeamChatMember extends GlobalTime {
     private Boolean ownerStatus;
 
     @Enumerated(EnumType.STRING)
-    private ParticpationType particpationType;
-
+    private TeamParticipationType teamParticipationType;
     @Builder
-    public TeamChatMember(TeamChatRoom teamChatRoom, String memberUuid, Boolean ownerStatus,ParticpationType particpationType ) {
+    public TeamChatMember(TeamChatRoom teamChatRoom, String memberUuid, Boolean ownerStatus, TeamParticipationType teamParticipationType) {
         this.teamChatRoom = teamChatRoom;
         this.memberUuid = memberUuid;
         this.ownerStatus = ownerStatus;
-        this.particpationType = particpationType;
+        this.teamParticipationType = teamParticipationType;
     }
 
 }
