@@ -10,10 +10,7 @@ import com.spacestar.back.gamedetails.dto.req.GameClassReqDto;
 import com.spacestar.back.gamedetails.dto.req.GamePositionReqDto;
 import com.spacestar.back.gamedetails.dto.req.GameServerReqDto;
 import com.spacestar.back.gamedetails.dto.req.GameTierReqDto;
-import com.spacestar.back.gamedetails.dto.res.GameClassResDto;
-import com.spacestar.back.gamedetails.dto.res.GamePositionResDto;
-import com.spacestar.back.gamedetails.dto.res.GameServerResDto;
-import com.spacestar.back.gamedetails.dto.res.GameTierResDto;
+import com.spacestar.back.gamedetails.dto.res.*;
 import com.spacestar.back.gamedetails.repository.GameClassRepository;
 import com.spacestar.back.gamedetails.repository.GamePositionRepository;
 import com.spacestar.back.gamedetails.repository.GameServerRepository;
@@ -158,5 +155,13 @@ public class GameDetailsServiceImpl implements GameDetailsService {
     @Override
     public void deleteGameTier(Long tierId) {
         tierRepository.deleteById(tierId);
+    }
+
+    @Override
+    public GameOptionResDto getGameClassDetail(Long optionId) {
+        GameClass gameClass = classRepository.findById(optionId).orElseThrow(
+                ()->new GlobalException(ResponseStatus.SUCCESS)
+        );
+        return GameOptionResDto.toDto(gameClass);
     }
 }
