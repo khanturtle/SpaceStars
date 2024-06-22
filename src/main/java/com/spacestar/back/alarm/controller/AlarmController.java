@@ -18,6 +18,7 @@ import com.spacestar.back.alarm.vo.res.AlarmListResVo;
 import com.spacestar.back.alarm.vo.res.AlarmStateResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import com.spacestar.back.kafka.message.FriendMessage;
 import com.spacestar.back.kafka.message.MatchingMessage;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,12 +37,13 @@ public class AlarmController {
 
 	private final AlarmServiceImpl alarmService;
 	private final ModelMapper modelMapper;
-	private final Sinks.Many<MatchingMessage> sink;
+	private final Sinks.Many<MatchingMessage> matchingSink;
+	private final Sinks.Many<FriendMessage> friendSink;
 
 	@PostMapping
 	@Operation(summary = "알림 생성")
 	public ResponseEntity<Void> addAlarm(@RequestHeader("UUID") String uuid,
-		@RequestBody AlarmAddReqVo alarmAddReqVo) {
+			@RequestBody AlarmAddReqVo alarmAddReqVo) {
 		alarmService.addAlarm(uuid, modelMapper.map(alarmAddReqVo, AlarmAddReqDto.class));
 		return new ResponseEntity<>(ResponseSuccess.ALARM_INSERT_SUCCESS);
 	}
@@ -52,29 +54,33 @@ public class AlarmController {
 	public ResponseEntity<AlarmListResVo> getAlarmList(@RequestHeader("UUID") String uuid) {
 
 		return new ResponseEntity<>(ResponseSuccess.ALARM_LIST_SELECT_SUCCESS,
-			modelMapper.map(alarmService.getAlarmList(uuid), AlarmListResVo.class));
+				modelMapper.map(alarmService.getAlarmList(uuid), AlarmListResVo.class));
 	}
 
 	// 매칭 알림 실시간 수신
-	@GetMapping(value = "/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(value ="/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@Operation(summary = "실시간 알림 SSE 입장")
-	public Flux<MatchingMessage> matchingEvents(@RequestHeader("UUID") String uuid) {
+	public Flux<Object> matchingEvents(@RequestHeader("UUID") String uuid){
 		log.info("Received UUID: {}", uuid);
-		return sink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()));
+		// Return a merged flux of both matching and friend messages filtered by the receiver UUID
+		return Flux.merge(
+				matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
+				friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
+		);
 	}
 
 	@GetMapping("/state/{alarmId}")
 	@Operation(summary = "알림 상태 조회")
 	public ResponseEntity<AlarmStateResVo> getAlarmState(@RequestHeader("UUID") String uuid,
-		@PathVariable("alarmId") String alarmId) {
+			@PathVariable("alarmId") String alarmId) {
 		return new ResponseEntity<>(ResponseSuccess.ALARM_STATE_SELECT_SUCCESS,
-			modelMapper.map(alarmService.getAlarmState(uuid, alarmId), AlarmStateResVo.class));
+				modelMapper.map(alarmService.getAlarmState(uuid, alarmId), AlarmStateResVo.class));
 	}
 
 	@PatchMapping("/modify/check-status/{alarmId}")
 	@Operation(summary = "알림 상태 수정 (읽음으로 처리)")
 	public ResponseEntity<Void> modifyAlarmCheckStatus(@RequestHeader("UUID") String uuid,
-		@PathVariable("alarmId") String alarmId) {
+			@PathVariable("alarmId") String alarmId) {
 
 		alarmService.modifyAlarmRead(alarmId, uuid);
 		return new ResponseEntity<>(ResponseSuccess.ALARM_CHECK_STATE_UPDATE_SUCCESS);
