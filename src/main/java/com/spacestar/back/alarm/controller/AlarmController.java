@@ -62,7 +62,7 @@ public class AlarmController {
 	@Operation(summary = "실시간 알림 SSE 입장")
 	public Flux<Object> matchingEvents(@RequestHeader("UUID") String uuid){
 		log.info("Received UUID: {}", uuid);
-		// Return a merged flux of both matching and friend messages filtered by the receiver UUID
+
 		return Flux.merge(
 				matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
 				friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
