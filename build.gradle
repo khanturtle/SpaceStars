@@ -48,6 +48,9 @@ dependencies {
 
 	//swagger
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
+
+	//modelMapper
+	implementation 'org.modelmapper:modelmapper:3.1.0'
 }
 
 dependencyManagement {
