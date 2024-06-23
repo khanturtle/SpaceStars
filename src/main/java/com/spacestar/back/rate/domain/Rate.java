@@ -1,6 +1,5 @@
 package com.spacestar.back.rate.domain;
 
-import org.springframework.context.annotation.Bean;
 
 import com.spacestar.back.global.GlobalTime;
 
@@ -10,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,13 +39,17 @@ public class Rate extends GlobalTime {
 
 	@Column(length = 10)
 	private short score;
+	
+	private Boolean isRate;
 
-	public Rate(Long id, String fromMemberUuid, String toMemberUuid, String roomNumber, String comment, short score) {
+	public Rate(Long id, String fromMemberUuid, String toMemberUuid, String roomNumber, String comment, short score,
+			Boolean isRate) {
 		this.id = id;
 		this.fromMemberUuid = fromMemberUuid;
 		this.toMemberUuid = toMemberUuid;
 		this.roomNumber = roomNumber;
 		this.comment = comment;
 		this.score = score;
+		this.isRate = isRate;
 	}
 }
