@@ -30,4 +30,8 @@ public interface TeamChatRoomService {
     void kickTeamChatRoom(String uuid, String roomNumber, String receiverUuid);
 
     void changeOwnerTeamChatRoom(String uuid, String roomNumber, String receiverUuid);
+
+    void finishRecruit(String uuid, String roomNumber);
+
+    void changeTeamChatRoom(String uuid, String roomNumber, TeamChatRoomReqDto teamChatRoomReqDto);
 }

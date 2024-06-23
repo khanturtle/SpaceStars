@@ -35,8 +35,9 @@ public class TeamChatMemberDto {
     }
 
 
-    public static TeamChatMember toEntity(TeamChatMemberDto teamChatMemberDto){
+    public static TeamChatMember toEntity(TeamChatMemberDto teamChatMemberDto,Long id){
         return TeamChatMember.builder()
+                .id(id)
                 .teamChatRoom(teamChatMemberDto.getTeamChatRoom())
                 .memberUuid(teamChatMemberDto.getMemberUuid())
                 .ownerStatus(teamChatMemberDto.getOwnerStatus())

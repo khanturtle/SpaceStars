@@ -26,7 +26,8 @@ public class TeamChatMember extends GlobalTime {
     @Enumerated(EnumType.STRING)
     private TeamParticipationType teamParticipationType;
     @Builder
-    public TeamChatMember(TeamChatRoom teamChatRoom, String memberUuid, Boolean ownerStatus, TeamParticipationType teamParticipationType) {
+    public TeamChatMember(Long id,TeamChatRoom teamChatRoom, String memberUuid, Boolean ownerStatus, TeamParticipationType teamParticipationType) {
+        this.id = id;
         this.teamChatRoom = teamChatRoom;
         this.memberUuid = memberUuid;
         this.ownerStatus = ownerStatus;

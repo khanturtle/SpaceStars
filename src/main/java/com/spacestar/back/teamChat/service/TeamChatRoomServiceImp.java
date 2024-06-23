@@ -61,7 +61,8 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
         //팀챗룸을 가져오고 그에 해당하는 멤버들을 가져와서 dto 로 변환한다
         return teamChatRoomList.stream()
                 .map(teamChatRoom -> {
-                    List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findByTeamChatRoomId(teamChatRoom.getId());
+                    List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findByTeamChatRoomId(
+                            teamChatRoom.getId());
                     List<TeamChatRoomDetailDto> memberUuidList = teamChatMemberList.stream()
                             .map(TeamChatRoomDetailDto::fromEntity)
                             .collect(Collectors.toList());
@@ -83,7 +84,8 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
 
         TeamChatRoom teamChatRoom = teamChatRoomJpaRepository.findByRoomNumber(roomNumber);
 //        List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findByTeamChatRoomId(teamChatRoom.getId());
-        List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findCurrentMembersInChatRoom(teamChatRoom.getId(),JOINED);
+        List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findCurrentMembersInChatRoom(
+                teamChatRoom.getId(), JOINED);
 
         return teamChatMemberList.stream()
                 .map((TeamChatRoomMemberDto::toDto))
@@ -94,7 +96,8 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
     @Override
     public void joinTeamChatRoom(String uuid, String roomNumber, String password) {
         TeamChatRoom teamChatRoom = teamChatRoomJpaRepository.findByRoomNumber(roomNumber);
-        Optional<TeamChatMember> optionalMember = teamChatMemberJpaRepository.findByTeamChatRoomAndMemberUuid(teamChatRoom, uuid);
+        Optional<TeamChatMember> optionalMember = teamChatMemberJpaRepository.findByTeamChatRoomAndMemberUuid(
+                teamChatRoom, uuid);
 
         //teamChatRoom 의 멤버수 쿼리문
         int MemberCount = teamChatRoomJpaRepository.findCountMembersByTeamChatRoom(teamChatRoom);
@@ -132,12 +135,15 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
         teamChatMemberService.deleteMemberToTeamChatRoom(teamChatRoom, uuid);
 
     }
+
     @Override
     public void kickTeamChatRoom(String uuid, String roomNumber, String receiverUuid) {
         TeamChatRoom teamChatRoom = teamChatRoomJpaRepository.findByRoomNumber(roomNumber);
 
-        TeamChatMember teamChatMemberOwner = teamChatMemberJpaRepository.findByMemberUuidAndId(uuid, teamChatRoom.getId());
-        TeamChatMember teamChatMemberReceiver = teamChatMemberJpaRepository.findByMemberUuidAndId(receiverUuid, teamChatRoom.getId());
+        TeamChatMember teamChatMemberOwner = teamChatMemberJpaRepository.findByMemberUuidAndId(uuid,
+                teamChatRoom.getId());
+        TeamChatMember teamChatMemberReceiver = teamChatMemberJpaRepository.findByMemberUuidAndId(receiverUuid,
+                teamChatRoom.getId());
 
         if (!teamChatMemberOwner.getOwnerStatus()) {
             throw new GlobalException(ResponseStatus.NOT_OWNER);
@@ -145,29 +151,76 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
 
         TeamChatMemberDto teamChatMemberDto = TeamChatMemberDto.toDto(teamChatMemberReceiver);
         teamChatMemberDto.setTeamParticipationType(BANNED);
-        teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(teamChatMemberDto));
+        teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(teamChatMemberDto, teamChatMemberReceiver.getId()));
 
 
     }
 
     @Override
     public void changeOwnerTeamChatRoom(String uuid, String roomNumber, String receiverUuid) {
-        TeamChatRoom teamChatRoom = teamChatRoomJpaRepository.findByRoomNumber(roomNumber)
-
-        TeamChatMember teamChatMemberOwner = teamChatMemberJpaRepository.findByMemberUuidAndId(uuid, teamChatRoom.getId());
-        TeamChatMember teamChatMemberReceiver = teamChatMemberJpaRepository.findByMemberUuidAndId(receiverUuid, teamChatRoom.getId());
-
+        TeamChatRoom teamChatRoom = teamChatRoomJpaRepository.findByRoomNumber(roomNumber);
+        log.info("teamChatRoom : {}", teamChatRoom.getId());
+        TeamChatMember teamChatMemberOwner = teamChatMemberJpaRepository.findByMemberUuidAndId(uuid,
+                teamChatRoom.getId());
+        TeamChatMember teamChatMemberReceiver = teamChatMemberJpaRepository.findByMemberUuidAndId(receiverUuid,
+                teamChatRoom.getId());
+        log.info("owner : {}", teamChatMemberOwner.toString());
+        log.info("receiver : {}", teamChatMemberReceiver.toString());
         if (!teamChatMemberOwner.getOwnerStatus()) {
             throw new GlobalException(ResponseStatus.NOT_OWNER);
         }
 
-        TeamChatMemberDto teamChatMemberDtoOwner = TeamChatMemberDto.toDto(teamChatMemberReceiver);
+        TeamChatMemberDto teamChatMemberDtoOwner = TeamChatMemberDto.toDto(teamChatMemberOwner);
         teamChatMemberDtoOwner.setOwnerStatus(false);
-        teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(teamChatMemberDtoOwner));
+        teamChatMemberJpaRepository.save(
+                TeamChatMemberDto.toEntity(teamChatMemberDtoOwner, teamChatMemberOwner.getId()));
+
         TeamChatMemberDto teamChatMemberDtoReceiver = TeamChatMemberDto.toDto(teamChatMemberReceiver);
         teamChatMemberDtoReceiver.setOwnerStatus(true);
-        teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(teamChatMemberDtoReceiver));
+        teamChatMemberJpaRepository.save(
+                TeamChatMemberDto.toEntity(teamChatMemberDtoReceiver, teamChatMemberReceiver.getId()));
 
+    }
+
+    @Override
+    public void finishRecruit(String uuid, String roomNumber) {
+        TeamChatRoom teamChatRoom = teamChatRoomJpaRepository.findByRoomNumber(roomNumber);
+
+        TeamChatMember teamChatMemberOwner = teamChatMemberJpaRepository.findByMemberUuidAndId(uuid,
+                teamChatRoom.getId());
+        if (!teamChatMemberOwner.getOwnerStatus()) {
+            throw new GlobalException(ResponseStatus.NOT_OWNER);
+        }
+
+        TeamChatRoomDto teamChatRoomDto = TeamChatRoomDto.ToDto(teamChatRoom);
+        teamChatRoomDto.setIsFinished(true);
+        TeamChatRoom teamChatRoomEntity = TeamChatRoomDto.ToEntity(teamChatRoomDto, teamChatRoom.getId());
+        teamChatRoomJpaRepository.save(teamChatRoomEntity);
+
+    }
+
+    @Override
+    public void changeTeamChatRoom(String uuid, String roomNumber, TeamChatRoomReqDto teamChatRoomReqDto) {
+        TeamChatRoom teamChatRoom = teamChatRoomJpaRepository.findByRoomNumber(roomNumber);
+
+        TeamChatMember teamChatMemberOwner = teamChatMemberJpaRepository.findByMemberUuidAndId(uuid,
+                teamChatRoom.getId());
+        if (!teamChatMemberOwner.getOwnerStatus()) {
+            throw new GlobalException(ResponseStatus.NOT_OWNER);
+        }
+
+        TeamChatRoomDto teamChatRoomDto = TeamChatRoomDto.builder()
+                .gameId(teamChatRoomReqDto.getGameId())
+                .roomNumber(roomNumber)
+                .roomName(teamChatRoomReqDto.getRoomName())
+                .maxMembers(teamChatRoomReqDto.getMaxMembers())
+                .isPassword(teamChatRoomReqDto.getIsPassword())
+                .password(teamChatRoomReqDto.getPassword())
+                .isFinished(teamChatRoom.getIsFinished())
+                .memo(teamChatRoomReqDto.getMemo())
+                .build();
+        TeamChatRoom teamChatRoomEntity = TeamChatRoomDto.ToEntity(teamChatRoomDto, teamChatRoom.getId());
+        teamChatRoomJpaRepository.save(teamChatRoomEntity);
     }
 
 

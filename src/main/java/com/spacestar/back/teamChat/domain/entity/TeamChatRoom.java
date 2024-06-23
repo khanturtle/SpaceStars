@@ -35,7 +35,8 @@ public class TeamChatRoom extends GlobalTime {
 
 
     @Builder
-    public TeamChatRoom(String roomNumber, String roomName, Boolean isPassword, String password, int maxMembers, Boolean isFinished, Long gameId, String memo) {
+    public TeamChatRoom(Long id,String roomNumber, String roomName, Boolean isPassword, String password, int maxMembers, Boolean isFinished, Long gameId, String memo) {
+        this.id = id;
         this.roomNumber = roomNumber;
         this.roomName = roomName;
         this.isPassword = isPassword;

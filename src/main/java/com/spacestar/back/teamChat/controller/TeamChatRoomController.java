@@ -132,4 +132,24 @@ public class TeamChatRoomController {
         return new ResponseEntity<>(ResponseSuccess.CHANGE_OWNER_TEAM_CHATROOM_SUCCESS);
     }
 
+    //모집 완료
+    @Operation(summary = "팀원 모집 완료", description = "팀원 모집을 완료합니다.")
+    @PatchMapping("/chatroom/recruit/{roomNumber}")
+    public ResponseEntity<?> finishRecruit(@RequestHeader String uuid,
+                                           @PathVariable String roomNumber){
+        teamChatRoomService.finishRecruit(uuid, roomNumber);
+
+        return new ResponseEntity<>(ResponseSuccess.FINISH_RECRUIT_SUCCESS);
+    }
+    //방정보 변경하기
+    @Operation(summary = "팀 채팅방 정보 변경하기", description = "팀 채팅방의 정보를 변경합니다.")
+    @PutMapping("/chatroom/{roomNumber}")
+    public ResponseEntity<?> changeTeamChatRoom(@RequestHeader String uuid,
+                                                @PathVariable String roomNumber,@RequestBody TeamChatRoomReqVo teamChatRoomReqVo){
+        TeamChatRoomReqDto teamChatRoomReqDto = mapper.map(teamChatRoomReqVo, TeamChatRoomReqDto.class);
+        teamChatRoomService.changeTeamChatRoom(uuid, roomNumber, teamChatRoomReqDto);
+
+
+        return new ResponseEntity<>(ResponseSuccess.CHANGE_TEAM_CHATROOM_SUCCESS);
+    }
 }

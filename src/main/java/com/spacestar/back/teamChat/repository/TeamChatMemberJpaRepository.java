@@ -21,6 +21,7 @@ public interface TeamChatMemberJpaRepository extends JpaRepository<TeamChatMembe
 
     List<TeamChatMember> findAllByMemberUuid(String uuid);
 
+    @Query("SELECT m FROM TeamChatMember m JOIN FETCH m.teamChatRoom r WHERE r.id = :id AND m.memberUuid = :uuid")
     TeamChatMember findByMemberUuidAndId(String uuid,Long id);
 
     @Query("SELECT m FROM TeamChatMember m JOIN FETCH m.teamChatRoom r " +
