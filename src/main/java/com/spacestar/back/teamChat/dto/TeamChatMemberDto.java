@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -28,6 +30,28 @@ public class TeamChatMemberDto {
                 .memberUuid(memberUuid)
                 .ownerStatus(ownerStatus)
                 .teamParticipationType(TeamParticipationType.JOINED)
+                .build();
+
+    }
+
+
+    public static TeamChatMember toEntity(TeamChatMemberDto teamChatMemberDto){
+        return TeamChatMember.builder()
+                .teamChatRoom(teamChatMemberDto.getTeamChatRoom())
+                .memberUuid(teamChatMemberDto.getMemberUuid())
+                .ownerStatus(teamChatMemberDto.getOwnerStatus())
+                .teamParticipationType(teamChatMemberDto.getTeamParticipationType())
+                .build();
+
+    }
+
+
+    public static TeamChatMemberDto toDto(TeamChatMember teamChatMember){
+        return TeamChatMemberDto.builder()
+                .teamChatRoom(teamChatMember.getTeamChatRoom())
+                .memberUuid(teamChatMember.getMemberUuid())
+                .ownerStatus(teamChatMember.getOwnerStatus())
+                .teamParticipationType(teamChatMember.getTeamParticipationType())
                 .build();
 
     }

@@ -17,6 +17,7 @@ public class TeamChatRoom extends GlobalTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long gameId;
     private String roomNumber;
 

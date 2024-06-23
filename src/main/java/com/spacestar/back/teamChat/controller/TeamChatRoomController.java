@@ -1,10 +1,12 @@
 package com.spacestar.back.teamChat.controller;
 
+import com.spacestar.back.chat.dto.ChatRoomNumberDto;
 import com.spacestar.back.converter.ConvertToIndexVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import com.spacestar.back.teamChat.dto.TeamChatRoomDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomListDto;
+import com.spacestar.back.teamChat.dto.TeamChatRoomMemberDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomNumberDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomRecruitDto;
 import com.spacestar.back.teamChat.dto.req.TeamChatRoomReqDto;
@@ -13,6 +15,7 @@ import com.spacestar.back.teamChat.vo.req.TeamChatJoinReqVo;
 import com.spacestar.back.teamChat.vo.req.TeamChatRoomJoinReqVo;
 import com.spacestar.back.teamChat.vo.req.TeamChatRoomReqVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomDetailResVo;
+import com.spacestar.back.teamChat.vo.res.TeamChatRoomMemberResVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomNumberResVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomRecruitReqVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomResVo;
@@ -74,17 +77,59 @@ public class TeamChatRoomController {
         return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_DETAIL_SUCCESS,teamChatRoomDetailResVo);
     }
 
+    @Operation(summary = "팀 채팅방에 가입된 유저",description = "팀 채팅방에 가입된 유저를 조회합니다.")
+    @GetMapping("/chatroom/{roomNumber}/members")
+    public ResponseEntity<List<TeamChatRoomMemberResVo>> getTeamChatRoomMembers(@PathVariable String roomNumber){
+        List<TeamChatRoomMemberDto> teamChatRoomMemberDtos = teamChatRoomService.getTeamChatRoomMembers(roomNumber);
+        List<TeamChatRoomMemberResVo> teamChatRoomMemberResVoList = ConvertToIndexVo.convertAndIndex(teamChatRoomMemberDtos, TeamChatRoomMemberResVo.class, mapper);
+        return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_MEMBERS_SUCCESS,teamChatRoomMemberResVoList);
+    }
+
 
     @Operation(summary = "팀 채팅방 참가하기", description = "팀 채팅방을 참가합니다.")
     @PostMapping("/chatroom/join/{roomNumber}")
-    public ResponseEntity<Void> joinTeamChatRoom(@RequestHeader String uuid,
+    public ResponseEntity<TeamChatRoomNumberResVo> joinTeamChatRoom(@RequestHeader String uuid,
                                               @PathVariable String roomNumber,@RequestBody TeamChatRoomJoinReqVo teamChatRoomJoinReqVo){
         String Password = teamChatRoomJoinReqVo.getPassword();
         teamChatRoomService.joinTeamChatRoom(uuid, roomNumber, Password);
-
-        return new ResponseEntity<>(ResponseSuccess.JOIN_TEAM_CHATROOM_SUCCESS);
+        ChatRoomNumberDto chatRoomNumberDto = ChatRoomNumberDto.builder()
+                .roomNumber(roomNumber)
+                .build();
+        TeamChatRoomNumberResVo teamChatRoomNumberResVo = mapper.map(chatRoomNumberDto, TeamChatRoomNumberResVo.class);
+        return new ResponseEntity<>(ResponseSuccess.JOIN_TEAM_CHATROOM_SUCCESS,teamChatRoomNumberResVo);
     }
 
-//    @Operation(summary = "팀 채팅방 나가기", description = "팀 채팅방을 나갑니다.")
-//    @
+    @Operation(summary = "팀 채팅방 나가기", description = "팀 채팅방을 나갑니다.")
+    @PatchMapping("/chatroom/exit/{roomNumber}")
+    public ResponseEntity<TeamChatRoomNumberResVo> exitTeamChatRoom(@RequestHeader String uuid,
+                                              @PathVariable String roomNumber){
+        teamChatRoomService.exitTeamChatRoom(uuid, roomNumber);
+        ChatRoomNumberDto chatRoomNumberDto = ChatRoomNumberDto.builder()
+                .roomNumber(roomNumber)
+                .build();
+        TeamChatRoomNumberResVo teamChatRoomNumberResVo = mapper.map(chatRoomNumberDto, TeamChatRoomNumberResVo.class);
+        return new ResponseEntity<>(ResponseSuccess.EXIT_TEAM_CHATROOM_SUCCESS,teamChatRoomNumberResVo);
+    }
+
+    //강퇴하기
+    @Operation(summary = "팀 채팅방 강퇴하기", description = "팀 채팅방에서 특정 유저를 강퇴합니다.")
+    @PatchMapping("/chatroom/kick/{roomNumber}")
+    public ResponseEntity<Void> kickTeamChatRoom(@RequestHeader String uuid,
+                                              @PathVariable String roomNumber,@RequestBody TeamChatJoinReqVo teamChatJoinReqVo){
+        String receiverUuid = teamChatJoinReqVo.getSenderUuid();
+        teamChatRoomService.kickTeamChatRoom(uuid, roomNumber, receiverUuid);
+
+        return new ResponseEntity<>(ResponseSuccess.KICK_TEAM_CHATROOM_SUCCESS);
+    }
+    //방장 변경하기
+    @Operation(summary = "팀 채팅방 방장 변경하기", description = "팀 채팅방의 방장을 변경합니다.")
+    @PatchMapping("/chatroom/owner/{roomNumber}")
+    public ResponseEntity<?> changeOwnerTeamChatRoom(@RequestHeader String uuid,
+                                                    @PathVariable String roomNumber,@RequestBody TeamChatJoinReqVo teamChatJoinReqVo){
+        String receiverUuid = teamChatJoinReqVo.getSenderUuid();
+        teamChatRoomService.changeOwnerTeamChatRoom(uuid, roomNumber, receiverUuid);
+
+        return new ResponseEntity<>(ResponseSuccess.CHANGE_OWNER_TEAM_CHATROOM_SUCCESS);
+    }
+
 }

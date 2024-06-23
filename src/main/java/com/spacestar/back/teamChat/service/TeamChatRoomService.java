@@ -2,6 +2,7 @@ package com.spacestar.back.teamChat.service;
 
 import com.spacestar.back.teamChat.dto.TeamChatRoomDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomListDto;
+import com.spacestar.back.teamChat.dto.TeamChatRoomMemberDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomNumberDto;
 import com.spacestar.back.teamChat.dto.TeamChatRoomRecruitDto;
 import com.spacestar.back.teamChat.dto.req.TeamChatRoomReqDto;
@@ -22,4 +23,11 @@ public interface TeamChatRoomService {
     TeamChatRoomDto getTeamChatRoomDetail(String roomNumber);
 
     void joinTeamChatRoom(String uuid, String roomNumber, String password);
+    void exitTeamChatRoom(String uuid, String roomNumber);
+
+    List<TeamChatRoomMemberDto> getTeamChatRoomMembers(String roomNumber);
+
+    void kickTeamChatRoom(String uuid, String roomNumber, String receiverUuid);
+
+    void changeOwnerTeamChatRoom(String uuid, String roomNumber, String receiverUuid);
 }

@@ -28,6 +28,11 @@ public enum ResponseSuccess {
     GET_TEAM_CHATROOM_LIST_SUCCESS(402, "내가 속한 채팅방 리스트 조회 성공"),
     GET_TEAM_CHATROOM_DETAIL_SUCCESS(403, "팀 채팅방 상세 조회 성공"),
     JOIN_TEAM_CHATROOM_SUCCESS(404, "팀 채팅방 참여 성공"),
+    GET_TEAM_CHATROOM_MEMBERS_SUCCESS(405, "팀 채팅방 멤버 조회 성공"),
+    EXIT_TEAM_CHATROOM_SUCCESS(406, "팀 채팅방 나가기 성공"),
+    KICK_TEAM_CHATROOM_SUCCESS(407, "팀 채팅방 강퇴 성공"),
+    CHANGE_OWNER_TEAM_CHATROOM_SUCCESS(408, "팀 채팅방 방장 변경 성공"),
+
     INTERNAL_SERVER_ERROR(900, "Internal server error");
 
 
