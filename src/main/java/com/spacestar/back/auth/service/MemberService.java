@@ -1,10 +1,10 @@
 package com.spacestar.back.auth.service;
 
 import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
-import com.spacestar.back.auth.dto.res.MemberInfoResDto;
-import com.spacestar.back.auth.dto.res.NicknameResDto;
-import com.spacestar.back.auth.dto.res.QuickAuthInfoResDto;
-import com.spacestar.back.auth.dto.res.UuidResDto;
+import com.spacestar.back.auth.dto.res.*;
+import com.spacestar.back.auth.vo.res.FriendSearchResVo;
+
+import java.util.List;
 
 public interface MemberService {
 
@@ -14,11 +14,9 @@ public interface MemberService {
 
     void updateMemberInfo(String uuid, MemberInfoReqDto memberInfoReqDto);
 
-    NicknameResDto getNickname(String uuid);
-
-    UuidResDto getUuid(String nickname);
-
     MemberInfoResDto findMemberInfo(String uuid);
 
     QuickAuthInfoResDto findQuickAuthInfo(String uuid);
+
+    List<FriendSearchResDto> searchNickname(String nickname);
 }

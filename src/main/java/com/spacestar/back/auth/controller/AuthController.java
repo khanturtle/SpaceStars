@@ -8,6 +8,8 @@ import com.spacestar.back.auth.vo.req.MemberJoinReqVo;
 import com.spacestar.back.auth.vo.req.MemberLoginReqVo;
 import com.spacestar.back.auth.vo.res.MemberLoginResVo;
 import com.spacestar.back.auth.vo.res.NicknameExistResVo;
+import com.spacestar.back.auth.vo.res.NicknameResVo;
+import com.spacestar.back.auth.vo.res.UuidResVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,5 +53,21 @@ public class AuthController {
 
         return new ResponseEntity<>(ResponseSuccess.NICKNAME_SUCCESS,
                 mapper.map(authService.checkNickname(nickname), NicknameExistResVo.class));
+    }
+
+    @Operation(summary = "uuid로 닉네임 조회")
+    @GetMapping("/nickname/search/{uuid}")
+    public ResponseEntity<NicknameResVo> getNickname(@PathVariable String uuid){
+
+        return new ResponseEntity<>(ResponseSuccess.NICKNAME_SELECT_SUCCESS,
+                mapper.map(authService.getNickname(uuid), NicknameResVo.class));
+    }
+
+    @Operation(summary = "닉네임으로 uuid 찾기")
+    @GetMapping("/uuid/search/{nickname}")
+    public ResponseEntity<UuidResVo> getUuid(@PathVariable String nickname){
+
+        return new ResponseEntity<>(ResponseSuccess.UUID_SELECT_SUCCESS,
+                mapper.map(authService.getUuid(nickname), UuidResVo.class));
     }
 }

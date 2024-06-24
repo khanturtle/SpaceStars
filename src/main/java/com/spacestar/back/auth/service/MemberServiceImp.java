@@ -2,10 +2,7 @@ package com.spacestar.back.auth.service;
 
 import com.spacestar.back.auth.domain.Member;
 import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
-import com.spacestar.back.auth.dto.res.MemberInfoResDto;
-import com.spacestar.back.auth.dto.res.NicknameResDto;
-import com.spacestar.back.auth.dto.res.QuickAuthInfoResDto;
-import com.spacestar.back.auth.dto.res.UuidResDto;
+import com.spacestar.back.auth.dto.res.*;
 import com.spacestar.back.auth.enums.UnregisterType;
 import com.spacestar.back.auth.repository.MemberRepository;
 import com.spacestar.back.global.GlobalException;
@@ -18,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 @Slf4j
@@ -77,29 +76,6 @@ public class MemberServiceImp implements MemberService{
         memberRepository.save(MemberInfoReqDto.updateToEntity(member.getId(), uuid, member.getEmail(),member.isProfile(), memberInfoReqDto));
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public NicknameResDto getNickname(String uuid) {
-
-        Member member = memberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
-
-        return NicknameResDto.builder()
-                .nickname(member.getNickname())
-                .build();
-    }
-
-    @Override
-    public UuidResDto getUuid(String nickname) {
-
-        Member member = memberRepository.findByNickname(nickname)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
-
-        return UuidResDto.builder()
-                .uuid(member.getUuid())
-                .build();
-    }
-
     @Override
     public MemberInfoResDto findMemberInfo(String uuid) {
 
@@ -128,6 +104,16 @@ public class MemberServiceImp implements MemberService{
         int age = today.getYear() - member.getBirth().getYear();
 
         return QuickAuthInfoResDto.converter(age, member.getGender());
+    }
+
+    @Override
+    public List<FriendSearchResDto> searchNickname(String nickname) {
+
+        List<Member> memberList = memberRepository.findByNicknameContaining(nickname);
+
+        return IntStream.range(0, memberList.size())
+                .mapToObj(i -> FriendSearchResDto.toDto(i, memberList.get(i)))
+                .toList();
     }
 
     @Transactional

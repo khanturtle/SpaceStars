@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -20,4 +21,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Query("update Member m set m.isProfile = :isProfile where m.id = :id")
     void updateIsProfile(@Param("id") Long id, @Param("isProfile") boolean isProfile);
+
+    List<Member> findByNicknameContaining(String nickname);
 }
