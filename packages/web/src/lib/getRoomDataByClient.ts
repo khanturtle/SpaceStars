@@ -103,9 +103,61 @@ export async function getChatroomData(
   // 방 참여자 목록
   const member = await getRoomMember(roomNumber, token)
 
+  if (!member || member.length === 0) {
+    return []
+  }
+
   // 방 참여자의 프로필사진, 닉네임
   const chatMemberInfos = await Promise.all(
     member.map(async (m) => {
+      const memberInfo = await getBasicUserData(m.memberUuid, token)
+      return {
+        ...m,
+        ...memberInfo,
+      }
+    }),
+  )
+  return chatMemberInfos
+}
+
+/** 팀채팅 방 참여자 조회 */
+export async function getTeamRoomMember(roomUuid: string, token: string) {
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/team/chatroom/${roomUuid}/members`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getTeamRoomMember')
+    }
+    const data = await response.json()
+    return data.result
+  } catch (err) {
+    // console.error(err)
+    return []
+  }
+}
+
+/** 나의 그룹 채팅방 중 하나의 정보를 담아 가져오기
+ *  방 참여자 정보: uuid, 프로필사진, 닉네임
+ */
+export async function getTeamChatroomData(roomNumber: string, token: string) {
+  // 방 참여자 목록
+  const member = await getTeamRoomMember(roomNumber, token)
+
+  if (!member || member.length === 0) {
+    return []
+  }
+
+  // 방 참여자의 프로필사진, 닉네임
+  const chatMemberInfos = await Promise.all(
+    member.map(async (m: any) => {
       const memberInfo = await getBasicUserData(m.memberUuid, token)
       return {
         ...m,

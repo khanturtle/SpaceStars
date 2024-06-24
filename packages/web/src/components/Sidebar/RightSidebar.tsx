@@ -48,9 +48,17 @@ export default function RightSidebar({
     >
       <div className={styles['side-wrapper']}>
         {isGroupChatPage ? (
-          <ChatRightSide roomNumber={roomNumber} token={token} type="team" />
+          <ChatRightSide
+            roomNumber={roomNumber}
+            token={token}
+            roomType="team"
+          />
         ) : isChatPage ? (
-          <ChatRightSide roomNumber={roomNumber} token={token} type="chat" />
+          <ChatRightSide
+            roomNumber={roomNumber}
+            token={token}
+            roomType="one-to-one"
+          />
         ) : (
           <DefaultRightSide friendsList={friendsList} />
         )}

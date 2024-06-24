@@ -1,17 +1,15 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
-
 import { useEffect, useState } from 'react'
 
 import { useWebSocket } from '../providers/socket-provider'
 
-import { friendsWithBasicDataType } from '@/lib/getFriendsData'
-import { getChatroomData } from '@/lib/getRoomDataByClient'
+import { getChatroomData, getTeamChatroomData } from '@/lib/getRoomDataByClient'
 
 import FriendsList from '../Friends/FriendsList'
 
 import styles from './Sidebar.module.css'
+import { usePathname } from 'next/navigation'
 
 interface AllUserType {
   index: number
@@ -19,6 +17,7 @@ interface AllUserType {
   profileImageUrl: string
   nickname: string
   status: boolean
+  ownerStatus?: boolean
 }
 
 function updateMemberStatus(members: AllUserType[], onlineUsers: string[]) {
@@ -33,22 +32,28 @@ function updateMemberStatus(members: AllUserType[], onlineUsers: string[]) {
 export const ChatRightSide = ({
   roomNumber,
   token,
-  type,
+  roomType,
 }: {
   roomNumber: string
   token: string
-  type: 'chat' | 'team'
+  roomType: 'one-to-one' | 'team'
 }) => {
   const stompClient = useWebSocket()
 
   const [allUser, setAllUser] = useState<AllUserType[]>([])
   const [onlineUser, setOnlineUser] = useState([])
 
+  const pathName = usePathname()
+
   /** 채팅방 유저 리스트 */
   useEffect(() => {
+    const roomType = pathName.split('/').includes('group')
+      ? 'team'
+      : 'one-to-one'
+
     const fetchData = async () => {
-      const userList = await getChatroomData(roomNumber, token)
-      if (userList) {
+      if (roomType === 'one-to-one') {
+        const userList = await getChatroomData(roomNumber, token)
         setAllUser(
           userList.map((item) => ({
             index: item.index,
@@ -59,9 +64,20 @@ export const ChatRightSide = ({
           })),
         )
       } else {
-        setAllUser([])
+        const userList = await getTeamChatroomData(roomNumber, token)
+        setAllUser(
+          userList.map((item) => ({
+            index: item.index,
+            nickname: item.nickname,
+            profileImageUrl: item.profileImageUrl,
+            friendUuid: item.memberUuid,
+            ownerStatus: item.ownerStatus,
+            status: false,
+          })),
+        )
       }
     }
+
     fetchData()
   }, [roomNumber])
 
@@ -75,7 +91,7 @@ export const ChatRightSide = ({
     if (stompClient) {
       /** 채팅방 접속자 */
       const subscription = stompClient.subscribe(
-        `/sub/one-to-one/users/${roomNumber}`,
+        `/sub/${roomType}/users/${roomNumber}`,
         (frame) => {
           const memberUuids = JSON.parse(frame.body).memberUuids
           setOnlineUser(memberUuids)
