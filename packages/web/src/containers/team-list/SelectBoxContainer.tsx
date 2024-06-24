@@ -1,15 +1,27 @@
+'use client'
+
+// import { LockIcon } from '@packages/ui'
+import { RotateCcwIcon } from 'lucide-react'
+
 import { GameTypes } from '@/types/type'
-import { LockIcon } from '@packages/ui'
+
 import GameSelectBox from './GameSelectBox'
 import SubSelectBox from './SubSelectBox'
+import { handleRefresh } from '@/lib/teamListAction'
 
 export default function SelectBoxContainer({
   searchParams,
   games,
+  teamListCount,
 }: {
   searchParams: { [key: string]: string }
   games: GameTypes[]
+  teamListCount: number
 }) {
+  const handleClick = () => {
+    handleRefresh()
+  }
+
   return (
     <div>
       <GameSelectBox games={games} searchParams={searchParams} />
@@ -19,13 +31,13 @@ export default function SelectBoxContainer({
       <SubSelectBox>
         <SubSelectBox.Title
           title="Team List"
-          // FIXME: Room 갯수로 수정
-          desc={`(${games.length} Items)`}
+          desc={`(${teamListCount} Items)`}
         />
         <div className="flex-1" />
         <SubSelectBox.Search />
         {/* FIXME: query key-value 수정 */}
-        <SubSelectBox.SubButton
+
+        {/* <SubSelectBox.SubButton
           name="모집중"
           queryKey="test1"
           queryValue="1"
@@ -37,6 +49,11 @@ export default function SelectBoxContainer({
           queryKey="test2"
           queryValue="2"
           searchParams={searchParams}
+        /> */}
+        <SubSelectBox.SubButton
+          name=""
+          icon={<RotateCcwIcon stroke="#2C3149" />}
+          onClick={handleClick}
         />
         <SubSelectBox.ViewToggle searchParams={searchParams} />
       </SubSelectBox>

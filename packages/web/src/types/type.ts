@@ -105,3 +105,17 @@ export interface UnreadMessageCount {
   unReadMessageCount: number
 }
 // chatroom--
+
+// --GroupChat
+export interface GroupChatInfo {
+  gameId: number
+  index: number
+  isFinished: boolean
+  isPassword: boolean
+  maxMembers: number
+  memo: string
+  password?: number
+  roomName: string
+  roomNumber: string
+}
+// GroupChat--

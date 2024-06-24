@@ -1,4 +1,10 @@
-import { getChatRooms, getRoomMember } from '@/apis/getChat'
+import {
+  getChatRooms,
+  getMyTeamChatRooms,
+  getRoomMember,
+  getTeamChatRoomsDetail,
+  getTeamChatRoomsMember,
+} from '@/apis/getChat'
 import { getBasicUserData } from './getUserData'
 
 /** 나의 모든 1:1 채팅방 목록을 정보를 담아 가져오기
@@ -58,4 +64,37 @@ export async function getChatroomData(
     }),
   )
   return chatMemberInfos
+}
+
+/** 팀 채팅방의 정보를 넣어 가져오기
+ * roomNumber > 방 정보
+ * 참여자 정보
+ */
+export async function getGroupChatroomData() {
+  // 방 목록
+  const roomList = await getMyTeamChatRooms()
+  // 방 정보
+  const chatroomInfo = await Promise.all(
+    roomList.map(async (room: any) => {
+      const roomInfo = await getTeamChatRoomsDetail(room.roomNumber)
+
+      const member = await getTeamChatRoomsMember(room.roomNumber)
+      const memberInfos = await Promise.all(
+        member.map(async (m: any) => {
+          const memberInfo = await getBasicUserData(m.memberUuid)
+          return {
+            ...m,
+            ...memberInfo,
+          }
+        }),
+      )
+      return {
+        ...room,
+        roomInfo,
+        memberInfos,
+      }
+    }),
+  )
+
+  return chatroomInfo
 }

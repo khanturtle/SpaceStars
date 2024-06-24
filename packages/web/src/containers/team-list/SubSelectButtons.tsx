@@ -28,12 +28,14 @@ export const SubButton = ({
   queryKey,
   queryValue,
   searchParams,
+  onClick,
 }: {
   name: string
   icon?: React.ReactNode
   queryKey?: string
   queryValue?: string
   searchParams?: { [key: string]: string }
+  onClick?: () => void
 }) => {
   const router = useRouter()
 
@@ -46,7 +48,11 @@ export const SubButton = ({
   }
 
   return (
-    <button type="button" onClick={handleQueryUpdate} className={styles.button}>
+    <button
+      type="button"
+      onClick={onClick ?? handleQueryUpdate}
+      className={styles.button}
+    >
       {icon && icon}
       {name}
     </button>

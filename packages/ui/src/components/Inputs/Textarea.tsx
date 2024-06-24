@@ -1,8 +1,7 @@
-import { CheckIcon } from '../Icons'
 import './Input.css'
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+  extends React.InputHTMLAttributes<HTMLTextAreaElement> {
   className?: string
   /** 고유 id, label 요소와 연결 */
   id: string
@@ -13,19 +12,17 @@ export interface InputProps
   /** 수정 가능 여부 */
   disabled?: boolean
   value?: string
-  isChecked?: boolean
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+  onFocus?: (event: React.FocusEvent<HTMLTextAreaElement>) => void
+  onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>) => void
 }
 
-const Input = ({
+const Textarea = ({
   className,
   id = 'id',
   label,
   required,
   disabled = false,
-  isChecked = true,
   ...props
 }: InputProps) => {
   const isDisabled = disabled ? 'input--disabled' : ''
@@ -43,7 +40,7 @@ const Input = ({
         )}
 
         <div className="textfield">
-          <input
+          <textarea
             id={id}
             name={id}
             type="text"
@@ -53,13 +50,8 @@ const Input = ({
           />
         </div>
       </div>
-      {isChecked && (
-        <div className="input--valid">
-          <CheckIcon fill={disabled ? 'white' : 'var(--color-primary)'} />
-        </div>
-      )}
     </div>
   )
 }
 
-export default Input
+export default Textarea

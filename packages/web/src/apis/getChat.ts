@@ -66,3 +66,117 @@ export async function getRoomMember(
     return []
   }
 }
+
+/** 팀원모집 방 목록 조회 */
+export async function getTeamChatRooms() {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  if (!token) return []
+
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/team/chatroom/recruit/list`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+        next: {
+          tags: ['teamList'],
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getTeamChatRooms')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (err) {
+    // console.error(err)
+    return []
+  }
+}
+
+/** 내가 속한 그룹채팅방 리스트 조회 */
+export async function getMyTeamChatRooms() {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  try {
+    const response = await fetch(`${CHAT_BASE_URL}/team/chatroom/list`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? token : '',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to getMyTeamChatRooms')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (err) {
+    // console.error(err)
+    return []
+  }
+}
+
+/** 그룹채팅방 정보 조회 */
+export async function getTeamChatRoomsDetail(roomNumber: string) {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/team/chatroom/${roomNumber}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getTeamChatRoomsDetail')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (err) {
+    // console.error(err)
+    return []
+  }
+}
+
+/** 그룹채팅방 멤버 조회 */
+export async function getTeamChatRoomsMember(roomNumber: string) {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/team/chatroom/${roomNumber}/members`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getTeamChatRoomsMember')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (err) {
+    // console.error(err)
+    return []
+  }
+}

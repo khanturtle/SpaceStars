@@ -55,3 +55,57 @@ export async function getUnreadMessageCount(
     return null
   }
 }
+
+/** 최근 메시지 조회 그룹 */
+export async function getRecentMessageByTeam(
+  roomUuid: string,
+  token: string,
+): Promise<RecentMessageType | null> {
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/team/message/recent/${roomUuid}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+        next: { tags: ['recentMessage'] },
+      },
+    )
+    if (!response.ok) {
+      throw new Error('Failed get recentMessage')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (err) {
+    console.error(err)
+    return null
+  }
+}
+
+/** 안읽은 메시지 개수 조회 그룹 */
+export async function getUnreadMessageCountByTeam(
+  roomUuid: string,
+  token: string,
+): Promise<UnreadMessageCount | null> {
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/team/message/recent/count/${roomUuid}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+      },
+    )
+    if (!response.ok) {
+      throw new Error('Failed to getUnreadMessageCount')
+    }
+    const data = await response.json()
+    return data
+  } catch (err) {
+    // console.error(err)
+    return null
+  }
+}
