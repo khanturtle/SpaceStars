@@ -33,6 +33,7 @@ public class KafkaConfig {
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 		props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+		props.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
 		return props;
 	}
 
@@ -62,7 +63,7 @@ public class KafkaConfig {
 		return new DefaultKafkaConsumerFactory<>(
 				commonConsumerConfig(),
 				new StringDeserializer(),
-				new JsonDeserializer<>(FriendMessage.class)
+				new JsonDeserializer<>(FriendMessage.class, false)
 		);
 	}
 

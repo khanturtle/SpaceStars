@@ -20,7 +20,9 @@ import com.spacestar.back.kafka.message.Message;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +33,17 @@ public class AlarmServiceImpl implements AlarmService {
 	private final Sinks.Many<FriendMessage> friendSink;
 
 	@Override
-	public Flux<Message> streamAlarms(String uuid){
+	public Flux<Message> streamAlarms(String uuid) {
 		return Flux.merge(
-			matchingSink.asFlux(),
-			friendSink.asFlux()
-		).filter(message -> uuid.equals(message.getReceiverUuid()));
+			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
+			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
+		).doOnNext(message -> {
+			Mono.fromCallable(() -> alarmRepository.save(AlarmAddReqDto.toEntitySSE(uuid, message)))
+				.subscribeOn(Schedulers.boundedElastic())
+				.subscribe();
+		});
 	}
+
 	@Override
 	public void addAlarm(String uuid, AlarmAddReqDto alarmAddReqDto) {
 		alarmRepository.save(AlarmAddReqDto.toEntity(uuid, alarmAddReqDto));
@@ -69,17 +76,17 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 
 	@Override
-	public void modifyAlarmRead(String alarmId, String uuid){
+	public void modifyAlarmRead(String alarmId, String uuid) {
 		// 변경사항이 없을 경우 : 알림이 존재하지 않거나 && 알림이 이미 읽은 상태인 경우
-		if (alarmRepository.modifyAlarm(alarmId, uuid).getModifiedCount() == 0){
+		if (alarmRepository.modifyAlarm(alarmId, uuid).getModifiedCount() == 0) {
 			throw new GlobalException(ResponseStatus.NOT_MODIFIED_ALARM);
 		}
 	}
 
 	@Override
-	public void deleteAlarm(String uuid, AlarmDeleteReqDto alarmDeleteReqDto){
+	public void deleteAlarm(String uuid, AlarmDeleteReqDto alarmDeleteReqDto) {
 
-		if(alarmRepository.deleteManyAlarm(uuid, alarmDeleteReqDto).getDeletedCount() == 0){
+		if (alarmRepository.deleteManyAlarm(uuid, alarmDeleteReqDto).getDeletedCount() == 0) {
 			throw new GlobalException(ResponseStatus.NOT_DELETE_ALARM);
 		}
 	}

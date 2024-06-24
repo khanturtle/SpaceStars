@@ -27,7 +27,7 @@ public class KafkaServiceImpl implements KafkaService {
 	}
 
 	@Override
-	@KafkaListener(topics = "dev.profile-service.friend-request", groupId = "friend_1",
+	@KafkaListener(topics = "dev.profile-service.friend-request", groupId = "friend_2",
 			containerFactory = "friendMessageKafkaListenerContainerFactory")
 	public void friendListen(FriendMessage message) {
 		log.info("수신 : {}", message);
