@@ -1,12 +1,15 @@
 package com.spacestar.back.teamChat.controller;
 
+import com.spacestar.back.chat.dto.RecentMessageCountDto;
 import com.spacestar.back.converter.ConvertToIndexVo;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
+import com.spacestar.back.teamChat.dto.RecentTeamMessageCountDto;
 import com.spacestar.back.teamChat.dto.RecentTeamMessageDto;
 import com.spacestar.back.teamChat.dto.TeamMessageDto;
 import com.spacestar.back.teamChat.service.TeamChatMessageService;
 import com.spacestar.back.teamChat.vo.req.TeamMessageResVo;
+import com.spacestar.back.teamChat.vo.res.RecentTeamMessageResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -52,14 +55,24 @@ public class TeamChatMessageController {
         return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_UNREAD_MESSAGE_LIST_SUCCESS, messageResVos);
     }
 
-//    @Operation(summary = "최근 팀 채팅 내역 조회", description = "채팅방의 최근 팀 채팅 내역을 조회합니다.")
-//    @GetMapping("/message/recent/{roomNumber}")
-//    public ResponseEntity<TeamMessageResVo> getRecentTeamMessage(@RequestHeader String uuid,
-//                                                                @PathVariable String roomNumber) {
-//        RecentTeamMessageDto teamMessageDto = teamChatMessageService.getRecentTeamMessage(uuid, roomNumber);
-//        RecentTeamMessageResVo messageResVo =mapper.map(teamMessageDto, TeamMessageResVo.class, mapper);
-//
-//        return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_RECENT_MESSAGE_SUCCESS, messageResVo);
-//    }
+    @Operation(summary = "최근 팀 채팅 내역 조회", description = "채팅방의 최근 팀 채팅 내역을 조회합니다.")
+    @GetMapping("/message/recent/{roomNumber}")
+    public ResponseEntity<RecentTeamMessageResVo> getRecentTeamMessage(@RequestHeader String uuid,
+                                                                @PathVariable String roomNumber) {
+        RecentTeamMessageDto recentTeamMessageDto = teamChatMessageService.getRecentTeamMessage(uuid, roomNumber);
+        RecentTeamMessageResVo recentTeamMessageResVo = mapper.map(recentTeamMessageDto, RecentTeamMessageResVo.class);
 
+        return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_RECENT_MESSAGE_SUCCESS, recentTeamMessageResVo);
+    }
+
+    //최근 메시지 개수
+    @Operation(summary = "최근 팀 채팅 개수 조회", description = "채팅방의 최근 팀 채팅 개수를 조회합니다.")
+    @GetMapping("/message/recent/count/{roomNumber}")
+    public ResponseEntity<?> getRecentTeamMessageCount(@RequestHeader String uuid,
+                                                             @PathVariable String roomNumber) {
+        RecentTeamMessageCountDto recentTeamMessageCount = teamChatMessageService.getRecentMessageCount(uuid, roomNumber);
+
+
+        return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_RECENT_MESSAGE_COUNT_SUCCESS, recentTeamMessageCount);
+    }
 }
