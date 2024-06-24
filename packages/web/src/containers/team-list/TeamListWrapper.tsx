@@ -10,6 +10,8 @@ import {
 } from '@packages/ui'
 
 import TeamBox from './TeamBox'
+import { useContext } from 'react'
+import { ModalContext } from '@/components/providers/modal-provider'
 
 type RoomType = {
   roomType: 'closed' | 'open'
@@ -32,20 +34,31 @@ export default function TeamListWrapper({
   Teams: any[]
 }) {
   const router = useRouter()
+  const { openModal } = useContext(ModalContext)
 
   const viewType = searchParams.view === 'list' ? 'list' : 'card'
   return (
+    // FIXME: 컴포넌트 분리 ㄷㄷ
     <TeamBox className="pt-[40px]">
       <TeamBox.TeamCardList type={viewType}>
         {Teams.map((team) => {
           const { roomType, typeValue } = getRoomTypeInfo(team.isFinished)
+          // TODO: 비번 입력 폼 => 비번이 같으면 입장 아니면 모달닫고, 에러 표시
           const handleJoin = () => {
             if (team.isFinished) {
               return
             } else if (team.isPassword) {
-              console.log('비번확인')
+              // team.password
+              openModal(
+                <div
+                  className="relative h-full px-[204px] pt-[90px] pb-[85px]
+                  flex flex-col items-center"
+                >
+                  비번쳐
+                </div>,
+              )
             } else {
-              console.log('enter room')
+              router.push(`/dashboard/chat/team/${team.roomNumber}`)
             }
           }
           return (

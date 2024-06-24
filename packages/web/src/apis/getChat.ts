@@ -82,6 +82,9 @@ export async function getTeamChatRooms() {
           'Content-Type': 'application/json',
           Authorization: token ? token : '',
         },
+        next: {
+          tags: ['teamList'],
+        },
       },
     )
 
