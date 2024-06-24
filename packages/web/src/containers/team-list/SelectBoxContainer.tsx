@@ -1,14 +1,18 @@
-import { GameTypes } from '@/types/type'
 import { LockIcon } from '@packages/ui'
+
+import { GameTypes } from '@/types/type'
+
 import GameSelectBox from './GameSelectBox'
 import SubSelectBox from './SubSelectBox'
 
 export default function SelectBoxContainer({
   searchParams,
   games,
+  teamListCount,
 }: {
   searchParams: { [key: string]: string }
   games: GameTypes[]
+  teamListCount: number
 }) {
   return (
     <div>
@@ -19,8 +23,7 @@ export default function SelectBoxContainer({
       <SubSelectBox>
         <SubSelectBox.Title
           title="Team List"
-          // FIXME: Room 갯수로 수정
-          desc={`(${games.length} Items)`}
+          desc={`(${teamListCount} Items)`}
         />
         <div className="flex-1" />
         <SubSelectBox.Search />

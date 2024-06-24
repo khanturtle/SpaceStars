@@ -1,9 +1,14 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+
 import {
   Badge,
   TeamCardJoinButton,
   TeamCardTitle,
   TeamCardUserAvatar,
 } from '@packages/ui'
+
 import TeamBox from './TeamBox'
 
 type RoomType = {
@@ -18,6 +23,7 @@ function getRoomTypeInfo(isFinished: boolean): RoomType {
   }
 }
 
+// TODO: CSS 수정
 export default function TeamListWrapper({
   searchParams,
   Teams,
@@ -25,14 +31,23 @@ export default function TeamListWrapper({
   searchParams: { [key: string]: string }
   Teams: any[]
 }) {
-  const viewType = searchParams.view === 'list' ? 'list' : 'card'
+  const router = useRouter()
 
+  const viewType = searchParams.view === 'list' ? 'list' : 'card'
   return (
     <TeamBox className="pt-[40px]">
       <TeamBox.TeamCardList type={viewType}>
         {Teams.map((team) => {
           const { roomType, typeValue } = getRoomTypeInfo(team.isFinished)
-
+          const handleJoin = () => {
+            if (team.isFinished) {
+              return
+            } else if (team.isPassword) {
+              console.log('비번확인')
+            } else {
+              console.log('enter room')
+            }
+          }
           return (
             <TeamBox.TeamCardItem
               key={team.index}
@@ -40,14 +55,14 @@ export default function TeamListWrapper({
               isFinished={team.isFinished}
               gameData={
                 <Badge
-                  value={team.gameName}
+                  value={team.gameData.gameName}
                   type="game"
                   size={viewType === 'card' ? 'small' : 'large'}
                 />
               }
               roomType={
                 <Badge
-                  value={`${typeValue} ${team.memberCount}/${team.maxLimit}`}
+                  value={`${typeValue} ${team.currentMembers}/${team.maxMembers}`}
                   type={roomType}
                   size={viewType === 'card' ? 'small' : 'large'}
                 />
@@ -55,32 +70,20 @@ export default function TeamListWrapper({
               users={
                 <TeamCardUserAvatar
                   size={viewType === 'card' ? 'small' : 'medium'}
-                  users={[
-                    {
-                      profileImage: 'https://via.placeholder.com/52x52',
-                      userId: 1,
-                    },
-                    {
-                      profileImage: 'https://via.placeholder.com/1x1',
-                      userId: 2,
-                    },
-                    {
-                      profileImage: 'https://via.placeholder.com/1x1',
-                      userId: 3,
-                    },
-                  ]}
+                  users={team.memberList}
                 />
               }
               title={
                 <TeamCardTitle
                   className="w-[85%]"
-                  imageUrl="https://via.placeholder.com/52x52"
-                  title={team.gameName}
+                  imageUrl={team.gameData.gameImage}
+                  title={team.roomName}
                   description={team.memo}
                 />
               }
               joinButton={
                 <TeamCardJoinButton
+                  onClick={handleJoin}
                   isLocked={team.isPassword}
                   isFinished={team.isFinished}
                 />

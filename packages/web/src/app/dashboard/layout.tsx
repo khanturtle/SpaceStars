@@ -20,6 +20,7 @@ export default async function layout({
   const headersList = headers()
   const headerPathname = headersList.get('x-pathname') || ''
   const isChatPage = headerPathname.includes('chat')
+  const isTeamChatPage = headerPathname.includes('team')
 
   // 내 친구 리스트
   const friendsList = await getFriendsDataList()
@@ -31,6 +32,7 @@ export default async function layout({
       <RightSidebar
         token={token}
         isChatPage={isChatPage}
+        isTeamChatPage={isTeamChatPage}
         friendsList={friendsList ? friendsList : []}
       />
     </main>

@@ -46,7 +46,7 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
   useEffect(() => {
     if (state.code === 200) {
       closeModal()
-      router.push(`/dashboard/chat/${state.result.roomNumber}`)
+      router.push(`/dashboard/chat/team/${state.result.roomNumber}`)
     }
   }, [state])
 

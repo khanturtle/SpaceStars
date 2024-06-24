@@ -66,3 +66,33 @@ export async function getRoomMember(
     return []
   }
 }
+
+/** 팀원모집 방 목록 조회 */
+export async function getTeamChatRooms() {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  if (!token) return []
+
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/team/chatroom/recruit/list`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getTeamChatRooms')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (err) {
+    // console.error(err)
+    return []
+  }
+}

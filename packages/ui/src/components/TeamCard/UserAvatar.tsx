@@ -3,7 +3,7 @@ import './teamcard.css'
 type UserDataType = {
   userId: number
   username?: string
-  profileImage?: string
+  profileImageUrl?: string
 }
 
 export interface UserAvatarProps {
@@ -19,7 +19,7 @@ const UserAvatar = ({ className, size = 'medium', users }: UserAvatarProps) => {
       {users &&
         users.map((user, _index) => (
           <div
-            key={user.userId}
+            key={_index}
             className={`rounded-full avatar-image`}
             style={{
               left: `${_index * leftSize}px`,
@@ -27,7 +27,7 @@ const UserAvatar = ({ className, size = 'medium', users }: UserAvatarProps) => {
             }}
           >
             <img
-              src={user.profileImage}
+              src={user.profileImageUrl}
               alt={user.username}
               className="relative object-cover rounded-full"
             />
