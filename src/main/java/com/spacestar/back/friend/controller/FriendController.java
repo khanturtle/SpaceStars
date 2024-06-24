@@ -48,7 +48,7 @@ public class FriendController {
 
     }
 
-    @Operation(summary = "내가 보낸 친구 요청 목록")
+    @Operation(summary = "내가 받은 친구 요청 목록")
     @GetMapping("/request")
     public ResponseEntity<List<FriendRequestResVo>> getFriendRequestList(@RequestHeader("UUID") String uuid) {
 
