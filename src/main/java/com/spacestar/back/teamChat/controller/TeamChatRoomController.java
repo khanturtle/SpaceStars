@@ -124,7 +124,7 @@ public class TeamChatRoomController {
     //방장 변경하기
     @Operation(summary = "팀 채팅방 방장 변경하기", description = "팀 채팅방의 방장을 변경합니다.")
     @PatchMapping("/chatroom/owner/{roomNumber}")
-    public ResponseEntity<?> changeOwnerTeamChatRoom(@RequestHeader String uuid,
+    public ResponseEntity<Void> changeOwnerTeamChatRoom(@RequestHeader String uuid,
                                                     @PathVariable String roomNumber,@RequestBody TeamChatJoinReqVo teamChatJoinReqVo){
         String receiverUuid = teamChatJoinReqVo.getSenderUuid();
         teamChatRoomService.changeOwnerTeamChatRoom(uuid, roomNumber, receiverUuid);
@@ -135,7 +135,7 @@ public class TeamChatRoomController {
     //모집 완료
     @Operation(summary = "팀원 모집 완료", description = "팀원 모집을 완료합니다.")
     @PatchMapping("/chatroom/recruit/{roomNumber}")
-    public ResponseEntity<?> finishRecruit(@RequestHeader String uuid,
+    public ResponseEntity<Void> finishRecruit(@RequestHeader String uuid,
                                            @PathVariable String roomNumber){
         teamChatRoomService.finishRecruit(uuid, roomNumber);
 
@@ -144,7 +144,7 @@ public class TeamChatRoomController {
     //방정보 변경하기
     @Operation(summary = "팀 채팅방 정보 변경하기", description = "팀 채팅방의 정보를 변경합니다.")
     @PutMapping("/chatroom/{roomNumber}")
-    public ResponseEntity<?> changeTeamChatRoom(@RequestHeader String uuid,
+    public ResponseEntity<Void> changeTeamChatRoom(@RequestHeader String uuid,
                                                 @PathVariable String roomNumber,@RequestBody TeamChatRoomReqVo teamChatRoomReqVo){
         TeamChatRoomReqDto teamChatRoomReqDto = mapper.map(teamChatRoomReqVo, TeamChatRoomReqDto.class);
         teamChatRoomService.changeTeamChatRoom(uuid, roomNumber, teamChatRoomReqDto);

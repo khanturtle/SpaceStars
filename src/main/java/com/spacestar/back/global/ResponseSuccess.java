@@ -34,6 +34,7 @@ public enum ResponseSuccess {
     CHANGE_OWNER_TEAM_CHATROOM_SUCCESS(408, "팀 채팅방 방장 변경 성공"),
     FINISH_RECRUIT_SUCCESS(409, "팀원 모집 완료 성공"),
     CHANGE_TEAM_CHATROOM_SUCCESS(410, "팀 채팅방 정보 변경 성공"),
+    GET_TEAM_CHATROOM_MESSAGE_LIST_SUCCESS(411, "팀 채팅방 읽은 메시지 목록 조회 성공"),
     INTERNAL_SERVER_ERROR(900, "Internal server error");
 
 

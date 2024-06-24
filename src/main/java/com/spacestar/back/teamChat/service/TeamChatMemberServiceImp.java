@@ -36,6 +36,7 @@ public class TeamChatMemberServiceImp implements TeamChatMemberService{
             if (teamChatMember.getMemberUuid().equals(uuid)) {
                 TeamChatMemberDto teamChatMemberDto = TeamChatMemberDto.toDto(teamChatMember);
                 teamChatMemberDto.setTeamParticipationType(LEFT);
+                teamChatMemberDto.setOwnerStatus(false);
                 teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(teamChatMemberDto, teamChatMember.getId()));
                 if (teamChatMember.getOwnerStatus()) {
                     // 다음으로 들어온 멤버에게 방장 권한 부여
