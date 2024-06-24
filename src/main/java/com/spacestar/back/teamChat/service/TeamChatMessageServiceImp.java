@@ -45,7 +45,7 @@ public class TeamChatMessageServiceImp implements TeamChatMessageService{
         teamChatMessageRepository.save(TeamChatMessageCollection.builder()
                 .roomNumber(roomNumber)
                 .senderUuid(senderUuid)
-                .createdAt(enterTime)
+                .enterTime(enterTime)
                 .build());
     }
 
@@ -55,7 +55,7 @@ public class TeamChatMessageServiceImp implements TeamChatMessageService{
         teamChatMessageRepository.save(TeamChatMessageCollection.builder()
                 .roomNumber(roomNumber)
                 .senderUuid(senderUuid)
-                .createdAt(exitTime)
+                .exitTime(exitTime)
                 .build());
     }
 
