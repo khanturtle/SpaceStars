@@ -18,6 +18,7 @@ export default async function layout({
   const friendsList = await getFriendsDataList()
   // 1:1 방 목록
   const oneToOneChatRooms = await getChatroomDataList()
+  // 그룹채팅 방 목록
 
   return (
     <section className="relative flex flex-row w-full h-full">

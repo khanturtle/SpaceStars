@@ -3,6 +3,18 @@ import { GameType } from '@/types/type'
 import CreateChatButton from './createChatButton'
 import ProfileContainer from './profileContainer'
 
+const ProfileButtons = ({ uuid, type }: { uuid: string; type: string }) => {
+  if (type === 'FRIEND') {
+    return (
+      <div>
+        친구 삭제 버튼
+        <CreateChatButton uuid={uuid} />
+      </div>
+    )
+  }
+  return <div>ㅇㅅㅇ</div>
+}
+
 export default function ProfileLayout({
   profileData,
   likedGamesInfo,
@@ -17,11 +29,7 @@ export default function ProfileLayout({
         likedGamesInfo={likedGamesInfo}
       />
 
-      <div>버튼: 친구요청또는삭제또는</div>
-      <div>
-        버튼: 채팅
-        <CreateChatButton uuid={profileData.uuid} />
-      </div>
+      <ProfileButtons type={profileData.friendType} uuid={profileData.uuid} />
     </section>
   )
 }
