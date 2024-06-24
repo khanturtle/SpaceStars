@@ -1,6 +1,11 @@
 package com.spacestar.back.teamChat.service;
 
+import com.spacestar.back.chat.domain.collection.ChatMessageCollection;
+import com.spacestar.back.chat.dto.RecentMessageCountDto;
+import com.spacestar.back.chat.dto.RecentMessageDto;
+import com.spacestar.back.chat.enums.MessageType;
 import com.spacestar.back.teamChat.domain.collection.TeamChatMessageCollection;
+import com.spacestar.back.teamChat.dto.RecentTeamMessageCountDto;
 import com.spacestar.back.teamChat.dto.RecentTeamMessageDto;
 import com.spacestar.back.teamChat.dto.TeamMessageDto;
 import com.spacestar.back.teamChat.repository.TeamChatMessageMongoRepository;
@@ -96,8 +101,49 @@ public class TeamChatMessageServiceImp implements TeamChatMessageService{
 
     @Override
     public RecentTeamMessageDto getRecentTeamMessage(String uuid, String roomNumber) {
-        return null;
+
+        List<TeamChatMessageCollection> OpRecentTeamMessage = teamChatMessageRepository.findRecentTeamMessage(roomNumber);
+
+        if (OpRecentTeamMessage.isEmpty()) {
+            return RecentTeamMessageDto.builder()
+                    .senderUuid("")
+                    .lastChatMessage("")
+                    .createdAt(null)
+                    .build();
+        }
+        TeamChatMessageCollection recentTeamMessage = OpRecentTeamMessage.get(0);
+        String lastChatMessage = (recentTeamMessage.getMessageType() == MessageType.TEXT) ?
+                recentTeamMessage.getContent() : "사진을 보냈습니다";
+
+        return RecentTeamMessageDto.builder()
+                .senderUuid(recentTeamMessage.getSenderUuid())
+                .lastChatMessage(lastChatMessage)
+                .createdAt(recentTeamMessage.getCreatedAt())
+                .build();
     }
+
+    @Override
+    public RecentTeamMessageCountDto getRecentMessageCount(String uuid, String roomNumber) {
+        Optional<TeamChatMessageCollection> optionalExitMessage = teamChatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid);
+
+        if (optionalExitMessage.isEmpty()) {
+            return RecentTeamMessageCountDto.builder()
+                    .UnReadMessageCount(0)
+                    .build();
+        }
+
+        TeamChatMessageCollection exitMessage = optionalExitMessage.get();
+        Instant exitTime = exitMessage.getExitTime();
+        List<TeamChatMessageCollection> unReadMessages = teamChatMessageRepository.findUnreadTeamMessage(roomNumber, exitTime);
+
+        // 999개 이상이면 999개 까지만
+        int unReadCount = Math.min(unReadMessages.size(), 999);
+        return RecentTeamMessageCountDto.builder()
+                .UnReadMessageCount(unReadCount)
+                .build();
+
+    }
+
 
 }
 
