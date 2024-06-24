@@ -1,6 +1,7 @@
 import Teams from './state'
 
-import { getGames } from '@/apis/game'
+import { getGames } from '@/apis/getGame'
+import TeamBox from '@/containers/team-list/TeamBox'
 import SelectBoxContainer from '@/containers/team-list/SelectBoxContainer'
 import TeamListWrapper from '@/containers/team-list/TeamListWrapper'
 

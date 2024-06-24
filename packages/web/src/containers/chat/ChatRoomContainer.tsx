@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { EmojiIcon, FileIcon } from '@packages/ui'
 
+import { getReadMessage, getUnreadMessage } from '@/apis/getPrevChatByClient'
 import { useWebSocket } from '@/components/providers/socket-provider'
 import { ChatMessageType } from '@/types/ChatType'
 
@@ -15,9 +16,11 @@ import ChatLogList from '../chat-room/ChatLogList'
 export default function ChatRoomContainer({
   roomNumber,
   UUID,
+  token,
 }: {
   roomNumber: string
   UUID: string
+  token: string
 }) {
   const [msgLog, setMsgLog] = useState<ChatMessageType[]>([])
 
@@ -28,7 +31,20 @@ export default function ChatRoomContainer({
     senderUuid: UUID,
   }
 
-  // TODO: 이전 메시지 받아와서 위로 보여주기
+  /** 이전 메시지 */
+  useEffect(() => {
+    const fetchData = async () => {
+      // 읽은 메시지
+      const readMsgData = await getReadMessage(roomNumber, token)
+      const readMsg = readMsgData.result
+      // 안읽은 메시지
+      const unreadMsgData = await getUnreadMessage(roomNumber, token)
+      const unreadMsg = unreadMsgData.result
+      setMsgLog((prev) => [...prev, ...readMsg, ...unreadMsg])
+    }
+
+    fetchData()
+  }, [])
 
   /** 채팅 소켓 연결 */
   useEffect(() => {
@@ -50,9 +66,9 @@ export default function ChatRoomContainer({
         JSON.stringify(message),
       )
 
+      /** 채팅방 퇴장 */
       return () => {
         subscription.unsubscribe()
-        /** 채팅방 퇴장 */
         stompClient.send(
           `/pub/one-to-one/exit/${roomNumber}`,
           {},
@@ -62,6 +78,7 @@ export default function ChatRoomContainer({
     }
     return undefined
   }, [stompClient])
+
 
   return (
     <div className={styles.chatroom}>

@@ -11,12 +11,12 @@ import { ChatMessageType } from '@/types/ChatType'
 import { getConvertToKoreanHM } from '@/hooks/convertToLocaleTime'
 
 import styles from './chat.module.css'
+import { defaultImage } from '@/store/defaultState'
 
 const UserProfile = ({ uuid }: { uuid: string }) => {
   const { data: session } = useSession()
   const [nickname, setNickname] = useState<string>()
-  // TODO: defaultImage 저장하기
-  const [profileImage, setProfileImage] = useState<string>('/defaultUrl')
+  const [profileImage, setProfileImage] = useState<string>(defaultImage)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +26,7 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
         const profileImage = await getMainProfileImageByUuid(uuid, token)
 
         setNickname(profileData?.result.nickname ?? 'user')
-        setProfileImage(profileImage?.result.profileImageUrl ?? '/defaultUrl')
+        setProfileImage(profileImage?.result.profileImageUrl ?? defaultImage)
       }
     }
     fetchData()
@@ -59,9 +59,9 @@ export default function MessageGroup({
   return (
     <div className={`${styles['message-group']} ${styles[type]}`}>
       {type === 'received' && <UserProfile uuid={messages[0].senderUuid} />}
-      {messages?.map((msg) => (
+      {messages?.map((msg, index) => (
         <div
-          key={msg.createdAt}
+          key={msg.createdAt + index}
           className={`${styles['message-bubble']} ${styles[type]}`}
         >
           {msg.content}

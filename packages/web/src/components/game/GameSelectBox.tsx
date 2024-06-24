@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 
 import { CirclePlusIcon } from '@packages/ui'
 
-import { GameOptionDetailType, getGameOptionDetail } from '@/apis/game'
+import { GameOptionDetailType, getGameOptionDetail } from '@/apis/getGame'
 import {
   Popover,
   PopoverContent,

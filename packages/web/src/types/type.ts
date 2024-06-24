@@ -7,6 +7,24 @@ export interface ApiTokenErrorType {
   error: string
 }
 
+// --game
+export interface GameType {
+  gameId: number
+  gameNameKor: string
+  gameName: string
+  gameImage: string
+  gameLogoImage: string
+}
+export interface GameTypes {
+  index: number
+  gameId: number
+  gameNameKor: string
+  gameName: string
+  gameImage: string
+  gameLogoImage: string
+}
+// game--
+
 // --auth
 export interface ProfileType {
   email: string
@@ -21,7 +39,7 @@ export interface ProfileType {
 
 // --Profile
 export interface MainGameType {
-  gameId: number | null
+  gameId: number
   tierId: number | null
   positionId: number | null
   classId: number | null
@@ -67,3 +85,23 @@ export interface FriendsListType {
   friendUuid: string
 }
 // friend--
+
+// --chatroom
+export interface ChatRoomType {
+  index: number
+  roomNumber: string
+  otherMemberUuid: string
+}
+export interface ChatRoomMemberType {
+  index: number
+  memberUuid: string
+}
+export interface RecentMessageType {
+  senderUuid: string
+  lastChatMessage: string
+  createdAt: string | null
+}
+export interface UnreadMessageCount {
+  unReadMessageCount: number
+}
+// chatroom--

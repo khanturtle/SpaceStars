@@ -89,6 +89,7 @@ export async function getAllProfileDataByUuid(uuid: string) {
         profileImages,
         friendType,
       ]) => ({
+        uuid,
         authProfile: { ...authProfile?.result },
         profileInfo: { ...profileInfo?.result },
         playGames: playGames?.result,
