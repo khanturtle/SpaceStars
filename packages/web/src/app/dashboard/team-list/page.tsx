@@ -13,6 +13,7 @@ export default async function page({
 }: {
   searchParams: { [key: string]: string }
 }) {
+  /** 게임 리스트 */
   const games = await getGames()
 
   return (
@@ -21,7 +22,7 @@ export default async function page({
 
       <TeamListWrapper searchParams={searchParams} Teams={Teams} />
 
-      <CreateButton />
+      <CreateButton games={games} />
     </section>
   )
 }
