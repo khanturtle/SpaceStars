@@ -6,10 +6,7 @@ import com.spacestar.back.auth.dto.res.MemberLoginResDto;
 import com.spacestar.back.auth.service.AuthService;
 import com.spacestar.back.auth.vo.req.MemberJoinReqVo;
 import com.spacestar.back.auth.vo.req.MemberLoginReqVo;
-import com.spacestar.back.auth.vo.res.MemberLoginResVo;
-import com.spacestar.back.auth.vo.res.NicknameExistResVo;
-import com.spacestar.back.auth.vo.res.NicknameResVo;
-import com.spacestar.back.auth.vo.res.UuidResVo;
+import com.spacestar.back.auth.vo.res.*;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -69,5 +68,15 @@ public class AuthController {
 
         return new ResponseEntity<>(ResponseSuccess.UUID_SELECT_SUCCESS,
                 mapper.map(authService.getUuid(nickname), UuidResVo.class));
+    }
+
+
+    @Operation(summary = "닉네임 검색")
+    @GetMapping("/search")
+    public ResponseEntity<List<FriendSearchResVo>> searchNickname(@RequestParam("nickname") String nickname){
+        return new ResponseEntity<>(ResponseSuccess.NICKNAME_SEARCH_SUCCESS,
+                authService.searchNickname(nickname).stream()
+                        .map(friendSearchResDto -> mapper.map(friendSearchResDto, FriendSearchResVo.class))
+                        .toList());
     }
 }

@@ -18,5 +18,4 @@ public interface MemberService {
 
     QuickAuthInfoResDto findQuickAuthInfo(String uuid);
 
-    List<FriendSearchResDto> searchNickname(String nickname);
 }

@@ -69,15 +69,6 @@ public class MemberController {
                 mapper.map(memberService.findMemberInfo(targetUuid), MemberInfoResVo.class));
     }
 
-    @Operation(summary = "닉네임 검색")
-    @GetMapping("/search")
-    public ResponseEntity<List<FriendSearchResVo>> searchNickname(@RequestParam("nickname") String nickname){
-        return new ResponseEntity<>(ResponseSuccess.NICKNAME_SEARCH_SUCCESS,
-                memberService.searchNickname(nickname).stream()
-                        .map(friendSearchResDto -> mapper.map(friendSearchResDto, FriendSearchResVo.class))
-                        .toList());
-    }
-
     @Tag(name = "select", description = "조회용")
     @Operation(summary = "빠른 매칭용 사용자 정보 조회")
     @GetMapping("/quick-matching/{uuid}")

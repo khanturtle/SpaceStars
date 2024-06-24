@@ -3,10 +3,7 @@ package com.spacestar.back.auth.service;
 import com.spacestar.back.auth.domain.Member;
 import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
-import com.spacestar.back.auth.dto.res.MemberLoginResDto;
-import com.spacestar.back.auth.dto.res.NicknameExistResDto;
-import com.spacestar.back.auth.dto.res.NicknameResDto;
-import com.spacestar.back.auth.dto.res.UuidResDto;
+import com.spacestar.back.auth.dto.res.*;
 import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.repository.MemberRepository;
 import com.spacestar.back.global.GlobalException;
@@ -16,8 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import static com.spacestar.back.auth.enums.UnregisterType.*;
 
@@ -127,5 +126,16 @@ public class AuthServiceImp implements AuthService {
         return UuidResDto.builder()
                 .uuid(member.getUuid())
                 .build();
+    }
+
+
+    @Override
+    public List<FriendSearchResDto> searchNickname(String nickname) {
+
+        List<Member> memberList = memberRepository.findByNicknameContaining(nickname);
+
+        return IntStream.range(0, memberList.size())
+                .mapToObj(i -> FriendSearchResDto.toDto(i, memberList.get(i)))
+                .toList();
     }
 }

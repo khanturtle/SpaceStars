@@ -106,15 +106,6 @@ public class MemberServiceImp implements MemberService{
         return QuickAuthInfoResDto.converter(age, member.getGender());
     }
 
-    @Override
-    public List<FriendSearchResDto> searchNickname(String nickname) {
-
-        List<Member> memberList = memberRepository.findByNicknameContaining(nickname);
-
-        return IntStream.range(0, memberList.size())
-                .mapToObj(i -> FriendSearchResDto.toDto(i, memberList.get(i)))
-                .toList();
-    }
 
     @Transactional
     @KafkaListener(topics = "dev.profile-service.profile-create", groupId = "isProfile-consumer-group")
