@@ -59,15 +59,14 @@
   margin-right: 16px;
   width: 24px;
 }
-.side-menu .a {
-  color: #9c9cab;
+.side-menu .link {
   display: flex;
   align-items: center;
 }
-.side-menu .a:hover {
+.side-menu .link:hover {
   color: var(--Main-Color-1, #6a64e9);
 }
-.side-menu .a:not(:last-child) {
+.side-menu .link:not(:last-child) {
   margin-bottom: 20px;
 }
 
