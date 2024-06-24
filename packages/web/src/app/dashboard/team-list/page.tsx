@@ -1,9 +1,10 @@
 import Teams from './state'
 
 import { getGames } from '@/apis/getGame'
-import TeamBox from '@/containers/team-list/TeamBox'
+
 import SelectBoxContainer from '@/containers/team-list/SelectBoxContainer'
 import TeamListWrapper from '@/containers/team-list/TeamListWrapper'
+import CreateButton from '@/containers/team-list/CreateButton'
 
 // TODO: 팀 리스트 받아오기
 
@@ -19,6 +20,8 @@ export default async function page({
       <SelectBoxContainer searchParams={searchParams} games={games} />
 
       <TeamListWrapper searchParams={searchParams} Teams={Teams} />
+
+      <CreateButton />
     </section>
   )
 }

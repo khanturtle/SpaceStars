@@ -32,6 +32,8 @@ const UserItem = ({
   item: UserItemType
   children?: React.ReactNode
 }) => {
+  const status = item.status ?? false
+
   return (
     <li className="flex items-center mb-[18px]">
       <Link
