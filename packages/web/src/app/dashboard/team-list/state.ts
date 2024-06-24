@@ -60,16 +60,6 @@ const Teams = [
     maxLimit: 3,
     memberCount: 3,
   },
-  {
-    index: 5,
-    gameName: 'LEAGUE OF LEGENDS',
-    roomName: '같이 겜 하실 분 구함',
-    memo: '티어 골드이상만. 챌린저 쌉가능? 야스오 하지마라.',
-    isFinished: true,
-    isPassword: true,
-    maxLimit: 5,
-    memberCount: 4,
-  },
 ]
 
 export default Teams
