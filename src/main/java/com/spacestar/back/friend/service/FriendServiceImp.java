@@ -5,18 +5,16 @@ import com.spacestar.back.friend.dto.req.FriendUuidReqDto;
 import com.spacestar.back.friend.dto.res.*;
 import com.spacestar.back.friend.enums.FriendType;
 import com.spacestar.back.friend.repository.FriendRepository;
-import com.spacestar.back.friend.vo.res.FriendListResVo;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
-import com.spacestar.back.profile.dto.res.ProfilePlayGameInfoResDto;
+import com.spacestar.back.kafka.FriendMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static com.spacestar.back.friend.enums.FriendType.*;
@@ -28,6 +26,10 @@ import static com.spacestar.back.friend.enums.FriendType.*;
 public class FriendServiceImp implements FriendService {
 
     private final FriendRepository friendRepository;
+
+    private final KafkaTemplate<String, FriendMessage> kafkaTemplate;
+    private static final String TOPIC = "dev.profile-service.friend-request";
+
 
     //친구 신청
     @Override
@@ -53,6 +55,14 @@ public class FriendServiceImp implements FriendService {
                     .build();
 
             friendRepository.save(friend);
+
+            //친구 신청 받은 사람에게 알림
+            FriendMessage friendMessage = FriendMessage.builder()
+                    .senderUuid(uuid)
+                    .receiverUuid(friendUuidReqDto.getFriendUuid())
+                    .content("친구 신청이 왔습니다.")
+                    .build();
+            kafkaTemplate.send(TOPIC, friendMessage);
         }
     }
 
@@ -73,6 +83,7 @@ public class FriendServiceImp implements FriendService {
 
     }
 
+    //친구 요청 목록 조회
     @Override
     public List<FriendRequestResDto> getFriendRequestList(String uuid) {
 
@@ -89,6 +100,7 @@ public class FriendServiceImp implements FriendService {
 
     }
 
+    //친구 수락
     @Override
     public void acceptFriend(String uuid, FriendUuidReqDto friendUuidReqDto) {
 
@@ -115,8 +127,17 @@ public class FriendServiceImp implements FriendService {
                 .build();
 
         friendRepository.save(realFriend2);
+
+        FriendMessage friendMessage = FriendMessage.builder()
+                .senderUuid(friendUuidReqDto.getFriendUuid())
+                .receiverUuid(uuid)
+                .content("친구 신청이 수락되었습니다.")
+                .build();
+        kafkaTemplate.send(TOPIC, friendMessage);
+
     }
 
+    //친구 요청 거절
     @Override
     public void rejectFriend(String uuid, FriendUuidReqDto friendUuidReqDto) {
 
@@ -155,6 +176,7 @@ public class FriendServiceImp implements FriendService {
                 .build();
     }
 
+    //내가 보낸 친구 신청 목록 조회
     @Override
     public List<FriendSendResDto> getFriendSendList(String uuid) {
 
