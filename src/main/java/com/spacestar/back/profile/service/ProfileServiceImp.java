@@ -316,4 +316,10 @@ public class ProfileServiceImp implements ProfileService {
 
     }
 
+    @Override
+    public List<SwipeMemberInfoResDto> swipeMemberInfos() {
+
+        return profileRepository.findWaitRequest();
+    }
+
 }
