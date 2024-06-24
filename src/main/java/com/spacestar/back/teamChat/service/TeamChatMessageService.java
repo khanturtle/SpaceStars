@@ -19,6 +19,10 @@ public interface TeamChatMessageService {
     void addTeamChatExit(String roomNumber, String senderUuid);
 
     List<TeamMessageDto> getReadTeamMessage(String uuid, String roomNumber, Pageable pageable);
+
+    List<TeamMessageDto> getUnreadTeamMessage(String uuid, String roomNumber);
+
+    RecentTeamMessageDto getRecentTeamMessage(String uuid, String roomNumber);
 //    List<TeamMessageDto> getReadTeamMessage(String uuid, String roomNumber);
 //    List<TeamMessageDto> getUnreadTeamMessage(String uuid, String roomNumber);
 //
