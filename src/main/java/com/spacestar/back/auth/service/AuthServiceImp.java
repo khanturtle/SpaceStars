@@ -5,6 +5,8 @@ import com.spacestar.back.auth.dto.req.MemberJoinReqDto;
 import com.spacestar.back.auth.dto.req.MemberLoginReqDto;
 import com.spacestar.back.auth.dto.res.MemberLoginResDto;
 import com.spacestar.back.auth.dto.res.NicknameExistResDto;
+import com.spacestar.back.auth.dto.res.NicknameResDto;
+import com.spacestar.back.auth.dto.res.UuidResDto;
 import com.spacestar.back.auth.jwt.JWTUtil;
 import com.spacestar.back.auth.repository.MemberRepository;
 import com.spacestar.back.global.GlobalException;
@@ -104,4 +106,26 @@ public class AuthServiceImp implements AuthService {
     }
 
 
+    @Transactional(readOnly = true)
+    @Override
+    public NicknameResDto getNickname(String uuid) {
+
+        Member member = memberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        return NicknameResDto.builder()
+                .nickname(member.getNickname())
+                .build();
+    }
+
+    @Override
+    public UuidResDto getUuid(String nickname) {
+
+        Member member = memberRepository.findByNickname(nickname)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_MEMBER));
+
+        return UuidResDto.builder()
+                .uuid(member.getUuid())
+                .build();
+    }
 }

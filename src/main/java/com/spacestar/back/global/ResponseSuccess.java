@@ -19,6 +19,7 @@ public enum ResponseSuccess {
     NICKNAME_SELECT_SUCCESS(200,"닉네임 조회 성공" ),
     UUID_SELECT_SUCCESS(200, "uuid 조회 성공"),
     MEMBER_INFO_SELECT_SUCCESS(200, "회원 정보 조회 성공"),
+    NICKNAME_SEARCH_SUCCESS(200, "닉네임 검색 성공"),
 
     //select
     QUICK_MEMBER_INFO_SELECT_SUCCESS(200,"빠른 회원 정보 조회 성공" );

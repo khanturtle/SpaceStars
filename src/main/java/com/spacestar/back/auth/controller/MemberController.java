@@ -4,10 +4,7 @@ import com.spacestar.back.auth.dto.req.MemberInfoReqDto;
 import com.spacestar.back.auth.dto.res.MemberInfoResDto;
 import com.spacestar.back.auth.service.MemberService;
 import com.spacestar.back.auth.vo.req.MemberInfoReqVo;
-import com.spacestar.back.auth.vo.res.MemberInfoResVo;
-import com.spacestar.back.auth.vo.res.NicknameResVo;
-import com.spacestar.back.auth.vo.res.QuickAuthInfoResVo;
-import com.spacestar.back.auth.vo.res.UuidResVo;
+import com.spacestar.back.auth.vo.res.*;
 import com.spacestar.back.global.ResponseEntity;
 import com.spacestar.back.global.ResponseSuccess;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -54,23 +53,6 @@ public class MemberController {
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_UPDATE_SUCCESS);
     }
 
-
-    @Operation(summary = "uuid로 닉네임 조회")
-    @GetMapping("/nickname/{uuid}")
-    public ResponseEntity<NicknameResVo> getNickname(@PathVariable String uuid){
-
-        return new ResponseEntity<>(ResponseSuccess.NICKNAME_SELECT_SUCCESS,
-                mapper.map(memberService.getNickname(uuid), NicknameResVo.class));
-    }
-
-    @Operation(summary = "닉네임으로 uuid 찾기")
-    @GetMapping("/uuid/{nickname}")
-    public ResponseEntity<UuidResVo> getUuid(@PathVariable String nickname){
-
-        return new ResponseEntity<>(ResponseSuccess.UUID_SELECT_SUCCESS,
-                mapper.map(memberService.getUuid(nickname), UuidResVo.class));
-    }
-
     @Operation(summary = "회원 정보 조회")
     @GetMapping("/info")
     public ResponseEntity<MemberInfoResVo> findMemberInfo(@RequestHeader("UUID") String uuid){
@@ -85,6 +67,15 @@ public class MemberController {
 
         return new ResponseEntity<>(ResponseSuccess.MEMBER_INFO_SELECT_SUCCESS,
                 mapper.map(memberService.findMemberInfo(targetUuid), MemberInfoResVo.class));
+    }
+
+    @Operation(summary = "닉네임 검색")
+    @GetMapping("/search")
+    public ResponseEntity<List<FriendSearchResVo>> searchNickname(@RequestParam("nickname") String nickname){
+        return new ResponseEntity<>(ResponseSuccess.NICKNAME_SEARCH_SUCCESS,
+                memberService.searchNickname(nickname).stream()
+                        .map(friendSearchResDto -> mapper.map(friendSearchResDto, FriendSearchResVo.class))
+                        .toList());
     }
 
     @Tag(name = "select", description = "조회용")
