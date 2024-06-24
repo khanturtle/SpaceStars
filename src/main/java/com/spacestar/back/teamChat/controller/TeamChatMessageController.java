@@ -72,7 +72,6 @@ public class TeamChatMessageController {
                                                              @PathVariable String roomNumber) {
         RecentTeamMessageCountDto recentTeamMessageCount = teamChatMessageService.getRecentMessageCount(uuid, roomNumber);
 
-
         return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_RECENT_MESSAGE_COUNT_SUCCESS, recentTeamMessageCount);
     }
 }
