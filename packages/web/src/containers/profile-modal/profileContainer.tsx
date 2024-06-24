@@ -8,9 +8,11 @@ import styles from './profile.module.css'
 export default function ProfileContainer({
   profileData,
   likedGamesInfo,
+  playGamesInfo,
 }: {
   profileData: any
   likedGamesInfo: (GameType | null)[]
+  playGamesInfo: any[]
 }) {
   // console.log(profileData)
   const age = calculateAge(profileData.authProfile.birth)
@@ -22,9 +24,6 @@ export default function ProfileContainer({
 
   // 경험치 -> 올바른 레벨, 남은 경험치 받아오기
   const exp = profileData.profileInfo.exp
-
-  // 플레이하는 게임 -> ID로 게임 이름 받아오기
-  const palyGames = profileData.playGames
 
   return (
     <section className="bg-[red]">
@@ -47,7 +46,22 @@ export default function ProfileContainer({
         <p>경험치: {profileData.profileInfo.exp}</p>
       </div>
       <div>
-        <p>플레이하는 겜쓰 </p>
+        <div>
+          플레이하는 겜쓰
+          {playGamesInfo &&
+            playGamesInfo.map((item) => (
+              <div key={item.gameInfo.gameId}>
+                {JSON.stringify(item.gameInfo)}
+
+                {item.optionInfo.map((option: any) => (
+                  <div key={option.id + option.name}>
+                    {JSON.stringify(option)}
+                  </div>
+                ))}
+                <hr />
+              </div>
+            ))}
+        </div>
         <div>
           좋아하는 겜쓰
           {likedGamesInfo &&

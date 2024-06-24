@@ -3,7 +3,7 @@ import ProfileLayout from '@/containers/profile-modal/profileLayout'
 import { fetchLikedGames } from '@/lib/fetchGamesData'
 import { getAllProfileDataByUuid } from '@/lib/getAllProfileData'
 
-// TODO: 여긴 페이지 
+// TODO: 여긴 페이지
 export default async function Page({ params }: { params: { id: string } }) {
   // params.id 의 uuid를 가진 회원 정보 조회
   const targetUuid = params.id
@@ -16,7 +16,8 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <Modal>
-      <ProfileLayout profileData={allProfile} likedGamesInfo={likedGamesInfo} />
+      여긴페ㅐ이지
+      {/* <ProfileLayout profileData={allProfile} likedGamesInfo={likedGamesInfo} /> */}
     </Modal>
   )
 }

@@ -12,7 +12,6 @@ export default function CreateChatButton({ uuid }: { uuid: string }) {
   const createChat = async () => {
     const chatroomNumber = await createOnetoOneChat(uuid)
     const roomNumber = chatroomNumber.result.roomNumber
-    // TODO: 채팅방 ID를 받아 채팅방으로 이동
     router.replace(`/dashboard/chat/${roomNumber}`)
   }
 

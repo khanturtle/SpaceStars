@@ -1,4 +1,4 @@
-import { getGameById } from '@/apis/getGame'
+import { getGameById, getOptionDetail } from '@/apis/getGame'
 
 import Modal from '@/components/modal/modal'
 import ProfileLayout from '@/containers/profile-modal/profileLayout'
@@ -18,21 +18,18 @@ async function fetchPlayGames(playGames: PlayGameType[]) {
 
       // 옵션 정보 조회
       const optionInfos = []
-      // FIXME: 이거아님
-      // if (item.tierId !== null) {
-      //   optionInfos.push(getGameOptionDetail(item.tierId, 'isTier'))
-      // }
-      // if (item.classId !== null) {
-      //   optionInfos.push(getGameOptionDetail(item.classId, 'isClass'))
-      // }
-      // if (item.positionId !== null) {
-      //   optionInfos.push(
-      //     getGameOptionDetail(item.positionId, 'isPosition'),
-      //   )
-      // }
-      // if (item.serverId !== null) {
-      //   optionInfos.push(getGameOptionDetail(item.serverId, 'isServer'))
-      // }
+      if (item.tierId !== null) {
+        optionInfos.push(await getOptionDetail(item.tierId, 'isTier'))
+      }
+      if (item.classId !== null) {
+        optionInfos.push(await getOptionDetail(item.classId, 'isClass'))
+      }
+      if (item.positionId !== null) {
+        optionInfos.push(await getOptionDetail(item.positionId, 'isPosition'))
+      }
+      if (item.serverId !== null) {
+        optionInfos.push(await getOptionDetail(item.serverId, 'isServer'))
+      }
 
       results.push({
         gameInfo,
@@ -58,11 +55,14 @@ export default async function Page({ params }: { params: { id: string } }) {
   // 하는 게임 정보 조회
   const playGames = allProfile.playGames ?? []
   const playGamesInfo = await fetchPlayGames(playGames)
-  // console.log(playGames)
 
   return (
     <Modal>
-      <ProfileLayout profileData={allProfile} likedGamesInfo={likedGamesInfo} />
+      <ProfileLayout
+        profileData={allProfile}
+        likedGamesInfo={likedGamesInfo}
+        playGamesInfo={playGamesInfo}
+      />
     </Modal>
   )
 }

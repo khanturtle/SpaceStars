@@ -18,15 +18,18 @@ const ProfileButtons = ({ uuid, type }: { uuid: string; type: string }) => {
 export default function ProfileLayout({
   profileData,
   likedGamesInfo,
+  playGamesInfo,
 }: {
   profileData: any
   likedGamesInfo: (GameType | null)[]
+  playGamesInfo: any[]
 }) {
   return (
     <section className="relative h-full flex flex-col items-center px-[204px] py-[120px]">
       <ProfileContainer
         profileData={profileData}
         likedGamesInfo={likedGamesInfo}
+        playGamesInfo={playGamesInfo}
       />
 
       <ProfileButtons type={profileData.friendType} uuid={profileData.uuid} />

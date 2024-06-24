@@ -96,3 +96,33 @@ export async function getGameOptionDetail(
     return []
   }
 }
+
+/** 게임 옵션 상세 조회 */
+export async function getOptionDetail(
+  id: number,
+  option: 'isClass' | 'isPosition' | 'isServer' | 'isTier',
+) {
+  const OPTION_NAME = {
+    isClass: 'class',
+    isPosition: 'position',
+    isServer: 'server',
+    isTier: 'tier',
+  }
+  const optionName = OPTION_NAME[option]
+
+  try {
+    const response = await fetch(
+      `${GAME_BASE_URL}/option/${optionName}/${id}`,
+    )
+    const data = await response.json()
+
+    if (data.code !== 200) {
+      throw new Error('Failed get option detail')
+    }
+
+    return data.result
+  } catch (err) {
+    console.error(err)
+    return []
+  }
+}
