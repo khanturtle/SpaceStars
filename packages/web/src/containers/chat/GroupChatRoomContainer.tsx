@@ -15,6 +15,7 @@ import GroupChatLogList from '../chat-room/GroupChatLogList'
 import GroupChatInputBox from './GroupChatInputBox'
 
 import styles from './chat.module.css'
+import GroupChatHeader from './GroupChatHeader'
 
 export default function GroupChatRoomContainer({
   roomNumber,
@@ -84,7 +85,7 @@ export default function GroupChatRoomContainer({
 
   return (
     <div className={styles.chatroom}>
-      {/* <div className={styles.header}>ㅇㅅㅇ</div> */}
+      <GroupChatHeader roomNumber={roomNumber} token={token} />
 
       <GroupChatLogList msgLog={msgLog} UUID={UUID} />
 
