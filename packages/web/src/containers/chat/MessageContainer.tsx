@@ -5,6 +5,7 @@ import MessageItem from './MessageItem'
 import SearchBox from './SearchBox'
 
 import styles from './chat.module.css'
+import GroupMessageItem from './GroupMessageItem'
 
 const MessageWrapper = ({
   title,
@@ -30,13 +31,39 @@ const MessageWrapper = ({
   )
 }
 
+const GroupMessageWrapper = ({
+  title,
+  roomList,
+  token,
+}: {
+  title: string
+  roomList: any[]
+  token: string
+}) => {
+  return (
+    <section className="mb-9">
+      <h3 className="text-[#161616] text-lg not-italic font-medium leading-[normal] mb-6">
+        {title}
+      </h3>
+
+      <div className="flex flex-col gap-2 scroll-none">
+        {roomList.map((room) => (
+          <GroupMessageItem key={room.index} room={room} token={token} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function MessageContainer({
   friendsList,
   oneToOneChatRooms,
+  groupChatRooms,
   token,
 }: {
   friendsList: friendsWithBasicDataType[]
   oneToOneChatRooms: any[]
+  groupChatRooms: any[]
   token: string
 }) {
   return (
@@ -48,8 +75,11 @@ export default function MessageContainer({
         chatRoomList={oneToOneChatRooms}
         token={token}
       />
-      {/* TODO: 그룹 채팅방 */}
-      {/* <MessageWrapper title="Group Messages" chatRoomList={oneToOneChatRooms} token={token} /> */}
+      <GroupMessageWrapper
+        title="Group Messages"
+        roomList={groupChatRooms}
+        token={token}
+      />
     </div>
   )
 }

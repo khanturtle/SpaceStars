@@ -4,7 +4,10 @@ import { options } from '@/app/api/auth/[...nextauth]/options'
 
 import MessageContainer from '@/containers/chat/MessageContainer'
 import { getFriendsDataList } from '@/lib/getFriendsData'
-import { getChatroomDataList } from '@/lib/getChatroomData'
+import {
+  getChatroomDataList,
+  getGroupChatroomData,
+} from '@/lib/getChatroomData'
 
 export default async function layout({
   children,
@@ -19,12 +22,14 @@ export default async function layout({
   // 1:1 방 목록
   const oneToOneChatRooms = await getChatroomDataList()
   // 그룹채팅 방 목록
+  const groupChatRooms = await getGroupChatroomData()
 
   return (
     <section className="relative flex flex-row w-full h-full">
       <MessageContainer
         friendsList={friendsList}
         oneToOneChatRooms={oneToOneChatRooms}
+        groupChatRooms={groupChatRooms}
         token={token}
       />
 

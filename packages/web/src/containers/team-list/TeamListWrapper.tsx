@@ -58,7 +58,7 @@ export default function TeamListWrapper({
                 </div>,
               )
             } else {
-              router.push(`/dashboard/chat/team/${team.roomNumber}`)
+              router.push(`/dashboard/chat/group/${team.roomNumber}`)
             }
           }
           return (

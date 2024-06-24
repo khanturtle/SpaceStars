@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
 
-import ChatRoomContainer from '@/containers/chat/ChatRoomContainer'
+import GroupChatRoomContainer from '@/containers/chat/GroupChatRoomContainer'
 
 export default async function page({
   params,
@@ -17,7 +17,11 @@ export default async function page({
 
   return (
     <section className="flex-1">
-      <ChatRoomContainer roomNumber={roomNumber} UUID={UUID} token={token} />
+      <GroupChatRoomContainer
+        roomNumber={roomNumber}
+        UUID={UUID}
+        token={token}
+      />
     </section>
   )
 }

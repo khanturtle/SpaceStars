@@ -25,12 +25,12 @@ const DefaultRightSide = ({
 export default function RightSidebar({
   token,
   isChatPage,
-  isTeamChatPage,
+  isGroupChatPage,
   friendsList,
 }: {
   token: string
   isChatPage: boolean
-  isTeamChatPage: boolean
+  isGroupChatPage: boolean
   friendsList: friendsWithBasicDataType[]
 }) {
   // FIXME: 이걸 같이 관리하는게 네브바에 있어야 함. 열고 닫을 수 있게 => 친구 아이콘으로 하기
@@ -47,7 +47,7 @@ export default function RightSidebar({
       // className={`${styles['right-side']} ${rightSide && `${styles.active}`}`}
     >
       <div className={styles['side-wrapper']}>
-        {isTeamChatPage ? (
+        {isGroupChatPage ? (
           <ChatRightSide roomNumber={roomNumber} token={token} type="team" />
         ) : isChatPage ? (
           <ChatRightSide roomNumber={roomNumber} token={token} type="chat" />

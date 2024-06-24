@@ -1,5 +1,6 @@
-import { ChatMessageType } from '@/types/ChatType'
 import { useEffect, useRef } from 'react'
+
+import { ChatMessageType } from '@/types/ChatType'
 
 import MessageGroup from './MessageGroup'
 
@@ -27,7 +28,6 @@ export default function ChatLogList({
 
   const chatLogRef = useRef<HTMLDivElement>(null)
 
-  console.log(groupedMessages)
   // 스크롤을 항상 아래로 이동
   useEffect(() => {
     if (chatLogRef.current) {
