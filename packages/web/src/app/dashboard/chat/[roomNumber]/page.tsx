@@ -12,17 +12,13 @@ export default async function page({
 }) {
   const session = await getServerSession(options)
   const UUID = session?.user?.data.uuid
+  const token = session?.user?.data.accessToken
 
   const roomNumber = params.roomNumber
-  const roomMemberData = await getChatroomData(roomNumber)
 
   return (
     <section className="flex-1">
-      <ChatRoomContainer
-        roomNumber={roomNumber}
-        roomMemberData={roomMemberData}
-        UUID={UUID}
-      />
+      <ChatRoomContainer roomNumber={roomNumber} UUID={UUID} token={token} />
     </section>
   )
 }

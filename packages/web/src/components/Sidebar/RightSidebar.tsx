@@ -7,12 +7,11 @@ import { useEffect, useState } from 'react'
 import { useWebSocket } from '../providers/socket-provider'
 
 import { friendsWithBasicDataType } from '@/lib/getFriendsData'
-import { MemberInfoType } from '@/lib/getChatroomData'
+import { getChatroomData } from '@/lib/getRoomDataByClient'
 
 import FriendsList from '../Friends/FriendsList'
 
 import styles from './Sidebar.module.css'
-import { getChatroomData } from '@/lib/getRoomDataByClient'
 
 function updateMemberStatus(members: AllUserType[], onlineUsers: string[]) {
   return members.map((member) => {
