@@ -72,7 +72,7 @@ public class ChatMessageServiceImp implements ChatMessageService {
     }
     @Override
     public List<MessageDto> getUnreadMessage(String uuid, String roomNumber) {
-        // MongoDB에서 roomNumber와 uuid에 해당하는 사용자의 마지막 퇴장 메시지를 가져오기
+        // MongoDB 에서 roomNumber 와 uuid 에 해당하는 사용자의 마지막 퇴장 메시지를 가져오기
         Optional<ChatMessageCollection> optionalExitMessage = chatMessageRepository.findLatestExitByRoomNumber(roomNumber, uuid);
 
         if (optionalExitMessage.isPresent()) {
@@ -82,13 +82,13 @@ public class ChatMessageServiceImp implements ChatMessageService {
             // exitTime 이후의 메시지를 찾기
             List<ChatMessageCollection> unreadMessages = chatMessageRepository.findUnreadMessage(roomNumber, exitTime);
 
-            // MessageDto로 변환하여 반환
+            // MessageDto 로 변환하여 반환
             return unreadMessages.stream()
                     .map(MessageDto::messageDtoFromEntity)
                     .toList();
         }
 
-        // Optional이 empty인 경우, 즉 사용자의 퇴장 기록이 없는 경우, 빈 리스트 반환
+        // Optional 이 empty 인 경우, 즉 사용자의 퇴장 기록이 없는 경우, 빈 리스트 반환
         return Collections.emptyList();
     }
     @Override

@@ -1,13 +1,17 @@
 package com.spacestar.back.teamChat.vo.res;
 
 import com.spacestar.back.teamChat.dto.TeamChatRoomDetailDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TeamChatRoomRecruitReqVo {
     private int index;
     private Long gameId;

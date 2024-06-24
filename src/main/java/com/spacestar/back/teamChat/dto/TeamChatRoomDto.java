@@ -4,8 +4,10 @@ import com.spacestar.back.teamChat.domain.entity.TeamChatRoom;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 public class TeamChatRoomDto {
 
@@ -25,6 +27,7 @@ public class TeamChatRoomDto {
 
     private String memo;
 
+    @Builder
 
 
     public static TeamChatRoomDto ToDto(TeamChatRoom teamChatRoom){
@@ -37,6 +40,19 @@ public class TeamChatRoomDto {
                 .maxMembers(teamChatRoom.getMaxMembers())
                 .isFinished(teamChatRoom.getIsFinished())
                 .memo(teamChatRoom.getMemo())
+                .build();
+    }
+    public static TeamChatRoom ToEntity(TeamChatRoomDto teamChatRoomDto,Long id){
+        return TeamChatRoom.builder()
+                .id(id)
+                .gameId(teamChatRoomDto.getGameId())
+                .roomNumber(teamChatRoomDto.getRoomNumber())
+                .roomName(teamChatRoomDto.getRoomName())
+                .isPassword(teamChatRoomDto.getIsPassword())
+                .password(teamChatRoomDto.getPassword())
+                .maxMembers(teamChatRoomDto.getMaxMembers())
+                .isFinished(teamChatRoomDto.getIsFinished())
+                .memo(teamChatRoomDto.getMemo())
                 .build();
     }
 }

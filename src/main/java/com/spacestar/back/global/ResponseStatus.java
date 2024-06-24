@@ -20,7 +20,7 @@ public enum ResponseStatus {
     FULL_MEMBER(401, "인원이 꽉 찼습니다."),
     WRONG_PASSWORD(402, "비밀번호가 틀렸습니다."),
     BANNED_MEMBER(403, "참여가 제한된 방입니다."),
-
+    NOT_OWNER(404, "방장이 아닙니다."),
     INTERNAL_SERVER_ERROR(900, "Internal server error"),
 
     TOKEN_NOT_VALID( 2002, "토큰이 유효하지 않습니다.");

@@ -1,6 +1,6 @@
-package com.spacestar.back.chat.vo.res;
+package com.spacestar.back.teamChat.vo.req;
 
-import com.spacestar.back.chat.enums.MessageType;
+import com.spacestar.back.teamChat.enums.MessageType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageResVo {
+public class TeamMessageResVo {
     int index;
     String roomNumber;
     String senderUuid;
