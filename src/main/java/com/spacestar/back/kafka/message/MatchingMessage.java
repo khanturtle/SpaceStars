@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MatchingMessage {
+public class MatchingMessage implements Message{
 
 	private String senderUuid;
 	private String receiverUuid;

@@ -4,9 +4,14 @@ import com.spacestar.back.alarm.dto.req.AlarmAddReqDto;
 import com.spacestar.back.alarm.dto.req.AlarmDeleteReqDto;
 import com.spacestar.back.alarm.dto.res.AlarmListResDto;
 import com.spacestar.back.alarm.dto.res.AlarmStateResDto;
+import com.spacestar.back.kafka.message.Message;
+
+import reactor.core.publisher.Flux;
 
 public interface AlarmService {
 
+	//실시간 알림 스트림 처리
+	Flux<Message> streamAlarms(String uuid);
 	//알림 추가
 	void addAlarm(String uuid, AlarmAddReqDto alarmAddReqDto);
 

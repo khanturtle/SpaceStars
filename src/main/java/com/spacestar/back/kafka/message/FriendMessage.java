@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class FriendMessage {
+public class FriendMessage implements Message{
 
 	private String senderUuid;
 	private String receiverUuid;
