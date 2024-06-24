@@ -7,7 +7,7 @@ import { useFormState } from 'react-dom'
 
 import { PlusIcon } from 'lucide-react'
 
-import { Button, Checkbox, Input } from '@packages/ui'
+import { Button, Checkbox, Input, Textarea } from '@packages/ui'
 
 import {
   Select,
@@ -27,10 +27,12 @@ import styles from './teamList.module.css'
 
 const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
   const router = useRouter()
+
+  const { closeModal } = useContext(ModalContext)
+
   const [isChecked, setIsChecked] = useReducer((state) => {
     return !state
   }, false)
-  const { closeModal } = useContext(ModalContext)
 
   const [selectGame, setSelectGame] = useState<string | number>('')
   const [selectMember, setSelectMember] = useState<string | number>('')
@@ -46,11 +48,10 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
   useEffect(() => {
     if (state.code === 200) {
       closeModal()
-      router.push(`/dashboard/chat/team/${state.result.roomNumber}`)
+      router.push(`/dashboard/chat/group/${state.result.roomNumber}`)
     }
   }, [state])
 
-  // TODO: CSS 수정
   return (
     <form action={formAction} className={styles.form}>
       <Input
@@ -67,7 +68,7 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
           onValueChange={(v: string) => setSelectGame(v)}
         >
           <SelectTrigger
-            className="w-full h-[60px] mb-10 border border-[color:var(--White-50,#fff)] shadow-[0px_4px_10px_0px_rgba(37,73,150,0.1)] rounded-[10px] border-solid text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] "
+            className="w-[215px] h-[60px] border border-[color:var(--White-50,#fff)] shadow-[0px_4px_10px_0px_rgba(37,73,150,0.1)] rounded-[10px] border-solid text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] "
             style={{ background: 'rgba(255, 255, 255, 0.5)' }}
           >
             <SelectValue placeholder="게임" />
@@ -93,7 +94,7 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
           onValueChange={(v: string) => setSelectMember(v)}
         >
           <SelectTrigger
-            className="w-full h-[60px] mb-10 border border-[color:var(--White-50,#fff)] shadow-[0px_4px_10px_0px_rgba(37,73,150,0.1)] rounded-[10px] border-solid text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] "
+            className="w-[112px] h-[60px] border border-[color:var(--White-50,#fff)] shadow-[0px_4px_10px_0px_rgba(37,73,150,0.1)] rounded-[10px] border-solid text-[color:var(--secondary-text-color,#666)] text-base not-italic font-normal leading-[170%] "
             style={{ background: 'rgba(255, 255, 255, 0.5)' }}
           >
             <SelectValue placeholder="인원" />
@@ -121,11 +122,19 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
         onChange={() => setIsChecked()}
       />
       {isChecked && (
-        <Input id="password" className={styles['password-input']} />
+        <Input
+          id="password"
+          label="비밀번호"
+          className={styles['password-input']}
+        />
       )}
 
-      {/* textarea 로 수정 */}
-      <Input id="memo" label="메모" className={styles['memo-input']} />
+      <Input
+        id="memo"
+        label="메모"
+        isChecked={false}
+        className={`${styles['memo-input']} ${isChecked ? 'h-[66px]' : 'h-[133px]'}`}
+      />
 
       <Button
         className={styles.button}
@@ -134,7 +143,7 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
         size="full"
         backgroundColor="var(--btn-color, #000)"
         label="팀 등록"
-        shape="oval"
+        shape="rounded"
       />
     </form>
   )

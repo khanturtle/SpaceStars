@@ -3,6 +3,7 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
+import { join } from 'path'
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/chat`
 
@@ -22,7 +23,6 @@ export async function createOnetoOneChat(uuid: string) {
         receiverUuid: uuid,
       }),
     })
-
     if (!response.ok) {
       // 채팅방 생성 실패
       throw new Error('Failed to createOnetoOneChat')
@@ -46,7 +46,8 @@ export async function createTeam(prevState: unknown, formData: FormData) {
     gameId: formData.get('gameId'),
     maxMembers: formData.get('maxMembers'),
     isPassword: formData.get('isPassword') === 'on',
-    password: formData.get('password'),
+    password:
+      formData.get('isPassword') === 'on' ? formData.get('password') : null,
     memo: formData.get('memo'),
   }
 
@@ -63,5 +64,55 @@ export async function createTeam(prevState: unknown, formData: FormData) {
     return { ...res }
   } catch (error) {
     console.error('createTeam:', error)
+  }
+}
+
+/** 그룹 채팅방 입장하기 */
+export async function joinTeamForm(prevState: unknown, formData: FormData) {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  const roomNumber = formData.get('roomNumber')
+  const postFormData = {
+    isPassword: formData.get('isPassword'),
+    password: formData.get('password'),
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/team/chatroom/join/${roomNumber}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(postFormData),
+    }).then((r) => r.json())
+
+    console.log(res)
+    return { ...res }
+  } catch (error) {
+    console.error('joinTeam:', error)
+  }
+}
+
+export async function joinTeam(roomNumber: string) {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  try {
+    const res = await fetch(`${BASE_URL}/team/chatroom/join/${roomNumber}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        isPassword: false,
+      }),
+    }).then((r) => r.json())
+
+    return { ...res }
+  } catch (error) {
+    console.error('joinTeam:', error)
   }
 }
