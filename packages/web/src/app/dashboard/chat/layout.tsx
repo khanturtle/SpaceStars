@@ -2,26 +2,9 @@ import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
 
-import { getProfileByUuid } from '@/apis/getAuth'
-import { getChatRooms } from '@/apis/getChat'
-import { getMainProfileImageByUuid } from '@/apis/getProfileImage'
-
-import { RoomInfoType } from '@/types/ChatType'
-
 import MessageContainer from '@/containers/chat/MessageContainer'
-import { defaultImage } from '@/store/defaultState'
 import { getFriendsDataList } from '@/lib/getFriendsData'
 import { getChatroomDataList } from '@/lib/getChatroomData'
-
-// async function getRoomInfo(
-//   roomNumber: string,
-//   peerUuid: string,
-// ): Promise<RoomInfoType> {
-//   // 최근 메시지 static 조회
-//   const recentMessage = await getRecentMessage(roomNumber)
-
-//   return recentMessage
-// }
 
 export default async function layout({
   children,

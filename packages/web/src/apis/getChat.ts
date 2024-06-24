@@ -35,9 +35,15 @@ export async function getChatRooms(): Promise<ChatRoomType[]> {
 /** 1:1 방 참여자 조회 */
 export async function getRoomMember(
   roomUuid: string,
+  _token?: string,
 ): Promise<ChatRoomMemberType[]> {
-  const session = await getServerSession(options)
-  const token = session?.user?.data.accessToken
+  let token
+  if (!_token) {
+    const session = await getServerSession(options)
+    token = session?.user?.data.accessToken
+  } else {
+    token = _token
+  }
 
   try {
     const response = await fetch(

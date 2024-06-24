@@ -42,9 +42,10 @@ export type MemberInfoType = {
 }
 export async function getChatroomData(
   roomNumber: string,
+  token?: string,
 ): Promise<MemberInfoType[]> {
   // 방 참여자 목록
-  const member = await getRoomMember(roomNumber)
+  const member = await getRoomMember(roomNumber, token)
 
   // 방 참여자의 프로필사진, 닉네임
   const chatMemberInfos = await Promise.all(

@@ -3,26 +3,35 @@ import Link from 'next/link'
 
 import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
-const FriendsList = ({ items }: { items: friendsWithBasicDataType[] }) => {
+const FriendsList = ({
+  items,
+  children,
+}: {
+  items?: friendsWithBasicDataType[]
+  children?: React.ReactNode
+}) => {
   return (
     <ul>
       {items &&
         items.map((item: friendsWithBasicDataType) => (
           <UserItem key={item.index} item={item} />
         ))}
+      {children && children}
     </ul>
   )
+}
+
+export interface UserItemType extends friendsWithBasicDataType {
+  status?: boolean
 }
 
 const UserItem = ({
   item,
   children,
 }: {
-  item: friendsWithBasicDataType
+  item: UserItemType
   children?: React.ReactNode
 }) => {
-  const status = true
-
   return (
     <li className="flex items-center mb-[18px]">
       <Link
@@ -60,6 +69,7 @@ const Status = ({ status }: { status: boolean }) => {
   )
 }
 
-UserItem.Status = Status
+FriendsList.UserItem = UserItem
+FriendsList.Status = Status
 
 export default FriendsList
