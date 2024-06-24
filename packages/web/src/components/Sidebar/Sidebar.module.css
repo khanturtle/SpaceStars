@@ -127,3 +127,16 @@
     transform: translatex(0);
   }
 }
+
+.side-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.side-title .more {
+  color: var(--Text-50, #9c9c9c);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

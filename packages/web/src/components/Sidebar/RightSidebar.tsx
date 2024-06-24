@@ -1,12 +1,15 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
+
+import { useEffect, useState } from 'react'
 
 import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
 import FriendsList from '../Friends/FriendsList'
-
 import { ChatRightSide } from './ChatRightSide'
+
 import styles from './Sidebar.module.css'
 
 const DefaultRightSide = ({
@@ -16,7 +19,12 @@ const DefaultRightSide = ({
 }) => {
   return (
     <section>
-      <div className={styles['side-title']}>Friends</div>
+      <div className={styles['side-title']}>
+        Friends
+        <Link href="/dashboard/friends-list" className={styles.more}>
+          More
+        </Link>
+      </div>
       <FriendsList items={friendsList} />
     </section>
   )
@@ -37,9 +45,12 @@ export default function RightSidebar({
   // const [rightSide, setRightSide] = useState(false)
 
   const pathName = usePathname()
-  const pathParts = pathName.split('/')
+  const [roomNumber, setRoomNumber] = useState<string>('')
 
-  const roomNumber = pathParts.at(-1) ?? ''
+  useEffect(() => {
+    const pathParts = pathName.split('/')
+    setRoomNumber(pathParts.at(-1) ?? '')
+  }, [pathName])
 
   return (
     <section
