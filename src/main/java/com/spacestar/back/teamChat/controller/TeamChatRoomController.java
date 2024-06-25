@@ -21,6 +21,8 @@ import com.spacestar.back.teamChat.vo.res.TeamChatRoomRecruitReqVo;
 import com.spacestar.back.teamChat.vo.res.TeamChatRoomResVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +41,7 @@ public class TeamChatRoomController {
     @Operation(summary = "팀 채팅방 생성", description = "팀 채팅방을 생성합니다.")
     @PostMapping("/chatroom/create")
     public ResponseEntity<TeamChatRoomNumberResVo> addTeamChatRoom(@RequestHeader String uuid,
-                                                @RequestBody TeamChatRoomReqVo teamChatRoomReqVo) {
+                                                @Valid @RequestBody TeamChatRoomReqVo teamChatRoomReqVo) {
         TeamChatRoomReqDto teamChatRoomReqDto = mapper.map(teamChatRoomReqVo, TeamChatRoomReqDto.class);
         TeamChatRoomNumberDto teamChatRoomNumberDto = teamChatRoomService.addTeamChatRoom(uuid,teamChatRoomReqDto);
         TeamChatRoomNumberResVo teamChatRoomNumberResVo = mapper.map(teamChatRoomNumberDto, TeamChatRoomNumberResVo.class);
@@ -89,7 +91,7 @@ public class TeamChatRoomController {
     @Operation(summary = "팀 채팅방 참가하기", description = "팀 채팅방을 참가합니다.")
     @PostMapping("/chatroom/join/{roomNumber}")
     public ResponseEntity<TeamChatRoomNumberResVo> joinTeamChatRoom(@RequestHeader String uuid,
-                                              @PathVariable String roomNumber,@RequestBody TeamChatRoomJoinReqVo teamChatRoomJoinReqVo){
+                                              @PathVariable String roomNumber,@RequestBody @Valid TeamChatRoomJoinReqVo teamChatRoomJoinReqVo){
         String Password = teamChatRoomJoinReqVo.getPassword();
         teamChatRoomService.joinTeamChatRoom(uuid, roomNumber, Password);
         ChatRoomNumberDto chatRoomNumberDto = ChatRoomNumberDto.builder()
@@ -115,7 +117,7 @@ public class TeamChatRoomController {
     @Operation(summary = "팀 채팅방 강퇴하기", description = "팀 채팅방에서 특정 유저를 강퇴합니다.")
     @PatchMapping("/chatroom/kick/{roomNumber}")
     public ResponseEntity<Void> kickTeamChatRoom(@RequestHeader String uuid,
-                                              @PathVariable String roomNumber,@RequestBody TeamChatJoinReqVo teamChatJoinReqVo){
+                                              @PathVariable String roomNumber,@Valid @RequestBody TeamChatJoinReqVo teamChatJoinReqVo){
         String receiverUuid = teamChatJoinReqVo.getSenderUuid();
         teamChatRoomService.kickTeamChatRoom(uuid, roomNumber, receiverUuid);
 
@@ -125,7 +127,7 @@ public class TeamChatRoomController {
     @Operation(summary = "팀 채팅방 방장 변경하기", description = "팀 채팅방의 방장을 변경합니다.")
     @PatchMapping("/chatroom/owner/{roomNumber}")
     public ResponseEntity<Void> changeOwnerTeamChatRoom(@RequestHeader String uuid,
-                                                    @PathVariable String roomNumber,@RequestBody TeamChatJoinReqVo teamChatJoinReqVo){
+                                                    @PathVariable String roomNumber,@Valid @RequestBody TeamChatJoinReqVo teamChatJoinReqVo){
         String receiverUuid = teamChatJoinReqVo.getSenderUuid();
         teamChatRoomService.changeOwnerTeamChatRoom(uuid, roomNumber, receiverUuid);
 
@@ -145,7 +147,7 @@ public class TeamChatRoomController {
     @Operation(summary = "팀 채팅방 정보 변경하기", description = "팀 채팅방의 정보를 변경합니다.")
     @PutMapping("/chatroom/{roomNumber}")
     public ResponseEntity<Void> changeTeamChatRoom(@RequestHeader String uuid,
-                                                @PathVariable String roomNumber,@RequestBody TeamChatRoomReqVo teamChatRoomReqVo){
+                                                @PathVariable String roomNumber,@Valid @RequestBody TeamChatRoomReqVo teamChatRoomReqVo){
         TeamChatRoomReqDto teamChatRoomReqDto = mapper.map(teamChatRoomReqVo, TeamChatRoomReqDto.class);
         teamChatRoomService.changeTeamChatRoom(uuid, roomNumber, teamChatRoomReqDto);
 
