@@ -14,22 +14,41 @@ import com.spacestar.back.alarm.dto.res.AlarmStateResDto;
 import com.spacestar.back.alarm.repository.AlarmMongoRepository;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
+import com.spacestar.back.kafka.message.FriendMessage;
+import com.spacestar.back.kafka.message.MatchingMessage;
+import com.spacestar.back.kafka.message.Message;
 
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 @Service
 @RequiredArgsConstructor
 public class AlarmServiceImpl implements AlarmService {
 
 	private final AlarmMongoRepository alarmRepository;
+	private final Sinks.Many<MatchingMessage> matchingSink;
+	private final Sinks.Many<FriendMessage> friendSink;
 
-	// 알림 추가
+	@Override
+	public Flux<Message> streamAlarms(String uuid) {
+		return Flux.merge(
+			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
+			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
+		).doOnNext(message -> {
+			Mono.fromCallable(() -> alarmRepository.save(AlarmAddReqDto.toEntitySSE(uuid, message)))
+				.subscribeOn(Schedulers.boundedElastic())
+				.subscribe();
+		});
+	}
+
 	@Override
 	public void addAlarm(String uuid, AlarmAddReqDto alarmAddReqDto) {
 		alarmRepository.save(AlarmAddReqDto.toEntity(uuid, alarmAddReqDto));
 	}
 
-	// 알림 리스트 조회
 	@Override
 	public AlarmListResDto getAlarmList(String uuid) {
 
@@ -46,7 +65,6 @@ public class AlarmServiceImpl implements AlarmService {
 			.build();
 	}
 
-	// 알림 상태 조회
 	@Override
 	public AlarmStateResDto getAlarmState(String uuid, String id) {
 		Alarm alarm = alarmRepository.findByReceiverUuidAndId(uuid, id)
@@ -57,20 +75,18 @@ public class AlarmServiceImpl implements AlarmService {
 			.build();
 	}
 
-	// 알림 읽음 처리
 	@Override
-	public void modifyAlarmRead(String alarmId, String uuid){
+	public void modifyAlarmRead(String alarmId, String uuid) {
 		// 변경사항이 없을 경우 : 알림이 존재하지 않거나 && 알림이 이미 읽은 상태인 경우
-		if (alarmRepository.modifyAlarm(alarmId, uuid).getModifiedCount() == 0){
+		if (alarmRepository.modifyAlarm(alarmId, uuid).getModifiedCount() == 0) {
 			throw new GlobalException(ResponseStatus.NOT_MODIFIED_ALARM);
 		}
 	}
 
-	// 알림 삭제
 	@Override
-	public void deleteAlarm(String uuid, AlarmDeleteReqDto alarmDeleteReqDto){
+	public void deleteAlarm(String uuid, AlarmDeleteReqDto alarmDeleteReqDto) {
 
-		if(alarmRepository.deleteManyAlarm(uuid, alarmDeleteReqDto).getDeletedCount() == 0){
+		if (alarmRepository.deleteManyAlarm(uuid, alarmDeleteReqDto).getDeletedCount() == 0) {
 			throw new GlobalException(ResponseStatus.NOT_DELETE_ALARM);
 		}
 	}

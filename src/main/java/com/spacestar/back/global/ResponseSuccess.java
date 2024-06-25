@@ -14,6 +14,7 @@ public enum ResponseSuccess {
     ALARM_STATE_SELECT_SUCCESS(202, "알림 상태 조회를 성공하였습니다."),
     ALARM_CHECK_STATE_UPDATE_SUCCESS(203, "알림 조회 상태 수정를 성공하였습니다."),
     ALARM_LIST_DELETE_SUCCESS(204, "알림 삭제를 성공하였습니다."),
+    ALARM_RECEIVED_SUCCESS(205, "알림이 성공적으로 수신되었습니다."),
 
 
 

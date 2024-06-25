@@ -1,5 +1,7 @@
 package com.spacestar.back.kafka.message;
 
+import com.spacestar.back.alarm.enums.AlarmType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,9 +13,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MatchingMessage {
+public class MatchingMessage implements Message{
 
 	private String senderUuid;
 	private String receiverUuid;
 	private String content;
+
+	@Override
+	public AlarmType getMessageType(){
+		return AlarmType.MATCHING;
+	}
 }
