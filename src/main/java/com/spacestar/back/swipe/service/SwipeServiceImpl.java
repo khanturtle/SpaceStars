@@ -84,6 +84,7 @@ public class SwipeServiceImpl implements SwipeService {
         boolean isLast = end >= swipeResDtoList.size();
 
         return SwipeResDto.builder()
+                .totalMemberCount(swipeResDtoList.size())
                 .memberUuidList(paginatedList)
                 .nowPage(pageable.getPageNumber())
                 .isLast(isLast)
@@ -106,6 +107,7 @@ public class SwipeServiceImpl implements SwipeService {
         List<String> paginatedList = swipeResDtoList.subList(start, end);
 
         return SwipeResDto.builder()
+                .totalMemberCount(swipeResDtoList.size())
                 .memberUuidList(paginatedList)
                 .nowPage(pageable.getPageNumber())
                 .isLast(isLast)
