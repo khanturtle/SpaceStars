@@ -123,7 +123,7 @@
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
 }
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1600px) {
   .create-button {
     right: 50px;
   }

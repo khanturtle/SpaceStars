@@ -169,7 +169,7 @@ export default function SearchBox() {
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === 's') {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'K') {
       event.preventDefault() // 기본 동작 막기
       searchInputRef.current?.focus() // 검색창에 포커스 맞추기
     }
@@ -187,7 +187,7 @@ export default function SearchBox() {
     <div className="relative">
       <SearchInput
         className="h-14"
-        placeholder="Search.. (Press Ctrl+S)"
+        placeholder="Search.. (Press Ctrl+K)"
         value={value}
         onChange={handleSearch}
         onFocus={handleSearch}

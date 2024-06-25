@@ -7,7 +7,7 @@ export default function page() {
   return (
     <div className="flex-1 py-[40px] flex flex-col justify-center gap-[100px] a">
       <SwipeCardWrapper />
-      <RefreshButton />
+      {/* <RefreshButton /> */}
     </div>
   )
 }
