@@ -2,9 +2,11 @@ package com.spacestar.back.feignClient.dto.res;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder
+@ToString
 public class SwipeMemberInfoResDto {
     private String uuid;
     private Long gamePreferenceId;
@@ -20,16 +22,5 @@ public class SwipeMemberInfoResDto {
                 .mainGameId(resDto.getMainGameId())
                 .reportCount(resDto.getReportCount())
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "SwipeMemberInfoResDto{" +
-                "uuid='" + uuid + '\'' +
-                ", gamePreferenceId=" + gamePreferenceId +
-                ", mbtiId=" + mbtiId +
-                ", mainGameId=" + mainGameId +
-                ", reportCount=" + reportCount +
-                '}';
     }
 }
