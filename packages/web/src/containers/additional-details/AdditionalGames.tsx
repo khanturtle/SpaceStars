@@ -26,7 +26,7 @@ function GameSelectButton({ game }: { game: GameTypes }) {
     if (selectedGames.includes(game)) {
       removeGame(game)
     } else {
-      if (selectedGamesCount < 3) {
+      if (selectedGamesCount < 1) {
         addGame(game)
       } else {
         showToast()

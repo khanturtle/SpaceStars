@@ -9,7 +9,11 @@ import { ArrowIcon } from '@packages/ui'
 import { getMainGame } from '@/apis/getProfile'
 import FormLayout from '@/components/form/formLayout'
 import { ModalContext } from '@/components/providers/modal-provider'
-import { useGameStore, useSelectedOption } from '@/store/gameStore'
+import {
+  useGameStore,
+  useSelectedOption,
+  useOptionStore,
+} from '@/store/gameStore'
 
 import AdditionalGames from './AdditionalGames'
 import AdditionalMBTI from './AdditionalMBTI'
@@ -49,7 +53,6 @@ const PassButton = () => {
   )
 }
 
-// TODO: 다음 버튼 유효성 검증 및 disabled
 export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
   const { closeModal } = useContext(ModalContext)
 
@@ -58,8 +61,9 @@ export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
   const [step, setStep] = useState<number>(1)
   const [mbtiId, setMbtiId] = useState<number>()
 
-  const { selectedGameIds } = useGameStore()
-  const { selectedGameWithOption } = useSelectedOption()
+  const { selectedGameIds, resetGames } = useGameStore()
+  const { selectedGameWithOption, resetOptions } = useSelectedOption()
+  const { optionCount, resetOptionCount } = useOptionStore()
 
   const showToast = (text: string) => {
     setToastMessage(text)
@@ -73,16 +77,30 @@ export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
     if (step === 1 && selectedGameIds.length === 0) {
       showToast('게임을 선택하세요.')
     } else if (step === 2) {
-      console.log(selectedGameWithOption)
-      // if (selectedGameWithOption.length === 0) {
-      //   showToast('옵션을 선택하세요.')
-      //   }
+      if (selectedGameWithOption === null) {
+        showToast('옵션을 선택하세요.')
+      } else {
+        const objectKeys = Object.keys(selectedGameWithOption)
+        if (objectKeys.length - 2 < optionCount) {
+          showToast('옵션을 모두 선택하세요.')
+        } else {
+          setStep(step + 1)
+        }
+      }
     } else if (step + 1 <= 3) {
       setStep(step + 1)
     }
   }
 
   const handlePrevStep = () => {
+    if (step === 2) {
+      resetGames()
+      resetOptions()
+      resetOptionCount()
+    } else if (step === 3) {
+      resetOptions()
+      resetOptionCount()
+    }
     if (step - 1 > 0) {
       setStep(step - 1)
     }
@@ -111,8 +129,8 @@ export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
 
         <FormLayout>
           <FormLayout.Legend
-            title={'좋아하는 게임을 선택해주세요'}
-            description={`최대 3개까지 선택 가능합니다.`}
+            title={'대표 게임을 선택해주세요'}
+            description={`게임 1개를 선택해주세요`}
           />
 
           <AdditionalGames />
@@ -140,7 +158,7 @@ export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
         <FormLayout>
           <FormLayout.Legend
             title="대표 게임을 선택해주세요"
-            description={`게임 1개를 골라 옵션을 선택해주세요.`}
+            description={`게임 옵션을 선택해주세요.`}
           />
 
           <AdditionalOptions />

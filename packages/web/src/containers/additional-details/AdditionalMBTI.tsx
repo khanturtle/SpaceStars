@@ -26,7 +26,6 @@ export default function AdditionalMBTI({
     setMbtiId(mbtiIdToNumber)
   }
 
-  // TODO: 테스트
   useEffect(() => {
     const fetchData = async () => {
       const data = await getMbtiList()

@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/popover'
 import { useSelectedOption } from '@/store/gameStore'
 
-// FIXME: 최대 3개의 게임 중 1개만 옵션 선택 가능
 const SelectOption = ({
   gameId,
   option,
@@ -28,6 +27,11 @@ const SelectOption = ({
 
   const { setGameWithOption } = useSelectedOption()
 
+  const handleOptionClick = (item: GameOptionDetailType) => {
+    setSelectedOption(item)
+    setGameWithOption(gameId, option, item)
+  }
+
   useEffect(() => {
     const getOptionDetails = async () => {
       const details = await getGameOptionDetail(gameId, option)
@@ -38,13 +42,6 @@ const SelectOption = ({
     }
     getOptionDetails()
   }, [])
-
-  const handleOptionClick = (item: GameOptionDetailType) => {
-    setSelectedOption(item)
-    console.log(selectedOption)
-    // console.log(gameId, option, item)
-    setGameWithOption(gameId, option, item)
-  }
 
   return (
     <Popover>
@@ -62,8 +59,7 @@ const SelectOption = ({
                 }}
               />
             ) : (
-              // FIXME: 이미지 없을 때
-              <p>{selectedOption.nameKor}</p>
+              <p>{selectedOption.nameKor.at(0)}</p>
             )}
           </>
         ) : (
@@ -73,7 +69,6 @@ const SelectOption = ({
         )}
       </PopoverTrigger>
 
-      {/* TODO: 스크롤 CSS 수정? */}
       <PopoverContent
         className={`z-[9999] grid grid-cols-2 gap-2 w-[100%] max-h-[300px] overflow-y-auto`}
       >
