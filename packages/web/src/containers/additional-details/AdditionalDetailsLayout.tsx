@@ -17,6 +17,7 @@ import AdditionalOptions from './AdditionalOptions'
 import { updateProfile } from './action'
 
 import styles from './additional.module.css'
+import Toast from '@/components/Toast/toast'
 
 /** 건너뛰기 버튼 */
 const PassButton = () => {
@@ -50,15 +51,33 @@ const PassButton = () => {
 
 // TODO: 다음 버튼 유효성 검증 및 disabled
 export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
+  const { closeModal } = useContext(ModalContext)
+
+  const [toastMessage, setToastMessage] = useState('')
+
   const [step, setStep] = useState<number>(1)
   const [mbtiId, setMbtiId] = useState<number>()
-  const { closeModal } = useContext(ModalContext)
 
   const { selectedGameIds } = useGameStore()
   const { selectedGameWithOption } = useSelectedOption()
 
+  const showToast = (text: string) => {
+    setToastMessage(text)
+
+    setTimeout(() => {
+      setToastMessage('')
+    }, 1500)
+  }
+
   const handleNextStep = () => {
-    if (step + 1 <= 3) {
+    if (step === 1 && selectedGameIds.length === 0) {
+      showToast('게임을 선택하세요.')
+    } else if (step === 2) {
+      console.log(selectedGameWithOption)
+      // if (selectedGameWithOption.length === 0) {
+      //   showToast('옵션을 선택하세요.')
+      //   }
+    } else if (step + 1 <= 3) {
       setStep(step + 1)
     }
   }
@@ -79,36 +98,60 @@ export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
   /** step 1: 게임 선택 */
   if (step === 1)
     return (
-      <FormLayout>
-        <FormLayout.Legend
-          title={'좋아하는 게임을 선택해주세요'}
-          description={`최대 3개까지 선택 가능합니다.`}
-        />
+      <>
+        {toastMessage && (
+          <Toast
+            message={toastMessage}
+            type="error"
+            duration={1400}
+            position="top"
+            offsetY={100}
+          />
+        )}
 
-        <AdditionalGames />
+        <FormLayout>
+          <FormLayout.Legend
+            title={'좋아하는 게임을 선택해주세요'}
+            description={`최대 3개까지 선택 가능합니다.`}
+          />
 
-        <FormLayout.NextButton onClick={handleNextStep} />
-        {/* <PassButton /> */}
-      </FormLayout>
+          <AdditionalGames />
+
+          <FormLayout.NextButton onClick={handleNextStep} />
+          {/* <PassButton /> */}
+        </FormLayout>
+      </>
     )
 
   /** step 2: 대표 게임 선택 */
   if (step === 2)
     return (
-      <FormLayout>
-        <FormLayout.Legend
-          title="대표 게임을 선택해주세요"
-          description={`게임 1개를 골라 옵션을 선택해주세요.`}
-        />
+      <>
+        {toastMessage && (
+          <Toast
+            message={toastMessage}
+            type="error"
+            duration={1400}
+            position="top"
+            offsetY={100}
+          />
+        )}
 
-        <AdditionalOptions />
+        <FormLayout>
+          <FormLayout.Legend
+            title="대표 게임을 선택해주세요"
+            description={`게임 1개를 골라 옵션을 선택해주세요.`}
+          />
 
-        <FormLayout.PrevNextButton
-          onPrevClick={handlePrevStep}
-          onNextClick={handleNextStep}
-        />
-        {/* <PassButton /> */}
-      </FormLayout>
+          <AdditionalOptions />
+
+          <FormLayout.PrevNextButton
+            onPrevClick={handlePrevStep}
+            onNextClick={handleNextStep}
+          />
+          {/* <PassButton /> */}
+        </FormLayout>
+      </>
     )
 
   /** step 3: MBTI 선택 */
