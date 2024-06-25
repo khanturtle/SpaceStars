@@ -1,4 +1,4 @@
-import BackGroundTextBox from '@/containers/queue/BackGroundTextBox'
+import BackGroundTextBox from '@/components/Background/BackGroundTextBox'
 import NavHeader from '@/components/Navbar/NavHeader'
 import QueueLayout from '@/containers/queue/QueueLayout'
 

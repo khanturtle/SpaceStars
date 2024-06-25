@@ -26,7 +26,7 @@ export default function Navbar({
   profileImageUrl: string | null | undefined
 }) {
   const pathName = usePathname()
-  const noSearchBoxPage = ['/dashboard/queue']
+  const noSearchBoxPage = ['/dashboard/queue', '/dashboard/swipe']
 
   return (
     <header>

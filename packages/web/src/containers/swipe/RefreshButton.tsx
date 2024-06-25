@@ -1,9 +1,20 @@
-import { Button } from '@packages/ui'
+'use client'
 
-export default function RefreshButton() {
+import { useRouter } from 'next/navigation'
+import styles from './swipe.module.css'
+
+export default function RefreshButton({ nextPage }: { nextPage: number }) {
+  const router = useRouter()
+
+  const handleRefresh = () => {
+    router.replace(`/dashboard/swipe?page=${nextPage}`)
+  }
+
   return (
-    <div className="flex justify-center w-full">
-      <Button label="새로고침" primary className="bg-[red]" />
+    <div className={`${styles['refresh-button']}`}>
+      <button type="button" aria-label="swipe-refresh" onClick={handleRefresh}>
+        <p>새로고침</p>
+      </button>
     </div>
   )
 }

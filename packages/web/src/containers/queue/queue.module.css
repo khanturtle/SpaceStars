@@ -1,37 +1,3 @@
-/* Header.css */
-.header {
-  @apply bg-inherit fixed h-[100px] w-full z-[2000] inline-flex flex-col items-start justify-end gap-2.5 px-[31px] py-[7px] top-0;
-}
-.header h3 {
-  @apply text-[#a589c7] text-4xl not-italic font-medium leading-[normal];
-}
-.header p {
-  @apply text-[color:var(--White-50,#fff)] text-xs not-italic font-medium leading-[normal];
-}
-/* Header.css */
-
-/* BackGroundTextBox.css */
-.background-text {
-  color: var(--White-50, #fff);
-
-  text-align: center;
-  leading-trim: both;
-
-  text-edge: cap;
-  font-family: Play;
-  font-size: 180px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 137px;
-  letter-spacing: -14.4px;
-
-  opacity: 0.29;
-
-  position: absolute;
-  top: 75px;
-}
-/* BackGroundTextBox.css */
-
 /* QueueLayout.css */
 .layout {
   /* display: flex; */
