@@ -88,7 +88,7 @@ export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
         <AdditionalGames />
 
         <FormLayout.NextButton onClick={handleNextStep} />
-        <PassButton />
+        {/* <PassButton /> */}
       </FormLayout>
     )
 
@@ -107,7 +107,7 @@ export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
           onPrevClick={handlePrevStep}
           onNextClick={handleNextStep}
         />
-        <PassButton />
+        {/* <PassButton /> */}
       </FormLayout>
     )
 
@@ -124,7 +124,7 @@ export const AdditionalDetailsLayout = ({ token }: { token: string }) => {
           onPrevClick={handlePrevStep}
           onNextClick={handleSubmitDetails}
         />
-        <PassButton />
+        {/* <PassButton /> */}
       </FormLayout>
     )
   return null
@@ -138,6 +138,7 @@ export const DevModalOpen = () => {
   useEffect(() => {
     const fetchData = async (token: string) => {
       const data = await getMainGame(token)
+      // 대표 게임 여부 확인
       if (data && !data?.result.main) {
         // false인 경우, 모달 열기
         openModal(
@@ -146,6 +147,7 @@ export const DevModalOpen = () => {
           >
             <AdditionalDetailsLayout token={token} />
           </div>,
+          { isClose: false },
         )
       }
     }
