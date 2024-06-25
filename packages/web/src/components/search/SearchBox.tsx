@@ -168,14 +168,14 @@ export default function SearchBox() {
     }, 300)
   }
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === 'K') {
-      event.preventDefault() // 기본 동작 막기
-      searchInputRef.current?.focus() // 검색창에 포커스 맞추기
-    }
-  }
-
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault() // 기본 동작 막기
+        searchInputRef.current?.focus() // 검색창에 포커스 맞추기
+      }
+    }
+
     document.addEventListener('keydown', handleKeyDown)
 
     return () => {
@@ -187,7 +187,7 @@ export default function SearchBox() {
     <div className="relative">
       <SearchInput
         className="h-14"
-        placeholder="Search.. (Press Ctrl+K)"
+        placeholder="Search (Ctrl+K)"
         value={value}
         onChange={handleSearch}
         onFocus={handleSearch}

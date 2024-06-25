@@ -23,9 +23,11 @@ body {
 /* 드래그 방지 */
 body {
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
   user-select: none;
+  user-drag: none;
+  app-region: no-drag;
 }
 img,
 a {
