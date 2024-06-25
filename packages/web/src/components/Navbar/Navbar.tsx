@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 import { Session } from 'next-auth'
 
@@ -22,6 +25,9 @@ export default function Navbar({
   session: Session | null
   profileImageUrl: string | null | undefined
 }) {
+  const pathName = usePathname()
+  const noSearchBoxPage = ['/dashboard/queue']
+
   return (
     <header>
       <nav className="h-[100px] w-full flex flex-row items-center bg-[color:var(--White-50,#fff)] sticky z-[1000] px-[54px] py-5 border-b-[#ddd] border-b border-solid left-0 top-0">
@@ -38,8 +44,8 @@ export default function Navbar({
             </div>
           </Link>
         </div>
-        
-        <SearchBox />
+
+        {!noSearchBoxPage.includes(pathName) && <SearchBox />}
 
         <Gutter className="flex-1" />
 

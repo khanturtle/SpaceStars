@@ -1,0 +1,140 @@
+/* Header.css */
+.header {
+  background-color: inherit;
+  position: fixed;
+  top: 0;
+
+  height: 100px;
+  width: 100%;
+  z-index: 2000;
+
+  display: inline-flex;
+  padding: 7px 31px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.header h3 {
+  color: #a589c7;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.header p {
+  color: var(--White-50, #fff);
+
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+/* Header.css */
+
+/* BackGroundTextBox.css */
+.background-text {
+  color: var(--White-50, #fff);
+
+  text-align: center;
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: Play;
+  font-size: 180px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 137px;
+  letter-spacing: -14.4px;
+
+  opacity: 0.29;
+
+  position: absolute;
+  top: 75px;
+}
+/* BackGroundTextBox.css */
+
+/* QueueLayout.css */
+.layout {
+  /* display: flex; */
+  width: 100%;
+}
+/* QueueLayout.css */
+
+/* QueueCardWrapper.css */
+.queue-cards {
+  display: flex;
+  justify-content: center;
+  gap: 250px;
+  width: 100%;
+  height: 400px;
+  position: relative;
+  margin-top: 130px;
+}
+/* QueueCardWrapper.css */
+
+/* QueueCard.css */
+.matching-card {
+  display: flex;
+  width: 250px;
+  height: 400px;
+  padding: 172px 23px;
+  flex-direction: column;
+  align-items: center;
+  gap: 21px;
+  flex-shrink: 0;
+
+  border-radius: 15px;
+  border: 1px solid #d6b8fb;
+  background: rgba(125, 18, 255, 0.8);
+}
+/* QueueCard.css */
+
+/* QueueButton.css */
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  gap: 35px;
+}
+.buttons button {
+  display: flex;
+  width: 86px;
+  height: 86px;
+  padding: 6px 14px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  border-radius: 30px;
+}
+.refresh {
+  background: #ff87cf;
+}
+.matchingBtn {
+  background: #7d12ff;
+}
+/* QueueButton.css */
+
+/* QueueDescription.css */
+.description {
+  margin-top: 30px;
+
+  display: flex;
+  justify-content: center;
+}
+.description p {
+  color: var(--White-50, #fff);
+
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  padding: 8px 15px;
+
+  border-radius: 10px;
+  background-color: rgba(125, 18, 255, 0.6);
+}
+/* QueueDescription.css */
