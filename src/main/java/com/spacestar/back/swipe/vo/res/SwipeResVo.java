@@ -2,7 +2,12 @@ package com.spacestar.back.swipe.vo.res;
 
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class SwipeResVo {
-    private String memberUuid;
+    private long totalMemberCount;
+    private int nowPage;
+    private List<String> memberUuidList;
+    private boolean isLast;
 }
