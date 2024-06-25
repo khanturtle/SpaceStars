@@ -63,13 +63,14 @@
 }
 /* SwipeCardWrapper.css */
 
-/* FlipCard.css */
+/* SwipeCard.css */
 .flip-card {
-  background-color: transparent;
   width: 250px;
   height: 400px;
   perspective: 1000px;
   font-family: sans-serif;
+
+  z-index: 1000;
 }
 
 .flip-card-inner {
@@ -88,6 +89,7 @@
 
 .flip-card-front,
 .flip-card-back {
+  background-color: #fff;
   box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
   position: absolute;
   display: flex;
@@ -102,4 +104,42 @@
 
 .flip-card-back {
   transform: rotateY(180deg);
+  box-shadow: 0px 0px 10px 0px #ffda4e;
 }
+/* SwipeCard.css */
+
+/* BackCard.css */
+.profile {
+  background-color: red;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.profile .image {
+  width: 55px;
+  height: 55px;
+  border-radius: 55px;
+  border: 1px solid #939393;
+}
+.profile .nickname {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  color: #7d12ff;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.level {
+  color: #7d12ff;
+
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+/* BackCard.css */

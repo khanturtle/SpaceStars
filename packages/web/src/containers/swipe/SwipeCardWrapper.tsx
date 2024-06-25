@@ -1,16 +1,15 @@
 'use client'
 
 import { useState } from 'react'
+import BackCard from './BackCard'
 
 import styles from './swipe.module.css'
 
 /** 앞면 데이터:
  * 프로필 사진, 닉네임, 성별, 나이, 좋아하는게임, 내가하는게임, MBTI, 게임성향테스트 결과 */
 
-/** 뒷면 데이터:
- * 프로필 사진, 닉네임, 한줄메시지, 레벨, 대표게임, 내가 하는 게임 */
-
 interface SwipeCardProps {
+  item: any
   hoveringIndex: number
   index: number
   onMouseEnter: () => void
@@ -18,6 +17,7 @@ interface SwipeCardProps {
 }
 
 const SwipeCard = ({
+  item,
   hoveringIndex,
   index,
   onMouseEnter,
@@ -47,33 +47,21 @@ const SwipeCard = ({
         <div
           className={`${styles['flip-card-back']} ${flipped ? styles.flipped : ''}`}
         >
-          뒤
+          <BackCard item={item} />
         </div>
       </div>
     </div>
   )
 }
 
-export default function SwipeCardWrapper() {
+export default function SwipeCardWrapper({
+  profileDataList,
+}: {
+  profileDataList: any[]
+}) {
   const [hoveringIndex, setHoveringIndex] = useState(-1)
 
-  // TODO: 스와이프 4개 프랍받아 사용
-  const data = [
-    {
-      index: 1,
-    },
-    {
-      index: 2,
-    },
-    {
-      index: 3,
-    },
-    {
-      index: 4,
-    },
-  ]
-
-  const handleMouseEnter = (index) => {
+  const handleMouseEnter = (index: number) => {
     setHoveringIndex(index)
   }
 
@@ -83,9 +71,10 @@ export default function SwipeCardWrapper() {
   return (
     <section className={styles['card-wrapper']}>
       <div className={styles.cards}>
-        {data &&
-          data.map((item, index) => (
+        {profileDataList &&
+          profileDataList.map((item, index) => (
             <SwipeCard
+              item={item}
               key={index}
               hoveringIndex={hoveringIndex}
               index={index}
@@ -96,7 +85,7 @@ export default function SwipeCardWrapper() {
       </div>
 
       <div className={styles.indicator}>
-        {data.map((_, index) => (
+        {profileDataList.map((_, index) => (
           <div
             key={index}
             className={`${styles.indicatorItem} ${

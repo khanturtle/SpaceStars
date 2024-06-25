@@ -4,6 +4,7 @@ import BackGroundTextBox from '@/components/Background/BackGroundTextBox'
 import NavHeader from '@/components/Navbar/NavHeader'
 import RefreshButton from '@/containers/swipe/RefreshButton'
 import SwipeCardWrapper from '@/containers/swipe/SwipeCardWrapper'
+import { getAllProfileDataByUuid } from '@/lib/getAllProfileData'
 
 export default async function page({
   searchParams,
@@ -13,12 +14,23 @@ export default async function page({
   const currentPage = searchParams.page ? Number(searchParams.page) : 0
 
   const swipeData = await getSwipeList(4, currentPage)
-  console.log(currentPage, swipeData)
+
+  const profileDataList = await Promise.all(
+    swipeData.memberUuidList.map(async (uuid: string) => {
+      try {
+        return await getAllProfileDataByUuid(uuid)
+      } catch (error) {
+        console.error(`Error profileDataList: ${uuid}`, error)
+        return null
+      }
+    }),
+  )
 
   const nextPage = swipeData && swipeData.last ? 0 : swipeData.nowPage + 1
 
   return (
-    <div className="relative w-full ">
+    // FIXME: 배경색 수정
+    <div className="relative w-full bg-[#18243a]">
       <BackGroundTextBox text="NEXT GAMER MATCHING" />
       <NavHeader
         title="SWIPE"
@@ -26,7 +38,7 @@ export default async function page({
       />
       <RefreshButton nextPage={nextPage} />
 
-      <SwipeCardWrapper />
+      <SwipeCardWrapper profileDataList={profileDataList} />
     </div>
   )
 }

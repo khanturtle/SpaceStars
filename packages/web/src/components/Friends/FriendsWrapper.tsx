@@ -54,7 +54,7 @@ export default function FriendsWrapper({
   )
 }
 
-const FriendsItem = ({
+export const FriendsItem = ({
   item,
   isDrag,
   children,
