@@ -58,11 +58,14 @@ public class TeamChatRoomController {
         return new ResponseEntity<>(ResponseSuccess.GET_TEAM_CHATROOM_LIST_SUCCESS, teamChatRoomResVos);
     }
 
+    // 게임, 모집인원수, 모집완료
     @Operation(summary = "팀원 모집 방 목록 조회", description = "팀원 모집 방 목록을 조회합니다.")
     @GetMapping("/chatroom/recruit/list")
-    public ResponseEntity<List<TeamChatRoomRecruitReqVo>> getTeamChatRoomRecruitList() {
+    public ResponseEntity<List<TeamChatRoomRecruitReqVo>> getTeamChatRoomRecruitList(@RequestParam(value = "game",required = false ) Long gameId,
+                                                                                     @RequestParam(value = "maxMembers",required = false) Integer maxMembers,
+                                                                                     @RequestParam(value = "isFinished", required = false) Boolean isFinished){
 
-        List<TeamChatRoomRecruitDto> teamChatRoomRecruitDtos = teamChatRoomService.getTeamChatRoomRecruitList();
+        List<TeamChatRoomRecruitDto> teamChatRoomRecruitDtos = teamChatRoomService.getTeamChatRoomRecruitList(gameId, maxMembers, isFinished);
 
         //convertor 사용
         List<TeamChatRoomRecruitReqVo> teamChatRoomRecruitReqVos =

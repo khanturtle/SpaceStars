@@ -7,6 +7,7 @@ import com.spacestar.back.teamChat.domain.entity.TeamChatRoom;
 import com.spacestar.back.teamChat.dto.*;
 import com.spacestar.back.teamChat.dto.req.TeamChatRoomReqDto;
 import com.spacestar.back.teamChat.enums.TeamParticipationType;
+import com.spacestar.back.teamChat.repository.CustomTeamChatRepository;
 import com.spacestar.back.teamChat.repository.TeamChatMemberJpaRepository;
 import com.spacestar.back.teamChat.repository.TeamChatRoomJpaRepository;
 import jakarta.transaction.Transactional;
@@ -32,7 +33,7 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
     private final TeamChatRoomJpaRepository teamChatRoomJpaRepository;
     private final TeamChatMemberJpaRepository teamChatMemberJpaRepository;
     private final TeamChatMemberService teamChatMemberService;
-
+    private final CustomTeamChatRepository customTeamChatRepository;
     @Override
     public TeamChatRoomNumberDto addTeamChatRoom(String uuid, TeamChatRoomReqDto teamChatRoomReqDto) {
 
@@ -59,8 +60,8 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
     }
 
     @Override
-    public List<TeamChatRoomRecruitDto> getTeamChatRoomRecruitList() {
-        List<TeamChatRoom> teamChatRoomList = teamChatRoomJpaRepository.findAll();
+    public List<TeamChatRoomRecruitDto> getTeamChatRoomRecruitList(Long gameId, Integer maxMembers, Boolean isFinished) {
+        List<TeamChatRoom> teamChatRoomList = customTeamChatRepository.findQueryDslTeamChatRoom(gameId, maxMembers, isFinished);
         //팀챗룸을 가져오고 그에 해당하는 멤버들을 가져와서 dto 로 변환한다
         return teamChatRoomList.stream()
                 .map(teamChatRoom -> {

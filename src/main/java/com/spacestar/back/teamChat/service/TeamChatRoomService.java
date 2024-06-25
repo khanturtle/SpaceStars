@@ -18,7 +18,7 @@ public interface TeamChatRoomService {
 
     List<TeamChatRoomListDto> getTeamChatRoomList(String uuid);
 
-    List<TeamChatRoomRecruitDto> getTeamChatRoomRecruitList();
+    List<TeamChatRoomRecruitDto> getTeamChatRoomRecruitList(Long gameId, Integer recruitNumber, Boolean isRecruitFinish);
 
     TeamChatRoomDto getTeamChatRoomDetail(String roomNumber);
 

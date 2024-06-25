@@ -14,10 +14,14 @@ import java.util.List;
 @Repository
 public interface ChatRoomJPARepository extends JpaRepository<ChatRoom, Long> {
 
+
     ChatRoom findByRoomNumber(String roomNumber);
 
     @Query("select c from ChatRoom c join c.chatMembers m1 join c.chatMembers m2 " +
             "where m1.memberUuid = ?1 and m2.memberUuid = ?2 and m1.chatRoom = m2.chatRoom")
     Optional<ChatRoom> findChatRoomByUuids(String uuid, String receiverUuid);
+
+
+
 
 }
