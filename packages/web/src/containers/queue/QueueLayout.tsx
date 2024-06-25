@@ -17,9 +17,7 @@ export default function QueueLayout() {
         <QueueCardWrapper.Loader isMatching={isMatching} />
       </QueueCardWrapper>
 
-      <QueueButton>
-        {isMatching && <QueueButton.MatchingButton />}
-      </QueueButton>
+      <QueueButton>{isMatching && <QueueButton.MatchingButton />}</QueueButton>
 
       <QueueDescription isMatching={isMatching} />
     </div>

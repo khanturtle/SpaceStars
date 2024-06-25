@@ -8,6 +8,7 @@ import {
   HeartHandshakeIcon,
   HomeIcon,
   MessagesSquareIcon,
+  Radio,
   UserSearch,
 } from 'lucide-react'
 
@@ -37,6 +38,12 @@ const SIDE_LINK = [
     title: '추천 친구',
     href: '/dashboard/swipe',
     svg: <HeartHandshakeIcon />,
+  },
+  {
+    index: 4,
+    title: '실시간 매칭',
+    href: '/dashboard/queue',
+    svg: <Radio />,
   },
 ]
 
