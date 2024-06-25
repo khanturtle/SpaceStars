@@ -10,4 +10,5 @@ public class SwipeResVo {
     private int nowPage;
     private List<String> memberUuidList;
     private boolean isLast;
+    private int lastPage;
 }

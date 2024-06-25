@@ -31,19 +31,18 @@ public class SwipeController {
     @Operation(summary = "스와이프 사용자 목록 조회 (AI)")
     @GetMapping("/ai")
     public ResponseEntity<SwipeResVo> getSwipeMembersAi(@RequestHeader("UUID") String uuid,
-                                                         @RequestParam(value = "page", defaultValue = "0") Integer page) {
-        int pageSize = 5;
+                                                        @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         SwipeResDto swipePage = swipeService.getSwipeMembersAi(uuid, pageable);
         return new ResponseEntity<>(ResponseSuccess.SUCCESS, mapper.map(swipePage, SwipeResVo.class));
-
     }
 
     @Operation(summary = "스와이프 사용자 목록 조회")
     @GetMapping
     public ResponseEntity<SwipeResVo> getSwipeMembers(@RequestHeader("UUID") String uuid,
-                                                       @RequestParam(value = "page", defaultValue = "0") Integer page) {
-        int pageSize = 5;
+                                                      @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         SwipeResDto swipePage = swipeService.getSwipeMembers(uuid, pageable);
         return new ResponseEntity<>(ResponseSuccess.SUCCESS, mapper.map(swipePage, SwipeResVo.class));
