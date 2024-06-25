@@ -64,7 +64,7 @@ public class FeignClientServiceImpl implements FeignClientService {
         String profileListStr = profileList.stream()
                 .map(SwipeMemberInfoResVo::toString)
                 .collect(Collectors.joining(", "));
-        String prompt = String.format("이 데이터들 중에 [%s] 이 데이터와 성향이 잘 맞는 순서대로 이 데이터를 제외하고 10명의 uuid를 출력해줘.반환 형식은 9135f6d9-b4d4-4397-9b63-ff3369d531c2,3e0b5a99-d5fd-407c-8fde-59940dc512e4,jkl012 이런식으로 해줘.", SwipeMemberInfoResDto.toDto(getProfile(uuid), uuid).toString());
+        String prompt = String.format("이 데이터들 중에 [%s] 이 데이터와 성향이 잘 맞는 순서대로 이 데이터를 제외하고 모든 사용자의 uuid를 출력해줘.반환 형식은 9135f6d9-b4d4-4397-9b63-ff3369d531c2,3e0b5a99-d5fd-407c-8fde-59940dc512e4,jkl012 이런식으로 해줘.", SwipeMemberInfoResDto.toDto(getProfile(uuid), uuid).toString());
         Message message = new Message("user", profileListStr + prompt);//유저 전체 데이터 추가
 
         OpenAiReqDto request = new OpenAiReqDto("gpt-3.5-turbo", List.of(message));

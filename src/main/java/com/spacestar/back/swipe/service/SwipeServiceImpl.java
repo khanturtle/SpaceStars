@@ -1,6 +1,7 @@
 package com.spacestar.back.swipe.service;
 
 import com.spacestar.back.feignClient.service.FeignClientService;
+import com.spacestar.back.feignClient.vo.res.SwipeMemberInfoResVo;
 import com.spacestar.back.kafka.message.MatchingMessage;
 import com.spacestar.back.kafka.service.KafkaService;
 import com.spacestar.back.swipe.converter.SwipeConverter;
@@ -10,9 +11,11 @@ import com.spacestar.back.swipe.dto.res.SwipeListResDto;
 import com.spacestar.back.swipe.dto.res.SwipeResDto;
 import com.spacestar.back.swipe.repository.SwipeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -34,6 +37,7 @@ public class SwipeServiceImpl implements SwipeService {
     public List<SwipeListResDto> getReceivedSwipe(String uuid) {
         return swipeRepository.findWaitRequest(uuid);
     }
+
     //보낸 요청 조회
     @Override
     public List<SwipeListResDto> getSentSwipe(String uuid) {
@@ -56,7 +60,7 @@ public class SwipeServiceImpl implements SwipeService {
     public void deleteExpiredSwipe() {
         swipeRepository.deleteExpiredSwipe();
     }
-  
+
     @Override
     public SwipeCountResDto countSwipe(String uuid) {
         return SwipeCountResDto.builder()
@@ -65,20 +69,46 @@ public class SwipeServiceImpl implements SwipeService {
     }
 
     @Override
-    public List<SwipeResDto> getSwipeMembers(String uuid) {
+    public SwipeResDto getSwipeMembersAi(String uuid, Pageable pageable) {
         String response = feignClientService.getOpenAi(uuid);
         String[] tokens = response.substring(1, response.length() - 1).split(",\\s*");
-
         // List<SwipeResDto>를 담을 리스트 생성
-        List<SwipeResDto> swipeResDtoList = new ArrayList<>();
-
         // 각 토큰을 SwipeResDto 객체로 변환하여 리스트에 추가
-        for (String token : tokens) {
-            SwipeResDto swipeResDto = new SwipeResDto();
-            swipeResDto.setMemberUuid(token.trim()); // 공백 제거 후 설정
-            swipeResDtoList.add(swipeResDto);
-        }
+        List<String> swipeResDtoList = new ArrayList<>(Arrays.asList(tokens));
 
-        return swipeResDtoList;
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), swipeResDtoList.size());
+
+        // Create the sublist for the current page
+        List<String> paginatedList = swipeResDtoList.subList(start, end);
+        boolean isLast = end >= swipeResDtoList.size();
+
+        return SwipeResDto.builder()
+                .memberUuidList(paginatedList)
+                .nowPage(pageable.getPageNumber())
+                .isLast(isLast)
+                .build();
+    }
+
+    public SwipeResDto getSwipeMembers(String uuid, Pageable pageable) {
+
+        List<SwipeMemberInfoResVo> profileList = feignClientService.getProfileList();
+        List<String> swipeResDtoList = profileList.stream()
+                .map(SwipeMemberInfoResVo::getUuid)
+                .toList();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), swipeResDtoList.size());
+
+        boolean isLast = end >= swipeResDtoList.size();
+
+        // Create the sublist for the current page
+        List<String> paginatedList = swipeResDtoList.subList(start, end);
+
+        return SwipeResDto.builder()
+                .memberUuidList(paginatedList)
+                .nowPage(pageable.getPageNumber())
+                .isLast(isLast)
+                .build();
     }
 }

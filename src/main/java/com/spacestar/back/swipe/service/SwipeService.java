@@ -4,6 +4,7 @@ import com.spacestar.back.swipe.dto.req.SwipeReqDto;
 import com.spacestar.back.swipe.dto.res.SwipeCountResDto;
 import com.spacestar.back.swipe.dto.res.SwipeListResDto;
 import com.spacestar.back.swipe.dto.res.SwipeResDto;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -23,5 +24,7 @@ public interface SwipeService {
 
     SwipeCountResDto countSwipe(String uuid);
 
-    List<SwipeResDto> getSwipeMembers(String uuid);
+    SwipeResDto getSwipeMembersAi(String uuid, Pageable pageable);
+    SwipeResDto getSwipeMembers(String uuid, Pageable pageable);
+
 }
