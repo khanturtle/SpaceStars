@@ -5,7 +5,7 @@ export default function page() {
   // TODO: 스와이프 데이터 받아오기
 
   return (
-    <div className="flex-1 py-[40px] flex flex-col justify-center gap-[100px] a">
+    <div className="relative w-full bg-[#18243a]">
       <SwipeCardWrapper />
       {/* <RefreshButton /> */}
     </div>
