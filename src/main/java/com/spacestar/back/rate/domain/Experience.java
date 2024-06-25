@@ -25,9 +25,9 @@ public class Experience extends GlobalTime {
 	private String uuid;
 
 	@Column(length = 10)
-	private Long changeExp;
+	private short changeExp;
 
-	public Experience(Long id, String uuid, Long changeExp) {
+	public Experience(Long id, String uuid, short changeExp) {
 		this.id = id;
 		this.uuid = uuid;
 		this.changeExp = changeExp;
