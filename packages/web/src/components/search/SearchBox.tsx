@@ -72,11 +72,7 @@ async function getMainProfileImageByUuid(
   }
 }
 
-const SearchResultItem = ({
-  result,
-}: {
-  result: any
-}) => {
+const SearchResultItem = ({ result }: { result: any }) => {
   const { data: session, status } = useSession()
   const [profileImage, setProfileImage] = useState(defaultImage)
 
@@ -132,6 +128,8 @@ export default function SearchBox() {
   const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const throttleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
   const handleSearch = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.target.value.trim() // 양쪽 공백 제거
     setValue(searchValue)
@@ -170,25 +168,38 @@ export default function SearchBox() {
     }, 300)
   }
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === 's') {
+      event.preventDefault() // 기본 동작 막기
+      searchInputRef.current?.focus() // 검색창에 포커스 맞추기
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
   return (
     <div className="relative">
       <SearchInput
         className="h-14"
-        placeholder="Search"
+        placeholder="Search.. (Press Ctrl+S)"
         value={value}
         onChange={handleSearch}
         onFocus={handleSearch}
         onBlur={handlePopupClose}
+        inputRef={searchInputRef}
       />
 
       {isPopupVisible && (
         <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-md p-4 z-[9999] max-h-[300px] overflow-y-auto">
           {searchResults.length > 0 ? (
             searchResults.map((result) => (
-              <SearchResultItem
-                key={result.index}
-                result={result}
-              />
+              <SearchResultItem key={result.index} result={result} />
             ))
           ) : (
             <div>검색 결과가 없습니다.</div>
