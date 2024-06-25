@@ -1,0 +1,26 @@
+.search-result-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-result-item:hover {
+  background-color: #e0e0e0;
+}
+.search-result-item .image {
+  border-radius: 9999px;
+  margin-right: 8px;
+}
+.search-result-item .nickname {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

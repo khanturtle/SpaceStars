@@ -2,7 +2,6 @@ import FriendsWrapper from '@/components/Friends/FriendsWrapper'
 import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
 import MessageItem from './MessageItem'
-import SearchBox from './SearchBox'
 
 import styles from './chat.module.css'
 import GroupMessageItem from './GroupMessageItem'
@@ -68,7 +67,6 @@ export default function MessageContainer({
 }) {
   return (
     <div className={styles['messages-container']}>
-      <SearchBox />
       <FriendsWrapper friendsList={friendsList} />
       <MessageWrapper
         title="Messages"
