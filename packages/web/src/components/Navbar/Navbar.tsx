@@ -9,6 +9,7 @@ import { defaultImage } from '@/store/defaultState'
 import { LoginButton } from './NavbarItem'
 
 import Gutter from '../Gutter'
+import SearchBox from '../search/SearchBox'
 
 const NavRightBox = ({ children }: { children?: React.ReactNode }) => {
   return <div className="flex max-w-[328px] pl-[50px]">{children}</div>
@@ -37,6 +38,8 @@ export default function Navbar({
             </div>
           </Link>
         </div>
+        
+        <SearchBox />
 
         <Gutter className="flex-1" />
 
