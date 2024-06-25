@@ -1,56 +1,43 @@
 'use client'
-// FIXME: 수정 필요
 
-import { useState, createContext, useContext, ReactNode } from 'react'
+import { useState, useEffect } from 'react'
 
-// Toast Context
-interface Toast {
-  id: string
+import styles from './toast.module.css'
+
+interface ToastProps {
   message: string
-  type: 'success' | 'error' | 'info'
+  type?: 'info' | 'warning' | 'error'
+  duration?: number
+  position?: 'top' | 'bottom'
+  offsetY?: number
 }
 
-type ToastContextType = {
-  toasts: Toast[]
-  addToast: (toast: Toast) => void
-  removeToast: (id: string) => void
-}
+const Toast = ({
+  message,
+  type = 'info',
+  duration = 3000,
+  position = 'bottom',
+  offsetY = 20,
+}: ToastProps) => {
+  const [isVisible, setIsVisible] = useState(false)
 
-const ToastContext = createContext<ToastContextType | null>(null)
-
-// Toast Provider
-export const ToastProvider = ({ children }: { children: ReactNode }) => {
-  const [toasts, setToasts] = useState<Toast[]>([])
-
-  // Add a new toast
-  const addToast = (toast: Toast) => {
-    const newToast = { ...toast, id: Date.now().toString() }
-    setToasts((prevToasts) => [...prevToasts, newToast])
-
-    // Remove the toast after 1 second
+  useEffect(() => {
+    setIsVisible(true)
     const timer = setTimeout(() => {
-      removeToast(newToast.id)
-    }, 1000)
+      setIsVisible(false)
+    }, duration)
 
     return () => clearTimeout(timer)
-  }
-
-  // Remove a toast
-  const removeToast = (id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((t) => t.id !== id))
-  }
+  }, [message, type, duration])
 
   return (
-    <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
-      {children}
-    </ToastContext.Provider>
+    <div
+      className={`${styles['toast-container']} ${styles[type]} ${isVisible ? styles.visible : ''}`}
+      style={{ [position === 'top' ? 'top' : 'bottom']: `${offsetY}px` }}
+    >
+      <div className={styles['toast-message']}>{message}</div>
+    </div>
   )
 }
 
-export const useToast = () => {
-  const context = useContext(ToastContext)
-  if (!context) {
-    throw new Error('useToast must be used within a ToastProvider')
-  }
-  return context
-}
+export default Toast

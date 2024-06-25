@@ -11,12 +11,77 @@ import { Button, Checkbox, Input, Select } from '@packages/ui'
 
 import { checkNickname } from '@/apis/auth-sign'
 import { createUser } from '@/apis/createUser'
+import { createNewProfile } from '@/apis/createProfile'
+import { createProfileImage } from '@/apis/createProfileImage'
 
 import CustomDatePicker from '@/components/DatePicker/DatePicker'
 import styles from '@/components/sign/sign.module.css'
-import { createProfileImage } from '@/apis/createProfileImage'
+import Toast from '@/components/Toast/toast'
+
 import { AuthType } from '@/types/AuthType'
-import { createNewProfile } from '@/apis/createProfile'
+
+/** 로그인으로 토큰 받아오기 */
+async function getToken(email: string): Promise<AuthType | undefined> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/login`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+      },
+    ).then((r) => r.json())
+
+    if (res.code === 200) {
+      return res.result
+    }
+  } catch (err) {
+    console.error('getToken error', err)
+  }
+}
+
+/** 기본 이미지를 프로필에 추가 */
+const signUpWithImage = async (email: string) => {
+  try {
+    // api로 로그인 -> AccessToken 받아오기
+    const user = await getToken(email)
+    if (user) {
+      const { accessToken } = user
+
+      // 기본 이미지를 메인 프로필로 지정하기
+      const profile = {
+        profileImageUrl:
+          'https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/space-star-bucket/default-image.jpg',
+        main: true,
+      }
+      createProfileImage(profile, accessToken)
+    }
+  } catch (err) {
+    console.error('signUp error', err)
+  }
+}
+
+/** 프로필 생성 */
+const createProfile = async (email: string) => {
+  try {
+    // api로 로그인 -> AccessToken, profile 여부 받아오기
+    const user = await getToken(email)
+    if (user) {
+      const { accessToken, profile } = user
+
+      // 프로필이 false이면, 프로필 생성 api 호출
+      if (!profile) {
+        createNewProfile(accessToken)
+      }
+    }
+  } catch (err) {
+    console.error('createProfile error', err)
+  }
+}
 
 // MALE,FEMALE,OTHER
 export const genderList = [
@@ -58,7 +123,6 @@ const NicknameInput = ({
   )
 }
 
-// TODO: 유효성 검사: 닉네임, 성별 선택 여부, 생년월일 선택 여부, 개인정보 동의 여부
 export default function AdditionalInfoForm() {
   const query = useSearchParams()
 
@@ -80,98 +144,65 @@ export default function AdditionalInfoForm() {
   const createUserWithMore = createUser.bind(null, imageUrl, isAvailable)
   const [state, formAction] = useFormState(createUserWithMore, initialState)
 
+  const [toastMessage, setToastMessage] = useState<string>('')
+  const [toastType, setToastType] = useState<'info' | 'warning' | 'error'>(
+    'info',
+  )
+
+  /** 토스트 메시지 */
+  const showToast = (message: string, type: 'info' | 'warning' | 'error') => {
+    setToastMessage(message)
+    setToastType(type)
+  }
+
+  /** 닉네임 수정 핸들러 */
   const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value)
     setIsAvailable(false)
+    setToastMessage('')
   }
 
   /** 닉네임 중복검사 */
   const handleCheckNickname = async () => {
     const isNicknameAvailable = await checkNickname(nickname)
-    setIsAvailable(!isNicknameAvailable.exist)
-    // FIXME: alert 말고 다른 걸로 유효성 표시
-    alert(isNicknameAvailable.message)
-  }
+    console.log(isNicknameAvailable)
 
-  /** 로그인으로 토큰 받아오기 */
-  async function getToken(): Promise<AuthType | undefined> {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/login`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-          }),
-        },
-      ).then((r) => r.json())
-
-      if (res.code === 200) {
-        return res.result
-      }
-    } catch (err) {
-      console.error('getToken error', err)
-    }
-  }
-
-  /** 프로필 생성 */
-  const createProfile = async () => {
-    try {
-      // api로 로그인 -> AccessToken, profile 여부 받아오기
-      const user = await getToken()
-      if (user) {
-        const { accessToken, profile } = user
-
-        // 프로필이 false이면, 프로필 생성 api 호출
-        if (!profile) {
-          createNewProfile(accessToken)
-        }
-      }
-    } catch (err) {
-      console.error('createProfile error', err)
-    }
-  }
-
-  /** 기본 이미지를 프로필에 추가 */
-  const signUpWithImage = async () => {
-    try {
-      // api로 로그인 -> AccessToken 받아오기
-      const user = await getToken()
-      if (user) {
-        const { accessToken } = user
-
-        // 기본 이미지를 메인 프로필로 지정하기
-        const profile = {
-          profileImageUrl:
-            'https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/space-star-bucket/default-image.jpg',
-          main: true,
-        }
-        createProfileImage(profile, accessToken)
-      }
-    } catch (err) {
-      console.error('signUp error', err)
+    if (!isNicknameAvailable) {
+      showToast('다시 시도해주세요.', 'error')
+    } else if (!isNicknameAvailable?.exist) {
+      // 사용 가능
+      setIsAvailable(!isNicknameAvailable.exist)
+      showToast(isNicknameAvailable.message, 'info')
+    } else {
+      // 이미 있음
+      showToast(isNicknameAvailable.message, 'error')
     }
   }
 
   useEffect(() => {
     // 회원가입 성공
     if (state.status === 200) {
-      signUpWithImage()
-      createProfile()
+      signUpWithImage(email)
+      createProfile(email)
 
       // 로그인 후 dashboard로 이동
       signIn('kakao', { redirect: true, callbackUrl: '/dashboard' })
     } else if (state.status !== 0) {
-      // FIXME: 유효성 에러 표시
-      alert(state.message)
+      showToast(state.message, 'error')
     }
   }, [state])
 
   return (
     <form action={formAction}>
+      {toastMessage && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          position="bottom"
+          offsetY={130}
+        />
+      )}
+
       <div className={styles['form-wrapper']}>
         <Input
           id="email"

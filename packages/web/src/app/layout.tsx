@@ -15,7 +15,6 @@ import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
 import WebSocketProvider from '@/components/providers/socket-provider'
-import { ToastProvider } from '@/components/Toast/toast'
 
 import { defaultImage } from '@/store/defaultState'
 
@@ -70,16 +69,14 @@ export default async function RootLayout({
       </head>
       <body>
         <AuthSession>
-          <ToastProvider>
-            <WebSocketProvider>
-              <ModalProvider>
-                <Navbar session={session} profileImageUrl={profileImageUrl} />
+          <WebSocketProvider>
+            <ModalProvider>
+              <Navbar session={session} profileImageUrl={profileImageUrl} />
 
-                {children}
-                {modal}
-              </ModalProvider>
-            </WebSocketProvider>
-          </ToastProvider>
+              {children}
+              {modal}
+            </ModalProvider>
+          </WebSocketProvider>
         </AuthSession>
       </body>
     </html>

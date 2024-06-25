@@ -2,15 +2,20 @@
 
 import { type ElementRef, useEffect, useRef, useContext } from 'react'
 import { createPortal } from 'react-dom'
+
 import { CloseIcon } from '@packages/ui'
-import styles from './modal.module.css'
+
 import { ModalContext } from '../providers/modal-provider'
+
+import styles from './modal.module.css'
 
 function ModalClient({
   className,
   children,
+  isClose = true,
 }: {
   className?: string
+  isClose?: boolean
   children: React.ReactNode
 }) {
   const dialogRef = useRef<ElementRef<'dialog'>>(null)
@@ -41,14 +46,16 @@ function ModalClient({
         onClose={onDismiss}
       >
         {children}
-        <button
-          type="button"
-          aria-label="닫기"
-          onClick={onDismiss}
-          className={styles['close-button']}
-        >
-          <CloseIcon />
-        </button>
+        {isClose && (
+          <button
+            type="button"
+            aria-label="닫기"
+            onClick={onDismiss}
+            className={styles['close-button']}
+          >
+            <CloseIcon />
+          </button>
+        )}
       </dialog>
     </div>,
     modalRoot,

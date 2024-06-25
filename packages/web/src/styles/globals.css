@@ -36,6 +36,10 @@ a {
   user-drag: none;
 }
 
+#birth-0 {
+  display: none !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
