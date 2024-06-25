@@ -21,7 +21,7 @@ public class TeamChatRoomDto {
 
     private String password;
 
-    private int maxMembers;
+    private Integer maxMembers;
 
     private Boolean isFinished;
 

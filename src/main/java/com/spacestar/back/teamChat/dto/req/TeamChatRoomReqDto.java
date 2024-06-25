@@ -16,7 +16,7 @@ public class TeamChatRoomReqDto {
 
     private String password;
 
-    private int maxMembers;
+    private Integer maxMembers;
 
     private Long gameId;
 
