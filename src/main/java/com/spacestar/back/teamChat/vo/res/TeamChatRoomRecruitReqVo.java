@@ -22,7 +22,7 @@ public class TeamChatRoomRecruitReqVo {
     private List<TeamChatRoomDetailDto> memberUuidList;
 
     private int currentMembers;
-    private int maxMembers;
+    private Integer maxMembers;
     private Boolean isFinished;
     private Boolean isPassword;
     private String password;
