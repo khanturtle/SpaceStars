@@ -19,12 +19,14 @@ import com.spacestar.back.kafka.message.MatchingMessage;
 import com.spacestar.back.kafka.message.Message;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AlarmServiceImpl implements AlarmService {
 
@@ -38,9 +40,11 @@ public class AlarmServiceImpl implements AlarmService {
 			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
 			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
 		).doOnNext(message -> {
+			log.info("Received message for UUID {}: {}", uuid, message);
 			Mono.fromCallable(() -> alarmRepository.save(AlarmAddReqDto.toEntitySSE(uuid, message)))
 				.subscribeOn(Schedulers.boundedElastic())
-				.subscribe();
+				.subscribe(savedAlarm -> log.info("Saved alarm for UUID {}: {}", uuid, savedAlarm),
+					error -> log.error("Failed to save alarm for UUID {}: {}", uuid, error.getMessage()));
 		});
 	}
 
