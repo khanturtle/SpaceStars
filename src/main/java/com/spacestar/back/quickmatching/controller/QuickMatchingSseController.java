@@ -21,6 +21,7 @@ public class QuickMatchingSseController {
     private final ModelMapper mapper;
 
     @Operation(summary = "대기 큐 SSE 연결")
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid,
                                               @RequestBody QuickMatchingEnterReqVo reqVo) {
