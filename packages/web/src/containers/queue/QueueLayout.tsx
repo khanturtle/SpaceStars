@@ -18,6 +18,7 @@ import QueueDescription from './QueueDescription'
 import styles from './queue.module.css'
 import { useSSEMatchingConnection } from '@/hooks/useSSEMatchingConnection'
 import { useToast } from '@/components/Toast/toast-provider'
+import { enteredQueue } from '@/apis/actionQueue'
 
 const QuitModal = () => {
   const { closeModal } = useContext(ModalContext)
@@ -70,13 +71,6 @@ export default function QueueLayout({
     openModal(<QuitModal />, { isClose: false })
   }
 
-  // const eventSource = new EventSource('/sse-endpoint', {
-  //   method: 'POST',
-  //   body: JSON.stringify({ gameName: connectedGame }),
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // })
   const { eventSource, isConnected, showErrorModal, setShowErrorModal } =
     useSSEMatchingConnection(uuid, connectedGame)
   const { showToast } = useToast()
@@ -96,12 +90,17 @@ export default function QueueLayout({
 
   useEffect(() => {
     if (eventSource) {
+      const enteredGame = async () => {
+        await enteredQueue(connectedGame)
+      }
+      enteredGame()
+
       return () => {
         eventSource.close()
       }
     }
     return undefined
-  }, [])
+  }, [eventSource])
 
   return (
     <div className={styles.layout}>

@@ -7,16 +7,21 @@ import { options } from '@/app/api/auth/[...nextauth]/options'
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/quick-matching`
 
 /** 큐 입장 */
-export async function enteredQueue() {
+export async function enteredQueue(gameName: string) {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
+
+  const bodyData = {
+    gameName: gameName,
+  }
   try {
-    const response = await fetch(`${BASE_URL}/enter`, {
+    const response = await fetch(`${BASE_URL}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
       },
+      body: JSON.stringify(bodyData),
     })
 
     if (!response.ok) {
@@ -24,6 +29,8 @@ export async function enteredQueue() {
     }
 
     const data = await response.json()
+    console.log(data)
+
     return data
   } catch (err) {
     console.error(err)
