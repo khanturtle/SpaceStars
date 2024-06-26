@@ -1,35 +1,108 @@
-import SwipeCard from '@/components/Card/SwipeCard'
+'use client'
+
+import { useState } from 'react'
+
+import BackCard from './BackCard'
+import FrontCard from './FrontCard'
+
 import styles from './swipe.module.css'
 
-export default function SwipeCardWrapper() {
-  // TODO: 스와이프 5개 프랍받아 사용
-  const data = [
-    {
-      index: 1,
-    },
-    {
-      index: 2,
-    },
-    {
-      index: 3,
-    },
-    {
-      index: 4,
-    },
-    {
-      index: 5,
-    },
-  ]
+interface SwipeCardProps {
+  item: any
+  MBTIName: string | null
+  playGames: any
+  hoveringIndex: number
+  index: number
+  onMouseEnter: () => void
+  onMouseLeave: () => void
+}
+
+const SwipeCard = ({
+  item,
+  playGames,
+  MBTIName,
+  hoveringIndex,
+  index,
+  onMouseEnter,
+  onMouseLeave,
+}: SwipeCardProps) => {
+  const [flipped, setFlipped] = useState(false)
+
+  const handleFlip = () => {
+    setFlipped((prev) => !prev)
+  }
 
   return (
-    <section className={styles.cards}>
-      {data &&
-        data.map((item) => (
-          <SwipeCard>
-            <SwipeCard.Front />
-            <SwipeCard.Back />
-          </SwipeCard>
+    <div
+      className={`${styles['flip-card']} ${
+        hoveringIndex === index ? styles.hovering : ''
+      }`}
+      onClick={handleFlip}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div className={styles['flip-card-inner']}>
+        <div
+          className={`${styles['flip-card-front']} ${flipped ? styles.flipped : ''}`}
+        >
+          <FrontCard item={item} MBTIName={MBTIName} />
+        </div>
+        <div
+          className={`${styles['flip-card-back']} ${flipped ? styles.flipped : ''}`}
+        >
+          <BackCard item={item} playGames={playGames} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function SwipeCardWrapper({
+  profileDataList,
+  playGames,
+  MBTINames,
+}: {
+  profileDataList: any[]
+  playGames: any
+  MBTINames: any
+}) {
+  const [hoveringIndex, setHoveringIndex] = useState(-1)
+
+  const handleMouseEnter = (index: number) => {
+    setHoveringIndex(index)
+  }
+
+  const handleMouseLeave = () => {
+    setHoveringIndex(-1)
+  }
+  return (
+    <section className={styles['card-wrapper']}>
+      <div className={styles.cards}>
+        {profileDataList &&
+          profileDataList.map((item, index) => (
+            <SwipeCard
+              key={index}
+              item={item}
+              playGames={playGames[index] ?? []}
+              MBTIName={MBTINames[index]}
+              hoveringIndex={hoveringIndex}
+              index={index}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+            />
+          ))}
+      </div>
+
+      <div className={styles.indicator}>
+        {profileDataList.map((_, index) => (
+          <div
+            key={index}
+            className={`${styles.indicatorItem} ${
+              hoveringIndex === index ? styles.active : ''
+            }`}
+          />
         ))}
+      </div>
     </section>
   )
 }

@@ -16,31 +16,26 @@ import styles from './Sidebar.module.css'
 
 const SIDE_LINK = [
   {
-    index: 1,
     title: '대시보드',
     href: '/dashboard',
     svg: <HomeIcon />,
   },
   {
-    index: 2,
     title: '팀원 모집',
     href: '/dashboard/team-list',
     svg: <UserSearch />,
   },
   {
-    index: 3,
     title: '채팅',
     href: '/dashboard/chat',
     svg: <MessagesSquareIcon />,
   },
   {
-    index: 4,
     title: '추천 친구',
     href: '/dashboard/swipe',
     svg: <HeartHandshakeIcon />,
   },
   {
-    index: 4,
     title: '실시간 매칭',
     href: '/dashboard/queue',
     svg: <Radio />,
@@ -109,8 +104,8 @@ export default function Sidebar() {
       </button>
 
       <ul className={styles['side-wrapper']}>
-        {SIDE_LINK.map((item) => (
-          <SideBarItem key={item.index} item={item} />
+        {SIDE_LINK.map((item, index) => (
+          <SideBarItem key={index} item={item} />
         ))}
       </ul>
     </aside>

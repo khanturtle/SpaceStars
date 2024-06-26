@@ -1,0 +1,21 @@
+/* BackGroundTextBox.css */
+.background-text {
+  color: var(--White-50, #fff);
+
+  text-align: center;
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: Play;
+  font-size: 180px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 137px;
+  letter-spacing: -14.4px;
+
+  opacity: 0.29;
+
+  position: absolute;
+  top: 75px;
+}
+/* BackGroundTextBox.css */

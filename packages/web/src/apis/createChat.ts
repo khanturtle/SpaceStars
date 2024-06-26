@@ -61,8 +61,8 @@ export async function createTeam(prevState: unknown, formData: FormData) {
       body: JSON.stringify(postFormData),
     }).then((r) => r.json())
 
-    console.log(postFormData)
-    console.log(res)
+    // console.log(postFormData)
+    // console.log(res)
 
     return { ...res }
   } catch (error) {

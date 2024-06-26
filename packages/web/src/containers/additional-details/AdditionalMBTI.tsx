@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-import { getMbtiList, MbtiType } from '@/apis/data'
+import { getMbtiList, MbtiType } from '@/apis/getMbti'
 
 import {
   Select,

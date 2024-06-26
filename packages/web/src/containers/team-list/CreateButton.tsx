@@ -7,7 +7,7 @@ import { useFormState } from 'react-dom'
 
 import { PlusIcon } from 'lucide-react'
 
-import { Button, Checkbox, Input, Textarea } from '@packages/ui'
+import { Button, Checkbox, Input } from '@packages/ui'
 
 import {
   Select,
