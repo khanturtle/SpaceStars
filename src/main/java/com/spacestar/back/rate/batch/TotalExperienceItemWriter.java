@@ -10,7 +10,9 @@ import com.spacestar.back.rate.domain.TotalExperience;
 import com.spacestar.back.rate.repository.TotalExperienceRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TotalExperienceItemWriter implements ItemWriter<TotalExperience> {
@@ -33,6 +35,7 @@ public class TotalExperienceItemWriter implements ItemWriter<TotalExperience> {
 				.build();
 
 			totalExperienceRepository.save(updated);
+			log.info("Writing item: {}", updated);
 		});
 	}
 }

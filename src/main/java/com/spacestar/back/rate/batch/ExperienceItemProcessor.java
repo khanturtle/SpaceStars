@@ -10,7 +10,9 @@ import com.spacestar.back.rate.domain.Experience;
 import com.spacestar.back.rate.domain.TotalExperience;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ExperienceItemProcessor implements ItemProcessor<Experience, TotalExperience> {

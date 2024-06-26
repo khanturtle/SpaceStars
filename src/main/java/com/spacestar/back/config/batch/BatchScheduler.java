@@ -1,5 +1,6 @@
 package com.spacestar.back.config.batch;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.batch.core.Job;
@@ -21,11 +22,11 @@ public class BatchScheduler {
 	private final JobLauncher jobLauncher;
 	private final Job experienceAggregationJob;
 
-	@Scheduled(cron = "0 20 15 * * *")
+	@Scheduled(cron = "0 0 * * * *")
 	public void runBatchJob(){
 		try {
 			JobParameters jobParameters = new JobParametersBuilder()
-				.addDate("startAt", new Date())
+				.addLocalDateTime("time", LocalDateTime.now())
 				.toJobParameters();
 			jobLauncher.run(experienceAggregationJob, jobParameters);
 		} catch (Exception e) {
