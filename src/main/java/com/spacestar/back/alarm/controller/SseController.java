@@ -29,6 +29,6 @@ public class SseController {
 	@Operation(summary = "실시간 알림 SSE 입장")
 	public Flux<Message> matchingEvents(@RequestHeader("UUID") String uuid) {
 		log.info("연결시도");
-		return alarmService.streamAlarms(uuid);
+		return alarmService.connectToSse(uuid);
 	}
 }
