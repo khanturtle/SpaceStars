@@ -40,9 +40,6 @@ dependencies {
 	//config
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
-	//eureka-client
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
 	//validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -51,6 +48,15 @@ dependencies {
 
 	//modelMapper
 	implementation 'org.modelmapper:modelmapper:3.1.0'
+
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+	// Spring batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
 }
 
 dependencyManagement {
