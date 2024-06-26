@@ -1,6 +1,7 @@
 package com.spacestar.back.alarm.service;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
@@ -33,9 +34,27 @@ public class AlarmServiceImpl implements AlarmService {
 	private final AlarmMongoRepository alarmRepository;
 	private final Sinks.Many<MatchingMessage> matchingSink;
 	private final Sinks.Many<FriendMessage> friendSink;
+	private final ConcurrentHashMap<String, Boolean> connectedUuids = new ConcurrentHashMap<>();
 
+	// SSE연결
 	@Override
-	public Flux<Message> streamAlarms(String uuid) {
+	public Flux<Message> connectToSse(String uuid){
+		return handlesSseConnection(uuid);
+	}
+
+	// 연결상태 확인
+	private Flux<Message> handlesSseConnection(String uuid){
+		if(connectedUuids.putIfAbsent(uuid, Boolean.TRUE) != null){
+			log.info("UUID {} is already connected", uuid);
+			return Flux.error(new GlobalException(ResponseStatus.DUPLICATE_CONNECTION));
+		}
+		log.info("연결시도 : {}", uuid);
+		return streamAlarms(uuid)
+			.doFinally(signalType -> connectedUuids.remove(uuid));
+	}
+
+	// 알림 전송 &  db저장
+	private Flux<Message> streamAlarms(String uuid) {
 		return Flux.merge(
 			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
 			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))

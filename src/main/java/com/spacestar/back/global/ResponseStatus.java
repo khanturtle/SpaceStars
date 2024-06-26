@@ -17,7 +17,8 @@ public enum ResponseStatus {
 
     NOT_EXIST_ALARM(6000,"존재하지 않는 알림입니다." ),
     NOT_MODIFIED_ALARM(6001, "유효하지 않는 알림입니다."),
-    NOT_DELETE_ALARM(6002, "유효하지 않는 알림입니다.");
+    NOT_DELETE_ALARM(6002, "유효하지 않는 알림입니다."),
+    DUPLICATE_CONNECTION(6003, "이미 연결되었습니다.");
 
 
     private final int code;
