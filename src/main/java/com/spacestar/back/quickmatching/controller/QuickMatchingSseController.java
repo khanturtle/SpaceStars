@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 @Tag(name = "Queue", description = "빠른 매칭(큐)")
-@RequestMapping("/api/v1/quick-matching")
+@RequestMapping("/api/v1/sse-quick")
 @RequiredArgsConstructor
 public class QuickMatchingSseController {
     private final QuickMatchingService quickMatchingService;
@@ -22,7 +22,7 @@ public class QuickMatchingSseController {
 
     @Operation(summary = "대기 큐 SSE 연결")
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(value = "/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PostMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid,
                                               @RequestBody QuickMatchingEnterReqVo reqVo) {
         SseEmitter emitter = quickMatchingService.connect(mapper.map(reqVo, QuickMatchingEnterReqDto.class), uuid);
