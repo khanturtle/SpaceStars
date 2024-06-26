@@ -10,7 +10,6 @@ const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/quick-matching`
 export async function enteredQueue() {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
-
   try {
     const response = await fetch(`${BASE_URL}/enter`, {
       method: 'POST',

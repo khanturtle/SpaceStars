@@ -19,6 +19,7 @@ export const useSSEMatchingConnection = (uuid: string, token: string) => {
                 headers: {
                   UUID: uuid,
                   Authorization: token,
+                  'Content-Type': 'application/json',
                 },
               },
             )
