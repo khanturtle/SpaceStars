@@ -127,7 +127,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 score += (int) (System.currentTimeMillis() - tuple.getScore()) / 10000;
                 if (score > maxScore) {
                     maxScore = score;
-                    if (maxScore >= 30) {
+                    if (maxScore >= 10) {
                         matchedMemberUuid = matchMemberUuid;
                     }
                 }
