@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -70,11 +68,8 @@ public class SwipeServiceImpl implements SwipeService {
 
     @Override
     public SwipeResDto getSwipeMembersAi(String uuid, Pageable pageable) {
-        String response = feignClientService.getOpenAi(uuid);
-        String[] tokens = response.substring(1, response.length() - 1).split(",\\s*");
-        // List<SwipeResDto>를 담을 리스트 생성
-        // 각 토큰을 SwipeResDto 객체로 변환하여 리스트에 추가
-        List<String> swipeResDtoList = new ArrayList<>(Arrays.asList(tokens));
+
+        List<String> swipeResDtoList = feignClientService.getOpenAi(uuid);
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), swipeResDtoList.size());

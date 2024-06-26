@@ -15,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,17 +62,29 @@ public class FeignClientServiceImpl implements FeignClientService {
     }
 
     @Override
-    public String getOpenAi(String uuid) {
+    public List<String> getOpenAi(String uuid) {
         List<SwipeMemberInfoResVo> profileList = getProfileList();
+        Set<String> profileUuidSet = profileList.stream()
+                .map(SwipeMemberInfoResVo::getUuid)
+                .collect(Collectors.toSet());
+
         String profileListStr = profileList.stream()
                 .map(SwipeMemberInfoResVo::toString)
                 .collect(Collectors.joining(", "));
-        String prompt = String.format("이 데이터들 중에 [%s] 이 데이터와 성향이 잘 맞는 순서대로 이 데이터를 제외하고 모든 사용자의 uuid를 출력해줘.반환 형식은 9135f6d9-b4d4-4397-9b63-ff3369d531c2,3e0b5a99-d5fd-407c-8fde-59940dc512e4,jkl012 이런식으로 해줘.", SwipeMemberInfoResDto.toDto(getProfile(uuid), uuid).toString());
-        Message message = new Message("user", profileListStr + prompt);//유저 전체 데이터 추가
+        String prompt = String.format("이 데이터들 중에 [%s] 이 데이터와 성향이 잘 맞는 순서대로 이 데이터를 제외한 모든 사용자의 uuid를 출력해줘.성향이 잘 맞는건 mainGameId가 일치하는지를 최우선으로 보면돼.반환 형식은 9135f6d9-b4d4-4397-9b63-ff3369d531c2,3e0b5a99-d5fd-407c-8fde-59940dc512e4,jkl012 이런식으로 해줘.", SwipeMemberInfoResDto.toDto(getProfile(uuid), uuid).toString());
+        Message message = new Message("user", profileListStr + prompt);
 
         OpenAiReqDto request = new OpenAiReqDto("gpt-3.5-turbo", List.of(message));
-
         OpenAiResDto chatGPTResponse = openAiClient.getChatCompletion(request);
-        return chatGPTResponse.getChoices().get(0).getMessage().getContent();
+        String response = chatGPTResponse.getChoices().get(0).getMessage().getContent();
+
+        String[] tokens = response.substring(1, response.length() - 1).split(",\\s*");
+        List<String> swipeResDtoList = new ArrayList<>(Arrays.asList(tokens));
+
+        swipeResDtoList = swipeResDtoList.stream()
+                .filter(profileUuidSet::contains)
+                .limit(20)
+                .toList();
+        return swipeResDtoList;
     }
 }
