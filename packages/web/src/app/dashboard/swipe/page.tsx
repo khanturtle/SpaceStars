@@ -48,7 +48,7 @@ export default async function page({
   const swipeData = await getSwipeList(4, currentPage)
 
   const profileDataList = await Promise.all(
-    swipeData.memberUuidList.map(async (uuid: string) => {
+    swipeData?.memberUuidList.map(async (uuid: string) => {
       try {
         return await getAllProfileDataByUuid(uuid)
       } catch (error) {

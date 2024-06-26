@@ -11,7 +11,7 @@
     right: 60px;
   }
 }
-.refresh-button button {
+.refresh-button a {
   display: inline-flex;
   padding: 17px 22px;
   flex-direction: column;
