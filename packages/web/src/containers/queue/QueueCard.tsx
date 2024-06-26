@@ -16,15 +16,15 @@ const MatchingCard = () => {
 }
 
 const QueueFrontCard = ({
-  myData,
+  data,
   mbtiName,
 }: {
-  myData: any
+  data: any
   mbtiName: string
 }) => {
   return (
     <div className={styles['front-wrapper']}>
-      <FrontCard item={myData} MBTIName={mbtiName} />
+      <FrontCard item={data} MBTIName={mbtiName} />
     </div>
   )
 }

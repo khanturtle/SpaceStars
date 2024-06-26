@@ -3520,6 +3520,7 @@ __metadata:
     "@radix-ui/react-slot": "npm:^1.0.2"
     "@radix-ui/react-toast": "npm:^1.1.5"
     "@stomp/stompjs": "npm:^7.0.0"
+    "@types/event-source-polyfill": "npm:^1.0.5"
     "@types/node": "npm:^20.14.0"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -3532,6 +3533,7 @@ __metadata:
     eslint: "npm:^9.3.0"
     eslint-config-next: "npm:14.2.3"
     eslint-plugin-import: "npm:^2.29.1"
+    event-source-polyfill: "npm:^1.0.31"
     lucide-react: "npm:^0.379.0"
     next: "npm:14.2.3"
     next-auth: "npm:^4.24.7"
@@ -6143,6 +6145,13 @@ __metadata:
   version: 0.0.51
   resolution: "@types/estree@npm:0.0.51"
   checksum: 10c0/a70c60d5e634e752fcd45b58c9c046ef22ad59ede4bc93ad5193c7e3b736ebd6bcd788ade59d9c3b7da6eeb0939235f011d4c59bb4fc04d8c346b76035099dd1
+  languageName: node
+  linkType: hard
+
+"@types/event-source-polyfill@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@types/event-source-polyfill@npm:1.0.5"
+  checksum: 10c0/62f06c58312097c17f8489771057bb9e859269243a815ef27c8b50b48e084412fce4f90cb18252f807ed9016028321ce2713c90b77e77abc9e84a21bce5db724
   languageName: node
   linkType: hard
 
@@ -9828,6 +9837,13 @@ __metadata:
     d: "npm:1"
     es5-ext: "npm:~0.10.14"
   checksum: 10c0/75082fa8ffb3929766d0f0a063bfd6046bd2a80bea2666ebaa0cfd6f4a9116be6647c15667bea77222afc12f5b4071b68d393cf39fdaa0e8e81eda006160aff0
+  languageName: node
+  linkType: hard
+
+"event-source-polyfill@npm:^1.0.31":
+  version: 1.0.31
+  resolution: "event-source-polyfill@npm:1.0.31"
+  checksum: 10c0/79966f5084796e14f9a9dec315a2ccc220dedc51ff5f2b198dc80e3cb2ae01428d39d9bf66ed679f1944be086b9f6e84ea3dc933b81b0411c07f99672135679b
   languageName: node
   linkType: hard
 
