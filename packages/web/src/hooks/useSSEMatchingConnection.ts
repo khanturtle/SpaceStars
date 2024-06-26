@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { EventSourcePolyfill } from 'event-source-polyfill'
 
-export const useSSEMatchingConnection = (uuid: string) => {
+export const useSSEMatchingConnection = (uuid: string, token: string) => {
   const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(
     null,
   )
@@ -14,10 +14,11 @@ export const useSSEMatchingConnection = (uuid: string) => {
         import('event-source-polyfill')
           .then(({ EventSourcePolyfill }) => {
             const es = new EventSourcePolyfill(
-              `${process.env.NEXT_PUBLIC_API_URL_V1}/quick-matching/connect`,
+              `${process.env.NEXT_PUBLIC_API_URL_V1}/sse-quick`,
               {
                 headers: {
                   UUID: uuid,
+                  Authorization: token,
                 },
               },
             )
