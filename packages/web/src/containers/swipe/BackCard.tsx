@@ -1,4 +1,8 @@
+'use client'
+
 import Image from 'next/image'
+
+import { useContext } from 'react'
 
 import {
   GameIcon,
@@ -9,6 +13,10 @@ import {
 
 import { calculateLevel } from '@/lib/calculateLevel'
 
+import FormLayout from '@/components/form/formLayout'
+import { ModalContext } from '@/components/providers/modal-provider'
+
+import SwipeForm from './SwipeForm'
 import styles from './swipe.module.css'
 
 const Desc = ({
@@ -32,6 +40,7 @@ const Desc = ({
         <i>{icon}</i>
         <span className={styles['desc-title']}>{title}</span>
       </p>
+
       {type === 'intro' && (
         <p className={styles['desc-content']}>{description}</p>
       )}
@@ -42,7 +51,7 @@ const Desc = ({
           {game.optionInfo.length > 0 && (
             <p className={styles['main-option']}>
               {game.optionInfo.map((option: any, index: number) => (
-                <span key={index}>{option.name ?? ''}</span>
+                <span key={index}>{option.nameKor ?? ''}</span>
               ))}
             </p>
           )}
@@ -73,6 +82,26 @@ export default function BackCard({
 
   // playGames에서 main: true
   const mainGame = playGames.find((game: any) => game.main)
+
+  const { openModal } = useContext(ModalContext)
+
+  /** 매칭 요청 */
+  const handleClick = () => {
+    openModal(
+      <div className={`relative h-full flex flex-col items-center`}>
+        <FormLayout
+          className="relative h-full px-[204px] pt-[90px] pb-[85px]
+                  flex flex-col items-center"
+        >
+          <FormLayout.Legend
+            title="Matching Request"
+            description={`요청 메시지를 입력해주세요.`}
+          />
+          <SwipeForm uuid={item.uuid} />
+        </FormLayout>
+      </div>,
+    )
+  }
 
   return (
     <div className={styles.back}>
@@ -119,10 +148,7 @@ export default function BackCard({
       </div>
 
       <div className={styles['button-wrapper']}>
-        <TeamCardJoinButton
-          buttonText="매칭 요청하기"
-          onClick={() => console.log(1)}
-        />
+        <TeamCardJoinButton buttonText="매칭 요청하기" onClick={handleClick} />
       </div>
     </div>
   )

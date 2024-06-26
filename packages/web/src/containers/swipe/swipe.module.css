@@ -2,7 +2,8 @@
 .refresh-button {
   position: absolute;
   top: 40px;
-  right: 340px;
+  /* right: 340px; */
+  right: 60px;
   z-index: 3000;
 }
 @media screen and (max-width: 1600px) {
@@ -264,4 +265,20 @@
   font-weight: 500;
   font-size: 16px;
   margin-left: 4px;
+}
+
+/* form */
+.character-count {
+  font-size: 12px;
+  color: #666;
+  position: absolute;
+  right: 12px;
+  bottom: 2px;
+}
+.textarea {
+  width: 100% !important;
+  height: 100% !important;
+}
+.memo-button {
+  background-color: black !important;
 }

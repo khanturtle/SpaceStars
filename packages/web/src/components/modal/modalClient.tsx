@@ -36,7 +36,7 @@ function ModalClient({
   }
 
   return createPortal(
-    <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[1000] inset-0 h-full">
+    <div className="absolute bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-[9000] inset-0 h-full">
       <dialog
         ref={dialogRef}
         className={`flex flex-col items-center justify-around fixed inset-0 

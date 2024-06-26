@@ -39,16 +39,14 @@ const Textarea = ({
           </legend>
         )}
 
-        <div className="textfield">
-          <textarea
-            id={id}
-            name={id}
-            type="text"
-            autoComplete="off"
-            disabled={disabled}
-            {...props}
-          />
-        </div>
+        <textarea
+          id={id}
+          name={id}
+          type="text"
+          autoComplete="off"
+          disabled={disabled}
+          {...props}
+        />
       </div>
     </div>
   )
