@@ -11,7 +11,7 @@ export async function getSwipeList(pageSize: number, page: number) {
 
   try {
     const response = await fetch(
-      `${BASE_URL}/ai?pageSize=${pageSize}&page=${page}`,
+      `${BASE_URL}?pageSize=${pageSize}&page=${page}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -24,6 +24,36 @@ export async function getSwipeList(pageSize: number, page: number) {
     )
     if (!response.ok) {
       throw new Error('Failed to getSwipeList')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (error) {
+    console.error(error)
+    return undefined
+  }
+}
+
+/** 스와이프 목록 조회 AI */
+export async function getSwipeListByAI(pageSize: number, page: number) {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  try {
+    const response = await fetch(
+      `${BASE_URL}/ai?pageSize=${pageSize}&page=${page}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+        next: {
+          tags: ['swipeAI'],
+        },
+      },
+    )
+    if (!response.ok) {
+      throw new Error('Failed to getSwipeListByAI')
     }
 
     const data = await response.json()

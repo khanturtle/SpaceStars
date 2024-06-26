@@ -15,6 +15,7 @@ export default function RefreshButton({ nextPage }: { nextPage: number }) {
     }
   }
 
+  // TODO: 위치 수정 필요
   return (
     <div className={`${styles['refresh-button']}`}>
       <button type="button" aria-label="swipe-refresh" onClick={handleRefresh}>

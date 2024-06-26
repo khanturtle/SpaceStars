@@ -1,6 +1,6 @@
 /* RefreshButton.css */
 .refresh-button {
-  position: fixed;
+  position: absolute;
   top: 40px;
   right: 340px;
   z-index: 3000;
@@ -10,7 +10,6 @@
     right: 60px;
   }
 }
-
 .refresh-button button {
   display: inline-flex;
   padding: 17px 22px;
@@ -35,6 +34,7 @@
 
 /* SwipeCardWrapper.css */
 .card-wrapper {
+  width: 100%;
 }
 .cards {
   display: flex;
@@ -102,7 +102,8 @@
 }
 
 .flip-card-back {
-  transform: rotateY(180deg);
+  /* FIXME: 지금 백 수정중이라서 돌려놈 */
+  /* transform: rotateY(-180deg); */
   box-shadow: 0px 0px 10px 0px #ffda4e;
 }
 /* SwipeCard.css */

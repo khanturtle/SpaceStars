@@ -28,6 +28,8 @@ export default async function page({
 
   const nextPage = swipeData && swipeData.last ? 0 : swipeData.nowPage + 1
 
+  // console.log(profileDataList)
+
   return (
     // FIXME: 배경색 수정
     <div className="relative w-full h-full flex items-center justify-center bg-[#18243a]">

@@ -1,3 +1,4 @@
+import { calculateLevel } from '@/lib/calculateLevel'
 import Image from 'next/image'
 
 import styles from './swipe.module.css'
@@ -6,6 +7,9 @@ import styles from './swipe.module.css'
  * 프로필 사진, 닉네임, 한줄메시지, 레벨, 대표게임, 내가 하는 게임 */
 
 export default function BackCard({ item }: { item: any }) {
+  const level = calculateLevel(item.profileInfo.exp ?? 0)
+  console.log(item.profileInfo.exp, level)
+
   return (
     <div className={styles.back}>
       <div className={styles.profile}>
@@ -17,7 +21,7 @@ export default function BackCard({ item }: { item: any }) {
           height={55}
         />
         <div className={styles.nickname}>
-          <p className={styles.level}>Lv.</p>
+          <p className={styles.level}>Lv. {level}</p>
           <p>{item.authProfile.nickname ?? ''}</p>
         </div>
       </div>
