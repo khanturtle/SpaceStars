@@ -11,7 +11,7 @@ public enum ResponseSuccess {
 
     SUCCESS(200, "요청에 성공했습니다."),
     //스와이프
-    SWIPE_ADD_SUCCESS(HttpStatus.CREATED.value(), "채팅 요청 보내기 성공"),
+    SWIPE_ADD_SUCCESS(HttpStatus.CREATED.value(), "채팅 요청을 보냈습니다!"),
     SWIPE_GET_SUCCESS(HttpStatus.OK.value(), "받은 채팅 요청 목록 조회 성공"),
     SWIPE_SENT_GET_SUCCESS(HttpStatus.OK.value(), "보낸 채팅 요청 목록 조회 성공"),
     SWIPE_AGREE_SUCCESS(HttpStatus.OK.value(), "채팅 요청 수락 성공"),
