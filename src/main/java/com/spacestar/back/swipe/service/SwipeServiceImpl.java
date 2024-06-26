@@ -2,6 +2,8 @@ package com.spacestar.back.swipe.service;
 
 import com.spacestar.back.feignClient.service.FeignClientService;
 import com.spacestar.back.feignClient.vo.res.SwipeMemberInfoResVo;
+import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.kafka.message.MatchingMessage;
 import com.spacestar.back.kafka.service.KafkaService;
 import com.spacestar.back.swipe.converter.SwipeConverter;
@@ -14,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -27,6 +27,9 @@ public class SwipeServiceImpl implements SwipeService {
 
     @Override
     public void addSwipe(SwipeReqDto swipeReqDto, String uuid) {
+        if (swipeRepository.existsByMatchFromMemberAndMatchToMember(uuid, swipeReqDto.getMatchToMember())) {
+            throw new GlobalException(ResponseStatus.SWIPE_ALREADY_EXIST);
+        }
         kafkaService.sendMessage(MatchingMessage.toMatchingMessage(uuid, swipeReqDto));
         swipeRepository.save(SwipeConverter.toEntity(swipeReqDto, uuid));
         //Todo 요청을 보내면 추천인 목록에서 제외 시켜야함 (거절시 처럼 Redis에 저장해야할듯?)
@@ -70,11 +73,8 @@ public class SwipeServiceImpl implements SwipeService {
 
     @Override
     public SwipeResDto getSwipeMembersAi(String uuid, Pageable pageable) {
-        String response = feignClientService.getOpenAi(uuid);
-        String[] tokens = response.substring(1, response.length() - 1).split(",\\s*");
-        // List<SwipeResDto>를 담을 리스트 생성
-        // 각 토큰을 SwipeResDto 객체로 변환하여 리스트에 추가
-        List<String> swipeResDtoList = new ArrayList<>(Arrays.asList(tokens));
+
+        List<String> swipeResDtoList = feignClientService.getOpenAi(uuid);
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), swipeResDtoList.size());
@@ -90,6 +90,7 @@ public class SwipeServiceImpl implements SwipeService {
                 .isLast(isLast)
                 .build();
     }
+
 
     public SwipeResDto getSwipeMembers(String uuid, Pageable pageable) {
 

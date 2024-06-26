@@ -11,7 +11,7 @@ public interface FeignClientService {
 
     AuthResDto getAuth(String memberUuid);
 
-    String getOpenAi(String uuid);
+    List<String> getOpenAi(String uuid);
 
     List<SwipeMemberInfoResVo> getProfileList();
 }
