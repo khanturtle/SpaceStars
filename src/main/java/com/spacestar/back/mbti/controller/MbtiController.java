@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +39,7 @@ public class MbtiController {
 
     @Operation(summary = "Mbti id로 이름 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<MbtiNameResVo> getMbtiName(Long id){
+    public ResponseEntity<MbtiNameResVo> getMbtiName(@PathVariable Long id){
 
         return new ResponseEntity<>(ResponseSuccess.MBTI_NAME_SELECT_SUCCESS,
                 mapper.map(mbtiService.getMbtiName(id), MbtiNameResVo.class));
