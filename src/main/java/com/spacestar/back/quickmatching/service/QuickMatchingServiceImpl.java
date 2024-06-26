@@ -47,7 +47,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
     //UUID로 SSE 연결
     @Override
-    public SseEmitter connect(QuickMatchingEnterReqDto reqDto, String uuid) {
+    public SseEmitter connect(String gameName, String uuid) {
         SseEmitter sseEmitter = new SseEmitter(300_000L);
 
         final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
@@ -75,8 +75,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         acceptMatchingStatus(uuid, quickMatchingMembers);
     }
 
-
-
     //거절처리
     @Override
     public void rejectQuickMatch(String uuid) {
@@ -84,7 +82,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         assert quickMatchingMembers != null;
         rejectMatchingStatus(uuid, quickMatchingMembers);
     }
-
 
     //큐 수락 여부 확인 후 수락한 사용자 대기열에서 삭제
     @Override
