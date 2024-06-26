@@ -1,5 +1,5 @@
 import styles from './queue.module.css'
-import { MatchingCard } from '@/containers/queue/QueueCard'
+import { MatchingCard, QueueFrontCard } from '@/containers/queue/QueueCard'
 
 const QueueLoader = ({ isMatching }: { isMatching: boolean }) => {
   const color = isMatching ? '#FFFFFF' : '#FF5DBF'
@@ -26,3 +26,4 @@ export default function QueueCardWrapper({
 
 QueueCardWrapper.Loader = QueueLoader
 QueueCardWrapper.MatchingCard = MatchingCard
+QueueCardWrapper.FrontCard = QueueFrontCard

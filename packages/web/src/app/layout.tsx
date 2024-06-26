@@ -18,6 +18,7 @@ import AuthSession from '@/components/providers/session-provider'
 import WebSocketProvider from '@/components/providers/socket-provider'
 
 import { defaultImage } from '@/store/defaultState'
+import { ToastProvider } from '@/components/Toast/toast-provider'
 
 export const metadata: Metadata = {
   title: '우주별: 우리 주변의 별별 사람들',
@@ -70,14 +71,15 @@ export default async function RootLayout({
       </head>
       <body>
         <AuthSession>
-          <WebSocketProvider>
-            <ModalProvider>
-              <Navbar session={session} profileImageUrl={profileImageUrl} />
-
-              {children}
-              {modal}
-            </ModalProvider>
-          </WebSocketProvider>
+          <ToastProvider>
+            <WebSocketProvider>
+              <ModalProvider>
+                <Navbar session={session} profileImageUrl={profileImageUrl} />
+                {children}
+                {modal}
+              </ModalProvider>
+            </WebSocketProvider>
+          </ToastProvider>
         </AuthSession>
       </body>
     </html>

@@ -1,17 +1,14 @@
-import BackGroundTextBox from '@/components/Background/BackGroundTextBox'
-import NavHeader from '@/components/Navbar/NavHeader'
-import QueueLayout from '@/containers/queue/QueueLayout'
+import { getGames } from '@/apis/getGame'
 
-export default function page() {
+import GameSelectBox from '@/containers/queue/GameSelectBox'
+
+export default async function page() {
+  const games = await getGames()
+
   return (
     // FIXME: 배경 수정
-    <div className="relative flex-1 bg-[#18243a]">
-      <BackGroundTextBox text="GAMER SEARCHING" />
-      <NavHeader
-        title="QUEUE"
-        description="게임을 같이 할 나의 친구를 찾아 드려요!"
-      />
-      <QueueLayout />
+    <div className="relative flex items-center justify-center w-full h-full px-[16px] bg-[#18243a]">
+      <GameSelectBox games={games} />
     </div>
   )
 }

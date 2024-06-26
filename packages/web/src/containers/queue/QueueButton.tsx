@@ -1,22 +1,23 @@
 'use client'
 
-import { RotateCcw } from 'lucide-react'
+import { PlayIcon, RefreshIcon } from '@packages/ui'
 
 import styles from './queue.module.css'
 
-// TODO: 아이콘 받아오기
-const RefreshButton = () => {
+/** 큐 취소 */
+const RefreshButton = ({ onClick }: { onClick: () => void }) => {
   return (
-    <button type="button" className={styles.refresh}>
-      <RotateCcw stroke="#fff" />
+    <button type="button" className={styles.refresh} onClick={onClick}>
+      <RefreshIcon />
     </button>
   )
 }
 
-const MatchingButton = () => {
+/** 큐 수락 */
+const MatchingButton = ({ onClick }: { onClick: () => void }) => {
   return (
-    <button type="button" className={styles.matchingBtn}>
-      <RotateCcw stroke="#fff" />
+    <button type="button" className={styles.matchingBtn} onClick={onClick}>
+      <PlayIcon />
     </button>
   )
 }
@@ -26,12 +27,7 @@ export default function QueueButton({
 }: {
   children?: React.ReactNode
 }) {
-  return (
-    <div className={styles.buttons}>
-      <RefreshButton />
-      {children}
-    </div>
-  )
+  return <div className={styles.buttons}>{children}</div>
 }
 
 QueueButton.RefreshButton = RefreshButton
