@@ -54,13 +54,11 @@ export default function QueueLayout({
   mbtiName,
   connectedGame,
   uuid,
-  token,
 }: {
   myData: any
   mbtiName: string
   connectedGame: string
   uuid: string
-  token: string
 }) {
   // 매칭 완료면 true, 매칭 중이면 false
   const [isMatching, setIsMatching] = useReducer((state) => !state, false)
@@ -80,7 +78,7 @@ export default function QueueLayout({
   //   },
   // })
   const { eventSource, isConnected, showErrorModal, setShowErrorModal } =
-    useSSEMatchingConnection(uuid, token)
+    useSSEMatchingConnection(uuid, connectedGame)
   const { showToast } = useToast()
   const router = useRouter()
 
