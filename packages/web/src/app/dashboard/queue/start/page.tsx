@@ -15,6 +15,7 @@ export default async function page({
 }) {
   const session = await getServerSession(options)
   const uuid = session?.user?.data.uuid
+  const token = session?.user?.data.token
 
   // 내 정보 가져오기
   const myData = await getAllProfileData()
@@ -37,6 +38,7 @@ export default async function page({
         mbtiName={myMbtiName}
         connectedGame={connectedGame}
         uuid={uuid}
+        token={token}
       />
     </div>
   )
