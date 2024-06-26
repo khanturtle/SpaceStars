@@ -68,6 +68,7 @@
   height: 400px;
   perspective: 1000px;
   font-family: sans-serif;
+  border-radius: 1rem;
 
   z-index: 1000;
 }
@@ -88,7 +89,6 @@
 
 .flip-card-front,
 .flip-card-back {
-  background-color: #fff;
   box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
   position: absolute;
   display: flex;
@@ -99,6 +99,9 @@
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   border-radius: 1rem;
+
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(8px);
 }
 
 .flip-card-back {
@@ -114,10 +117,8 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
-  /* 
-  gap: 14px; */
-
   padding: 0 30px;
+  border-radius: 1rem;
 }
 
 .profile {
@@ -149,6 +150,7 @@
 }
 .name {
   font-size: 16px;
+  text-align: start;
 }
 
 .desc-all {
@@ -208,3 +210,58 @@
   transform: translateX(-50%);
 }
 /* BackCard.css */
+
+/* FrontCard.css */
+.front {
+  z-index: 10;
+  border-radius: 1rem;
+}
+.front-image {
+  object-fit: cover;
+  opacity: 0.8;
+  border-radius: 1rem;
+}
+.front-title {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+
+  position: absolute;
+  bottom: 0px;
+
+  background: rgba(125, 18, 255, 0.2);
+  padding: 16px 18px;
+  border-radius: 1rem;
+}
+.front-name {
+  color: var(--White-50, #fff);
+  leading-trim: both;
+  text-edge: cap;
+  text-align: start;
+
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}
+.front-title .others {
+  color: var(--White-50, #fff);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  opacity: 0.6;
+}
+.others > span:not(:last-child) {
+  padding-right: 10px;
+  position: relative;
+}
+.others > span:not(:last-child)::after {
+  content: '|';
+  position: absolute;
+  font-weight: 500;
+  font-size: 16px;
+  margin-left: 4px;
+}

@@ -71,7 +71,7 @@ export default function BackCard({
 }) {
   const level = calculateLevel(item.profileInfo.exp ?? 0)
 
-  // playGames에서 main: true 찾기
+  // playGames에서 main: true
   const mainGame = playGames.find((game: any) => game.main)
 
   return (

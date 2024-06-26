@@ -87,7 +87,7 @@ export async function getGameOptionDetail(
     const data = await response.json()
 
     if (data.code !== 200) {
-      throw new Error('Failed get option detail')
+      throw new Error('Failed getGameOptionDetail')
     }
 
     return data.result
@@ -111,13 +111,11 @@ export async function getOptionDetail(
   const optionName = OPTION_NAME[option]
 
   try {
-    const response = await fetch(
-      `${GAME_BASE_URL}/option/${optionName}/${id}`,
-    )
+    const response = await fetch(`${GAME_BASE_URL}/option/${optionName}/${id}`)
     const data = await response.json()
 
     if (data.code !== 200) {
-      throw new Error('Failed get option detail')
+      throw new Error('Failed getOptionDetail')
     }
 
     return data.result

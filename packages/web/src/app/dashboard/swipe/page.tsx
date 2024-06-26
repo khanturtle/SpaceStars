@@ -1,3 +1,4 @@
+import { getMbtiById } from '@/apis/getMbti'
 import { getSwipeList } from '@/apis/getSwipe'
 
 import BackGroundTextBox from '@/components/Background/BackGroundTextBox'
@@ -23,6 +24,20 @@ async function fetchAllPlayGames(profileDataList: any) {
   return results
 }
 
+async function fetchAllMBTI(profileDataList: any) {
+  const results = []
+
+  for (const profile of profileDataList) {
+    try {
+      const mbtiName = await getMbtiById(profile.profileInfo.mbtiId)
+      results.push(mbtiName?.mbtiName ?? '')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  return results
+}
+
 export default async function page({
   searchParams,
 }: {
@@ -44,8 +59,8 @@ export default async function page({
   )
 
   const nextPage = swipeData && swipeData.last ? 0 : swipeData.nowPage + 1
-
   const playGames = await fetchAllPlayGames(profileDataList)
+  const MBTINames = await fetchAllMBTI(profileDataList)
 
   return (
     // FIXME: 배경색 수정
@@ -59,6 +74,7 @@ export default async function page({
       <SwipeCardWrapper
         profileDataList={profileDataList}
         playGames={playGames}
+        MBTINames={MBTINames}
       />
 
       <BackGroundTextBox text="NEXT GAMER MATCHING" />

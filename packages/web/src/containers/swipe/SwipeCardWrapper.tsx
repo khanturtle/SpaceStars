@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react'
+
 import BackCard from './BackCard'
+import FrontCard from './FrontCard'
 
 import styles from './swipe.module.css'
 
-/** 앞면 데이터:
- * 프로필 사진, 닉네임, 성별, 나이, 좋아하는게임, 내가하는게임, MBTI, 게임성향테스트 결과 */
-
 interface SwipeCardProps {
   item: any
+  MBTIName: string | null
   playGames: any
   hoveringIndex: number
   index: number
@@ -20,6 +20,7 @@ interface SwipeCardProps {
 const SwipeCard = ({
   item,
   playGames,
+  MBTIName,
   hoveringIndex,
   index,
   onMouseEnter,
@@ -44,7 +45,7 @@ const SwipeCard = ({
         <div
           className={`${styles['flip-card-front']} ${flipped ? styles.flipped : ''}`}
         >
-          앞
+          <FrontCard item={item} MBTIName={MBTIName} />
         </div>
         <div
           className={`${styles['flip-card-back']} ${flipped ? styles.flipped : ''}`}
@@ -59,9 +60,11 @@ const SwipeCard = ({
 export default function SwipeCardWrapper({
   profileDataList,
   playGames,
+  MBTINames,
 }: {
   profileDataList: any[]
   playGames: any
+  MBTINames: any
 }) {
   const [hoveringIndex, setHoveringIndex] = useState(-1)
 
@@ -78,9 +81,10 @@ export default function SwipeCardWrapper({
         {profileDataList &&
           profileDataList.map((item, index) => (
             <SwipeCard
+              key={index}
               item={item}
               playGames={playGames[index] ?? []}
-              key={index}
+              MBTIName={MBTINames[index]}
               hoveringIndex={hoveringIndex}
               index={index}
               onMouseEnter={() => handleMouseEnter(index)}
