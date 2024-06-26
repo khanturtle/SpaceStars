@@ -1,0 +1,16 @@
+
+.nav-header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* top: -100px; */
+
+  /* width: calc(100% - 541px); */
+}
+
+/* 
+@media screen and (max-width: 1600px) {
+  .nav-header {
+    width: 100%;
+  }
+} */

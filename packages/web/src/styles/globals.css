@@ -42,15 +42,6 @@ a {
   display: none !important;
 }
 
-.nav-header {
-  width: calc(100% - 541px);
-}
-@media screen and (max-width: 1600px) {
-  .nav-header {
-    width: 100%;
-  }
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
