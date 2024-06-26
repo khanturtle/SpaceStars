@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 
+import FrontCard from '@/components/Card/FrontCard'
+
 import BackCard from './BackCard'
-import FrontCard from './FrontCard'
 
 import styles from './swipe.module.css'
 

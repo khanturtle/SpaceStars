@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { calculateAge } from '@/lib/calculateAge'
 import { defaultImage } from '@/store/defaultState'
 
-import styles from './swipe.module.css'
+import styles from './card.module.css'
 
 export default function FrontCard({
   item,
@@ -12,14 +12,16 @@ export default function FrontCard({
   item: any
   MBTIName: string | null
 }) {
-  const gender = item.authProfile.gender ? item.authProfile.gender : ''
-  const age = item.authProfile.birth ? calculateAge(item.authProfile.birth) : ''
+  const gender = item?.authProfile?.gender ? item.authProfile.gender : ''
+  const age = item?.authProfile?.birth
+    ? calculateAge(item.authProfile.birth)
+    : ''
 
   return (
     <>
       <Image
-        src={item.mainProfileImage ?? defaultImage}
-        alt={item.uuid}
+        src={item?.mainProfileImage ?? defaultImage}
+        alt={item?.uuid ?? ''}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         placeholder="blur"
@@ -30,7 +32,7 @@ export default function FrontCard({
       <div className={styles.front}>
         <div className={styles['front-title']}>
           <h3 className={styles['front-name']}>
-            {item.authProfile.nickname ?? ''}
+            {item?.authProfile?.nickname ?? ''}
           </h3>
           <div className={styles.others}>
             {gender && <span>{gender}</span>}
