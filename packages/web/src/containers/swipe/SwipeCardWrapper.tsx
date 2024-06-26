@@ -10,6 +10,7 @@ import styles from './swipe.module.css'
 
 interface SwipeCardProps {
   item: any
+  playGames: any
   hoveringIndex: number
   index: number
   onMouseEnter: () => void
@@ -18,6 +19,7 @@ interface SwipeCardProps {
 
 const SwipeCard = ({
   item,
+  playGames,
   hoveringIndex,
   index,
   onMouseEnter,
@@ -47,7 +49,7 @@ const SwipeCard = ({
         <div
           className={`${styles['flip-card-back']} ${flipped ? styles.flipped : ''}`}
         >
-          <BackCard item={item} />
+          <BackCard item={item} playGames={playGames} />
         </div>
       </div>
     </div>
@@ -56,8 +58,10 @@ const SwipeCard = ({
 
 export default function SwipeCardWrapper({
   profileDataList,
+  playGames,
 }: {
   profileDataList: any[]
+  playGames: any
 }) {
   const [hoveringIndex, setHoveringIndex] = useState(-1)
 
@@ -75,6 +79,7 @@ export default function SwipeCardWrapper({
           profileDataList.map((item, index) => (
             <SwipeCard
               item={item}
+              playGames={playGames[index] ?? []}
               key={index}
               hoveringIndex={hoveringIndex}
               index={index}

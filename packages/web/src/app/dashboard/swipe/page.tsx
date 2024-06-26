@@ -4,7 +4,24 @@ import BackGroundTextBox from '@/components/Background/BackGroundTextBox'
 import NavHeader from '@/components/Navbar/NavHeader'
 import RefreshButton from '@/containers/swipe/RefreshButton'
 import SwipeCardWrapper from '@/containers/swipe/SwipeCardWrapper'
+
+import { fetchPlayGames } from '@/lib/fetchGamesData'
 import { getAllProfileDataByUuid } from '@/lib/getAllProfileData'
+
+async function fetchAllPlayGames(profileDataList: any) {
+  const results = []
+
+  for (const profile of profileDataList) {
+    try {
+      const gameData = await fetchPlayGames(profile.playGames)
+      results.push(gameData)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return results
+}
 
 export default async function page({
   searchParams,
@@ -28,7 +45,7 @@ export default async function page({
 
   const nextPage = swipeData && swipeData.last ? 0 : swipeData.nowPage + 1
 
-  // console.log(profileDataList)
+  const playGames = await fetchAllPlayGames(profileDataList)
 
   return (
     // FIXME: 배경색 수정
@@ -39,7 +56,10 @@ export default async function page({
       />
       <RefreshButton nextPage={nextPage} />
 
-      <SwipeCardWrapper profileDataList={profileDataList} />
+      <SwipeCardWrapper
+        profileDataList={profileDataList}
+        playGames={playGames}
+      />
 
       <BackGroundTextBox text="NEXT GAMER MATCHING" />
     </div>

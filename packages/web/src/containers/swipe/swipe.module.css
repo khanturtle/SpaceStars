@@ -102,19 +102,31 @@
 }
 
 .flip-card-back {
-  /* FIXME: 지금 백 수정중이라서 돌려놈 */
-  /* transform: rotateY(-180deg); */
+  transform: rotateY(-180deg);
   box-shadow: 0px 0px 10px 0px #ffda4e;
 }
 /* SwipeCard.css */
 
 /* BackCard.css */
+.back {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  /* 
+  gap: 14px; */
+
+  padding: 0 30px;
+}
+
 .profile {
-  background-color: red;
   height: 55px;
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-top: 26px;
+  margin-bottom: 10px;
 }
 .profile .image {
   width: 55px;
@@ -128,18 +140,71 @@
   align-items: flex-start;
 
   color: #7d12ff;
-
-  font-size: 16px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
 }
 .level {
-  color: #7d12ff;
+  font-size: 14px;
+}
+.name {
+  font-size: 16px;
+}
 
+.desc-all {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+
+  margin-top: 24px;
+  margin-bottom: 14px;
+}
+.desc-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  height: 54px;
+}
+.desc-wrapper .desc-title {
+  color: #7d12ff;
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+}
+.desc-wrapper .desc-content {
+  color: #4e4e4e;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: left;
+
+  white-space: wrap;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
+
+.main-option > *:not(:first-child) {
+  padding-left: 6px;
+  position: relative;
+}
+.main-option > *:not(:first-child)::before {
+  content: '/';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.button-wrapper {
+  width: 80%;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 /* BackCard.css */
