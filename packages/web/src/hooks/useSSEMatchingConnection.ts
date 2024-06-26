@@ -22,8 +22,8 @@ export const useSSEMatchingConnection = (
               {
                 headers: {
                   UUID: uuid,
-                  // Authorization: token,
                 },
+                heartbeatTimeout: 86400000,
               },
             )
 
