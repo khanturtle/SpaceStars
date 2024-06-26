@@ -35,17 +35,26 @@ public class AlarmServiceImpl implements AlarmService {
 	private final Sinks.Many<FriendMessage> friendSink;
 
 	@Override
-	public Flux<Message> streamAlarms(String uuid) {
-		return Flux.merge(
-			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
-			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
-		).doOnNext(message -> {
-			log.info("Received message for UUID {}: {}", uuid, message);
-			Mono.fromCallable(() -> alarmRepository.save(AlarmAddReqDto.toEntitySSE(uuid, message)))
-				.subscribeOn(Schedulers.boundedElastic())
-				.subscribe(savedAlarm -> log.info("Saved alarm for UUID {}: {}", uuid, savedAlarm),
-					error -> log.error("Failed to save alarm for UUID {}: {}", uuid, error.getMessage()));
-		});
+	public Flux<MatchingMessage> streamAlarms(String uuid) {
+		// return Flux.merge(
+		// 	matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
+		// 	friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
+		// ).doOnNext(message -> {
+		// 	log.info("Received message for UUID {}: {}", uuid, message);
+		// 	Mono.fromCallable(() -> alarmRepository.save(AlarmAddReqDto.toEntitySSE(uuid, message)))
+		// 		.subscribeOn(Schedulers.boundedElastic())
+		// 		.subscribe(savedAlarm -> log.info("Saved alarm for UUID {}: {}", uuid, savedAlarm),
+		// 			error -> log.error("Failed to save alarm for UUID {}: {}", uuid, error.getMessage()));
+		// });
+		return matchingSink.asFlux()
+			.filter(message -> uuid.equals(message.getReceiverUuid()))
+			.doOnNext(message -> {
+				log.info("Received message for UUID {}: {}", uuid, message);
+				Mono.fromCallable(() -> alarmRepository.save(AlarmAddReqDto.toEntitySSE(uuid, message)))
+					.subscribeOn(Schedulers.boundedElastic())
+					.subscribe(savedAlarm -> log.info("Saved alarm for UUID {}: {}", uuid, savedAlarm),
+						error -> log.error("Failed to save alarm for UUID {}: {}", uuid, error.getMessage()));
+			});
 	}
 
 	@Override

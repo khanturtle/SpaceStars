@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spacestar.back.alarm.service.AlarmServiceImpl;
+import com.spacestar.back.kafka.message.MatchingMessage;
 import com.spacestar.back.kafka.message.Message;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +28,7 @@ public class SseController {
 	@GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@CrossOrigin(origins = "http://localhost:3000")
 	@Operation(summary = "실시간 알림 SSE 입장")
-	public Flux<Message> matchingEvents(@RequestHeader("UUID") String uuid) {
+	public Flux<MatchingMessage> matchingEvents(@RequestHeader("UUID") String uuid) {
 		log.info("연결시도");
 		return alarmService.streamAlarms(uuid);
 	}

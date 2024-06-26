@@ -56,14 +56,6 @@ public class AlarmController {
 			modelMapper.map(alarmService.getAlarmList(uuid), AlarmListResVo.class));
 	}
 
-	// 매칭 알림 실시간 수신
-	@GetMapping(value = "/stream-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	@Operation(summary = "실시간 알림 SSE 입장")
-	public Flux<Message> matchingEvents(@RequestHeader("UUID") String uuid) {
-
-		return alarmService.streamAlarms(uuid);
-	}
-
 	@GetMapping("/state/{alarmId}")
 	@Operation(summary = "알림 상태 조회")
 	public ResponseEntity<AlarmStateResVo> getAlarmState(@RequestHeader("UUID") String uuid,
