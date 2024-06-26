@@ -79,7 +79,6 @@ export default function QueueLayout({
   //     'Content-Type': 'application/json',
   //   },
   // })
-
   const { eventSource, isConnected, showErrorModal, setShowErrorModal } =
     useSSEMatchingConnection(uuid, token)
   const { showToast } = useToast()
