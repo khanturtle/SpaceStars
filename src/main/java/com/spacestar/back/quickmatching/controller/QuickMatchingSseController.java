@@ -24,17 +24,15 @@ public class QuickMatchingSseController {
     @CrossOrigin(origins = "*")
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid) {
-        quickMatchingService.connect(uuid);
 
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = quickMatchingService.connect(uuid);
 
         ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-
-        String message = quickMatchingService.getStrings();
 
         sseMvcExecutor.execute(() -> {
             try {
                 while (true) {
+                    String message = quickMatchingService.getStrings();
                     SseEmitter.SseEventBuilder event = SseEmitter.event()
                             .data(message);
                     emitter.send(event);
