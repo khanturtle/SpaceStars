@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "openAiClient", url = "${openai.url}")//,configuration = OpenAiConfig.class
+@FeignClient(name = "openAiClient", url = "${openai.url}")
 public interface OpenAiClient {
     @PostMapping
     OpenAiResDto getChatCompletion(@RequestBody OpenAiReqDto request,
