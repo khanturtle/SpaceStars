@@ -71,6 +71,8 @@ body {
   --text-title: #202020;
   --text-desc: #333;
 
+  --sidebar-inner: #f8f8f9;
+
   --sidebar: #fff;
   --sidebar-text: #9c9cab;
   --sidebar-text-active: #6a64e9;
@@ -117,12 +119,14 @@ body[data-theme='dark'] {
   --text-title: #ffffff;
   --text-desc: #949ba4;
 
-  --sidebar: #23272a;
+  --sidebar-inner: #2b2d31;
+
+  --sidebar: #1e1f22;
   --sidebar-text: #9c9cab;
   --sidebar-text-active: #6a64e9;
   --sidebar-title: #dbdee1;
 
-  --nav-color: #23272a;
+  --nav-color: #1e1f22;
   --nav-border: #363b40;
 
   --button-color: #4b5057;

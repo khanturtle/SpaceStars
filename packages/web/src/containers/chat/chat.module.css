@@ -2,13 +2,19 @@
 .messages-container {
   width: 380px;
   height: calc(100vh - 100px);
-  padding: 0 50px;
-  background-color: var(--White-50, #fff);
+  padding: 40px 50px;
+  background-color: var(--sidebar-inner);
   overflow-y: scroll;
 }
-/* TODO: 스크롤바 커스텀 */
 .messages-container::-webkit-scrollbar {
   display: none;
+}
+
+.messages-container h3 {
+  color: var(--text);
+}
+.messages-container p {
+  color: var(--text-desc);
 }
 
 /* MessageContainer.css */
