@@ -14,6 +14,7 @@ import { LoginButton, ThemeButton } from './NavbarItem'
 import Gutter from '../Gutter'
 import SearchBox from '../search/SearchBox'
 import { Alarm } from './Alarm'
+import ChatHeader from './ChatHeader'
 
 const NavRightBox = ({ children }: { children?: React.ReactNode }) => {
   return <div className="flex max-w-[328px] pl-[50px]">{children}</div>
@@ -27,6 +28,7 @@ export default function Navbar({
   profileImageUrl: string | null | undefined
 }) {
   const pathName = usePathname()
+  const isChatPath = pathName.startsWith('/dashboard/chat')
   const noSearchBoxPage = [
     '/dashboard/swipe',
     '/dashboard/queue',
@@ -50,9 +52,9 @@ export default function Navbar({
           </Link>
         </div>
 
-        {!noSearchBoxPage.includes(pathName) && <SearchBox />}
-
-        <Gutter className="flex-1" />
+        {!noSearchBoxPage.includes(pathName) && !isChatPath && <SearchBox />}
+        {isChatPath && <ChatHeader />}
+        {/* <Gutter className="flex-1" /> */}
 
         {/* Right */}
         <NavRightBox>

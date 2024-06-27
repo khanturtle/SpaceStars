@@ -121,7 +121,7 @@ export async function getChatroomData(
 }
 
 /** 팀채팅 방 참여자 조회 */
-export async function getTeamRoomMember(roomUuid: string, token: string) {
+async function getTeamRoomMember(roomUuid: string, token: string) {
   try {
     const response = await fetch(
       `${CHAT_BASE_URL}/team/chatroom/${roomUuid}/members`,
