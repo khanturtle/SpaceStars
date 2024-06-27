@@ -8,7 +8,6 @@ export const LoginButton = () => {
   const router = useRouter()
 
   return (
-    // TODO: 버튼 커스텀
     <button
       type="button"
       onClick={() => router.push('/sign-in')}
