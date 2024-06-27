@@ -3,11 +3,13 @@
 // import { LockIcon } from '@packages/ui'
 import { RotateCcwIcon } from 'lucide-react'
 
+import Gutter from '@/components/Gutter'
+
 import { GameTypes } from '@/types/type'
+import { handleRefresh } from '@/lib/teamListAction'
 
 import GameSelectBox from './GameSelectBox'
 import SubSelectBox from './SubSelectBox'
-import { handleRefresh } from '@/lib/teamListAction'
 
 export default function SelectBoxContainer({
   searchParams,
@@ -18,23 +20,19 @@ export default function SelectBoxContainer({
   games: GameTypes[]
   teamListCount: number
 }) {
-  const handleClick = () => {
-    handleRefresh()
-  }
-
   return (
-    <div>
+    <section>
       <GameSelectBox games={games} searchParams={searchParams} />
 
-      <div className="h-[20px]" />
+      <Gutter className="h-[20px]" />
 
       <SubSelectBox>
         <SubSelectBox.Title
           title="Team List"
           desc={`(${teamListCount} Items)`}
         />
-        <div className="flex-1" />
-        <SubSelectBox.Search />
+        <Gutter className="flex-1" />
+
         {/* FIXME: query key-value 수정 */}
 
         {/* <SubSelectBox.SubButton
@@ -50,13 +48,15 @@ export default function SelectBoxContainer({
           queryValue="2"
           searchParams={searchParams}
         /> */}
+
+        <SubSelectBox.ViewToggle searchParams={searchParams} />
+
         <SubSelectBox.SubButton
           name=""
-          icon={<RotateCcwIcon stroke="#2C3149" />}
-          onClick={handleClick}
+          icon={<RotateCcwIcon stroke="#84818A" size={18} strokeWidth={2} />}
+          onClick={() => handleRefresh()}
         />
-        <SubSelectBox.ViewToggle searchParams={searchParams} />
       </SubSelectBox>
-    </div>
+    </section>
   )
 }

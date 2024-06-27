@@ -68,7 +68,7 @@ body {
   --background-color: #f8f8f9;
 
   --text: #000;
-  --text-title: #000;
+  --text-title: #202020;
   --text-desc: #333;
 
   --sidebar: #fff;
@@ -93,6 +93,11 @@ body {
   --hover-color: #e0e0e0;
 
   --color-icon: #84818a;
+
+  --icon-button: #fff;
+  --icon-button-border: #dcdbdd;
+  --icon-button-hover: #e6e6e6;
+  --icon-button-text: #e6e6e6;
 }
 
 body[data-theme='dark'] {
@@ -124,4 +129,9 @@ body[data-theme='dark'] {
   --hover-color: #35373c;
 
   --color-icon: #dbdee1;
+
+  --icon-button: #111;
+  --icon-button-border: #272727;
+  --icon-button-hover: #404040;
+  --icon-button-text: #f1f1f1;
 }

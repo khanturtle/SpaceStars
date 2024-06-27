@@ -43,32 +43,53 @@
 
 /* SubSelectBox.css */
 .subTitle {
-  font-family: Poppins;
-  color: #202020;
+  color: var(--text-title);
   font-size: 36px;
   font-style: normal;
   font-weight: 500;
   line-height: 48px;
 }
 .subDesc {
-  font-family: Poppins;
-  color: #84818a;
+  color: var(--text-desc);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
 
-.button {
+.icon-button {
+  width: 40px;
+  height: 40px;
+
   border-radius: 12px;
-  border: 1px solid #dcdbdd;
-  background: var(--White-50, #fff);
+  border: 1px solid var(--icon-button-border);
+  background: var(--icon-button);
 
   display: flex;
-  padding: 9px 16px;
+  /* padding: 9px 16px; */
   justify-content: center;
   align-items: center;
   gap: 10px;
+}
+.icon-button:hover {
+  background: var(--icon-button-hover);
+}
+
+.icon-buttons {
+  display: flex;
+  border-radius: 12px;
+}
+.icon-buttons .icon-button {
+  border-radius: 0;
+}
+.icon-buttons .icon-button:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-right: 1px;
+}
+.icon-buttons .icon-button:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 /* GameSelectBox.css */

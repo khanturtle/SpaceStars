@@ -51,7 +51,7 @@ export const SubButton = ({
     <button
       type="button"
       onClick={onClick ?? handleQueryUpdate}
-      className={styles.button}
+      className={styles['icon-button']}
     >
       {icon && icon}
       {name}
@@ -74,24 +74,22 @@ export const ViewToggle = ({
   }
 
   return (
-    <div className={styles.button}>
+    <div className={styles['icon-buttons']}>
       <button
+        className={styles['icon-button']}
         type="button"
         aria-label="Card View"
         onClick={() => handleToggle('card')}
       >
-        <i>
-          <ViewCardIcon fill={view ? '#009580' : '#84818A'} />
-        </i>
+        <ViewCardIcon fill={view ? '#009580' : '#84818A'} />
       </button>
       <button
+        className={styles['icon-button']}
         type="button"
         aria-label="List View"
         onClick={() => handleToggle('list')}
       >
-        <i>
-          <ViewListIcon fill={view ? '#84818A' : '#009580'} />
-        </i>
+        <ViewListIcon fill={view ? '#84818A' : '#009580'} />
       </button>
     </div>
   )
