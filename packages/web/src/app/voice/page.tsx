@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from 'uuid'
 
 export default function Home() {
   const localVideoRef = useRef<HTMLVideoElement>(null)
-  const remoteVideoRefs = useRef<Map<string, HTMLVideoElement>>(new Map())
   const remoteVideoContainerRef = useRef<HTMLDivElement>(null)
+  const remoteVideoRefs = useRef<Map<string, HTMLVideoElement>>(new Map())
   const [localStream, setLocalStream] = useState<MediaStream | null>(null)
   const [peerInfo, setPeerInfo] = useState<Map<string, RTCPeerConnection>>(new Map())
   const [roomId, setRoomId] = useState<string>('')
@@ -208,6 +208,14 @@ export default function Home() {
           if (myKey !== key && !otherKeyList.includes(key)) {
             setOtherKeyList((prev) => [...prev, key])
           }
+        })
+
+        // 모든 클라이언트에게 새로운 클라이언트의 참여를 알림
+        stompClient.current?.publish({
+          destination: `/pub/peer/join/${roomId}`,
+          body: JSON.stringify({
+            key: myKey,
+          }),
         })
       },
     })
