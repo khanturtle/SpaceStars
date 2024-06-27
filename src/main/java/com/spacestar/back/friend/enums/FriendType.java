@@ -5,5 +5,6 @@ public enum FriendType {
     FRIEND,
     SENDER,
     RECEIVER,
+    BLOCK,
     NONE
 }

@@ -30,10 +30,15 @@ public class FriendController {
 
     @Operation(summary = "친구 목록 조회")
     @GetMapping("/list")
-    public ResponseEntity<List<FriendListResVo>> getFriendList(@RequestHeader("UUID") String uuid) {
+    public ResponseEntity<List<FriendListResVo>> getFriendList(
+            @RequestHeader("UUID") String uuid,
+            @RequestParam(value = "type", required = false, defaultValue = "all") String type )
+    {
 
+        log.info("uuid : {}", uuid);
+        log.info("type : {}", type);
         return new ResponseEntity<>(ResponseSuccess.FRIEND_LIST_SELECT_SUCCESS,
-                friendService.getFriendList(uuid).stream()
+                friendService.getFriendList(uuid, type).stream()
                         .map(friendListResDto -> mapper.map(friendListResDto, FriendListResVo.class))
                         .toList());
     }

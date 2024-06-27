@@ -9,7 +9,7 @@ import java.util.List;
 public interface FriendService {
     void addFriend(String uuid, FriendUuidReqDto friendUuidReqDto);
 
-    List<FriendListResDto> getFriendList(String uuid);
+    List<FriendListResDto> getFriendList(String uuid, String type);
 
     List<FriendRequestResDto> getFriendRequestList(String uuid);
 

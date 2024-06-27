@@ -68,19 +68,15 @@ public class FriendServiceImp implements FriendService {
 
     //친구 목록 조회
     @Override
-    public List<FriendListResDto> getFriendList(String uuid) {
+    public List<FriendListResDto> getFriendList(String uuid, String type) {
 
-        List<Friend> friendList = friendRepository.findByUuid(uuid);
-
-        List<String> friendList2 = friendList.stream()
-                .filter(friend -> friend.getFriendType() == FRIEND)
-                .map(Friend::getFriendUuid)
+        log.info("uuid : " + uuid + " type : " + type);
+        List<Friend> getFriendList = friendRepository.findByUuidAndFriendType(
+                uuid, type.equals("all") ? FRIEND : type.equals("sender") ? SENDER : type.equals("receiver") ? RECEIVER : BLOCK
+        );
+        return IntStream.range(0, getFriendList.size())
+                .mapToObj(i -> FriendListResDto.toDto(i, String.valueOf(getFriendList.get(i))))
                 .toList();
-
-        return IntStream.range(0, friendList2.size())
-                .mapToObj(i -> FriendListResDto.toDto(i, friendList2.get(i)))
-                .toList();
-
     }
 
     //친구 요청 목록 조회
