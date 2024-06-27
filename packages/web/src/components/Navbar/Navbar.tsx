@@ -13,6 +13,7 @@ import { LoginButton, ThemeButton } from './NavbarItem'
 
 import Gutter from '../Gutter'
 import SearchBox from '../search/SearchBox'
+import { Alarm } from './Alarm'
 
 const NavRightBox = ({ children }: { children?: React.ReactNode }) => {
   return <div className="flex max-w-[328px] pl-[50px]">{children}</div>
@@ -56,7 +57,8 @@ export default function Navbar({
         {/* Right */}
         <NavRightBox>
           <ThemeButton />
-          
+          <Alarm />
+
           {session?.user ? (
             <Link href="/dashboard/my-page">
               <Avatar image_url={profileImageUrl ?? defaultImage} />
