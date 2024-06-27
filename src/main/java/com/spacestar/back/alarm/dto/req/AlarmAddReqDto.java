@@ -31,7 +31,7 @@ public class AlarmAddReqDto {
 			.build();
 	}
 
-	public static Alarm toEntitySSE(String uuid, Message message) {
+	public static Alarm toEntitySSE(Message message) {
 		return Alarm.builder()
 			.receiverUuid(message.getReceiverUuid())
 			.senderUuid(message.getSenderUuid())
