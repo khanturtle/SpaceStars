@@ -4,7 +4,6 @@ import com.spacestar.back.quickmatching.service.QuickMatchingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,29 +19,31 @@ import java.util.concurrent.Executors;
 @RequiredArgsConstructor
 public class QuickMatchingSseController {
     private final QuickMatchingService quickMatchingService;
-    private final ModelMapper mapper;
 
     @Operation(summary = "대기 큐 SSE 연결")
     @CrossOrigin(origins = "*")
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid,
-                                              @RequestParam String gameName) {
-        SseEmitter emitter2 = quickMatchingService.connect(gameName, uuid);
-    
+    public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid) {
+        quickMatchingService.connect(uuid);
+
         SseEmitter emitter = new SseEmitter();
-    ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-    sseMvcExecutor.execute(() -> {
-        try {
-            for (int i = 0; i < 20; i++) {
-                SseEmitter.SseEventBuilder event = SseEmitter.event()
-                        .data(System.currentTimeMillis());
-                emitter.send(event);
-                Thread.sleep(1000);
+
+        ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
+
+        String message = quickMatchingService.getStrings();
+
+        sseMvcExecutor.execute(() -> {
+            try {
+                while (true) {
+                    SseEmitter.SseEventBuilder event = SseEmitter.event()
+                            .data(message);
+                    emitter.send(event);
+                    Thread.sleep(5000);
+                }
+            } catch (Exception ex) {
+                emitter.completeWithError(ex);
             }
-        } catch (Exception ex) {
-            emitter.completeWithError(ex);
-        }
-    });
+        });
         return ResponseEntity.ok(emitter);
     }
 }

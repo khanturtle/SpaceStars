@@ -78,6 +78,7 @@ public class SwipeServiceImpl implements SwipeService {
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), swipeResDtoList.size());
+        int lastPage = swipeResDtoList.size() / pageable.getPageSize();
 
         // Create the sublist for the current page
         List<String> paginatedList = swipeResDtoList.subList(start, end);
@@ -88,6 +89,7 @@ public class SwipeServiceImpl implements SwipeService {
                 .memberUuidList(paginatedList)
                 .nowPage(pageable.getPageNumber())
                 .isLast(isLast)
+                .lastPage(lastPage)
                 .build();
     }
 
