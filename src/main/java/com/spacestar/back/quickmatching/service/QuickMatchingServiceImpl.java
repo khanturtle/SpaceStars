@@ -1,6 +1,7 @@
 package com.spacestar.back.quickmatching.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spacestar.back.feignClient.dto.res.AuthResDto;
 import com.spacestar.back.feignClient.dto.res.ProfileResDto;
 import com.spacestar.back.feignClient.service.FeignClientService;
 import com.spacestar.back.global.GlobalException;
@@ -154,8 +155,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
         ProfileResDto myProfile = feignClientService.getProfile(matchFromMember);
         ProfileResDto yourProfile = feignClientService.getProfile(matchToMember);
-//        AuthResDto myAuth = feignClientService.getAuth(matchFromMember);
-//        AuthResDto yourAuth = feignClientService.getAuth(matchToMember);
+        AuthResDto myAuth = feignClientService.getAuth(matchFromMember);
+        AuthResDto yourAuth = feignClientService.getAuth(matchToMember);
         //각각 메인게임 ID, 게임성향ID, MBTI ID가 존재할 때만 연산해서 점수 더해줌
         if (myProfile.getMainGameId() != null && yourProfile.getMainGameId() != null) {
             score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
@@ -166,8 +167,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         if (myProfile.getMbtiId() != null && yourProfile.getMbtiId() != null)
             score += mbtiScore(myProfile.getMbtiId(), yourProfile.getMbtiId());
 
-//        score += ageScore(myAuth.getAge(), yourAuth.getAge());
-//        score += genderScore(myAuth.getGender(), yourAuth.getGender());
+        score += ageScore(myAuth.getAge(), yourAuth.getAge());
+        score += genderScore(myAuth.getGender(), yourAuth.getGender());
 
         //신고 당한 횟수 만큼 점수 깎기
         score -= (myProfile.getReportCount() + yourProfile.getReportCount());
@@ -298,12 +299,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         redisTemplate.opsForZSet().remove(reqDto.getGameName(), data.get("matchToMember"));
     }
 
-    private static void sendEvent(final SseEmitter sseEmitter,
-                                  final SseEmitter.SseEventBuilder sseEventBuilder) {
-        try {
-            sseEmitter.send(sseEventBuilder);
-        } catch (IOException e) {
-            sseEmitter.complete();
     //SSE
     @Override
     public SseEmitter connect(String uuid) {
