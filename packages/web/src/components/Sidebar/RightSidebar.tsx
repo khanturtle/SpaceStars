@@ -2,6 +2,8 @@
 
 import { usePathname } from 'next/navigation'
 
+import { useEffect, useState } from 'react'
+
 import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
 import FriendsList from '../Friends/FriendsList'
@@ -34,19 +36,31 @@ const DefaultRightSide = ({
 
 export default function RightSidebar({
   token,
-  isChatPage,
-  isGroupChatPage,
   friendsList,
 }: {
   token: string
-  isChatPage: boolean
-  isGroupChatPage: boolean
   friendsList: friendsWithBasicDataType[]
 }) {
   const pathName = usePathname()
   const pathParts = pathName.split('/')
 
   const roomNumber = pathParts.at(-1) ?? ''
+
+  const [isChatPage, setIsChatPage] = useState(false)
+  const [isGroupChatPage, setIsGroupChatPage] = useState(false)
+
+  useEffect(() => {
+    if (pathParts.includes('chat')) {
+      setIsChatPage(true)
+    } else {
+      setIsChatPage(false)
+    }
+    if (pathParts.includes('group')) {
+      setIsGroupChatPage(true)
+    } else {
+      setIsGroupChatPage(false)
+    }
+  }, [pathName])
 
   return (
     <section className={`${styles['right-side']}`}>
