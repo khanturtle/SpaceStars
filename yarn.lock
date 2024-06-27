@@ -3525,6 +3525,7 @@ __metadata:
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     "@types/sockjs-client": "npm:^1"
+    "@types/uuid": "npm:^10"
     autoprefixer: "npm:^10.4.19"
     aws-sdk: "npm:^2.1643.0"
     class-variance-authority: "npm:^0.7.0"
@@ -3534,6 +3535,7 @@ __metadata:
     eslint-config-next: "npm:14.2.3"
     eslint-plugin-import: "npm:^2.29.1"
     event-source-polyfill: "npm:^1.0.31"
+    eventsource-polyfill: "npm:^0.9.6"
     lucide-react: "npm:^0.379.0"
     next: "npm:14.2.3"
     next-auth: "npm:^4.24.7"
@@ -3550,6 +3552,7 @@ __metadata:
     tailwindcss: "npm:^3.4.1"
     tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:4.9.4"
+    uuid: "npm:^10.0.0"
     zustand: "npm:^4.5.2"
   languageName: unknown
   linkType: soft
@@ -6381,6 +6384,13 @@ __metadata:
   version: 3.0.2
   resolution: "@types/unist@npm:3.0.2"
   checksum: 10c0/39f220ce184a773c55c18a127062bfc4d0d30c987250cd59bab544d97be6cfec93717a49ef96e81f024b575718f798d4d329eb81c452fc57d6d051af8b043ebf
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^10":
+  version: 10.0.0
+  resolution: "@types/uuid@npm:10.0.0"
+  checksum: 10c0/9a1404bf287164481cb9b97f6bb638f78f955be57c40c6513b7655160beb29df6f84c915aaf4089a1559c216557dc4d2f79b48d978742d3ae10b937420ddac60
   languageName: node
   linkType: hard
 
@@ -9868,6 +9878,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventsource-polyfill@npm:^0.9.6":
+  version: 0.9.6
+  resolution: "eventsource-polyfill@npm:0.9.6"
+  checksum: 10c0/4e6b0f96e40c686bb3e81aedffb1bbde05b29185b411f1eca6adb747aa7a8f08000641cc877b873ed93ca7cb95730f7dfc167f1fff5a4229fc4c51f71ad7be4e
+  languageName: node
+  linkType: hard
+
 "eventsource@npm:^2.0.2":
   version: 2.0.2
   resolution: "eventsource@npm:2.0.2"
@@ -12325,6 +12342,7 @@ __metadata:
     "@next/eslint-plugin-next": "npm:^14.2.3"
     "@storybook/react": "npm:^8.1.6"
     "@storybook/test": "npm:^8.1.6"
+    "@types/event-source-polyfill": "npm:^1.0.5"
     "@types/node": "npm:^20.14.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.10.0"
     "@typescript-eslint/parser": "npm:^7.10.0"
@@ -12344,6 +12362,8 @@ __metadata:
     prettier: "npm:^3.3.2"
     supports-color: "npm:^9.4.0"
     typescript: "npm:4.9.4"
+    uuid: "npm:^10.0.0"
+    web: "npm:^0.0.2"
   languageName: unknown
   linkType: soft
 
@@ -16298,6 +16318,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "uuid@npm:10.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 10c0/eab18c27fe4ab9fb9709a5d5f40119b45f2ec8314f8d4cf12ce27e4c6f4ffa4a6321dc7db6c515068fa373c075b49691ba969f0010bf37f44c37ca40cd6bf7fe
+  languageName: node
+  linkType: hard
+
 "uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
@@ -16453,6 +16482,13 @@ __metadata:
   dependencies:
     defaults: "npm:^1.0.3"
   checksum: 10c0/5b61ca583a95e2dd85d7078400190efd452e05751a64accb8c06ce4db65d7e0b0cde9917d705e826a2e05cc2548f61efde115ffa374c3e436d04be45c889e5b4
+  languageName: node
+  linkType: hard
+
+"web@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "web@npm:0.0.2"
+  checksum: 10c0/e8a5c424dea387e473545d98c1e55150b3f79568c03c5c1a6d124bad6393ddaf5e7ab54696b03ec74e123b1e70ab7ef70da865508abdee9afb3be7598a8a0441
   languageName: node
   linkType: hard
 
