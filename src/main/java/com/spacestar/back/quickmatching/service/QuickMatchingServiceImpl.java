@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
@@ -34,7 +35,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     //FeignClient
     private final FeignClientService feignClientService;
     //SSE
-    private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
+    private final ConcurrentHashMap<String, Set<SseEmitter>> container = new ConcurrentHashMap<>();
 
     private final long tenSecBefore = System.currentTimeMillis() - 10000;
 
@@ -46,26 +47,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     //UUID로 SSE 연결
-    @Override
-    public SseEmitter connect(String uuid) {
-        SseEmitter sseEmitter = new SseEmitter(300_000L);
-
-        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
-                .name("connect")
-                .data("connected!")
-                .reconnectTime(3000L);
-
-        sendEvent(sseEmitter, sseEventBuilder);
-
-        Set<SseEmitter> sseEmitters = container.getOrDefault(uuid, new HashSet<>());
-
-        sseEmitters.add(sseEmitter);
-        container.put(uuid, sseEmitters);
-        sseEmitter.onCompletion(() -> {
-            sseEmitters.remove(sseEmitter);
-        });
-        return sseEmitter;
-    }
 
     //수락처리
     @Override
@@ -323,11 +304,49 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             sseEmitter.send(sseEventBuilder);
         } catch (IOException e) {
             sseEmitter.complete();
+    //SSE
+    @Override
+    public SseEmitter connect(String uuid) {
+        SseEmitter sseEmitter = new SseEmitter(300_000L);
+
+        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
+                .name("connect")
+                .data("connected!")
+                .reconnectTime(3000L);
+
+        sendEvent(sseEmitter, sseEventBuilder);
+
+        synchronized (container) {
+            Set<SseEmitter> sseEmitters = container.getOrDefault(uuid, new HashSet<>());
+            sseEmitters.add(sseEmitter);
+            container.put(uuid, sseEmitters);
+        }
+
+        sseEmitter.onCompletion(() -> removeEmitter(uuid, sseEmitter));
+        sseEmitter.onTimeout(() -> removeEmitter(uuid, sseEmitter));
+        sseEmitter.onError(e -> removeEmitter(uuid, sseEmitter));
+
+        return sseEmitter;
+    }
+
+    private void removeEmitter(String uuid, SseEmitter emitter) {
+        synchronized (container) {
+            Set<SseEmitter> sseEmitters = container.get(uuid);
+            if (sseEmitters != null) {
+                sseEmitters.remove(emitter);
+                if (sseEmitters.isEmpty()) {
+                    container.remove(uuid);
+                }
+            }
         }
     }
 
+    //매치 되었을 때 메세지 전송
     public void sendComment(String uuid) {
-        Set<SseEmitter> sseEmitters = container.getOrDefault(uuid, new HashSet<>());
+        Set<SseEmitter> sseEmitters;
+        synchronized (container) {
+            sseEmitters = new HashSet<>(container.getOrDefault(uuid, Collections.emptySet()));
+        }
 
         final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
                 .name("Matched")
@@ -335,5 +354,13 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 .reconnectTime(3000L);
 
         sseEmitters.forEach(sseEmitter -> sendEvent(sseEmitter, sseEventBuilder));
+    }
+
+    private void sendEvent(SseEmitter emitter, SseEmitter.SseEventBuilder event) {
+        try {
+            emitter.send(event);
+        } catch (IOException e) {
+            emitter.completeWithError(e);
+        }
     }
 }
