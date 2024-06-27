@@ -115,13 +115,13 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                         matchedMemberUuid = matchMemberUuid;
                     }
                 }
-                System.out.println("score = " + score);
+                log.info("score = " + score);
             }
         }
         //매치된 사람 있으면 대기큐에서 제거 후 수락큐로 진입
         //+ SSE로 매치 되었다고 알려줌
         if (matchedMemberUuid != null) {
-            System.out.println(uuid + "와 " + matchedMemberUuid + "가 매치되었습니다.");
+            log.info(uuid + "와 " + matchedMemberUuid + "가 매치되었습니다.");
             redisTemplate.opsForZSet().remove(gameName, uuid);
             redisTemplate.opsForZSet().remove(gameName, matchedMemberUuid);
             enterMatchQueue(uuid, matchedMemberUuid);
