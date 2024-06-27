@@ -7,12 +7,13 @@ import { useSession } from 'next-auth/react'
 
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 
-import { SearchInput } from '@packages/ui'
+import { SearchIcon } from '@packages/ui'
 
 import { ProfileImageType } from '@/types/type'
 
-import styles from './searchbox.module.css'
 import { defaultImage } from '@/store/defaultState'
+
+import styles from './searchbox.module.css'
 
 interface SearchByNicknameType {
   index: number
@@ -106,7 +107,7 @@ const SearchResultItem = ({ result }: { result: any }) => {
   return (
     <button
       onClick={handleClick}
-      className={`w-full hover:bg-gray-200 ${styles['search-result-item']}`}
+      className={`w-full ${styles['search-result-item']}`}
     >
       <Image
         src={profileImage}
@@ -147,10 +148,9 @@ export default function SearchBox() {
     }
     debounceTimeoutRef.current = setTimeout(async () => {
       const results = await searchByNickname(searchValue)
-
       // 검색 결과가 있으면 팝업창을 보여줌
       setSearchResults(results)
-      setIsPopupVisible(results.length > 0)
+      setIsPopupVisible(true)
     }, 500)
 
     // 쓰로틀링 처리
@@ -162,12 +162,14 @@ export default function SearchBox() {
     }, 1000)
   }, [])
 
+  /** 검색결과 닫기 */
   const handlePopupClose = () => {
     setTimeout(() => {
       setIsPopupVisible(false)
     }, 300)
   }
 
+  /** 단축키 컨트롤 K */
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
@@ -185,24 +187,28 @@ export default function SearchBox() {
 
   return (
     <div className="relative">
-      <SearchInput
-        className="h-14"
-        placeholder="Search (Ctrl+K)"
-        value={value}
-        onChange={handleSearch}
-        onFocus={handleSearch}
-        onBlur={handlePopupClose}
-        inputRef={searchInputRef}
-      />
+      <div className={styles['search-input']}>
+        <SearchIcon width="24" height="24" fill="var(--color-icon)" />
+        <input
+          placeholder="Search (Ctrl+K)"
+          value={value}
+          onChange={handleSearch}
+          onFocus={handleSearch}
+          onBlur={handlePopupClose}
+          ref={searchInputRef}
+        />
+      </div>
 
       {isPopupVisible && (
-        <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-md p-4 z-[9999] max-h-[300px] overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 bg-[color:var(--input-color)] shadow-lg rounded-md p-4 z-[9999] max-h-[300px] overflow-y-auto">
           {searchResults.length > 0 ? (
             searchResults.map((result) => (
               <SearchResultItem key={result.index} result={result} />
             ))
           ) : (
-            <div>검색 결과가 없습니다.</div>
+            <div className="text-[color:var(--text)] mt-[2px]">
+              검색 결과가 없습니다.
+            </div>
           )}
         </div>
       )}
