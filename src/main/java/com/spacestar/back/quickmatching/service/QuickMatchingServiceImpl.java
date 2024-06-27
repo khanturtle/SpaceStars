@@ -47,7 +47,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
     //UUID로 SSE 연결
     @Override
-    public SseEmitter connect(String gameName, String uuid) {
+    public SseEmitter connect(String uuid) {
         SseEmitter sseEmitter = new SseEmitter(300_000L);
 
         final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()

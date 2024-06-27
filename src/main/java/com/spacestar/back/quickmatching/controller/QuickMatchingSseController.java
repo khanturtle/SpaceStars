@@ -4,15 +4,11 @@ import com.spacestar.back.quickmatching.service.QuickMatchingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,11 +23,9 @@ public class QuickMatchingSseController {
     @Operation(summary = "대기 큐 SSE 연결")
     @CrossOrigin(origins = "*")
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid,
-                                              @RequestParam String gameName) {
-        SseEmitter emitter2 = quickMatchingService.connect(gameName, uuid);
+    public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid) {
+        SseEmitter emitter = quickMatchingService.connect(uuid);
 
-        SseEmitter emitter = new SseEmitter();
         ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
 
         String message = quickMatchingService.getStrings();
