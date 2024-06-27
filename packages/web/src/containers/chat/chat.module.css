@@ -10,15 +10,7 @@
   display: none;
 }
 
-.messages-container h3 {
-  color: var(--text);
-}
-.messages-container p {
-  color: var(--text-desc);
-}
-
 /* MessageContainer.css */
-
 .chatroom {
   width: 100%;
   height: calc(100vh - 100px);

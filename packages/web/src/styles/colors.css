@@ -53,9 +53,6 @@
   --btn-secondary: #bb86fc;
   --btn-secondary-border: #7d12ff;
 
-  --online: #3bcd23;
-  --offline: #dddddd;
-
   --black: #000000;
   --quite-black: #23272a;
   --dark-black: #2c2f33;
@@ -63,6 +60,12 @@
 }
 :root {
   --color-primary: #7d12ff;
+  --grey-text: #869aa9;
+
+  --online: #3bcd23;
+  --offline: #dddddd;
+
+  --danger: #f15c45;
 }
 body {
   --background-color: #f8f8f9;

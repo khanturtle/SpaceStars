@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { useReducer } from 'react'
 
@@ -35,9 +36,12 @@ export default function FriendsWrapper({
 
   return (
     <section className="mb-9">
-      <h3 className="text-[#161616] text-lg not-italic font-medium leading-[normal] mb-6">
-        Friends
-      </h3>
+      <div className="flex justify-between">
+        <h3 className="text-[color:var(--text-title)] text-lg not-italic font-medium leading-[normal] mb-6">
+          Friends
+        </h3>
+        <Link href="/dashboard/friends-list" className="text-xs text-[color:var(--text-title)]">more</Link>
+      </div>
 
       <div
         className={styles.ul}
@@ -88,7 +92,7 @@ export const FriendsItem = ({
         {children}
       </div>
 
-      <p className="w-11 text-ellipsis whitespace-nowrap overflow-hidden text-[#869aa9] text-center text-xs not-italic font-normal leading-[normal]">
+      <p className="w-11 text-ellipsis whitespace-nowrap overflow-hidden text-[color:var(--grey-text)] text-center text-xs not-italic font-normal leading-[normal]">
         {item.nickname}
       </p>
     </button>
@@ -99,7 +103,7 @@ const Status = ({ status }: { status: boolean }) => {
   return (
     <div
       className={`w-3 h-3 shrink-0 border border-[color:var(--White-50,#fff)] absolute rounded-full right-0 bottom-0
-      ${status ? 'bg-[color:var(--online,#3bcd23)]' : 'bg-[#606a8d]'}
+      ${status ? 'bg-[color:var(--online)]' : 'bg-[color:var(--offline)]'}
       `}
     />
   )

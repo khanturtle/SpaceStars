@@ -17,7 +17,7 @@ const MessageWrapper = ({
 }) => {
   return (
     <section className="mb-9">
-      <h3 className="text-[#161616] text-lg not-italic font-medium leading-[normal] mb-6">
+      <h3 className="text-[color:var(--text-title)] text-lg not-italic font-medium leading-[normal] mb-6">
         {title}
       </h3>
 
@@ -41,7 +41,7 @@ const GroupMessageWrapper = ({
 }) => {
   return (
     <section className="mb-9">
-      <h3 className="text-[#161616] text-lg not-italic font-medium leading-[normal] mb-6">
+      <h3 className="text-[color:var(--text-title)] text-lg not-italic font-medium leading-[normal] mb-6">
         {title}
       </h3>
 
