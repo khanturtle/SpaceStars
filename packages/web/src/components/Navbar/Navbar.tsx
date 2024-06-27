@@ -34,8 +34,8 @@ export default function Navbar({
   ]
 
   return (
-    <header className="bg-[color:var(--nav-color)] border-b-[color:var(--nav-border)] border-b border-solid">
-      <nav className="h-[100px] w-full flex flex-row items-center sticky z-[1000] px-[54px] py-5  left-0 top-0">
+    <header className="h-[100px] bg-[color:var(--nav-color)] border-b-[color:var(--nav-border)] border-b border-solid">
+      <nav className="w-full flex flex-row items-center sticky z-[1000] px-[54px] py-5  left-0 top-0">
         {/* Left */}
         <div className="w-[210px]">
           <Link

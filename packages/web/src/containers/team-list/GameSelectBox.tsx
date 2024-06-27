@@ -46,7 +46,12 @@ export default function GameSelectBox({
 
   const UpdateGame = (item: GameTypes) => {
     const currentParams = new URLSearchParams(searchParams)
-    currentParams.set('game', item.gameId.toString())
+
+    if (searchParams.game === item.gameId.toString()) {
+      currentParams.delete('game')
+    } else {
+      currentParams.set('game', item.gameId.toString())
+    }
     router.push(`?${currentParams.toString()}`)
   }
 
