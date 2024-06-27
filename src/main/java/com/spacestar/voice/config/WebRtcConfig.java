@@ -1,11 +1,14 @@
 package com.spacestar.voice.config;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.socket.config.annotation.*;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSocketMessageBroker
     public class WebRtcConfig implements WebSocketMessageBrokerConfigurer {
 
@@ -18,11 +21,10 @@ import org.springframework.web.socket.config.annotation.*;
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
         // 소켓연결을 위한 endpoint
-        registry.addEndpoint("/signaling") // websocket 접속시 endpoint 설정
-                .setAllowedOriginPatterns("*") //cors 허용
-                .withSockJS(); // 브라우저에서 WebSocket을 지원하지 않을때 대체방법으로 SockJS 사용
-        registry.addEndpoint("/signaling") // websocket 접속시 endpoint 설정
-                .setAllowedOriginPatterns("*") //cors 허용
-                .withSockJS(); // 브라우저에서 WebSocket을 지원하지 않을때 대체방법으로 SockJS 사용
+        registry.addEndpoint("/api/v1/wsvoice") // websocket 접속시 endpoint 설정
+                .setAllowedOriginPatterns("*"); //cors 허용
+        registry.addEndpoint("/api/v1/wsvoice") // websocket 접속시 endpoint 설정
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
     }
 }
