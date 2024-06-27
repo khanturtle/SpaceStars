@@ -35,19 +35,12 @@ export default function SelectBoxContainer({
 
         {/* FIXME: query key-value 수정 */}
 
-        {/* <SubSelectBox.SubButton
+        <SubSelectBox.SubButton
           name="모집중"
-          queryKey="test1"
-          queryValue="1"
+          queryKey="isFinished"
+          queryValue="true"
           searchParams={searchParams}
         />
-        <SubSelectBox.SubButton
-          name="lock"
-          icon={<LockIcon fill="#2C3149" />}
-          queryKey="test2"
-          queryValue="2"
-          searchParams={searchParams}
-        /> */}
 
         <SubSelectBox.ViewToggle searchParams={searchParams} />
 

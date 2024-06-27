@@ -1,3 +1,4 @@
+import BackGroundTextBox from '@/components/Background/BackGroundTextBox'
 import NavHeader from '@/components/Navbar/NavHeader'
 
 export default async function layout({
@@ -11,6 +12,8 @@ export default async function layout({
         title="QUEUE"
         description="게임을 같이 할 나의 친구를 찾아 드려요!"
       />
+      <BackGroundTextBox text="GAMER SEARCHING" />
+
       {children}
     </div>
   )

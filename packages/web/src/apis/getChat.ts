@@ -68,15 +68,19 @@ export async function getRoomMember(
 }
 
 /** 팀원모집 방 목록 조회 */
-export async function getTeamChatRooms() {
+export async function getTeamChatRooms(searchParams: {
+  [key: string]: string
+}) {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
+
+  const params = new URLSearchParams(searchParams)
 
   if (!token) return []
 
   try {
     const response = await fetch(
-      `${CHAT_BASE_URL}/team/chatroom/recruit/list`,
+      `${CHAT_BASE_URL}/team/chatroom/recruit/list?${params.toString()}`,
       {
         headers: {
           'Content-Type': 'application/json',

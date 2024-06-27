@@ -58,7 +58,6 @@
 }
 
 .icon-button {
-  width: 40px;
   height: 40px;
 
   border-radius: 12px;
@@ -66,13 +65,26 @@
   background: var(--icon-button);
 
   display: flex;
-  /* padding: 9px 16px; */
+  padding: 9px;
   justify-content: center;
   align-items: center;
   gap: 10px;
 }
-.icon-button:hover {
+.icon-button-name {
+  color: var(--text);
+  padding: 0 8px;
+}
+.icon-button:hover,
+.icon-button.active:hover {
   background: var(--icon-button-hover);
+}
+
+.icon-button.active {
+  background: var(--button-active);
+}
+.icon-button.active span {
+  color: #009580;
+  font-weight: 600;
 }
 
 .icon-buttons {

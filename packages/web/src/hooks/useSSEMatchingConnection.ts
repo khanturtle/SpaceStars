@@ -57,6 +57,7 @@ export const useSSEMatchingConnection = (
 
     return () => {
       if (eventSource) {
+        console.log('SSE closed')
         eventSource.close()
         setEventSource(null)
         setIsConnected(false)

@@ -13,7 +13,7 @@ export default async function page({
 }) {
   const games = await getGames()
 
-  const teamList = await getTeamChatRooms()
+  const teamList = await getTeamChatRooms(searchParams)
   const teamListData = await getTeamListData(teamList)
 
   const teamListCount = teamList.length ?? 0

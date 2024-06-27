@@ -39,11 +39,25 @@ export const SubButton = ({
 }) => {
   const router = useRouter()
 
+  const isActive =
+    queryKey &&
+    queryValue &&
+    searchParams &&
+    searchParams[queryKey] === queryValue
+
   const handleQueryUpdate = () => {
     if (!queryKey || !queryValue) return
 
     const currentParams = new URLSearchParams(searchParams)
-    currentParams.set(queryKey, queryValue)
+
+    if (isActive) {
+      // 쿼리 파라미터 삭제
+      currentParams.delete(queryKey)
+    } else {
+      // 새로운 쿼리 파라미터 추가
+      currentParams.set(queryKey, queryValue)
+    }
+
     router.push(`?${currentParams.toString()}`)
   }
 
@@ -51,10 +65,10 @@ export const SubButton = ({
     <button
       type="button"
       onClick={onClick ?? handleQueryUpdate}
-      className={styles['icon-button']}
+      className={`${styles['icon-button']} ${isActive && styles.active}`}
     >
       {icon && icon}
-      {name}
+      {name && <span className={styles['icon-button-name']}>{name}</span>}
     </button>
   )
 }

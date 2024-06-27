@@ -64,7 +64,7 @@ export default async function page({
 
   return (
     // FIXME: 배경색 수정
-    <div className="relative w-full h-full flex items-center justify-center bg-[#18243a]">
+    <div className="relative flex items-center justify-center w-full h-full">
       <NavHeader
         title="SWIPE"
         description="게임을 같이 할 나의 친구를 찾아 드려요!"
