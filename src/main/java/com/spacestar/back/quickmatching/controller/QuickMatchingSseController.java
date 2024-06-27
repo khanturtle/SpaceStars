@@ -23,7 +23,22 @@ public class QuickMatchingSseController {
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid,
                                               @RequestParam String gameName) {
-        SseEmitter emitter = quickMatchingService.connect(gameName, uuid);
+        SseEmitter emitter2 = quickMatchingService.connect(gameName, uuid);
+    
+        SseEmitter emitter = new SseEmitter();
+    ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
+    sseMvcExecutor.execute(() -> {
+        try {
+            for (int i = 0; i < 20; i++) {
+                SseEventBuilder event = SseEmitter.event()
+                        .data(System.currentTimeMillis());
+                emitter.send(event);
+                Thread.sleep(1000);
+            }
+        } catch (Exception ex) {
+            emitter.completeWithError(ex);
+        }
+    });
         return ResponseEntity.ok(emitter);
     }
 }
