@@ -7,7 +7,8 @@ import { v4 as uuidv4 } from 'uuid'
 
 export default function Home() {
   const localVideoRef = useRef<HTMLVideoElement>(null)
-  const remoteVideoRef = useRef<HTMLVideoElement>(null)
+  const remoteVideoRefs = useRef<Map<string, HTMLVideoElement>>(new Map())
+  const remoteVideoContainerRef = useRef<HTMLDivElement>(null)
   const [localStream, setLocalStream] = useState<MediaStream | null>(null)
   const [peerInfo, setPeerInfo] = useState<Map<string, RTCPeerConnection>>(new Map())
   const [roomId, setRoomId] = useState<string>('')
@@ -54,8 +55,10 @@ export default function Home() {
   const onTrack = (trackEvent: RTCTrackEvent, otherKey: string) => {
     console.log(`Received remote track from ${otherKey}`, trackEvent.streams)
     const [stream] = trackEvent.streams
-    if (!document.getElementById(otherKey)) {
-      const video = document.createElement('video')
+    let video = remoteVideoRefs.current.get(otherKey)
+
+    if (!video) {
+      video = document.createElement('video')
       video.autoplay = true
       video.controls = true
       video.id = otherKey
@@ -68,9 +71,11 @@ export default function Home() {
       track.default = true
       video.appendChild(track)
 
-      if (remoteVideoRef.current) {
-        remoteVideoRef.current.appendChild(video)
+      if (remoteVideoContainerRef.current) {
+        remoteVideoContainerRef.current.appendChild(video)
       }
+
+      remoteVideoRefs.current.set(otherKey, video)
       console.log(`Added remote video for ${otherKey}`)
     }
   }
@@ -124,7 +129,7 @@ export default function Home() {
         console.log('Connected to WebRTC server')
 
         stompClient.current?.subscribe(
-          `/topic/peer/iceCandidate/${myKey}/${roomId}`,
+          `/sub/peer/iceCandidate/${myKey}/${roomId}`,
           (message) => {
             console.log('Received ICE candidate message')
             const { key, body: candidate } = JSON.parse(message.body)
@@ -143,7 +148,7 @@ export default function Home() {
         )
 
         stompClient.current?.subscribe(
-          `/topic/peer/offer/${myKey}/${roomId}`,
+          `/sub/peer/offer/${myKey}/${roomId}`,
           async (message) => {
             console.log('Received offer message')
             const { key, body: offer } = JSON.parse(message.body)
@@ -169,7 +174,7 @@ export default function Home() {
         )
 
         stompClient.current?.subscribe(
-          `/topic/peer/answer/${myKey}/${roomId}`,
+          `/sub/peer/answer/${myKey}/${roomId}`,
           (message) => {
             console.log('Received answer message')
             const { key, body: answer } = JSON.parse(message.body)
@@ -189,7 +194,7 @@ export default function Home() {
           },
         )
 
-        stompClient.current?.subscribe(`/topic/call/key`, () => {
+        stompClient.current?.subscribe(`/sub/call/key`, () => {
           console.log('Received call key request')
           stompClient.current?.publish({
             destination: '/pub/send/key',
@@ -197,7 +202,7 @@ export default function Home() {
           })
         })
 
-        stompClient.current?.subscribe(`/topic/send/key`, (message) => {
+        stompClient.current?.subscribe(`/sub/send/key`, (message) => {
           console.log('Received send key message')
           const key = JSON.parse(message.body)
           if (myKey !== key && !otherKeyList.includes(key)) {
@@ -270,14 +275,14 @@ export default function Home() {
       </div>
       <video
         ref={localVideoRef}
-        autoPlay 
+        autoPlay
         playsInline
         controls
         style={{ display: localStream ? 'block' : 'none' }}
       >
         <track kind="captions" srcLang="en" label="English" default />
       </video>
-      <div ref={remoteVideoRef} />
+      <div ref={remoteVideoContainerRef} />
     </div>
   )
 }
