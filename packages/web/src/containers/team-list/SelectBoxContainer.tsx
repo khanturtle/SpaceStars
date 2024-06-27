@@ -33,8 +33,6 @@ export default function SelectBoxContainer({
         />
         <Gutter className="flex-1" />
 
-        {/* FIXME: query key-value 수정 */}
-
         <SubSelectBox.SubButton
           name="모집중"
           queryKey="isFinished"

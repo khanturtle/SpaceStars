@@ -29,7 +29,7 @@ const GameItem = ({
       className="min-w-[164px]"
       item={item}
       onClick={() => onClick(game)}
-      isClicked={currentGame === game.gameName}
+      isClicked={currentGame === game.gameId.toString()}
     />
   )
 }
@@ -46,7 +46,7 @@ export default function GameSelectBox({
 
   const UpdateGame = (item: GameTypes) => {
     const currentParams = new URLSearchParams(searchParams)
-    currentParams.set('game', item.gameName)
+    currentParams.set('game', item.gameId.toString())
     router.push(`?${currentParams.toString()}`)
   }
 
