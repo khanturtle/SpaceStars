@@ -26,11 +26,15 @@ export default function Navbar({
   profileImageUrl: string | null | undefined
 }) {
   const pathName = usePathname()
-  const noSearchBoxPage = ['/dashboard/queue', '/dashboard/swipe']
+  const noSearchBoxPage = [
+    '/dashboard/swipe',
+    '/dashboard/queue',
+    '/dashboard/queue/start',
+  ]
 
   return (
-    <header>
-      <nav className="h-[100px] w-full flex flex-row items-center bg-[color:var(--White-50,#fff)] sticky z-[1000] px-[54px] py-5 border-b-[#ddd] border-b border-solid left-0 top-0">
+    <header className="bg-[color:var(--nav-color)] border-b-[color:var(--nav-border)] border-b border-solid">
+      <nav className="h-[100px] w-full flex flex-row items-center sticky z-[1000] px-[54px] py-5  left-0 top-0">
         {/* Left */}
         <div className="w-[210px]">
           <Link
