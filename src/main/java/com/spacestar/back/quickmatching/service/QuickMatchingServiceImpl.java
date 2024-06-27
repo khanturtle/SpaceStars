@@ -1,6 +1,7 @@
 package com.spacestar.back.quickmatching.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spacestar.back.feignClient.dto.res.AuthResDto;
 import com.spacestar.back.feignClient.dto.res.ProfileResDto;
 import com.spacestar.back.feignClient.service.FeignClientService;
 import com.spacestar.back.global.GlobalException;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
@@ -34,7 +36,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     //FeignClient
     private final FeignClientService feignClientService;
     //SSE
-    private final HashMap<String, Set<SseEmitter>> container = new HashMap<>();
+    private final ConcurrentHashMap<String, Set<SseEmitter>> container = new ConcurrentHashMap<>();
 
     private final long tenSecBefore = System.currentTimeMillis() - 10000;
 
@@ -46,26 +48,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     //UUID로 SSE 연결
-    @Override
-    public SseEmitter connect(String uuid) {
-        SseEmitter sseEmitter = new SseEmitter(300_000L);
-
-        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
-                .name("connect")
-                .data("connected!")
-                .reconnectTime(3000L);
-
-        sendEvent(sseEmitter, sseEventBuilder);
-
-        Set<SseEmitter> sseEmitters = container.getOrDefault(uuid, new HashSet<>());
-
-        sseEmitters.add(sseEmitter);
-        container.put(uuid, sseEmitters);
-        sseEmitter.onCompletion(() -> {
-            sseEmitters.remove(sseEmitter);
-        });
-        return sseEmitter;
-    }
 
     //수락처리
     @Override
@@ -106,25 +88,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         } else throw new GlobalException(ResponseStatus.WAITING_MEMBER_NOT_EXIST);
     }
 
-    @Override
-    public String getStrings() {
-        List<String> mentList = new ArrayList<>();
-        mentList.add("더 정확한 매칭을 위해 추가 정보를 입력해보세요!");
-        mentList.add("성향에 따라 더 나은 상대를 만날 수 있도록 정보를 업데이트 해주세요.");
-        mentList.add("프로필을 업데이트하면 더 많은 사용자와 매칭될 수 있습니다!");
-        mentList.add("더 많은 관심을 받고 싶다면 프로필을 완성해주세요!");
-        mentList.add("정보를 추가하면 더 정확한 매칭을 돕습니다.");
-        mentList.add("성향에 맞는 사용자와 더 가까워지려면 프로필을 최신으로 유지하세요.");
-        mentList.add("정보를 갱신하면 더 나은 파트너를 찾을 수 있습니다.");
-        mentList.add("더 많은 매칭을 원하신다면 프로필을 업데이트 해보세요!");
-        mentList.add("프로필을 완성하면 보다 정확한 매칭을 찾을 수 있습니다.");
-        mentList.add("성향에 딱 맞는 상대를 만나기 위해 프로필을 업데이트하세요!");
 
-        Random random = new Random();
-        // 랜덤으로 멘트 선택
-        int index = random.nextInt(mentList.size());
-        return mentList.get(index);
-    }
 
     //기존에 대기큐에 있던 사용자와 매칭 실시
     public void doQuickMatch(String gameName, String uuid) {
@@ -173,8 +137,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
         ProfileResDto myProfile = feignClientService.getProfile(matchFromMember);
         ProfileResDto yourProfile = feignClientService.getProfile(matchToMember);
-//        AuthResDto myAuth = feignClientService.getAuth(matchFromMember);
-//        AuthResDto yourAuth = feignClientService.getAuth(matchToMember);
+        AuthResDto myAuth = feignClientService.getAuth(matchFromMember);
+        AuthResDto yourAuth = feignClientService.getAuth(matchToMember);
         //각각 메인게임 ID, 게임성향ID, MBTI ID가 존재할 때만 연산해서 점수 더해줌
         if (myProfile.getMainGameId() != null && yourProfile.getMainGameId() != null) {
             score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
@@ -185,8 +149,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         if (myProfile.getMbtiId() != null && yourProfile.getMbtiId() != null)
             score += mbtiScore(myProfile.getMbtiId(), yourProfile.getMbtiId());
 
-//        score += ageScore(myAuth.getAge(), yourAuth.getAge());
-//        score += genderScore(myAuth.getGender(), yourAuth.getGender());
+        score += ageScore(myAuth.getAge(), yourAuth.getAge());
+        score += genderScore(myAuth.getGender(), yourAuth.getGender());
 
         //신고 당한 횟수 만큼 점수 깎기
         score -= (myProfile.getReportCount() + yourProfile.getReportCount());
@@ -317,23 +281,66 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         redisTemplate.opsForZSet().remove(reqDto.getGameName(), data.get("matchToMember"));
     }
 
-    private static void sendEvent(final SseEmitter sseEmitter,
-                                  final SseEmitter.SseEventBuilder sseEventBuilder) {
+    //SSE
+    @Override
+    public SseEmitter connect(String uuid) {
+        SseEmitter sseEmitter = new SseEmitter(300_000L);
+
+        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
+                .name("connect")
+                .data("connected!")
+                .reconnectTime(300_000L);
+
+        sendEvent(sseEmitter, sseEventBuilder);
+
+        synchronized (container) {
+            Set<SseEmitter> sseEmitters = container.getOrDefault(uuid, new HashSet<>());
+            sseEmitters.add(sseEmitter);
+            container.put(uuid, sseEmitters);
+        }
+
+        return sseEmitter;
+    }
+
+    //매치 되었을 때 메세지 전송
+    public void sendComment(String uuid) {
+        Set<SseEmitter> sseEmitters;
+        synchronized (container) {
+            sseEmitters = new HashSet<>(container.getOrDefault(uuid, Collections.emptySet()));
+        }
+
+        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
+                .data("매치 되었습니다.")
+                .reconnectTime(30000L);
+
+        sseEmitters.forEach(sseEmitter -> sendEvent(sseEmitter, sseEventBuilder));
+    }
+
+    private void sendEvent(SseEmitter emitter, SseEmitter.SseEventBuilder event) {
         try {
-            sseEmitter.send(sseEventBuilder);
+            emitter.send(event);
         } catch (IOException e) {
-            sseEmitter.complete();
+            emitter.completeWithError(e);
         }
     }
 
-    public void sendComment(String uuid) {
-        Set<SseEmitter> sseEmitters = container.getOrDefault(uuid, new HashSet<>());
+    @Override
+    public String getStrings() {
+        List<String> mentList = new ArrayList<>();
+        mentList.add("더 정확한 매칭을 위해 추가 정보를 입력해보세요!");
+        mentList.add("성향에 따라 더 나은 상대를 만날 수 있도록 정보를 업데이트 해주세요.");
+        mentList.add("프로필을 업데이트하면 더 많은 사용자와 매칭될 수 있습니다!");
+        mentList.add("더 많은 관심을 받고 싶다면 프로필을 완성해주세요!");
+        mentList.add("정보를 추가하면 더 정확한 매칭을 돕습니다.");
+        mentList.add("성향에 맞는 사용자와 더 가까워지려면 프로필을 최신으로 유지하세요.");
+        mentList.add("정보를 갱신하면 더 나은 파트너를 찾을 수 있습니다.");
+        mentList.add("더 많은 매칭을 원하신다면 프로필을 업데이트 해보세요!");
+        mentList.add("프로필을 완성하면 보다 정확한 매칭을 찾을 수 있습니다.");
+        mentList.add("성향에 딱 맞는 상대를 만나기 위해 프로필을 업데이트하세요!");
 
-        final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
-                .name("Matched")
-                .data("매치 되었습니다.")
-                .reconnectTime(3000L);
-
-        sseEmitters.forEach(sseEmitter -> sendEvent(sseEmitter, sseEventBuilder));
+        Random random = new Random();
+        // 랜덤으로 멘트 선택
+        int index = random.nextInt(mentList.size());
+        return mentList.get(index);
     }
 }

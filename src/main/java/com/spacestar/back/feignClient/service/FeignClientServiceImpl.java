@@ -75,7 +75,7 @@ public class FeignClientServiceImpl implements FeignClientService {
         Message message = new Message("user", profileListStr + prompt);
 
         OpenAiReqDto request = new OpenAiReqDto("gpt-3.5-turbo", List.of(message));
-        OpenAiResDto chatGPTResponse = openAiClient.getChatCompletion(request);
+        OpenAiResDto chatGPTResponse = openAiClient.getChatCompletion(request,openAiKey);
         String response = chatGPTResponse.getChoices().get(0).getMessage().getContent();
 
         String[] tokens = response.substring(1, response.length() - 1).split(",\\s*");
