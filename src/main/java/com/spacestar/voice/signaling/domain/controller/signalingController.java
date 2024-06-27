@@ -1,4 +1,4 @@
-package com.spacestar.voice.signaling.controller;
+package com.spacestar.voice.signaling.domain.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +16,11 @@ public class signalingController {
 
     /**
      * offer 정보를 주고 받기 위한 websocket
-     * camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
+     * camKey : 각 요청하는 캠의 key , roomNumber : 룸 아이디
      */
-    @MessageMapping("/peer/offer/{camKey}/{roomId}")
-    @SendTo("/topic/peer/offer/{camKey}/{roomId}")
-    public String PeerHandleOffer(@Payload String offer, @DestinationVariable(value = "roomId") String roomId,
+    @MessageMapping("/peer/offer/{camKey}/{roomNumber}")
+    @SendTo("/sub/peer/offer/{camKey}/{roomNumber}")
+    public String PeerHandleOffer(@Payload String offer, @DestinationVariable(value = "roomNumber") String roomNumber,
                                   @DestinationVariable(value = "camKey") String camKey) {
         log.info("[OFFER] {} : {}", camKey, offer);
         return offer;
@@ -28,20 +28,20 @@ public class signalingController {
 
     /**
      * iceCandidate 정보를 주고 받기 위한 webSocket
-     * camKey : 각 요청하는 캠의 key , roomId : 룸 아이디
+     * camKey : 각 요청하는 캠의 key , roomNumber : 룸 아이디
      */
 
-    @MessageMapping("/peer/iceCandidate/{camKey}/{roomId}")
-    @SendTo("/topic/peer/iceCandidate/{camKey}/{roomId}")
-    public String PeerHandleIceCandidate(@Payload String candidate, @DestinationVariable(value = "roomId") String roomId,
+    @MessageMapping("/peer/iceCandidate/{camKey}/{roomNumber}")
+    @SendTo("/sub/peer/iceCandidate/{camKey}/{roomNumber}")
+    public String PeerHandleIceCandidate(@Payload String candidate, @DestinationVariable(value = "roomNumber") String roomNumber,
                                          @DestinationVariable(value = "camKey") String camKey) {
         log.info("[ICECANDIDATE] {} : {}", camKey, candidate);
         return candidate;
     }
 
-    @MessageMapping("/peer/answer/{camKey}/{roomId}")
-    @SendTo("/topic/peer/answer/{camKey}/{roomId}")
-    public String PeerHandleAnswer(@Payload String answer, @DestinationVariable(value = "roomId") String roomId,
+    @MessageMapping("/peer/answer/{camKey}/{roomNumber}")
+    @SendTo("/sub/peer/answer/{camKey}/{roomNumber}")
+    public String PeerHandleAnswer(@Payload String answer, @DestinationVariable(value = "roomNumber") String roomNumber,
                                    @DestinationVariable(value = "camKey") String camKey) {
         log.info("[ANSWER] {} : {}", camKey, answer);
         return answer;
@@ -49,7 +49,7 @@ public class signalingController {
 
     //camKey 를 받기위해 신호를 보내는 webSocket
     @MessageMapping("/call/key")
-    @SendTo("/topic/call/key")
+    @SendTo("/sub/call/key")
     public String callKey(@Payload String message) {
         log.info("[Key] : {}", message);
         return message;
@@ -57,7 +57,7 @@ public class signalingController {
 
     //자신의 camKey 를 모든 연결된 세션에 보내는 webSocket
     @MessageMapping("/send/key")
-    @SendTo("/topic/send/key")
+    @SendTo("/sub/send/key")
     public String sendKey(@Payload String message) {
         return message;
     }
