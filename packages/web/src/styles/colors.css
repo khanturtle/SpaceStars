@@ -102,6 +102,12 @@ body {
   --scrollbar-background: #f1f1f1;
   --scrollbar-color: #888;
   --scrollbar-hover: #555;
+
+  --card-color: #fff;
+  --card-finish: #cfcfcf;
+
+  --button-secondary: #fff;
+  --button-secondary-text: #7d12ff;
 }
 
 body[data-theme='dark'] {
@@ -139,9 +145,13 @@ body[data-theme='dark'] {
   --icon-button-hover: #404040;
   --icon-button-text: #f1f1f1;
 
-  --card-color: #1e1f22;
-
   --scrollbar-background: #2b2d31;
   --scrollbar-color: #1a1b1e;
   --scrollbar-hover: #000;
+
+  --card-color: #1e1f22;
+  --card-finish: #111214;
+
+  --button-secondary: #7d12ff;
+  --button-secondary-text: #fff;
 }

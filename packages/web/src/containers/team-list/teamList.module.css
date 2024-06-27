@@ -17,10 +17,41 @@
 }
 
 .finished {
-  background-color: #cfcfcf;
+  background-color: var(--card-finish);
 }
 .ongoing {
-  background-color: var(--White-50, #fff);
+  background-color: var(--card-color);
+}
+.ongoing:hover {
+  background-color: var(--icon-button-hover);
+}
+
+.info {
+  width: 85%;
+}
+.info h3 {
+  color: var(--text-title) !important;
+}
+.info p {
+  color: var(--text-desc) !important;
+}
+
+.cardButton {
+  display: inline-block;
+  align-items: end;
+}
+
+.join-button {
+  background-color: var(--button-secondary) !important;
+}
+.join-button p {
+  color: var(--button-secondary-text) !important;
+}
+.finished .join-button {
+  background-color: transparent !important;
+}
+.finished .join-button p {
+  color: #a8a8a8 !important;
 }
 
 .list-container {
@@ -35,7 +66,6 @@
   width: 100%;
   padding: 14px 16px;
   align-items: center;
-
   border-radius: 15px;
 }
 

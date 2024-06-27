@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
 
 import {
@@ -164,17 +164,19 @@ const TeamCardItem = ({
           {/* {users} */}
         </div>
         <TeamCardTitle
-          className="w-[85%]"
+          className={styles.info}
           imageUrl={item.gameData?.gameImage ?? defaultImage}
           title={item.roomName}
           description={item.memo}
         />
 
-        <div>
+        <div className={styles.cardButton}>
           <TeamCardJoinButton
             onClick={handleJoin}
             isLocked={item.isPassword}
             isFinished={item.isFinished}
+            iconFill="var(--button-secondary-text)"
+            className={styles['join-button']}
           />
         </div>
       </li>
@@ -184,7 +186,7 @@ const TeamCardItem = ({
     <li className={`${styles.list} ${styles[TYPE]}`}>
       <div className="w-[380px]">
         <TeamCardTitle
-          className="w-[85%]"
+          className={styles.info}
           imageUrl={item.gameData?.gameImage ?? defaultImage}
           title={item.roomName}
           description={item.memo}
@@ -206,6 +208,8 @@ const TeamCardItem = ({
             onClick={handleJoin}
             isLocked={item.isPassword}
             isFinished={item.isFinished}
+            iconFill="var(--button-secondary-text)"
+            className={styles['join-button']}
           />
         </div>
       </div>
