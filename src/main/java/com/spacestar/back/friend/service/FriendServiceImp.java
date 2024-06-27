@@ -75,7 +75,7 @@ public class FriendServiceImp implements FriendService {
                 uuid, type.equals("all") ? FRIEND : type.equals("sender") ? SENDER : type.equals("receiver") ? RECEIVER : BLOCK
         );
         return IntStream.range(0, getFriendList.size())
-                .mapToObj(i -> FriendListResDto.toDto(i, String.valueOf(getFriendList.get(i))))
+                .mapToObj(i -> FriendListResDto.toDto(i, getFriendList.get(i).getFriendUuid()))
                 .toList();
     }
 
