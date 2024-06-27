@@ -9,7 +9,7 @@ import { Avatar, LogoIcon, LogoName } from '@packages/ui'
 
 import { defaultImage } from '@/store/defaultState'
 
-import { LoginButton } from './NavbarItem'
+import { LoginButton, ThemeButton } from './NavbarItem'
 
 import Gutter from '../Gutter'
 import SearchBox from '../search/SearchBox'
@@ -55,6 +55,8 @@ export default function Navbar({
 
         {/* Right */}
         <NavRightBox>
+          <ThemeButton />
+          
           {session?.user ? (
             <Link href="/dashboard/my-page">
               <Avatar image_url={profileImageUrl ?? defaultImage} />

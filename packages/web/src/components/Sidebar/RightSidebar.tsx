@@ -18,7 +18,16 @@ const DefaultRightSide = ({
   return (
     <section>
       <div className={styles['side-title']}>Friends</div>
-      <FriendsList items={friendsList} />
+      {friendsList.length > 0 ? (
+        <FriendsList items={friendsList} />
+      ) : (
+        <div className={styles.friend}>
+          <h4 className={styles['friend-title']}>아직 친구가 없어요...</h4>
+          <p className={styles['friend-text']}>
+            친구가 생기면 여기에 표시돼요!
+          </p>
+        </div>
+      )}
     </section>
   )
 }
@@ -40,9 +49,7 @@ export default function RightSidebar({
   const roomNumber = pathParts.at(-1) ?? ''
 
   return (
-    <section
-      className={`${styles['right-side']}`}
-    >
+    <section className={`${styles['right-side']}`}>
       <div className={styles['side-wrapper']}>
         {isGroupChatPage ? (
           <ChatRightSide
