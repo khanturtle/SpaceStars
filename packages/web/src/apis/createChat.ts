@@ -73,7 +73,7 @@ export async function createTeam(prevState: unknown, formData: FormData) {
   }
 }
 
-/** 그룹 채팅방 입장하기 */
+/** 그룹 채팅방 입장하기 - 비밀번호 */
 export async function joinTeamForm(prevState: unknown, formData: FormData) {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
@@ -94,13 +94,13 @@ export async function joinTeamForm(prevState: unknown, formData: FormData) {
       body: JSON.stringify(postFormData),
     }).then((r) => r.json())
 
-    console.log(res)
     return { ...res }
   } catch (error) {
     console.error('joinTeam:', error)
   }
 }
 
+/** 그룹 채팅방 입장하기 */
 export async function joinTeam(roomNumber: string) {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
