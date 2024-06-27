@@ -24,6 +24,12 @@ export {
   FileIcon,
   EmojiIcon,
   SendIcon,
+  GameIcon,
+  GameIcon2,
+  GameIcon3,
+  GameIcon4,
+  RefreshIcon,
+  PlayIcon,
 } from './components/Icons'
 
 export { default as Avatar } from './components/Avatar/Avatar'

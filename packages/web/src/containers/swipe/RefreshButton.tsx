@@ -1,9 +1,19 @@
-import { Button } from '@packages/ui'
+import Link from 'next/link'
 
-export default function RefreshButton() {
+import styles from './swipe.module.css'
+
+export default function RefreshButton({ nextPage }: { nextPage: number }) {
+  // TODO: 위치 Nav 위로 수정 필요
   return (
-    <div className="flex justify-center w-full">
-      <Button label="새로고침" primary className="bg-[red]" />
+    <div className={`${styles['refresh-button']}`}>
+      <Link
+        href={`/dashboard/swipe?page=${nextPage}`}
+        passHref
+        replace
+        className="inline-block"
+      >
+        <p>새로고침</p>
+      </Link>
     </div>
   )
 }

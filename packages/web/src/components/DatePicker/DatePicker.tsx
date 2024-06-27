@@ -61,6 +61,9 @@ export default function CustomDatePicker({
           initialFocus
           required
           locale={ko}
+          captionLayout="dropdown"
+          fromYear={1900}
+          toYear={2024}
         />
       </PopoverContent>
     </Popover>

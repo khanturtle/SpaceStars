@@ -7,36 +7,53 @@ import { GameButton } from '@packages/ui'
 import { getGames } from '@/apis/getGame'
 import { useGameStore } from '@/store/gameStore'
 import { GameTypes } from '@/types/type'
+import Toast from '@/components/Toast/toast'
 
 function GameSelectButton({ game }: { game: GameTypes }) {
   const { selectedGames, selectedGamesCount, addGame, removeGame } =
     useGameStore()
+  const [toastMessage, setToastMessage] = useState('')
 
-  // FIXME: 다음 단계에서 이전으로 돌아가면, 선택은 해제되어 있고, 값은 들어있음
-  // 불변성? 때문인지 확인 필요
+  const showToast = () => {
+    setToastMessage('더 이상 선택할 수 없어요')
+
+    setTimeout(() => {
+      setToastMessage('')
+    }, 1500)
+  }
+
   const handleClick = () => {
     if (selectedGames.includes(game)) {
       removeGame(game)
     } else {
-      if (selectedGamesCount < 3) {
+      if (selectedGamesCount < 1) {
         addGame(game)
       } else {
-        // FIXME: alert 수정
-
-        alert('더 이상 선택할 수 없어요')
+        showToast()
       }
     }
   }
 
   return (
-    <GameButton
-      item={{
-        gameImage: game.gameLogoImage,
-        gameName: game.gameNameKor,
-      }}
-      isClicked={selectedGames.includes(game)}
-      onClick={handleClick}
-    />
+    <>
+      {toastMessage && (
+        <Toast
+          message={toastMessage}
+          type="error"
+          duration={1400}
+          position="top"
+          offsetY={100}
+        />
+      )}
+      <GameButton
+        item={{
+          gameImage: game.gameLogoImage,
+          gameName: game.gameNameKor,
+        }}
+        isClicked={selectedGames.includes(game)}
+        onClick={handleClick}
+      />
+    </>
   )
 }
 

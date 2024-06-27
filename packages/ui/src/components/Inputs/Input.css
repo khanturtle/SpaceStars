@@ -11,7 +11,7 @@
 }
 
 .ui-wrapper,
-.input-wrapper input[type='text'] .input-wrapper textarea {
+.input-wrapper input[type='text'] {
   font-family: inherit;
   font-size: 16px;
   font-style: normal;
@@ -44,8 +44,7 @@
   }
 }
 
-.ui-wrapper > input,
-.ui-wrapper > textarea {
+.ui-wrapper > input {
   appearance: none;
   margin: 0;
   width: 0;
@@ -69,8 +68,7 @@
     line-height: 170%;
   }
 
-  .textfield input,
-  .textfield textarea {
+  .textfield input {
     color: var(--main-color, #111);
     font-size: 16px;
     font-style: normal;
@@ -96,6 +94,30 @@
   input[type='text'] {
     color: var(--Alto-50, #f7f7f7);
   }
+}
+
+/* textarea */
+.ui-wrapper textarea {
+  color: var(--main-color, #111);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 170%;
+  width: 100%;
+  outline: none;
+  border: none;
+  background: none;
+  resize: none;
+  padding: 0;
+}
+
+.ui-wrapper textarea:focus {
+  outline: none;
+  border-color: var(--border-focus-color);
+}
+
+.ui-wrapper.input--disabled textarea {
+  color: var(--Alto-50, #f7f7f7);
 }
 
 /* Checkbox.css */

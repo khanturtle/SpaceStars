@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --Alto-50: #f7f7f7;
   --Alto-100: #ededed;
@@ -37,9 +41,6 @@
 }
 
 :root {
-  --background: #f8f8f9;
-  /* --background: rgba(0, 0, 0, 0.7); */
-
   --Main-Color-1: #6a64e9;
 
   --color-primary: #7d12ff;
@@ -56,8 +57,54 @@
 
   --online: #3bcd23;
   --offline: #dddddd;
+
+  --black: #000000;
+  --quite-black: #23272a;
+  --dark-black: #2c2f33;
+  --greyple: #99aab5;
 }
 
 body {
-  background-color: var(--background);
+  --background-color: #f8f8f9;
+
+  --text: #000;
+  --text-title: #000;
+
+  --sidebar: #fff;
+  --sidebar-text: #9c9cab;
+  --sidebar-text-active: #6a64e9;
+  --sidebar-title: #1a1a1a;
+
+  --nav-color: #fff;
+  --nav-border: #ddd;
+
+  --button-color: #f2f2f2;
+  --button-text: #4b5057;
+  --button-border: #d0d0d0;
+  --button-hover: #e6e6e6;
+  --button-hover-text: #565b62;
+  --button-active: #d0d0d0;
+  --button-active-text: #3e4349;
+}
+body[data-theme='dark'] {
+  --background-color: #2c2f33;
+
+  --text: #dbdee1;
+  --text-title: #ffffff;
+
+  --sidebar: #23272a;
+  --sidebar-text: #9c9cab;
+  --sidebar-text-active: #6a64e9;
+  --sidebar-title: #dbdee1;
+
+  --nav-color: #23272a;
+  --nav-border: #363b40;
+
+  --button-color: #4b5057;
+  --button-text: #f2f2f2;
+  --button-border: #363b40;
+  --button-hover: #565b62;
+  --button-hover-text: #ffffff;
+  --button-active: #3e4349;
+  --button-active-text: #ffffff;
 }

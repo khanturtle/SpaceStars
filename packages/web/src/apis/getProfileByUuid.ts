@@ -75,7 +75,7 @@ export async function getPlayGameByUuid(
   }
 }
 
-/** 좋아하는 게임 조회 - 나 */
+/** 좋아하는 게임 조회 - uuid */
 export async function getLikedGameByUuid(
   uuid: string,
   _token?: string,

@@ -2,7 +2,6 @@
 
 const AUTH_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/auth`
 
-// TODO: 유효성 검사 로직
 export async function createUser(
   imageUrl: string,
   isAvailable: boolean,

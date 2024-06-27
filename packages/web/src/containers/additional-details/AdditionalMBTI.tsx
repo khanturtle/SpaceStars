@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-import { getMbtiList, MbtiType } from '@/apis/data'
+import { getMbtiList, MbtiType } from '@/apis/getMbti'
 
 import {
   Select,
@@ -26,7 +26,6 @@ export default function AdditionalMBTI({
     setMbtiId(mbtiIdToNumber)
   }
 
-  // TODO: 테스트
   useEffect(() => {
     const fetchData = async () => {
       const data = await getMbtiList()

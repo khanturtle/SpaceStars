@@ -32,10 +32,13 @@ export async function getMainProfileImage(
         tags: ['profileImage'],
       },
     })
+
+    const data = await response.json()
+
     if (!response.ok) {
       throw new Error('Failed to getMainProfileImage')
     }
-    return await response.json()
+    return data
   } catch (error) {
     console.error(error)
     return undefined

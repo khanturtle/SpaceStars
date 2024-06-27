@@ -1,0 +1,116 @@
+/* QueueLayout.css */
+.layout {
+  /* display: flex; */
+  width: 100%;
+}
+/* QueueLayout.css */
+
+/* QueueCardWrapper.css */
+.queue-cards {
+  display: flex;
+  justify-content: center;
+  gap: 250px;
+  width: 100%;
+  height: 400px;
+  position: relative;
+  margin-top: 130px;
+}
+/* QueueCardWrapper.css */
+
+/* QueueCard.css */
+.matching-card {
+  display: flex;
+  width: 250px;
+  height: 400px;
+  padding: 172px 23px;
+  flex-direction: column;
+  align-items: center;
+  gap: 21px;
+  flex-shrink: 0;
+
+  border-radius: 1rem;
+  border: 1px solid #d6b8fb;
+  background: rgba(125, 18, 255, 0.4);
+  backdrop-filter: saturate(180%) blur(8px);
+}
+.matching-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.matching-text {
+  color: var(--White-50, #fff);
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.front-wrapper {
+  width: 250px;
+  height: 400px;
+  border-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(8px);
+}
+/* QueueCard.css */
+
+/* QueueButton.css */
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  gap: 35px;
+}
+.buttons button {
+  display: flex;
+  width: 86px;
+  height: 86px;
+  padding: 6px 14px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  border-radius: 30px;
+}
+.refresh {
+  background: #ff87cf;
+}
+.matchingBtn {
+  background: #7d12ff;
+}
+/* QueueButton.css */
+
+/* QueueDescription.css */
+.description {
+  margin-top: 30px;
+
+  display: flex;
+  justify-content: center;
+}
+.description p {
+  color: var(--White-50, #fff);
+
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  padding: 8px 120px;
+
+  border-radius: 10px;
+  background-color: rgba(125, 18, 255, 0.6);
+}
+/* QueueDescription.css */

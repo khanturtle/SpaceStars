@@ -117,3 +117,15 @@ export const useSelectedOption = create<SelectedOptionStore>((set) => ({
     }),
   resetOptions: () => set(initialOptionState),
 }))
+
+interface OptionStore {
+  optionCount: number
+  setOptionCount: (count: number) => void
+  resetOptionCount: () => void
+}
+
+export const useOptionStore = create<OptionStore>((set) => ({
+  optionCount: 0,
+  setOptionCount: (count) => set({ optionCount: count }),
+  resetOptionCount: () => set({ optionCount: 0 }),
+}))

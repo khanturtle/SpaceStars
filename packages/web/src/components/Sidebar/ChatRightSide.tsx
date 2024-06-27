@@ -99,7 +99,7 @@ export const ChatRightSide = ({
         {},
       )
 
-      /**  구독 해제 */
+      /** 구독 해제 */
       return () => {
         subscription.unsubscribe()
       }
