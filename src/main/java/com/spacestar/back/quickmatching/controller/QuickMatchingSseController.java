@@ -10,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
 @RestController
 @Tag(name = "Queue", description = "빠른 매칭(큐)")
 @RequestMapping("/api/v1/sse-quick")
