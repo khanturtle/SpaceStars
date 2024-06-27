@@ -16,6 +16,7 @@
     "@packages/ui": "workspace:*",
     "@radix-ui/react-toast": "^1.1.5",
     "aws-sdk": "^2.1643.0",
+    "eventsource-polyfill": "^0.9.6",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "next-sitemap": "^4.2.3",
