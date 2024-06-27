@@ -38,6 +38,12 @@ a {
   user-drag: none;
 }
 
+input,
+input:focus,
+select, select:focus {
+  outline: none;
+}
+
 #birth-0 {
   display: none !important;
 }
