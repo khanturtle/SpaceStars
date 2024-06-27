@@ -38,7 +38,7 @@ public class QuickMatchingSseController {
                     SseEmitter.SseEventBuilder event = SseEmitter.event()
                             .data(message);
                     emitter.send(event);
-                    Thread.sleep(3000);
+                    Thread.sleep(5000);
                 }
             } catch (Exception ex) {
                 emitter.completeWithError(ex);
