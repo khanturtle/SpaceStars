@@ -39,11 +39,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: 'light',
+  themeColor: 'dark',
   width: 'device-width',
-  initialScale: 1,
-  maximumScale: 2,
-  userScalable: false,
 }
 
 export default async function RootLayout({
@@ -69,7 +66,7 @@ export default async function RootLayout({
           content="RF3jYM4llYmMJX3IkZbGaclTJ74I2LihgTOlqjsqppg"
         />
       </head>
-      <body>
+      <body data-theme="dark" className="bg-[color:var(--background-color)]">
         <AuthSession>
           <ToastProvider>
             <WebSocketProvider>

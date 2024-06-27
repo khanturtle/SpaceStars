@@ -42,6 +42,7 @@ a {
   display: none !important;
 }
 
+/* shadcn */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -113,11 +114,5 @@ a {
 @layer base {
   * {
     @apply border-border;
-  }
-  body {
-    /* @apply bg-background text-foreground;
-    font-feature-settings:
-      'rlig' 1,
-      'calt' 1; */
   }
 }

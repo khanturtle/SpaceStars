@@ -55,8 +55,7 @@ const SideBarItem = ({ item }: { item: any }) => {
     <li className={styles['side-menu']}>
       <Link
         href={item.href}
-        // className={`${styles.link} ${isPathname ? 'text-[color:var(--Main-Color-1,#6a64e9)]' : 'text-[color:#9c9cab]'}`}
-        className={`${styles.link} ${isPathname || isChatPath ? 'text-[color:var(--Main-Color-1,#6a64e9)]' : isDashboardPath ? 'text-[color:#9c9cab]' : 'text-[color:#9c9cab]'}`}
+        className={`${styles.link} ${isPathname || isChatPath ? 'text-[color:var(--sidebar-text-active)]' : isDashboardPath ? 'text-[color:var(--sidebar-text)]' : 'text-[color:var(--sidebar-text)]'}`}
       >
         {item.svg}
         <p className="text-[16px] not-italic leading-[normal]">{item.title}</p>
@@ -74,6 +73,7 @@ export default function Sidebar() {
     <aside
       className={`${styles['left-side']} ${leftSide ? `${styles.active}` : ''}`}
     >
+      {/* 접혔을 때, 열기 버튼 */}
       <button
         className={styles['left-side-button']}
         type="button"
