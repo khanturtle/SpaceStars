@@ -34,7 +34,7 @@ public class QuickMatchingSseController {
     sseMvcExecutor.execute(() -> {
         try {
             for (int i = 0; i < 20; i++) {
-                SseEventBuilder event = SseEmitter.event()
+                SseEmitter.SseEventBuilder event = SseEmitter.event()
                         .data(System.currentTimeMillis());
                 emitter.send(event);
                 Thread.sleep(1000);
