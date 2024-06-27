@@ -10,10 +10,19 @@ interface Message {
   content: string;
 }
 
+// 알림 목록 타입 정의
+interface Alarm{
+  senderUuid: string;
+  alarmType: string;
+  content: string;
+}
+
 const SseComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [alarms, setAlarms] = useState<Alarm[]>([]);
   const eventSourceRef = useRef<EventSource | null>(null);
   const uuid = '4258cc84-d993-4235-8abd-5ca8853483bb'; // UUID 값을 설정
+  const accessToken = '';
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !eventSourceRef.current) {
@@ -42,6 +51,35 @@ const SseComponent: React.FC = () => {
       };
     }
 
+    // 알림 목록 가져오기
+    const fetchAlarms = async () => {
+      try{
+        const response = await fetch('https://spacestars.kr/api/v1/alarm/list', {
+          method: 'GET',
+          headers:{
+            'Content_Type' : 'application/json',
+            'Authorization' : accessToken
+          }
+        });
+
+        if(!response.ok){
+          throw new Error('Failed to fetch alarm list');
+        }
+
+        const data = await response.json();
+        const alarmData = data.result.alarmList.map((item: any) => ({
+          senderUuid: item.senderUuid,
+          alarmType: item.alarmType,
+          content: item.content
+        }));
+        setAlarms(alarmData);
+      }catch(error){
+        console.error('Failed to fetch alarm list: ', error);
+      }
+    };
+
+    fetchAlarms();
+
     // 컴포넌트 언마운트 시 SSE 연결 닫기
     return () => {
       if (eventSourceRef.current) {
@@ -55,11 +93,11 @@ const SseComponent: React.FC = () => {
     <div>
       <h2>알림 목록</h2>
       <ul>
-        {messages.map((message, index) => (
+        {alarms.map((alarms, index) => (
           <li key={index}>
-            {message.senderUuid} {'->'} {message.receiverUuid}: {message.content}
+            {alarms.senderUuid} {'->'}{alarms.alarmType}:{alarms.content}
           </li>
-        ))}
+        ))} 
       </ul>
     </div>
   );
