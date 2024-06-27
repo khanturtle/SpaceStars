@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,7 +23,6 @@ import java.util.concurrent.Executors;
 @RequiredArgsConstructor
 public class QuickMatchingSseController {
     private final QuickMatchingService quickMatchingService;
-    private final ModelMapper mapper;
 
     @Operation(summary = "대기 큐 SSE 연결")
     @CrossOrigin(origins = "*")
@@ -28,21 +30,24 @@ public class QuickMatchingSseController {
     public ResponseEntity<SseEmitter> connect(@RequestHeader("UUID") String uuid,
                                               @RequestParam String gameName) {
         SseEmitter emitter2 = quickMatchingService.connect(gameName, uuid);
-    
+
         SseEmitter emitter = new SseEmitter();
-    ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-    sseMvcExecutor.execute(() -> {
-        try {
-            for (int i = 0; i < 20; i++) {
-                SseEmitter.SseEventBuilder event = SseEmitter.event()
-                        .data(System.currentTimeMillis());
-                emitter.send(event);
-                Thread.sleep(1000);
+        ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
+
+        String message = quickMatchingService.getStrings();
+
+        sseMvcExecutor.execute(() -> {
+            try {
+                while (true) {
+                    SseEmitter.SseEventBuilder event = SseEmitter.event()
+                            .data(message);
+                    emitter.send(event);
+                    Thread.sleep(3000);
+                }
+            } catch (Exception ex) {
+                emitter.completeWithError(ex);
             }
-        } catch (Exception ex) {
-            emitter.completeWithError(ex);
-        }
-    });
+        });
         return ResponseEntity.ok(emitter);
     }
 }
