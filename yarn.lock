@@ -3534,6 +3534,7 @@ __metadata:
     eslint-config-next: "npm:14.2.3"
     eslint-plugin-import: "npm:^2.29.1"
     event-source-polyfill: "npm:^1.0.31"
+    eventsource-polyfill: "npm:^0.9.6"
     lucide-react: "npm:^0.379.0"
     next: "npm:14.2.3"
     next-auth: "npm:^4.24.7"
@@ -9868,6 +9869,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventsource-polyfill@npm:^0.9.6":
+  version: 0.9.6
+  resolution: "eventsource-polyfill@npm:0.9.6"
+  checksum: 10c0/4e6b0f96e40c686bb3e81aedffb1bbde05b29185b411f1eca6adb747aa7a8f08000641cc877b873ed93ca7cb95730f7dfc167f1fff5a4229fc4c51f71ad7be4e
+  languageName: node
+  linkType: hard
+
 "eventsource@npm:^2.0.2":
   version: 2.0.2
   resolution: "eventsource@npm:2.0.2"
@@ -12325,6 +12333,7 @@ __metadata:
     "@next/eslint-plugin-next": "npm:^14.2.3"
     "@storybook/react": "npm:^8.1.6"
     "@storybook/test": "npm:^8.1.6"
+    "@types/event-source-polyfill": "npm:^1.0.5"
     "@types/node": "npm:^20.14.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.10.0"
     "@typescript-eslint/parser": "npm:^7.10.0"
@@ -12344,6 +12353,7 @@ __metadata:
     prettier: "npm:^3.3.2"
     supports-color: "npm:^9.4.0"
     typescript: "npm:4.9.4"
+    web: "npm:^0.0.2"
   languageName: unknown
   linkType: soft
 
@@ -16453,6 +16463,13 @@ __metadata:
   dependencies:
     defaults: "npm:^1.0.3"
   checksum: 10c0/5b61ca583a95e2dd85d7078400190efd452e05751a64accb8c06ce4db65d7e0b0cde9917d705e826a2e05cc2548f61efde115ffa374c3e436d04be45c889e5b4
+  languageName: node
+  linkType: hard
+
+"web@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "web@npm:0.0.2"
+  checksum: 10c0/e8a5c424dea387e473545d98c1e55150b3f79568c03c5c1a6d124bad6393ddaf5e7ab54696b03ec74e123b1e70ab7ef70da865508abdee9afb3be7598a8a0441
   languageName: node
   linkType: hard
 
