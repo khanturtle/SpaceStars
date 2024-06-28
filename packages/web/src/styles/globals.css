@@ -5,6 +5,24 @@
 body {
   font-family: 'Pretendard';
 }
+body::before {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://media.discordapp.net/attachments/1230380885464055890/1256082733570981898/image.png?ex=667f79b4&is=667e2834&hm=c8942547cb2a6b80008fa3a3f03f0024e3adfdcc773a9460566fc99b6f963d5f&=&format=webp&quality=lossless&width=350&height=350');
+  background-size: cover;
+  opacity: 0.6;
+
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+  z-index: -1;
+  content: '';
+}
 
 .input-reset {
   border: none;

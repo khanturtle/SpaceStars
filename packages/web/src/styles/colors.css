@@ -85,6 +85,8 @@ body {
 
   --nav-color: #fff;
   --nav-border: #ddd;
+  --nav-color-rgba: rgba(255, 255, 255, 1);
+  --nav-color-rgba2: rgba(255, 255, 255, 0);
 
   --button-color: #f2f2f2;
   --button-text: #4b5057;
@@ -133,6 +135,8 @@ body[data-theme='dark'] {
 
   --nav-color: #1e1f22;
   --nav-border: #363b40;
+  --nav-color-rgba: rgba(30, 31, 34, 1);
+  --nav-color-rgba2: rgba(30, 31, 34, 0);
 
   --button-color: #4b5057;
   --button-text: #f2f2f2;
