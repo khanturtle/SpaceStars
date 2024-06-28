@@ -46,6 +46,9 @@ body[data-theme='dark'] {
   .chat-header {
     background: transparent;
   }
+  .footer {
+    background: rgba(0, 0, 0, 0.5);
+  }
   .nav:before {
     content: '';
     position: absolute;
@@ -136,6 +139,38 @@ select:focus {
 
 #birth-0 {
   display: none !important;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-out forwards;
+}
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.testimonial-container {
+  width: 100%;
+  overflow: hidden;
+}
+.testimonial-slider {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+.testimonial-item {
+  width: 33.3%;
 }
 
 /* shadcn */

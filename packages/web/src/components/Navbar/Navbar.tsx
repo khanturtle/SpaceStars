@@ -16,8 +16,6 @@ import SearchBox from '../search/SearchBox'
 import { Alarm } from './Alarm'
 import TitleHeader from './TitleHeader'
 
-import styles from './navbar.module.css'
-
 const NavRightBox = ({ children }: { children?: React.ReactNode }) => {
   return <div className="flex max-w-[328px] pl-[50px]">{children}</div>
 }
@@ -38,8 +36,8 @@ export default function Navbar({
   ]
 
   return (
-    <header className="h-[100px] nav">
-      <nav className="w-full flex flex-row items-center sticky z-[1000] px-[54px] py-5  left-0 top-0">
+    <header className="h-[100px] nav sticky top-0 z-[1000]">
+      <nav className="w-full flex flex-row items-center sticky px-[54px] py-5  left-0 top-0">
         {/* Left */}
         <div className="w-[210px]">
           <Link
