@@ -36,6 +36,8 @@ export const ThemeButton = () => {
   return (
     <button type="button" onClick={toggleTheme} className="mr-8">
       <ThemeIcon
+        width="28"
+        height="28"
         main_fill={theme === 'light' ? 'black' : 'white'}
         sub_fill={theme === 'light' ? 'white' : 'black'}
       />
