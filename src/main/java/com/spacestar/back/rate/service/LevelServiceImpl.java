@@ -1,6 +1,7 @@
 package com.spacestar.back.rate.service;
 
 import com.spacestar.back.rate.domain.TotalExperience;
+import com.spacestar.back.rate.dto.res.LevelInfoResDto;
 import com.spacestar.back.rate.dto.res.LevelResDto;
 import com.spacestar.back.rate.repository.level.LevelRepository;
 import com.spacestar.back.rate.repository.TotalExperienceRepository;
@@ -23,5 +24,10 @@ public class LevelServiceImpl implements LevelService{
             return LevelResDto.builder().level(1).build();
         }
         return levelRepository.getLevel(totalExperience.getExp());
+    }
+
+    @Override
+    public LevelInfoResDto getLevelInfo(int level) {
+        return null;
     }
 }
