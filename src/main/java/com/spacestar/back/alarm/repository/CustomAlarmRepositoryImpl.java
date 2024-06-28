@@ -14,6 +14,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.spacestar.back.alarm.domain.Alarm;
 import com.spacestar.back.alarm.dto.req.AlarmDeleteReqDto;
+import com.spacestar.back.alarm.dto.req.AlarmModifyReqDto;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
 
@@ -29,15 +30,15 @@ public class CustomAlarmRepositoryImpl implements CustomAlarmRepository {
 
 	// 알림상태를 읽음으로 업데이트
 	@Override
-	public UpdateResult modifyAlarm(String alarmId, String uuid) {
+	public UpdateResult modifyAlarm(String uuid, AlarmModifyReqDto alarmModifyReqDto){
 
 		return mongoTemplate.updateFirst(
 			new Query(new Criteria().andOperator(
-				Criteria.where("_id").is(new ObjectId(alarmId)),
+				Criteria.where("_id").is(new ObjectId(alarmModifyReqDto.getAlarmId())),
 				Criteria.where("receiverUuid").is(uuid),
 				Criteria.where("checkStatus").is("UNREAD")
 			)),
-			new Update().set("checkStatus", "READ"),
+			new Update().set("checkStatus", alarmModifyReqDto.getCheckStatus()),
 			Alarm.class
 		);
 	}

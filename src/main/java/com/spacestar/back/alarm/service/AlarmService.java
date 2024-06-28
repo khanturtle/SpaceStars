@@ -2,6 +2,7 @@ package com.spacestar.back.alarm.service;
 
 import com.spacestar.back.alarm.dto.req.AlarmAddReqDto;
 import com.spacestar.back.alarm.dto.req.AlarmDeleteReqDto;
+import com.spacestar.back.alarm.dto.req.AlarmModifyReqDto;
 import com.spacestar.back.alarm.dto.res.AlarmListResDto;
 import com.spacestar.back.alarm.dto.res.AlarmStateResDto;
 import com.spacestar.back.kafka.message.MatchingMessage;
@@ -24,7 +25,7 @@ public interface AlarmService {
 	AlarmStateResDto getAlarmState(String uuid, String id);
 
 	//알림 상태 수정 -> 읽음 상태로 변경
-	void modifyAlarmRead(String alarmId, String uuid);
+	void modifyAlarmRead(String uuid, AlarmModifyReqDto alarmModifyReqDto);
 
 	//알림 삭제
 	void deleteAlarm(String uuid, AlarmDeleteReqDto alarmDeleteReqDto);
