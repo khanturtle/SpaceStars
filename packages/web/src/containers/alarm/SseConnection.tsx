@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 
 // Message 타입 정의
@@ -11,17 +11,16 @@ interface Message {
 }
 
 interface SseConnectionProps {
-  uuid?: string
-  onMessageReceived: () => void
+  uuid?: string;
+  onMessageReceived: () => void;
 }
 
-const SseConnection: React.FC<SseConnectionProps> = ({uuid, onMessageReceived}) => {
+const SseConnection = forwardRef<SseConnectionProps, SseConnectionProps>(({ uuid, onMessageReceived }, ref) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const eventSourceRef = useRef<EventSource | null>(null);
 
-  useEffect(() => {
-    // SSE 연결 함수
-    const connectSSE = () => {
+  useImperativeHandle(ref, () => ({
+    connect: () => {
       if (uuid && typeof window !== 'undefined' && !eventSourceRef.current) {
         eventSourceRef.current = new EventSourcePolyfill('https://spacestars.kr/api/v1/sse', {
           headers: {
@@ -36,7 +35,7 @@ const SseConnection: React.FC<SseConnectionProps> = ({uuid, onMessageReceived}) 
 
         eventSourceRef.current.onmessage = (event: any) => {
           const newMessage: Message = JSON.parse(event.data);
-          console.log('New message received:', newMessage); 
+          console.log('New message received:', newMessage);
           setMessages(prevMessages => [...prevMessages, newMessage]);
           onMessageReceived();
         };
@@ -44,29 +43,27 @@ const SseConnection: React.FC<SseConnectionProps> = ({uuid, onMessageReceived}) 
         eventSourceRef.current.onerror = (error: any) => {
           console.error('EventSource failed:', error);
           eventSourceRef.current?.close();
-          eventSourceRef.current = null; 
+          eventSourceRef.current = null;
         };
       }
-    };
+    },
+    disconnect: () => {
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+        console.log('SSE connection closed.');
+      }
+    }
+  }));
 
-    // 기존 연결 정리
+  useEffect(() => {
     if (eventSourceRef.current) {
       eventSourceRef.current.close();
       eventSourceRef.current = null;
     }
+  }, [uuid]);
 
-    // 새로운 연결 시도
-    connectSSE();
-
-    return () => {
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-        eventSourceRef.current = null;
-      }
-    };
-  }, [uuid, onMessageReceived]);
-
-  return null; 
-};
+  return null;
+});
 
 export default SseConnection;
