@@ -14,11 +14,7 @@ import com.spacestar.back.teamChat.service.TeamChatRoomService;
 import com.spacestar.back.teamChat.vo.req.TeamChatJoinReqVo;
 import com.spacestar.back.teamChat.vo.req.TeamChatRoomJoinReqVo;
 import com.spacestar.back.teamChat.vo.req.TeamChatRoomReqVo;
-import com.spacestar.back.teamChat.vo.res.TeamChatRoomDetailResVo;
-import com.spacestar.back.teamChat.vo.res.TeamChatRoomMemberResVo;
-import com.spacestar.back.teamChat.vo.res.TeamChatRoomNumberResVo;
-import com.spacestar.back.teamChat.vo.res.TeamChatRoomRecruitReqVo;
-import com.spacestar.back.teamChat.vo.res.TeamChatRoomResVo;
+import com.spacestar.back.teamChat.vo.res.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -157,4 +153,19 @@ public class TeamChatRoomController {
 
         return new ResponseEntity<>(ResponseSuccess.CHANGE_TEAM_CHATROOM_SUCCESS);
     }
+
+    //내가 속한 방인지
+    @Operation(summary = "내가 속한 방인지 확인", description = "내가 속한 방인지 확인합니다.")
+    @GetMapping("/chatroom/isMember/{roomNumber}")
+    public ResponseEntity<TeamChatIsMember> isMember(@RequestHeader String uuid,
+                                            @PathVariable String roomNumber){
+        boolean isMember = teamChatRoomService.isMember(uuid, roomNumber);
+        TeamChatIsMember teamChatIsMember = TeamChatIsMember.builder()
+                .memberStatus(isMember)
+                .build();
+        return new ResponseEntity<>(ResponseSuccess.IS_MEMBER_SUCCESS,teamChatIsMember);
+    }
+
+
+
 }

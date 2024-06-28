@@ -38,6 +38,7 @@ public enum ResponseSuccess {
     GET_TEAM_CHATROOM_UNREAD_MESSAGE_LIST_SUCCESS(412, "팀 채팅방 안 읽은 메시지 목록 조회 성공"),
     GET_TEAM_CHATROOM_RECENT_MESSAGE_SUCCESS(413, "팀 채팅방 최근 메시지 조회 성공"),
     GET_TEAM_CHATROOM_RECENT_MESSAGE_COUNT_SUCCESS(414, "팀 채팅방 최근 메시지 개수 조회 성공"),
+    IS_MEMBER_SUCCESS(415, "팀 채팅방 멤버 여부 조회 성공"),
     INTERNAL_SERVER_ERROR(900, "Internal server error");
 
 
