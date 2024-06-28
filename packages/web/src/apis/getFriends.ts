@@ -45,6 +45,7 @@ export async function getFriendType(
 /** 친구 리스트 조회 */
 export async function getFriendsList(
   _token?: string,
+  _query?: string,
 ): Promise<(ApiResponseType & { result: FriendsListType[] }) | undefined> {
   let token
 
@@ -54,9 +55,10 @@ export async function getFriendsList(
     const session = await getServerSession(options)
     token = session?.user?.data.accessToken
   }
-
+  const query = _query ? _query : 'all'
+  console.log('query', query)
   try {
-    const response = await fetch(`${BASE_URL}/list`, {
+    const response = await fetch(`${BASE_URL}/list?type=${query}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
@@ -89,7 +91,7 @@ export async function getFriendsSendList(_token?: string) {
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/request/send`, {
+    const response = await fetch(`${BASE_URL}/request?type=send`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? token : '',
