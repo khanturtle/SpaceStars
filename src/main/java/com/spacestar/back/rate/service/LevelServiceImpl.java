@@ -1,5 +1,6 @@
 package com.spacestar.back.rate.service;
 
+import com.spacestar.back.rate.domain.Level;
 import com.spacestar.back.rate.domain.TotalExperience;
 import com.spacestar.back.rate.dto.res.LevelInfoResDto;
 import com.spacestar.back.rate.dto.res.LevelResDto;
@@ -28,6 +29,6 @@ public class LevelServiceImpl implements LevelService{
 
     @Override
     public LevelInfoResDto getLevelInfo(int level) {
-        return null;
+       return levelRepository.findByLevel(level);
     }
 }

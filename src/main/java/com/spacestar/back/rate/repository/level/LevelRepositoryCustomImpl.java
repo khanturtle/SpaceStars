@@ -2,7 +2,9 @@ package com.spacestar.back.rate.repository.level;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.spacestar.back.rate.domain.Level;
 import com.spacestar.back.rate.domain.QLevel;
+import com.spacestar.back.rate.dto.res.LevelInfoResDto;
 import com.spacestar.back.rate.dto.res.LevelResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,5 +27,15 @@ public class LevelRepositoryCustomImpl implements LevelRepositoryCustom {
                 )
                 .fetchOne();
 
+    }
+
+    @Override
+    public LevelInfoResDto findByLevel(int level) {
+        return query.select(Projections.constructor(LevelInfoResDto.class,
+                        level1.levelIcon,
+                        level1.endExp.subtract(level1.startExp).as("levelTotalExp")))
+                .from(level1)
+                .where(level1.level.eq(level))
+                .fetchOne();
     }
 }

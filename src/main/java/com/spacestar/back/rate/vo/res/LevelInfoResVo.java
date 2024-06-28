@@ -6,5 +6,4 @@ import lombok.Getter;
 public class LevelInfoResVo {
     private String levelIcon;
     private int levelTotalExp;
-    private int levelNowExp;
 }
