@@ -19,12 +19,12 @@ import {
 
 import FormLayout from '@/components/form/formLayout'
 import { ModalContext } from '@/components/providers/modal-provider'
+import { useToast } from '@/components/Toast/toast-provider'
 
 import { createTeam } from '@/apis/createChat'
 import { GameTypes } from '@/types/type'
 
 import styles from './teamList.module.css'
-import { useToast } from '@/components/Toast/toast-provider'
 
 const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
   const router = useRouter()

@@ -54,7 +54,7 @@ export default function Navbar({
 
         {!noSearchBoxPage.includes(pathName) && !isChatPath && <SearchBox />}
         {isChatPath && <ChatHeader />}
-        {/* <Gutter className="flex-1" /> */}
+        <Gutter className="flex-1" />
 
         {/* Right */}
         <NavRightBox>
