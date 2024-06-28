@@ -3119,6 +3119,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@heroicons/react@npm:^2.1.4":
+  version: 2.1.4
+  resolution: "@heroicons/react@npm:2.1.4"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 10c0/2f893d37f7a2c1e969b1d042ef1d5941847986f8bad77285318a73345c55dae1d423081f21f0fc8d5a6fe1899c41fcd98dc3c413d82e2a20374886bd720e4f34
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.14":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
@@ -3514,6 +3523,7 @@ __metadata:
   resolution: "@packages/web@workspace:packages/web"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.598.0"
+    "@heroicons/react": "npm:^2.1.4"
     "@packages/ui": "workspace:*"
     "@radix-ui/react-popover": "npm:^1.0.7"
     "@radix-ui/react-select": "npm:^2.0.0"

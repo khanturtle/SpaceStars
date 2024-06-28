@@ -125,7 +125,9 @@ export interface GroupChatInfo {
 export interface AlarmListType{
   index: number;
   senderUuid: string;
-  checkStatus: 'UNREAD' | 'READ';
+  checkStatus: string;
   alarmType: string;
   content: string;
+  senderNickname: string;
+  senderProfileImage: string;
 }
