@@ -262,6 +262,35 @@ export default function Home() {
     }
   }
 
+  const disconnect = async () => {
+    // 모든 피어 연결을 종료합니다.
+    peerInfo.forEach((pc) => {
+      pc.close()
+    })
+    setPeerInfo(new Map())
+
+    // STOMP 클라이언트를 비활성화합니다.
+    if (stompClient.current) {
+      stompClient.current.deactivate()
+    }
+
+    // 비디오 스트림을 중지합니다.
+    if (localStream) {
+      localStream.getTracks().forEach((track) => track.stop())
+      setLocalStream(null)
+    }
+
+    // 원격 비디오 요소를 제거합니다.
+    remoteVideoRefs.current.forEach((video) => {
+      if (remoteVideoContainerRef.current) {
+        remoteVideoContainerRef.current.removeChild(video)
+      }
+    })
+    remoteVideoRefs.current.clear()
+
+    console.log('Disconnected from room')
+  }
+
   return (
     <div>
       <div>
@@ -273,12 +302,21 @@ export default function Home() {
         <button type="button" onClick={joinRoom}>
           Enter Room
         </button>
+        <br />
         <button
           type="button"
           onClick={startStreams}
           style={{ display: localStream ? 'inline' : 'none' }}
         >
           Start Streams
+        </button>
+        <br />
+        <button
+          type="button"
+          onClick={disconnect}
+          style={{ display: localStream ? 'inline' : 'none' }}
+        >
+          Disconnect
         </button>
       </div>
       <video
