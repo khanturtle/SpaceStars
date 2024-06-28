@@ -6,6 +6,8 @@ import { useContext, useEffect, useState } from 'react'
 
 import { Ellipsis, Phone } from 'lucide-react'
 
+import { ArrowIcon } from '@packages/ui'
+
 import { getGameById } from '@/apis/getGame'
 import {
   getGroupChatInfo,
@@ -15,6 +17,7 @@ import { ModalContext } from '@/components/providers/modal-provider'
 import { GameType, GroupChatInfo } from '@/types/type'
 
 import styles from './chat.module.css'
+import { useRouter } from 'next/navigation'
 
 export default function GroupChatHeader({
   roomNumber,
@@ -28,6 +31,8 @@ export default function GroupChatHeader({
   const [memberInfo, setMemberInfo] = useState()
 
   const { openModal } = useContext(ModalContext)
+
+  const router = useRouter()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,15 +51,31 @@ export default function GroupChatHeader({
   }, [roomNumber])
 
   // TODO: 보이스 연결
-  const handleCall = () => {}
+  const handleCall = () => {
+    // 누르면, zustand state 변화 -> ChatRightSide 에 image 테두리 보라색
+  }
 
   // TODO: 채팅방 정보
   const handleMore = () => {
-    openModal(<div className={styles.roomPopup}></div>)
+    // openModal(<div className={styles.roomPopup}></div>)
   }
 
   return (
-    <div className={styles.header}>
+    <div className={`${styles.header} chat-header`}>
+      <button
+        className={styles.back}
+        onClick={() => {
+          router.push('/dashboard/chat')
+        }}
+      >
+        <ArrowIcon
+          type="left"
+          fill="var(--color-icon)"
+          width="20"
+          height="20"
+        />
+      </button>
+
       {gameInfo && (
         <Image
           src={gameInfo.gameImage}

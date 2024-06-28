@@ -1,5 +1,7 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
+
 import { useEffect, useState } from 'react'
 
 import { useWebSocket } from '../providers/socket-provider'
@@ -9,7 +11,6 @@ import { getChatroomData, getTeamChatroomData } from '@/lib/getRoomDataByClient'
 import FriendsList from '../Friends/FriendsList'
 
 import styles from './Sidebar.module.css'
-import { usePathname } from 'next/navigation'
 
 interface AllUserType {
   index: number
@@ -109,16 +110,19 @@ export const ChatRightSide = ({
 
   return (
     <section>
-      <div className={styles['side-title']}>Chat Room</div>
-      <FriendsList>
-        {allUser &&
-          allUser.map((item) => (
-            <FriendsList.UserItem key={item.index} item={item}>
-              {/* FIXME: status 확인 */}
-              {/* <FriendsList.Status status={item.status} /> */}
-            </FriendsList.UserItem>
-          ))}
-      </FriendsList>
+      {allUser.length > 0 && (
+        <>
+          <div className={styles['side-title']}>Chat Room</div>
+          <FriendsList>
+            {allUser.map((item) => (
+              <FriendsList.UserItem key={item.index} item={item}>
+                {/* FIXME: status 확인 */}
+                {/* <FriendsList.Status status={item.status} /> */}
+              </FriendsList.UserItem>
+            ))}
+          </FriendsList>
+        </>
+      )}
     </section>
   )
 }

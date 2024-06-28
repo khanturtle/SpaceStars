@@ -13,9 +13,9 @@ import { ChatMessageType } from '@/types/ChatType'
 
 import GroupChatLogList from '../chat-room/GroupChatLogList'
 import GroupChatInputBox from './GroupChatInputBox'
+import GroupChatHeader from './GroupChatHeader'
 
 import styles from './chat.module.css'
-import GroupChatHeader from './GroupChatHeader'
 
 export default function GroupChatRoomContainer({
   roomNumber,

@@ -5,6 +5,8 @@
 body {
   font-family: 'Pretendard';
 }
+
+/* 배경 이미지 */
 body[data-theme='dark']::before {
   position: fixed;
   top: 0;
@@ -31,10 +33,17 @@ body {
   .left-side {
     background-color: var(--sidebar);
   }
+  .message-container {
+    background-color: var(--sidebar-inner);
+  }
 }
 
 body[data-theme='dark'] {
-  .nav {
+  .nav,
+  .left-side,
+  .right-side,
+  .message-container,
+  .chat-header {
     background: transparent;
   }
   .nav:before {
@@ -61,34 +70,6 @@ body[data-theme='dark'] {
       var(--nav-color-rgba),
       var(--nav-color-rgba2)
     );
-    pointer-events: none;
-  }
-
-  .left-side {
-    background-color: transparent;
-  }
-  .left-side::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0));
-    pointer-events: none;
-  }
-
-  .right-side {
-    background-color: transparent;
-  }
-  .right-side::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0));
     pointer-events: none;
   }
 }
