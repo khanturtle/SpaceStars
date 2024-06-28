@@ -1,9 +1,6 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import Link from 'next/link'
-
-import { useEffect, useState } from 'react'
 
 import { useEffect, useState } from 'react'
 
@@ -46,15 +43,13 @@ export default function RightSidebar({
   const pathName = usePathname()
   const [roomNumber, setRoomNumber] = useState<string>('')
 
-  useEffect(() => {
-    const pathParts = pathName.split('/')
-    setRoomNumber(pathParts.at(-1) ?? '')
-  }, [pathName])
-
   const [isChatPage, setIsChatPage] = useState(false)
   const [isGroupChatPage, setIsGroupChatPage] = useState(false)
 
   useEffect(() => {
+    const pathParts = pathName.split('/')
+    setRoomNumber(pathParts.at(-1) ?? '')
+
     if (pathParts.includes('chat')) {
       setIsChatPage(true)
     } else {

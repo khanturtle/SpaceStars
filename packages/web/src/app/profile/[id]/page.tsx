@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <Modal>
       여긴페ㅐ이지
-      <ProfileLayout profileData={allProfile} likedGamesInfo={likedGamesInfo} />
+      {/* <ProfileLayout profileData={allProfile} likedGamesInfo={likedGamesInfo} /> */}
     </Modal>
   )
 }
