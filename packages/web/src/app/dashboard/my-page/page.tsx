@@ -14,6 +14,7 @@ export default async function page() {
 
   // TODO:
   return (
+    
     <div>
       {JSON.stringify(allProfileData)}
       <hr />

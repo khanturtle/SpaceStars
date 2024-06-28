@@ -1,13 +1,15 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
+
+import { useEffect, useState } from 'react'
 
 import { useEffect, useState } from 'react'
 
 import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
 import FriendsList from '../Friends/FriendsList'
-
 import { ChatRightSide } from './ChatRightSide'
 
 import styles from './Sidebar.module.css'
@@ -42,9 +44,12 @@ export default function RightSidebar({
   friendsList: friendsWithBasicDataType[]
 }) {
   const pathName = usePathname()
-  const pathParts = pathName.split('/')
+  const [roomNumber, setRoomNumber] = useState<string>('')
 
-  const roomNumber = pathParts.at(-1) ?? ''
+  useEffect(() => {
+    const pathParts = pathName.split('/')
+    setRoomNumber(pathParts.at(-1) ?? '')
+  }, [pathName])
 
   const [isChatPage, setIsChatPage] = useState(false)
   const [isGroupChatPage, setIsGroupChatPage] = useState(false)
