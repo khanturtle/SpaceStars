@@ -9,9 +9,9 @@ public interface CustomSwipeRepository {
 
     List<SwipeListResDto> findSentRequest(String uuid);
 
-    void agreeRequest(String uuid);
+    void agreeRequest(String uuid, String fromMemberUuid);
 
-    void rejectRequest(String uuid);
+    void rejectRequest(String uuid, String fromMemberUuid);
 
 
     void deleteExpiredSwipe();
