@@ -1,26 +1,35 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useState, useEffect, useRef } from 'react'; 
+import { useSession } from 'next-auth/react'; 
 import { BellIcon } from 'lucide-react';
-import SseConnection from '@/containers/alarm/SseConnection';
+import AlarmListContainer from '@/containers/alarm/AlarmListContainer'; 
 
 export const Alarm = () => {
-  const [isConnected, setIsConnected] = useState(false);
-  const router = useRouter();
+  const alarmListRef = useRef();
+  const { data: session } = useSession();
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    if (session) {
+      const _token = session.user?.data.accessToken;
+      setToken(_token);
+    }
+  }, [session]);
 
   const handleClick = () => {
-    console.log('alarm clicked');
-    router.push('/dashboard/alarm');
-    setIsConnected(true); // SSE 연결 활성화
+    alarmListRef.current.openAlarmModal();
   };
 
   return (
     <div className="flex items-center">
-      <button type="button" onClick={handleClick} className="mr-8">
-        <BellIcon size={40} stroke="white" strokeWidth={2} />
-      </button>
-      {isConnected && <SseConnection />}
+      <div className="relative mr-8">
+        <button type="button" onClick={handleClick}>
+          <BellIcon size={40} stroke="white" strokeWidth={2} />
+        </button>
+        <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full w-3 h-3"></span>
+      </div>
+      <AlarmListContainer ref={alarmListRef} accessToken={token} />
     </div>
   );
 };
