@@ -14,7 +14,7 @@ import { LoginButton, ThemeButton } from './NavbarItem'
 import Gutter from '../Gutter'
 import SearchBox from '../search/SearchBox'
 import { Alarm } from './Alarm'
-import ChatHeader from './ChatHeader'
+import TitleHeader from './TitleHeader'
 
 const NavRightBox = ({ children }: { children?: React.ReactNode }) => {
   return <div className="flex max-w-[328px] pl-[50px]">{children}</div>
@@ -52,9 +52,35 @@ export default function Navbar({
           </Link>
         </div>
 
-        {!noSearchBoxPage.includes(pathName) && !isChatPath && <SearchBox />}
-        {isChatPath && <ChatHeader />}
-        <Gutter className="flex-1" />
+        {!noSearchBoxPage.includes(pathName) && !isChatPath && (
+          <>
+            <SearchBox />
+            <Gutter className="flex-1" />
+          </>
+        )}
+
+        {isChatPath && (
+          <>
+            <TitleHeader title="Chat" type="CHAT" />
+            <Gutter className="flex-1" />
+          </>
+        )}
+
+        {pathName.includes('swipe') && (
+          <TitleHeader
+            title="SWIPE"
+            description="게임을 같이 할 나의 친구를 찾아드려요!"
+            type="DESC"
+          />
+        )}
+
+        {pathName.includes('queue') && (
+          <TitleHeader
+            title="QUEUE"
+            description="게임을 같이 할 나의 친구를 찾아드려요!"
+            type="DESC"
+          />
+        )}
 
         {/* Right */}
         <NavRightBox>

@@ -66,6 +66,8 @@
   --offline: #dddddd;
 
   --danger: #f15c45;
+
+  --nav-title: #7d12ff;
 }
 body {
   --background-color: #f8f8f9;
