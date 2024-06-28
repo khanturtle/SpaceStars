@@ -11,7 +11,7 @@ body[data-theme='dark']::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('https://media.discordapp.net/attachments/1230380885464055890/1256082733570981898/image.png?ex=667f79b4&is=667e2834&hm=c8942547cb2a6b80008fa3a3f03f0024e3adfdcc773a9460566fc99b6f963d5f&=&format=webp&quality=lossless&width=350&height=350');
+  background-image: url('/images/bg-image.png');
   background-size: cover;
   opacity: 0.6;
 
