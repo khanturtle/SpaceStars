@@ -8,6 +8,7 @@ import '@packages/ui/index.css'
 import '@/styles/globals.css'
 import '@/styles/fonts.css'
 import '@/styles/colors.css'
+import '@/styles/loader.css'
 
 import { getMainProfileImage } from '@/apis/getProfileImage'
 
@@ -15,9 +16,9 @@ import Navbar from '@/components/Navbar/Navbar'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import AuthSession from '@/components/providers/session-provider'
 import WebSocketProvider from '@/components/providers/socket-provider'
-import { ToastProvider } from '@/components/Toast/toast'
 
 import { defaultImage } from '@/store/defaultState'
+import { ToastProvider } from '@/components/Toast/toast-provider'
 
 export const metadata: Metadata = {
   title: '우주별: 우리 주변의 별별 사람들',
@@ -38,11 +39,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: 'light',
+  themeColor: 'dark',
   width: 'device-width',
-  initialScale: 1,
-  maximumScale: 2,
-  userScalable: false,
 }
 
 export default async function RootLayout({
@@ -68,13 +66,12 @@ export default async function RootLayout({
           content="RF3jYM4llYmMJX3IkZbGaclTJ74I2LihgTOlqjsqppg"
         />
       </head>
-      <body>
+      <body data-theme="dark" className="bg-[color:var(--background-color)]">
         <AuthSession>
           <ToastProvider>
             <WebSocketProvider>
               <ModalProvider>
                 <Navbar session={session} profileImageUrl={profileImageUrl} />
-
                 {children}
                 {modal}
               </ModalProvider>

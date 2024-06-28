@@ -19,13 +19,17 @@ const DefaultRightSide = ({
 }) => {
   return (
     <section>
-      <div className={styles['side-title']}>
-        Friends
-        <Link href="/dashboard/friends-list" className={styles.more}>
-          More
-        </Link>
-      </div>
-      <FriendsList items={friendsList} />
+      <div className={styles['side-title']}>Friends</div>
+      {friendsList.length > 0 ? (
+        <FriendsList items={friendsList} />
+      ) : (
+        <div className={styles.friend}>
+          <h4 className={styles['friend-title']}>아직 친구가 없어요...</h4>
+          <p className={styles['friend-text']}>
+            친구가 생기면 여기에 표시돼요!
+          </p>
+        </div>
+      )}
     </section>
   )
 }
@@ -41,9 +45,6 @@ export default function RightSidebar({
   isGroupChatPage: boolean
   friendsList: friendsWithBasicDataType[]
 }) {
-  // FIXME: 이걸 같이 관리하는게 네브바에 있어야 함. 열고 닫을 수 있게 => 친구 아이콘으로 하기
-  // const [rightSide, setRightSide] = useState(false)
-
   const pathName = usePathname()
   const [roomNumber, setRoomNumber] = useState<string>('')
 
@@ -53,10 +54,7 @@ export default function RightSidebar({
   }, [pathName])
 
   return (
-    <section
-      className={`${styles['right-side']}`}
-      // className={`${styles['right-side']} ${rightSide && `${styles.active}`}`}
-    >
+    <section className={`${styles['right-side']}`}>
       <div className={styles['side-wrapper']}>
         {isGroupChatPage ? (
           <ChatRightSide

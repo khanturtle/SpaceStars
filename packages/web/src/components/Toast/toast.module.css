@@ -1,0 +1,37 @@
+.toast-container {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 4px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.toast-container.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toast-message {
+  font-size: 14px;
+}
+
+/* 기본 표시 */
+.toast-container.info {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+
+/* 경고 표시 */
+.toast-container.warning {
+  background-color: #f0ad4e;
+  color: #fff;
+}
+
+.toast-container.error {
+  background-color: #d9534f;
+  color: #fff;
+}

@@ -3520,10 +3520,12 @@ __metadata:
     "@radix-ui/react-slot": "npm:^1.0.2"
     "@radix-ui/react-toast": "npm:^1.1.5"
     "@stomp/stompjs": "npm:^7.0.0"
+    "@types/event-source-polyfill": "npm:^1.0.5"
     "@types/node": "npm:^20.14.0"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     "@types/sockjs-client": "npm:^1"
+    "@types/uuid": "npm:^10"
     autoprefixer: "npm:^10.4.19"
     aws-sdk: "npm:^2.1643.0"
     class-variance-authority: "npm:^0.7.0"
@@ -3532,6 +3534,8 @@ __metadata:
     eslint: "npm:^9.3.0"
     eslint-config-next: "npm:14.2.3"
     eslint-plugin-import: "npm:^2.29.1"
+    event-source-polyfill: "npm:^1.0.31"
+    eventsource-polyfill: "npm:^0.9.6"
     lucide-react: "npm:^0.379.0"
     next: "npm:14.2.3"
     next-auth: "npm:^4.24.7"
@@ -3548,6 +3552,7 @@ __metadata:
     tailwindcss: "npm:^3.4.1"
     tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:4.9.4"
+    uuid: "npm:^10.0.0"
     zustand: "npm:^4.5.2"
   languageName: unknown
   linkType: soft
@@ -6108,6 +6113,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/event-source-polyfill@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@types/event-source-polyfill@npm:1.0.5"
+  checksum: 10c0/62f06c58312097c17f8489771057bb9e859269243a815ef27c8b50b48e084412fce4f90cb18252f807ed9016028321ce2713c90b77e77abc9e84a21bce5db724
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:^4.17.33":
   version: 4.19.5
   resolution: "@types/express-serve-static-core@npm:4.19.5"
@@ -6334,6 +6346,13 @@ __metadata:
   version: 3.0.2
   resolution: "@types/unist@npm:3.0.2"
   checksum: 10c0/39f220ce184a773c55c18a127062bfc4d0d30c987250cd59bab544d97be6cfec93717a49ef96e81f024b575718f798d4d329eb81c452fc57d6d051af8b043ebf
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^10":
+  version: 10.0.0
+  resolution: "@types/uuid@npm:10.0.0"
+  checksum: 10c0/9a1404bf287164481cb9b97f6bb638f78f955be57c40c6513b7655160beb29df6f84c915aaf4089a1559c216557dc4d2f79b48d978742d3ae10b937420ddac60
   languageName: node
   linkType: hard
 
@@ -9793,6 +9812,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"event-source-polyfill@npm:^1.0.31":
+  version: 1.0.31
+  resolution: "event-source-polyfill@npm:1.0.31"
+  checksum: 10c0/79966f5084796e14f9a9dec315a2ccc220dedc51ff5f2b198dc80e3cb2ae01428d39d9bf66ed679f1944be086b9f6e84ea3dc933b81b0411c07f99672135679b
+  languageName: node
+  linkType: hard
+
 "eventemitter3@npm:^5.0.1":
   version: 5.0.1
   resolution: "eventemitter3@npm:5.0.1"
@@ -9811,6 +9837,13 @@ __metadata:
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: 10c0/d6b6f2adbccbcda74ddbab52ed07db727ef52e31a61ed26db9feb7dc62af7fc8e060defa65e5f8af9449b86b52cc1a1f6a79f2eafcf4e62add2b7a1fa4a432f6
+  languageName: node
+  linkType: hard
+
+"eventsource-polyfill@npm:^0.9.6":
+  version: 0.9.6
+  resolution: "eventsource-polyfill@npm:0.9.6"
+  checksum: 10c0/4e6b0f96e40c686bb3e81aedffb1bbde05b29185b411f1eca6adb747aa7a8f08000641cc877b873ed93ca7cb95730f7dfc167f1fff5a4229fc4c51f71ad7be4e
   languageName: node
   linkType: hard
 
@@ -12271,6 +12304,7 @@ __metadata:
     "@next/eslint-plugin-next": "npm:^14.2.3"
     "@storybook/react": "npm:^8.1.6"
     "@storybook/test": "npm:^8.1.6"
+    "@types/event-source-polyfill": "npm:^1.0.5"
     "@types/node": "npm:^20.14.1"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
@@ -16255,6 +16289,15 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 10c0/e62301a1c6102da5ce9a147b492a4b5cfa14d2e8fdf4a6ebfda7929cb72d186f84173815ec18fa4160a03bf9724b16ece3737b3ac6701815bc965f8fa4279298
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "uuid@npm:10.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 10c0/eab18c27fe4ab9fb9709a5d5f40119b45f2ec8314f8d4cf12ce27e4c6f4ffa4a6321dc7db6c515068fa373c075b49691ba969f0010bf37f44c37ca40cd6bf7fe
   languageName: node
   linkType: hard
 

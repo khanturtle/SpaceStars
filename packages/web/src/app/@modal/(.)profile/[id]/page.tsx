@@ -8,6 +8,7 @@ import { getAllProfileDataByUuid } from '@/lib/getAllProfileData'
 import { PlayGameType } from '@/types/type'
 
 /** 게임 정보와 옵션을 병렬로 조회 */
+// TODO: lib로 이사간거 불러오기
 async function fetchPlayGames(playGames: PlayGameType[]) {
   try {
     const results = []

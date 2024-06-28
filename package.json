@@ -12,7 +12,7 @@
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "storybook": "yarn --cwd packages/ui storybook",
-    "next": "yarn --cwd packages/web dev",
+    "next": "yarn ui build && yarn --cwd packages/web dev",
     "dev": "npm-run-all --parallel storybook next"
   },
   "lint-staged": "./eslint-staged.config.js",
@@ -47,6 +47,7 @@
     "@storybook/test": "^8.1.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "@types/event-source-polyfill": "^1.0.5",
     "supports-color": "^9.4.0"
   }
 }
