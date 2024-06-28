@@ -1,5 +1,8 @@
+'use client'
+
 import { Session } from 'next-auth'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 import styles from './floatbutton.module.css'
 
@@ -10,8 +13,26 @@ export default function GoToDashboard({
 }) {
   const href = session ? '/dashboard' : '/sign-up'
 
+  const [isHidden, setIsHidden] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      const scrollHeight = document.documentElement.scrollHeight
+      const clientHeight = document.documentElement.clientHeight
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 100
+      setIsHidden(scrollTop <= 100 || isAtBottom)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <Link href={href} className={styles['animated-button']}>
+    <Link
+      href={href}
+      className={`${styles['animated-button']} ${isHidden ? styles['hidden-button'] : ''}`}
+    >
       <svg
         viewBox="0 0 24 24"
         className={styles['arr-2']}
