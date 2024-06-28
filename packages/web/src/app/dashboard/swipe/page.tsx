@@ -62,7 +62,6 @@ export default async function page({
   const MBTINames = await fetchAllMBTI(profileDataList)
 
   return (
-    // FIXME: 배경색 수정
     <div className="relative flex items-center justify-center w-full h-full">
       <RefreshButton nextPage={nextPage} />
 
