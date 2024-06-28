@@ -3,7 +3,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { ModalContext } from '@/components/providers/modal-provider';
 import FormLayout from '@/components/form/formLayout';
-import { PlusIcon } from 'lucide-react';
 import { getAlarms, getNicknameByUuid, getProfileImageByUuid } from '@/apis/getAlarms';
 import { AlarmListType } from '@/types/type';
 import AlarmListItem from './AlarmListItem';
@@ -39,15 +38,15 @@ const AlarmListContainer = ({ accessToken }: AlarmListContainerProps) => {
         fetchAlarms();
     }, [accessToken]);
 
-    const handleClick = () => {
+    useEffect(() => {
         openModal(
             <div className="relative h-full flex flex-col items-center">
                 <FormLayout className="relative h-full px-[100px] pt-[90px] pb-[85px] flex flex-col items-center">
-                    <FormLayout.Legend title="알림"/>
+                    <FormLayout.Legend title="알림" />
                     <div className="flex flex-col items-center custom-scrollbar" style={{ maxHeight: '60vh', width: '100%', overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {alarms && alarms.length > 0 ? (
                             alarms.map((alarm) => (
-                                <AlarmListItem 
+                                <AlarmListItem
                                     key={alarm.index}
                                     senderProfileImage={alarm.senderProfileImage}
                                     senderNickname={alarm.senderNickname}
@@ -64,13 +63,9 @@ const AlarmListContainer = ({ accessToken }: AlarmListContainerProps) => {
                 </FormLayout>
             </div>
         );
-    };
+    }, [alarms, openModal]);
 
-    return (
-        <button type="button" onClick={handleClick}>
-            <PlusIcon strokeWidth={2.5} />
-        </button>
-    );
+    return null;
 }
 
 export default AlarmListContainer;

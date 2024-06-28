@@ -123,11 +123,11 @@ export interface GroupChatInfo {
 
 // alarmList
 export interface AlarmListType{
-  index: number;
-  senderUuid: string;
-  checkStatus: string;
-  alarmType: string;
-  content: string;
-  senderNickname: string;
-  senderProfileImage: string;
+  index: number
+  senderUuid: string
+  checkStatus: string 
+  alarmType: string
+  content: string
+  senderNickname: string
+  senderProfileImage: string
 }
