@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spacestar.back.alarm.dto.req.AlarmAddReqDto;
 import com.spacestar.back.alarm.dto.req.AlarmDeleteReqDto;
+import com.spacestar.back.alarm.dto.req.AlarmModifyReqDto;
 import com.spacestar.back.alarm.service.AlarmServiceImpl;
 import com.spacestar.back.alarm.vo.req.AlarmAddReqVo;
+import com.spacestar.back.alarm.vo.req.AlarmModifyReqVo;
 import com.spacestar.back.alarm.vo.res.AlarmListResVo;
 import com.spacestar.back.alarm.vo.res.AlarmStateResVo;
 import com.spacestar.back.global.ResponseEntity;
@@ -64,12 +66,12 @@ public class AlarmController {
 			modelMapper.map(alarmService.getAlarmState(uuid, alarmId), AlarmStateResVo.class));
 	}
 
-	@PatchMapping("/modify/check-status/{alarmId}")
-	@Operation(summary = "알림 상태 수정 (읽음으로 처리)")
+	@PatchMapping("/modify/check-status")
+	@Operation(summary = "알림 상태 수정")
 	public ResponseEntity<Void> modifyAlarmCheckStatus(@RequestHeader("UUID") String uuid,
-		@PathVariable("alarmId") String alarmId) {
+		@RequestBody AlarmModifyReqVo alarmModifyReqVo) {
 
-		alarmService.modifyAlarmRead(alarmId, uuid);
+		alarmService.modifyAlarmRead(uuid, modelMapper.map(alarmModifyReqVo, AlarmModifyReqDto.class));
 		return new ResponseEntity<>(ResponseSuccess.ALARM_CHECK_STATE_UPDATE_SUCCESS);
 	}
 

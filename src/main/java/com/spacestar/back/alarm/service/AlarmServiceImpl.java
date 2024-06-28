@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.spacestar.back.alarm.domain.Alarm;
 import com.spacestar.back.alarm.dto.req.AlarmAddReqDto;
 import com.spacestar.back.alarm.dto.req.AlarmDeleteReqDto;
+import com.spacestar.back.alarm.dto.req.AlarmModifyReqDto;
 import com.spacestar.back.alarm.dto.res.AlarmListResDto;
 import com.spacestar.back.alarm.dto.res.AlarmResDto;
 import com.spacestar.back.alarm.dto.res.AlarmStateResDto;
@@ -95,9 +96,9 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 
 	@Override
-	public void modifyAlarmRead(String alarmId, String uuid) {
+	public void modifyAlarmRead(String uuid, AlarmModifyReqDto alarmModifyReqDto) {
 		// 변경사항이 없을 경우 : 알림이 존재하지 않거나 && 알림이 이미 읽은 상태인 경우
-		if (alarmRepository.modifyAlarm(alarmId, uuid).getModifiedCount() == 0) {
+		if (alarmRepository.modifyAlarm(uuid, alarmModifyReqDto).getModifiedCount() == 0) {
 			throw new GlobalException(ResponseStatus.NOT_MODIFIED_ALARM);
 		}
 	}
