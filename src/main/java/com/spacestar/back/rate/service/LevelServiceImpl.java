@@ -20,7 +20,7 @@ public class LevelServiceImpl implements LevelService{
         //없으면 null로 저장
         TotalExperience totalExperience = totalExperienceRepository.findByUuid(uuid).orElse(null);
         if(totalExperience==null){
-            return LevelResDto.builder().level(0).build();
+            return LevelResDto.builder().level(1).build();
         }
         return levelRepository.getLevel(totalExperience.getExp());
     }
