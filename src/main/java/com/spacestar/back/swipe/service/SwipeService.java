@@ -16,7 +16,7 @@ public interface SwipeService {
 
     List<SwipeListResDto> getSentSwipe(String uuid);
 
-    void agreeSwipe(String uuid);
+    void agreeSwipe(String uuid, String fromMemberUuid);
 
     void rejectSwipe(String uuid);
 

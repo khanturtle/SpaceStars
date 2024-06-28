@@ -48,8 +48,8 @@ public class SwipeServiceImpl implements SwipeService {
     }
 
     @Override
-    public void agreeSwipe(String uuid) {
-        swipeRepository.agreeRequest(uuid);
+    public void agreeSwipe(String uuid, String fromMemberUuid) {
+        swipeRepository.agreeRequest(uuid,fromMemberUuid);
         //Todo 수락시 채팅방 생성되어야 함
     }
 
