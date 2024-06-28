@@ -6,14 +6,13 @@ import { Hero, Features } from '@/containers/main/mainLayout'
 import Footer from '@/containers/main/Footer'
 import CTA from '@/containers/main/CTA'
 import TestimonialsSlider from '@/containers/main/TestimonialsSlider'
+
 export default async function Page() {
   const session = await getServerSession(options)
 
   return (
     <>
-      <main
-      // className="flex w-full h-full "
-      >
+      <main>
         <Hero />
         <Features />
         <TestimonialsSlider />

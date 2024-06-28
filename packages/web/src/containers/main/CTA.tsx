@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function CTA() {
   return (
     <div className="py-20 bg-purple-900 bg-opacity-70">
@@ -9,9 +11,12 @@ export default function CTA() {
           지금 바로 우주별에서 새로운 게임 친구를 만나보세요. 함께하면 게임이
           더욱 즐거워집니다!
         </p>
-        <button className="bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-500 transition duration-300 text-lg transform hover:scale-105">
+        <Link
+          href="/sign-up"
+          className="bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-500 transition duration-300 text-lg transform hover:scale-105"
+        >
           시작하기
-        </button>
+        </Link>
       </div>
     </div>
   )
