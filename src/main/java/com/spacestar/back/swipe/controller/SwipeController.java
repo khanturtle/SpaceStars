@@ -90,7 +90,7 @@ public class SwipeController {
     @PatchMapping("/reject")
     public ResponseEntity<Void> rejectSwipe(@RequestHeader("UUID") String uuid,
                                             @RequestParam("fromMemberUuid") String fromMemberUuid) {
-        swipeService.rejectSwipe(uuid);
+        swipeService.rejectSwipe(uuid,fromMemberUuid);
         return new ResponseEntity<>(ResponseSuccess.SWIPE_REJECT_SUCCESS);
     }
 

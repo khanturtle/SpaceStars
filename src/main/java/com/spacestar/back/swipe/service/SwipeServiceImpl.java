@@ -54,8 +54,8 @@ public class SwipeServiceImpl implements SwipeService {
     }
 
     @Override
-    public void rejectSwipe(String uuid) {
-        swipeRepository.rejectRequest(uuid);
+    public void rejectSwipe(String uuid, String fromMemberUuid) {
+        swipeRepository.rejectRequest(uuid,fromMemberUuid);
         //Todo 거절시 Redis에 해당 유저 저장해야함
     }
 

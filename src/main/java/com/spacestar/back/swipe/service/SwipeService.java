@@ -18,7 +18,7 @@ public interface SwipeService {
 
     void agreeSwipe(String uuid, String fromMemberUuid);
 
-    void rejectSwipe(String uuid);
+    void rejectSwipe(String uuid, String fromMemberUuid);
 
     void deleteExpiredSwipe();
 

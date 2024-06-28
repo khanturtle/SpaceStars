@@ -11,7 +11,7 @@ public interface CustomSwipeRepository {
 
     void agreeRequest(String uuid, String fromMemberUuid);
 
-    void rejectRequest(String uuid);
+    void rejectRequest(String uuid, String fromMemberUuid);
 
 
     void deleteExpiredSwipe();
