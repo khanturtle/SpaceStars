@@ -63,7 +63,7 @@ export default function RightSidebar({
   }, [pathName])
 
   return (
-    <section className={`${styles['right-side']}`}>
+    <section className={`${styles['right-side']} right-side`}>
       <div className={styles['side-wrapper']}>
         {isGroupChatPage ? (
           <ChatRightSide

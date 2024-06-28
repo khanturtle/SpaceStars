@@ -38,7 +38,7 @@ export default function Navbar({
   ]
 
   return (
-    <header className={`h-[100px]  ${styles.nav}`}>
+    <header className="h-[100px] nav">
       <nav className="w-full flex flex-row items-center sticky z-[1000] px-[54px] py-5  left-0 top-0">
         {/* Left */}
         <div className="w-[210px]">

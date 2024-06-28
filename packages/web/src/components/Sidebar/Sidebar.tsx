@@ -71,7 +71,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`${styles['left-side']} ${leftSide ? `${styles.active}` : ''}`}
+      className={`${styles['left-side']} left-side ${leftSide ? `${styles.active}` : ''}`}
     >
       {/* 접혔을 때, 열기 버튼 */}
       <button

@@ -5,7 +5,7 @@
 body {
   font-family: 'Pretendard';
 }
-body::before {
+body[data-theme='dark']::before {
   position: fixed;
   top: 0;
   left: 0;
@@ -22,6 +22,75 @@ body::before {
   filter: blur(2px);
   z-index: -1;
   content: '';
+}
+body {
+  .nav {
+    background: var(--nav-color);
+  }
+
+  .left-side {
+    background-color: var(--sidebar);
+  }
+}
+
+body[data-theme='dark'] {
+  .nav {
+    background: transparent;
+  }
+  .nav:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: var(--nav-color);
+    pointer-events: none;
+  }
+  .nav::after {
+    content: '';
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+
+    opacity: 1;
+    background: linear-gradient(
+      to bottom,
+      var(--nav-color-rgba),
+      var(--nav-color-rgba2)
+    );
+    pointer-events: none;
+  }
+
+  .left-side {
+    background-color: transparent;
+  }
+  .left-side::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0));
+    pointer-events: none;
+  }
+
+  .right-side {
+    background-color: transparent;
+  }
+  .right-side::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0));
+    pointer-events: none;
+  }
 }
 
 .input-reset {
