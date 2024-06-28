@@ -13,16 +13,17 @@ public class Level {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @Column(columnDefinition = "TEXT")
-    private String levelIcon;
+
     @NotNull
     @Column(length = 5)
     private int level;
+
+    @Column(columnDefinition = "TEXT")
+    private String levelIcon;
+
     @NotNull
     @Column(length = 10)
     private int startExp;
-    @NotNull
     @Column(length = 10)
     private int endExp;
 
