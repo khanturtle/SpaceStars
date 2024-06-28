@@ -8,7 +8,7 @@ export const Alarm = () => {
   }
   return (
     <button type="button" onClick={handleClick} className="mr-8">
-      <BellIcon size={40} stroke="white" strokeWidth={2} />
+      <BellIcon size={28} stroke="var(--color-icon)" strokeWidth={2} />
     </button>
   )
 }

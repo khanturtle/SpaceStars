@@ -7,6 +7,7 @@ export interface JoinButtonProps
   isLocked?: boolean
   isFinished?: boolean
   buttonText?: string
+  iconFill?: string
   onClick?: () => void
 }
 
@@ -16,6 +17,7 @@ const JoinButton = ({
   isFinished = false,
   buttonText,
   onClick,
+  iconFill,
   ...props
 }: JoinButtonProps) => {
   const buttonStyle = isFinished ? 'fin' : 'join'
@@ -26,8 +28,6 @@ const JoinButton = ({
   } else {
     text = isFinished ? '모집완료' : '참가하기'
   }
-
-  const iconFill = isFinished ? '#a8a8a8' : '#7d12ff'
 
   return (
     <button

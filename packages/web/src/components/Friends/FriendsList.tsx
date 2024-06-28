@@ -52,7 +52,7 @@ const UserItem = ({
         </div>
 
         <div className="flex items-center flex-1">
-          <p className="text-[color:var(--Text-100,#1a1a1a)] text-sm not-italic font-medium leading-[normal] flex-1 text-ellipsis overflow-hidden">
+          <p className="text-[color:var(--text)] text-sm not-italic font-medium leading-[normal] flex-1 text-ellipsis overflow-hidden">
             {item.nickname}
           </p>
         </div>
@@ -66,7 +66,7 @@ const UserItem = ({
 const Status = ({ status }: { status: boolean }) => {
   return (
     <div
-      className={`w-2 h-2 ml-2 rounded-full ${status ? 'bg-[color:var(--online,#3bcd23)]' : 'bg-[#606a8d]'}`}
+      className={`w-2 h-2 ml-2 rounded-full ${status ? 'bg-[color:var(--online)]' : 'bg-[color:var(--offline)]'}`}
     />
   )
 }

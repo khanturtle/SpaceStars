@@ -1,21 +1,27 @@
-/* BackGroundTextBox.css */
-.background-text {
-  color: var(--White-50, #fff);
+.container {
+  position: absolute;
+  top: 75px;
+  opacity: 0.2;
+  filter: blur(2px);
+}
 
-  text-align: center;
-  leading-trim: both;
-
-  text-edge: cap;
+.heading {
   font-family: Play;
   font-size: 180px;
   font-style: normal;
   font-weight: 700;
   line-height: 137px;
   letter-spacing: -14.4px;
+  text-align: center;
 
-  opacity: 0.29;
-
-  position: absolute;
-  top: 75px;
+  color: mix(#fff, #e91e63, 85%);
+  text-shadow:
+    -0.0075em 0.0075em 0 mix(#fff, #e91e63, 94%),
+    0.005em 0.005em 0 mix(#fff, #e91e63, 60%),
+    0.01em 0.01em 0 mix(#fff, #e91e63, 62%),
+    0.015em 0.015em mix(#fff, #e91e63, 64%),
+    0.02em 0.02em 0 mix(#fff, #e91e63, 66%),
+    0.025em 0.025em 0 mix(#fff, #e91e63, 68%),
+    0.03em 0.03em 0 mix(#fff, #e91e63, 70%),
+    0.035em 0.035em 0 mix(#fff, #e91e63, 72%);
 }
-/* BackGroundTextBox.css */

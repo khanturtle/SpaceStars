@@ -5,6 +5,93 @@
 body {
   font-family: 'Pretendard';
 }
+body[data-theme='dark']::before {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/bg-image.png');
+  background-size: cover;
+  opacity: 0.6;
+
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+  z-index: -1;
+  content: '';
+}
+body {
+  .nav {
+    background: var(--nav-color);
+  }
+
+  .left-side {
+    background-color: var(--sidebar);
+  }
+}
+
+body[data-theme='dark'] {
+  .nav {
+    background: transparent;
+  }
+  .nav:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: var(--nav-color);
+    pointer-events: none;
+  }
+  .nav::after {
+    content: '';
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+
+    opacity: 1;
+    background: linear-gradient(
+      to bottom,
+      var(--nav-color-rgba),
+      var(--nav-color-rgba2)
+    );
+    pointer-events: none;
+  }
+
+  .left-side {
+    background-color: transparent;
+  }
+  .left-side::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0));
+    pointer-events: none;
+  }
+
+  .right-side {
+    background-color: transparent;
+  }
+  .right-side::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0));
+    pointer-events: none;
+  }
+}
 
 .input-reset {
   border: none;
@@ -20,6 +107,25 @@ body {
   display: none;
 }
 
+/* 스크롤 바 */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+/* 스크롤바 막대 */
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+  border-radius: 6px;
+}
+/* 스크롤바 막대 hover 시 */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-hover);
+}
+/* 스크롤바 트랙 */
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-background);
+}
+
 /* 드래그 방지 */
 body {
   -webkit-user-select: none;
@@ -28,6 +134,8 @@ body {
   user-select: none;
   user-drag: none;
   app-region: no-drag;
+
+  box-sizing: border-box;
 }
 img,
 a {
@@ -36,6 +144,13 @@ a {
   -moz-user-drag: none;
   -o-user-drag: none;
   user-drag: none;
+}
+
+input,
+input:focus,
+select,
+select:focus {
+  outline: none;
 }
 
 #birth-0 {

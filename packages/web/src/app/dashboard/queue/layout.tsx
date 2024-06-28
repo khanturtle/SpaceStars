@@ -1,4 +1,4 @@
-import NavHeader from '@/components/Navbar/NavHeader'
+import BackGroundTextBox from '@/components/Background/BackGroundTextBox'
 
 export default async function layout({
   children,
@@ -7,10 +7,8 @@ export default async function layout({
 }) {
   return (
     <div className="flex relative w-full h-[calc(100vh_-_100px)] overflow-hidden mx-auto my-0">
-      <NavHeader
-        title="QUEUE"
-        description="게임을 같이 할 나의 친구를 찾아 드려요!"
-      />
+      <BackGroundTextBox text="GAMER SEARCHING" />
+
       {children}
     </div>
   )
