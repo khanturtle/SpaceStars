@@ -34,4 +34,6 @@ public interface TeamChatRoomService {
     void finishRecruit(String uuid, String roomNumber);
 
     void changeTeamChatRoom(String uuid, String roomNumber, TeamChatRoomReqDto teamChatRoomReqDto);
+
+    boolean isMember(String uuid, String roomNumber);
 }

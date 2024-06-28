@@ -227,5 +227,10 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
         teamChatRoomJpaRepository.save(teamChatRoomEntity);
     }
 
+    @Override
+    public boolean isMember(String uuid, String roomNumber) {
+        return teamChatRoomJpaRepository.existsByRoomNumberAndMemberUuid(roomNumber, uuid);
+    }
+
 
 }
