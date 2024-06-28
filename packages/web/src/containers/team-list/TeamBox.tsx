@@ -15,11 +15,11 @@ import {
 
 import { joinTeam, joinTeamForm } from '@/apis/createChat'
 import { ModalContext } from '@/components/providers/modal-provider'
+import { useToast } from '@/components/Toast/toast-provider'
 import FormLayout from '@/components/form/formLayout'
 import { defaultImage } from '@/store/defaultState'
 
 import styles from './teamList.module.css'
-import { useToast } from '@/components/Toast/toast-provider'
 
 const TeamBox = ({
   children,

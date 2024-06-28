@@ -114,6 +114,7 @@ body {
 
   --card-color: #fff;
   --card-finish: #cfcfcf;
+  --card-hover: rgba(30, 31, 34, 0.2);
 
   --button-secondary: #fff;
   --button-secondary-text: #7d12ff;
@@ -162,11 +163,12 @@ body[data-theme='dark'] {
   --scrollbar-color: #1a1b1e;
   --scrollbar-hover: #000;
 
-  --card-color: #1e1f22;
-  --card-finish: #111214;
+  /* --card-color: #1e1f22;
+  --card-finish: #111214; */
+  --card-color: rgba(30, 31, 34, 0.3);
+  --card-hover: rgba(30, 31, 34, 0.5);
+  --card-finish: rgba(17, 18, 20, 0.15);
 
   --button-secondary: #7d12ff;
   --button-secondary-text: #fff;
-
-
 }
