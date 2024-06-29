@@ -58,7 +58,7 @@ public class AlarmServiceImpl implements AlarmService {
 	private Flux<Message> streamAlarms(String uuid) {
 
 		return Flux.merge(
-			Flux.just(SystemMessage.createConnectionSuccessMessage(uuid)),
+			//Flux.just(SystemMessage.createConnectionSuccessMessage(uuid)),
 			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
 			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
 		).doOnNext(message -> {
