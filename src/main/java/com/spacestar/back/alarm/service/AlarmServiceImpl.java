@@ -13,14 +13,12 @@ import com.spacestar.back.alarm.dto.req.AlarmModifyReqDto;
 import com.spacestar.back.alarm.dto.res.AlarmListResDto;
 import com.spacestar.back.alarm.dto.res.AlarmResDto;
 import com.spacestar.back.alarm.dto.res.AlarmStateResDto;
-import com.spacestar.back.alarm.enums.AlarmType;
 import com.spacestar.back.alarm.repository.AlarmMongoRepository;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.kafka.message.FriendMessage;
 import com.spacestar.back.kafka.message.MatchingMessage;
 import com.spacestar.back.kafka.message.Message;
-import com.spacestar.back.kafka.message.SystemMessage;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,28 +37,27 @@ public class AlarmServiceImpl implements AlarmService {
 
 	// SSE연결
 	@Override
-	public Flux<Message> connectToSse(String uuid){
+	public Flux<Message> connectToSse(String uuid) {
 		return handlesSseConnection(uuid);
 	}
 
 	// 연결상태 확인
-	private Flux<Message> handlesSseConnection(String uuid){
-		if(connectedUuids.putIfAbsent(uuid, Boolean.TRUE) != null){
+	private Flux<Message> handlesSseConnection(String uuid) {
+		if (connectedUuids.putIfAbsent(uuid, Boolean.TRUE) != null) {
 			log.info("UUID {} is already connected", uuid);
 			return Flux.error(new GlobalException(ResponseStatus.DUPLICATE_CONNECTION));
 		}
 		log.info("연결시도 : {}", uuid);
 		return streamAlarms(uuid)
-			.doFinally(signalType -> connectedUuids.remove(uuid));
+				.doFinally(signalType -> connectedUuids.remove(uuid));
 	}
 
 	// 알림 전송
 	private Flux<Message> streamAlarms(String uuid) {
 
 		return Flux.merge(
-			//Flux.just(SystemMessage.createConnectionSuccessMessage(uuid)),
-			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
-			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
+				matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
+				friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
 		).doOnNext(message -> {
 			log.info("Received message for UUID {}: {}", uuid, message);
 		});
@@ -68,8 +65,8 @@ public class AlarmServiceImpl implements AlarmService {
 
 	// 연결 목록에서 삭제
 	@Override
-	public void disconnectSse(String uuid){
-		if(!connectedUuids.containsKey(uuid)){
+	public void disconnectSse(String uuid) {
+		if (!connectedUuids.containsKey(uuid)) {
 			throw new GlobalException(ResponseStatus.SSE_MEMBER_NOT_FOUND);
 		}
 		connectedUuids.remove(uuid);
@@ -86,25 +83,26 @@ public class AlarmServiceImpl implements AlarmService {
 
 		List<Alarm> alarms = alarmRepository.findByReceiverUuid(uuid);
 		return AlarmListResDto.builder()
-			.alarmList(IntStream.range(0, alarms.size())
-				.mapToObj(i -> AlarmResDto.builder()
-					.index(i)
-					.senderUuid(alarms.get(i).getSenderUuid())
-					.checkStatus(alarms.get(i).getCheckStatus())
-					.alarmType(alarms.get(i).getAlarmType())
-					.content(alarms.get(i).getContent())
-					.build()).toList())
-			.build();
+				.alarmList(IntStream.range(0, alarms.size())
+						.mapToObj(i -> AlarmResDto.builder()
+								.index(i)
+								.senderUuid(alarms.get(i).getSenderUuid())
+								.checkStatus(alarms.get(i).getCheckStatus())
+								.alarmType(alarms.get(i).getAlarmType())
+								.content(alarms.get(i).getContent())
+								.alarmId(alarms.get(i).getId())
+								.build()).toList())
+				.build();
 	}
 
 	@Override
 	public AlarmStateResDto getAlarmState(String uuid, String id) {
 		Alarm alarm = alarmRepository.findByReceiverUuidAndId(uuid, id)
-			.orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_ALARM));
+				.orElseThrow(() -> new GlobalException(ResponseStatus.NOT_EXIST_ALARM));
 
 		return AlarmStateResDto.builder()
-			.checkStatus(alarm.getCheckStatus())
-			.build();
+				.checkStatus(alarm.getCheckStatus())
+				.build();
 	}
 
 	@Override

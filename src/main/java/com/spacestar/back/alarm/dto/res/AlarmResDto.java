@@ -19,4 +19,5 @@ public class AlarmResDto {
 	private CheckStatus checkStatus;
 	private AlarmType alarmType;
 	private String content;
+	private String alarmId;
 }
