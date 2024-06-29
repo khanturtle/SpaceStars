@@ -17,6 +17,10 @@ public enum ResponseSuccess {
     ALARM_RECEIVED_SUCCESS(205, "알림이 성공적으로 수신되었습니다."),
 
 
+    //sse
+    SSE_DISCONNECT_SUCCESS(206, "SSE 연결 종료를 성공하였습니다."),
+
+
 
     INTERNAL_SERVER_ERROR(900, "Internal server error"),
 

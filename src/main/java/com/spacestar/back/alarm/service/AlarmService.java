@@ -15,6 +15,9 @@ public interface AlarmService {
 	//실시간 알림 스트림 처리
 	Flux<Message> connectToSse(String uuid);
 
+	//sse 연결 종료
+	void disconnectSse(String uuid);
+
 	//알림 추가
 	void addAlarm(String uuid, AlarmAddReqDto alarmAddReqDto);
 
