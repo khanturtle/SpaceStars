@@ -64,6 +64,16 @@ public class AlarmServiceImpl implements AlarmService {
 		});
 	}
 
+	// 연결 목록에서 삭제
+	@Override
+	public void disconnectSse(String uuid){
+		if(!connectedUuids.containsKey(uuid)){
+			throw new GlobalException(ResponseStatus.SSE_MEMBER_NOT_FOUND);
+		}
+		connectedUuids.remove(uuid);
+		log.info("UUID {} 연결이 해제되었습니다.", uuid);
+	}
+
 	@Override
 	public void addAlarm(String uuid, AlarmAddReqDto alarmAddReqDto) {
 		alarmRepository.save(AlarmAddReqDto.toEntity(uuid, alarmAddReqDto));
