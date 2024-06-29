@@ -13,19 +13,19 @@ import com.spacestar.back.alarm.dto.req.AlarmModifyReqDto;
 import com.spacestar.back.alarm.dto.res.AlarmListResDto;
 import com.spacestar.back.alarm.dto.res.AlarmResDto;
 import com.spacestar.back.alarm.dto.res.AlarmStateResDto;
+import com.spacestar.back.alarm.enums.AlarmType;
 import com.spacestar.back.alarm.repository.AlarmMongoRepository;
 import com.spacestar.back.global.GlobalException;
 import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.kafka.message.FriendMessage;
 import com.spacestar.back.kafka.message.MatchingMessage;
 import com.spacestar.back.kafka.message.Message;
+import com.spacestar.back.kafka.message.SystemMessage;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
-import reactor.core.scheduler.Schedulers;
 
 @Service
 @Slf4j
@@ -56,7 +56,9 @@ public class AlarmServiceImpl implements AlarmService {
 
 	// 알림 전송
 	private Flux<Message> streamAlarms(String uuid) {
+
 		return Flux.merge(
+			Flux.just(SystemMessage.createConnectionSuccessMessage(uuid)),
 			matchingSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid())),
 			friendSink.asFlux().filter(message -> uuid.equals(message.getReceiverUuid()))
 		).doOnNext(message -> {

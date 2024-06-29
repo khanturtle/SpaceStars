@@ -23,7 +23,7 @@ public class KafkaServiceImpl implements KafkaService {
 	private final AlarmMongoRepository alarmMongoRepository;
 
 	@Override
-	@KafkaListener(topics = "dev.matching-service.match-request", groupId = "matching_3",
+	@KafkaListener(topics = "dev.matching-service.match-request", groupId = "matching_4",
 			containerFactory = "matchingMessageKafkaListenerContainerFactory")
 	public void matchingListen(MatchingMessage message) {
 		log.info("수신 : {}", message);
@@ -32,7 +32,7 @@ public class KafkaServiceImpl implements KafkaService {
 	}
 
 	@Override
-	@KafkaListener(topics = "dev.profile-service.friend-request", groupId = "friend_3",
+	@KafkaListener(topics = "dev.profile-service.friend-request", groupId = "friend_4",
 			containerFactory = "friendMessageKafkaListenerContainerFactory")
 	public void friendListen(FriendMessage message) {
 		log.info("수신 : {}", message);
