@@ -2,6 +2,8 @@ package com.spacestar.back.teamChat.service;
 
 import static com.spacestar.back.teamChat.enums.TeamParticipationType.LEFT;
 
+import com.spacestar.back.global.GlobalException;
+import com.spacestar.back.global.ResponseStatus;
 import com.spacestar.back.teamChat.domain.entity.TeamChatMember;
 import com.spacestar.back.teamChat.domain.entity.TeamChatRoom;
 import com.spacestar.back.teamChat.dto.TeamChatMemberDto;
@@ -9,6 +11,7 @@ import com.spacestar.back.teamChat.enums.TeamParticipationType;
 import com.spacestar.back.teamChat.repository.TeamChatMemberJpaRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,8 +24,35 @@ public class TeamChatMemberServiceImp implements TeamChatMemberService{
     private final TeamChatMemberJpaRepository teamChatMemberJpaRepository;
     @Override
     public void addMemberToTeamChatRoom(TeamChatRoom teamChatRoom, String uuid, Boolean ownerStatus) {
-        TeamChatMember teamChatMember = TeamChatMemberDto.toEntity(teamChatRoom, uuid,ownerStatus);
-        teamChatMemberJpaRepository.save(teamChatMember);
+        Optional<TeamChatMember> existingMember = teamChatMemberJpaRepository.findByTeamChatRoomAndMemberUuid(teamChatRoom, uuid);
+        log.info("existingMember : {}", existingMember.toString());
+        if (existingMember.isPresent()) {
+            TeamChatMember teamChatMember = existingMember.get();
+
+            // 강퇴된 멤버인지 확인
+            if (teamChatMember.getTeamParticipationType() == TeamParticipationType.BANNED) {
+                throw new GlobalException(ResponseStatus.BANNED_MEMBER);
+            }
+
+            // 이미 방을 나간 멤버인지 확인
+            if (teamChatMember.getTeamParticipationType() == TeamParticipationType.LEFT) {
+                //builder 패턴으로 변경
+                TeamChatMember teamChatMemberEntity = TeamChatMember.builder()
+                        .id(teamChatMember.getId())
+                        .teamChatRoom(teamChatRoom)
+                        .memberUuid(uuid)
+                        .ownerStatus(ownerStatus)
+                        .teamParticipationType(TeamParticipationType.JOINED)
+                        .build();
+
+                teamChatMemberJpaRepository.save(teamChatMemberEntity);
+            } else {
+                throw new GlobalException(ResponseStatus.ALREADY_JOINED_MEMBER);
+            }
+        } else {
+            TeamChatMember teamChatMember = TeamChatMemberDto.toEntity(teamChatRoom, uuid, ownerStatus);
+            teamChatMemberJpaRepository.save(teamChatMember);
+        }
     }
 
     //나가는거 처리

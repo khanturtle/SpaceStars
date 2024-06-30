@@ -116,19 +116,8 @@ public class TeamChatRoomServiceImp implements TeamChatRoomService {
             throw new GlobalException(ResponseStatus.WRONG_PASSWORD);
         }
 
-        // 강퇴 유무
-        if (optionalMember.isPresent()) {
-            TeamChatMember teamChatMember = optionalMember.get();
+        teamChatMemberService.addMemberToTeamChatRoom(teamChatRoom, uuid, false);
 
-            // 강퇴된 멤버인지 확인
-            if (teamChatMember.getTeamParticipationType() == TeamParticipationType.BANNED) {
-                throw new GlobalException(ResponseStatus.BANNED_MEMBER);
-            }
-        } else {
-            // 채팅방에 참여자 추가
-            teamChatMemberService.addMemberToTeamChatRoom(teamChatRoom, uuid, false);
-
-        }
 
 
     }
