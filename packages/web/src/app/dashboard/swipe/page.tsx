@@ -1,3 +1,7 @@
+import { getServerSession } from 'next-auth'
+
+import { options } from '@/app/api/auth/[...nextauth]/options'
+
 import { getMbtiById } from '@/apis/getMbti'
 import { getSwipeList } from '@/apis/getSwipe'
 
@@ -37,6 +41,35 @@ async function fetchAllMBTI(profileDataList: any) {
   return results
 }
 
+/** 레벨 조회 */
+async function getLevel(uuid: string) {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL_V1}/level/${uuid}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? token : '',
+        },
+      },
+    )
+    if (!response.ok) {
+      throw new Error('Failed to getLevel')
+    }
+
+    const data = await response.json()
+    console.log(data)
+    return data
+  } catch (e) {
+    console.error(e)
+    return
+  }
+}
+
 export default async function page({
   searchParams,
 }: {
@@ -60,6 +93,7 @@ export default async function page({
   const nextPage = swipeData && swipeData.last ? 0 : swipeData.nowPage + 1
   const playGames = await fetchAllPlayGames(profileDataList)
   const MBTINames = await fetchAllMBTI(profileDataList)
+  // const level = await getLevel()
 
   return (
     <div className="relative flex items-center justify-center w-full h-full">
