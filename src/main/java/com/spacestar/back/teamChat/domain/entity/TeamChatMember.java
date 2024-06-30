@@ -6,9 +6,11 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor
 public class TeamChatMember extends GlobalTime {
 

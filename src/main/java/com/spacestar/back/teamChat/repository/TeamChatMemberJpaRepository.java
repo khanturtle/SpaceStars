@@ -29,6 +29,7 @@ public interface TeamChatMemberJpaRepository extends JpaRepository<TeamChatMembe
             "WHERE r.id = :id AND m.teamParticipationType = :participationType")
     List<TeamChatMember> findCurrentMembersInChatRoom(@Param("id") Long id, @Param("participationType") TeamParticipationType participationType);
 
-
+    @Query("SELECT m FROM TeamChatMember m WHERE m.teamChatRoom.id = :roomId AND m.teamParticipationType = 'JOINED' ORDER BY m.createdAt ASC")
+    List<TeamChatMember> findJoinedMembersByTeamChatRoomId(@Param("roomId") Long roomId);
     Optional<TeamChatMember> findByTeamChatRoomAndMemberUuid(TeamChatRoom teamChatRoom, String uuid);
 }
