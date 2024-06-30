@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useWebSocket } from '../providers/socket-provider'
 
 import { getChatroomData, getTeamChatroomData } from '@/lib/getRoomDataByClient'
+import { useVoiceStore } from '@/store/voiceRoomStore'
 
 import FriendsList from '../Friends/FriendsList'
 
@@ -45,6 +46,8 @@ export const ChatRightSide = ({
   const [onlineUser, setOnlineUser] = useState([])
 
   const pathName = usePathname()
+
+  const { isVoice } = useVoiceStore()
 
   /** 채팅방 유저 리스트 */
   useEffect(() => {
@@ -115,7 +118,7 @@ export const ChatRightSide = ({
           <div className={styles['side-title']}>Chat Room</div>
           <FriendsList>
             {allUser.map((item) => (
-              <FriendsList.UserItem key={item.index} item={item}>
+              <FriendsList.UserItem key={item.index} item={item} isVoice={isVoice}>
                 {/* FIXME: status 확인 */}
                 {/* <FriendsList.Status status={item.status} /> */}
               </FriendsList.UserItem>

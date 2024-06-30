@@ -1,5 +1,11 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { useReducer } from 'react'
+
+import { Volume2, VolumeX } from 'lucide-react'
 
 import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
@@ -27,12 +33,14 @@ export interface UserItemType extends friendsWithBasicDataType {
 
 const UserItem = ({
   item,
+  isVoice = false,
   children,
 }: {
   item: UserItemType
+  isVoice?: boolean
   children?: React.ReactNode
 }) => {
-  const status = item.status ?? false
+  const [isMute, setIsMute] = useReducer((state) => !state, false)
 
   return (
     <li className="flex items-center mb-[18px]">
@@ -41,7 +49,7 @@ const UserItem = ({
         className="flex items-center w-full"
       >
         <div
-          className={`w-[45px] h-[45px] relative mr-[15px] rounded-[50%] border-2 border-solid ${status ? 'border-[color:var(--Main-Color-1,#6a64e9)]' : 'border-[color:var(--Stroke,#ddd)]'}`}
+          className={`w-[45px] h-[45px] relative mr-[15px] rounded-[50%] border-2 border-solid ${isVoice ? 'border-[color:var(--Main-Color-1,#6a64e9)] border-4' : 'border-[color:var(--Stroke,#ddd)]'}`}
         >
           <Image
             src={item.profileImageUrl}
@@ -59,6 +67,17 @@ const UserItem = ({
 
         {children}
       </Link>
+
+      {isVoice &&
+        (isMute ? (
+          <button onClick={() => setIsMute()}>
+            <Volume2 stroke="var(--Main-Color-1)" />
+          </button>
+        ) : (
+          <button onClick={() => setIsMute()}>
+            <VolumeX stroke="var(--grey-text)" />
+          </button>
+        ))}
     </li>
   )
 }

@@ -9,17 +9,18 @@ import { Ellipsis, Phone } from 'lucide-react'
 
 import { ArrowIcon, Button } from '@packages/ui'
 
+import { exitChatRoom } from '@/apis/actionGroupChat'
 import { getGameById } from '@/apis/getGame'
 import {
   getGroupChatInfo,
   getTeamChatRoomsMember,
 } from '@/apis/getGroupChatByClient'
 import { ModalContext } from '@/components/providers/modal-provider'
+import FormLayout from '@/components/form/formLayout'
 import { GameType, GroupChatInfo } from '@/types/type'
+import { useVoiceStore } from '@/store/voiceRoomStore'
 
 import styles from './chat.module.css'
-import FormLayout from '@/components/form/formLayout'
-import { exitChatRoom } from '@/apis/actionGroupChat'
 
 export default function GroupChatHeader({
   roomNumber,
@@ -35,6 +36,8 @@ export default function GroupChatHeader({
   const { openModal, closeModal } = useContext(ModalContext)
 
   const router = useRouter()
+
+  const { isVoice, setIsVoice } = useVoiceStore()
 
   const [isDropdownOpen, setIsDropdownOpen] = useReducer(
     (state) => !state,
@@ -77,7 +80,7 @@ export default function GroupChatHeader({
 
   // TODO: 보이스 연결
   const handleCall = () => {
-    // 누르면, zustand state 변화 -> ChatRightSide 에 image 테두리 보라색
+    setIsVoice()
   }
 
   const exitRoom = async () => {
@@ -120,7 +123,7 @@ export default function GroupChatHeader({
 
       <div className={`${styles.icons} relative`}>
         <button type="button" onClick={handleCall}>
-          <Phone stroke="#869AA9" />
+          <Phone stroke={isVoice ? "var(--Main-Color-1)" : "#869AA9"} />
         </button>
 
         <button type="button" onClick={() => setIsDropdownOpen()}>
