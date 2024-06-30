@@ -28,7 +28,7 @@ export async function exitChatRoom(roomNumber: string) {
     }
 
     const data = await response.json()
-    console.log(data)
+    // console.log(data)
 
     return data
   } catch (err) {
@@ -59,7 +59,7 @@ export async function enteredQueue(gameName: string) {
     }
 
     const data = await response.json()
-    console.log(data)
+    // console.log(data)
 
     return data
   } catch (err) {

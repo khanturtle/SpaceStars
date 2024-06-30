@@ -40,7 +40,12 @@ export default function FriendsWrapper({
         <h3 className="text-[color:var(--text-title)] text-lg not-italic font-medium leading-[normal] mb-6">
           Friends
         </h3>
-        <Link href="/dashboard/friends-list" className="text-xs text-[color:var(--text-title)]">more</Link>
+        <Link
+          href="/dashboard/friends-list?type=all"
+          className="text-xs text-[color:var(--text-title)]"
+        >
+          more
+        </Link>
       </div>
 
       <div

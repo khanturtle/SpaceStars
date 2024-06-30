@@ -19,8 +19,10 @@ const TabButton = ({
   return (
     <li className="mr-10" role="presentation">
       <p
-        className={`inline-block text-gray-500 hover:text-purple-600 hover:border-gray-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300 ${
-          type === tabName ? 'border-b-2 border-purple-600' : ''
+        className={`inline-block hover:text-purple-600 hover:border-gray-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300 ${
+          type === tabName
+            ? 'font-semibold text-[color:var(--sidebar-text-active)] border-b-2 border-purple-600'
+            : 'text-[color:var(--text-desc)] '
         }`}
         onClick={() => router.push(`/dashboard/friends-list?type=${tabName}`)}
       >

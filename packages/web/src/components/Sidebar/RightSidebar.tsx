@@ -21,7 +21,7 @@ const DefaultRightSide = ({
     <section>
       <div className={styles['side-title']}>
         Friends
-        <Link href="/dashboard/friends-list" className={styles.more}>
+        <Link href="/dashboard/friends-list?type=all" className={styles.more}>
           More
         </Link>
       </div>

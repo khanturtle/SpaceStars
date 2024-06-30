@@ -52,12 +52,14 @@ export default function Navbar({
           </Link>
         </div>
 
-        {!noSearchBoxPage.includes(pathName) && !isChatPath && (
-          <>
-            <SearchBox />
-            <Gutter className="flex-1" />
-          </>
-        )}
+        {!noSearchBoxPage.includes(pathName) &&
+          !isChatPath &&
+          !pathName.includes('friends-list') && (
+            <>
+              <SearchBox />
+              <Gutter className="flex-1" />
+            </>
+          )}
 
         {isChatPath && (
           <>
@@ -80,6 +82,13 @@ export default function Navbar({
             description="게임을 같이 할 나의 친구를 찾아드려요!"
             type="DESC"
           />
+        )}
+
+        {pathName.includes('friends-list') && (
+          <>
+            <TitleHeader title="Friends" type="CHAT" />
+            <Gutter className="flex-1" />
+          </>
         )}
 
         {/* Right */}
