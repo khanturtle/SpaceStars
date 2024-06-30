@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { useContext, useEffect, useState } from 'react'
 
@@ -17,7 +18,6 @@ import { ModalContext } from '@/components/providers/modal-provider'
 import { GameType, GroupChatInfo } from '@/types/type'
 
 import styles from './chat.module.css'
-import { useRouter } from 'next/navigation'
 
 export default function GroupChatHeader({
   roomNumber,

@@ -56,7 +56,7 @@ export async function getFriendsList(
     token = session?.user?.data.accessToken
   }
   const query = _query ? _query : 'all'
-  console.log('query', query)
+  // console.log('query', query)
   try {
     const response = await fetch(`${BASE_URL}/list?type=${query}`, {
       headers: {

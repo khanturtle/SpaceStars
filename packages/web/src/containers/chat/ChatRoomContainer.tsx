@@ -10,6 +10,7 @@ import { ChatMessageType } from '@/types/ChatType'
 
 import ChatLogList from '../chat-room/ChatLogList'
 import ChatInputBox from './ChatInputBox'
+import ChatHeader from './ChatHeader'
 
 import styles from './chat.module.css'
 
@@ -81,7 +82,7 @@ export default function ChatRoomContainer({
 
   return (
     <div className={styles.chatroom}>
-      {/* <div className={styles.header}>ㅇㅅㅇ</div> */}
+      <ChatHeader roomNumber={roomNumber} token={token} UUID={UUID} />
 
       <ChatLogList msgLog={msgLog} UUID={UUID} />
 
