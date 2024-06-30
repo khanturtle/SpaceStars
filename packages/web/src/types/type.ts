@@ -119,3 +119,16 @@ export interface GroupChatInfo {
   roomNumber: string
 }
 // GroupChat--
+
+
+// alarmList
+export interface AlarmListType{
+  index: number
+  senderUuid: string
+  checkStatus: string 
+  alarmType: string
+  content: string
+  senderNickname: string
+  senderProfileImage: string
+  alarmId: string
+}
