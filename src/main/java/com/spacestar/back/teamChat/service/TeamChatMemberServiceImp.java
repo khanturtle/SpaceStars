@@ -29,35 +29,36 @@ public class TeamChatMemberServiceImp implements TeamChatMemberService{
     @Override
     public void deleteMemberToTeamChatRoom(TeamChatRoom teamChatRoom, String uuid) {
         List<TeamChatMember> teamChatMemberList = teamChatMemberJpaRepository.findByTeamChatRoomId(teamChatRoom.getId());
-//        List<TeamChatMemberDto> teamChatMemberDtoList = teamChatMemberList.stream()
-//                .map(TeamChatMemberDto::toDto)
-//                .toList();
-            for (TeamChatMember teamChatMember : teamChatMemberList) {
+        TeamChatMember leavingMember = null;
+
+        for (TeamChatMember teamChatMember : teamChatMemberList) {
             if (teamChatMember.getMemberUuid().equals(uuid)) {
-                TeamChatMemberDto teamChatMemberDto = TeamChatMemberDto.toDto(teamChatMember);
-                teamChatMemberDto.setTeamParticipationType(LEFT);
-                teamChatMemberDto.setOwnerStatus(false);
-                teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(teamChatMemberDto, teamChatMember.getId()));
-                if (teamChatMember.getOwnerStatus()) {
-                    // 다음으로 들어온 멤버에게 방장 권한 부여
-                    List<TeamChatMember> activeMembers = teamChatMemberList.stream()
-                            .filter(m -> m.getTeamParticipationType() == TeamParticipationType.JOINED) // LEFT 상태가 아닌 멤버들만 필터링
-                            .toList();
-                    if (!activeMembers.isEmpty()) {
-                        // 첫 번째로 들어온 멤버를 방장으로 지정
-                        TeamChatMember nextOwner = activeMembers.get(0);
-                        TeamChatMemberDto nextOwnerDto = TeamChatMemberDto.toDto(nextOwner);
-                        nextOwnerDto.setOwnerStatus(true);
-                        teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(nextOwnerDto, nextOwner.getId()));
+                leavingMember = teamChatMember;
+                break;
+            }
+        }
 
-                    }
+        if (leavingMember != null) {
+            Boolean leavingMemberOwnerStatus = leavingMember.getOwnerStatus();
+            TeamChatMemberDto leavingMemberDto = TeamChatMemberDto.toDto(leavingMember);
+            leavingMemberDto.setTeamParticipationType(TeamParticipationType.LEFT);
+            leavingMemberDto.setOwnerStatus(false);
+            teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(leavingMemberDto, leavingMember.getId()));
+            log.info("leavingMember : {}", leavingMember.toString());
+            if (leavingMemberOwnerStatus) {
+                log.info("여기 발동되나");
+                List<TeamChatMember> activeMembers = teamChatMemberJpaRepository.findJoinedMembersByTeamChatRoomId(teamChatRoom.getId());
+
+                if (!activeMembers.isEmpty()) {
+                    log.info("activeMembers : {}", activeMembers);
+                    TeamChatMember nextOwner = activeMembers.get(0);
+                    TeamChatMemberDto nextOwnerDto = TeamChatMemberDto.toDto(nextOwner);
+                    nextOwnerDto.setOwnerStatus(true);
+                    teamChatMemberJpaRepository.save(TeamChatMemberDto.toEntity(nextOwnerDto, nextOwner.getId()));
                 }
-
             }
         }
     }
-
-
-
 }
+
 
