@@ -21,7 +21,7 @@ import { defaultImage } from '@/store/defaultState'
 import { ToastProvider } from '@/components/Toast/toast-provider'
 
 export const metadata: Metadata = {
-  title: '우주별: 우리 주변의 별별 사람들',
+  title: '우주별 - 우리 주변의 별별 사람들',
   description:
     '다양한 게임을 즐기며 새로운 친구를 만날 수 있는 커뮤니티 플랫폼',
   keywords: ['게임', '우주', '플랫폼', '엔터테인먼트', '콘텐츠'],

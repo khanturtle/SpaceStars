@@ -15,7 +15,7 @@ export default function FrontCard({
   const gender = item?.authProfile?.gender ? item.authProfile.gender : ''
   const age = item?.authProfile?.birth
     ? calculateAge(item.authProfile.birth)
-    : ''
+    : 0
 
   return (
     <>
@@ -36,7 +36,7 @@ export default function FrontCard({
           </h3>
           <div className={styles.others}>
             {gender && <span>{gender}</span>}
-            {age && <span>{age}</span>}
+            {age > 0 && <span>{age}</span>}
             {MBTIName && <span>{MBTIName}</span>}
           </div>
         </div>

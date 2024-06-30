@@ -66,7 +66,7 @@ export default function MessageContainer({
   token: string
 }) {
   return (
-    <div className={styles['messages-container']}>
+    <div className={`${styles['messages-container']} message-container`}>
       {friendsList.length > 0 && <FriendsWrapper friendsList={friendsList} />}
 
       {oneToOneChatRooms.length > 0 && (

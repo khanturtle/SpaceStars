@@ -4,7 +4,6 @@ import MenuButton from './button/MenuButton'
 import MessageButton from './button/MessageButton'
 
 function FriendListTable({ data }: { data: dataType[] }) {
-  console.log(data)
   return (
     <>
       {data &&

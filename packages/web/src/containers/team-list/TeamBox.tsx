@@ -15,11 +15,12 @@ import {
 
 import { joinTeam, joinTeamForm } from '@/apis/createChat'
 import { ModalContext } from '@/components/providers/modal-provider'
+import { useToast } from '@/components/Toast/toast-provider'
 import FormLayout from '@/components/form/formLayout'
 import { defaultImage } from '@/store/defaultState'
 
 import styles from './teamList.module.css'
-import { useToast } from '@/components/Toast/toast-provider'
+import { useSession } from 'next-auth/react'
 
 const TeamBox = ({
   children,
@@ -63,6 +64,32 @@ function getRoomTypeInfo(isFinished: boolean): RoomType {
   }
 }
 
+/** 내가 속한 방인지 확인 */
+async function getIsEnteredRoom(token: string, roomNumber: string) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL_V1}/chat/team/chatroom/isMember/${roomNumber}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getIsEnteredRoom')
+    }
+
+    const data = await response.json()
+
+    return data.result
+  } catch (err) {
+    // console.error(err)
+    return []
+  }
+}
+
 const TeamCardItem = ({
   item,
   type = 'list',
@@ -78,6 +105,8 @@ const TeamCardItem = ({
   const { openModal, closeModal } = useContext(ModalContext)
 
   const { showToast } = useToast()
+
+  const { data: session } = useSession()
 
   const initialState = {
     code: 0,
@@ -113,17 +142,22 @@ const TeamCardItem = ({
   }, [state])
 
   async function handleJoin() {
+    if (!session) return
+
     if (item.isFinished) {
       handleToast('모집 완료된 방입니다.', 'error')
       return
     }
+
     // TODO: 내가 속한 방인지 확인하는 API 요청
-    const isJoined = false
+    const res = await getIsEnteredRoom(session?.user?.data.accessToken, item.roomNumber)
+    console.log(res)
+    // const isJoined = false
     // 내가 속한 방이면, 바로 참가
-    if (isJoined) {
-      router.push(`/dashboard/chat/group/${item.roomNumber}`)
-      return
-    }
+    // if (isJoined) {
+    //   router.push(`/dashboard/chat/group/${item.roomNumber}`)
+    //   return
+    // }
 
     // 내가 속한 방이 아니면, 참가 시도
     // 비번 있으면, 입력 후 방 참가
@@ -164,12 +198,12 @@ const TeamCardItem = ({
     }
     // 비번이 없으면, 채팅방 참가
     else {
-      const res = await joinTeam(item.roomNumber)
-      if (res.result === null) {
-        handleToast(res.message ?? '다시 시도해주세요', 'error')
-      } else {
-        router.push(`/dashboard/chat/group/${item.roomNumber}`)
-      }
+      // const res = await joinTeam(item.roomNumber)
+      // if (res.result === null) {
+      //   handleToast(res.message ?? '다시 시도해주세요', 'error')
+      // } else {
+      //   router.push(`/dashboard/chat/group/${item.roomNumber}`)
+      // }
     }
   }
 

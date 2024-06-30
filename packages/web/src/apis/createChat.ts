@@ -3,7 +3,6 @@
 import { getServerSession } from 'next-auth/next'
 
 import { options } from '@/app/api/auth/[...nextauth]/options'
-import { join } from 'path'
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/chat`
 
@@ -59,8 +58,6 @@ export async function createTeam(prevState: unknown, formData: FormData) {
       },
       body: JSON.stringify(postFormData),
     }).then((r) => r.json())
-
-    console.log(res)
 
     return { ...res }
   } catch (error) {

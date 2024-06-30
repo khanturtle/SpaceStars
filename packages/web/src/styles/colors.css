@@ -75,6 +75,7 @@ body {
   --text: #000;
   --text-title: #202020;
   --text-desc: #333;
+  --text-sub: #f1674a;
 
   --sidebar-inner: #fff;
 
@@ -101,7 +102,7 @@ body {
 
   --hover-color: #e0e0e0;
 
-  --color-icon: #84818a;
+  --color-icon: #869aa9;
 
   --icon-button: #fff;
   --icon-button-border: #dcdbdd;
@@ -114,6 +115,7 @@ body {
 
   --card-color: #fff;
   --card-finish: #cfcfcf;
+  --card-hover: rgba(30, 31, 34, 0.2);
 
   --button-secondary: #fff;
   --button-secondary-text: #7d12ff;
@@ -125,6 +127,7 @@ body[data-theme='dark'] {
   --text: #dbdee1;
   --text-title: #ffffff;
   --text-desc: #949ba4;
+  --text-sub: #ed4245;
 
   --sidebar-inner: #2b2d31;
 
@@ -162,11 +165,10 @@ body[data-theme='dark'] {
   --scrollbar-color: #1a1b1e;
   --scrollbar-hover: #000;
 
-  --card-color: #1e1f22;
-  --card-finish: #111214;
+  --card-color: rgba(30, 31, 34, 0.3);
+  --card-hover: rgba(30, 31, 34, 0.5);
+  --card-finish: rgba(17, 18, 20, 0.15);
 
   --button-secondary: #7d12ff;
   --button-secondary-text: #fff;
-
-
 }
