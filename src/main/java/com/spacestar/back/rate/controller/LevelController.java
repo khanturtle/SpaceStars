@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Level", description = "레벨")
-@RequestMapping("/api/v1/level")
+@RequestMapping("/api/v1/rate")
 public class LevelController {
     private final LevelService levelService;
     private final ModelMapper modelMapper;
