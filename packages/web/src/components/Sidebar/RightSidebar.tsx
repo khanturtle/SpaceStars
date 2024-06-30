@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { useEffect, useState } from 'react'
@@ -18,7 +19,12 @@ const DefaultRightSide = ({
 }) => {
   return (
     <section>
-      <div className={styles['side-title']}>Friends</div>
+      <div className={styles['side-title']}>
+        Friends
+        <Link href="/dashboard/friends-list" className={styles.more}>
+          More
+        </Link>
+      </div>
       {friendsList.length > 0 ? (
         <FriendsList items={friendsList} />
       ) : (

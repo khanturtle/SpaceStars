@@ -68,7 +68,7 @@ function getRoomTypeInfo(isFinished: boolean): RoomType {
 async function getIsEnteredRoom(token: string, roomNumber: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL_V1}/chat/team/chatroom/${roomNumber}`,
+      `${process.env.NEXT_PUBLIC_API_URL_V1}/chat/team/chatroom/isMember/${roomNumber}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -150,8 +150,8 @@ const TeamCardItem = ({
     }
 
     // TODO: 내가 속한 방인지 확인하는 API 요청
-    await getIsEnteredRoom(session?.user?.data.accessToken, item.roomNumber)
-
+    const res = await getIsEnteredRoom(session?.user?.data.accessToken, item.roomNumber)
+    console.log(res)
     // const isJoined = false
     // 내가 속한 방이면, 바로 참가
     // if (isJoined) {
@@ -198,12 +198,12 @@ const TeamCardItem = ({
     }
     // 비번이 없으면, 채팅방 참가
     else {
-      const res = await joinTeam(item.roomNumber)
-      if (res.result === null) {
-        handleToast(res.message ?? '다시 시도해주세요', 'error')
-      } else {
-        router.push(`/dashboard/chat/group/${item.roomNumber}`)
-      }
+      // const res = await joinTeam(item.roomNumber)
+      // if (res.result === null) {
+      //   handleToast(res.message ?? '다시 시도해주세요', 'error')
+      // } else {
+      //   router.push(`/dashboard/chat/group/${item.roomNumber}`)
+      // }
     }
   }
 
