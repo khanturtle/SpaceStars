@@ -1,4 +1,8 @@
-import { RecentMessageType, UnreadMessageCount } from '@/types/type'
+import {
+  ChatRoomMemberType,
+  RecentMessageType,
+  UnreadMessageCount,
+} from '@/types/type'
 
 const CHAT_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/chat`
 
@@ -107,5 +111,31 @@ export async function getUnreadMessageCountByTeam(
   } catch (err) {
     // console.error(err)
     return null
+  }
+}
+
+/** 1:1 방 참여자 조회 */
+export async function getRoomMember(
+  roomUuid: string,
+  _token?: string,
+): Promise<ChatRoomMemberType[]> {
+  try {
+    const response = await fetch(
+      `${CHAT_BASE_URL}/one-to-one/chatroom/${roomUuid}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getRoomDetail')
+    }
+    const data = await response.json()
+    return data.result
+  } catch (err) {
+    // console.error(err)
+    return []
   }
 }

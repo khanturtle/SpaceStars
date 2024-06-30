@@ -1,16 +1,14 @@
 .card-container {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  align-content: flex-start;
-  row-gap: 21px;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 350px);
+  gap: 24px 30px;
+  justify-content: center;
+  max-width: 1440px;
 }
 
 .card {
   display: flex;
-  width: 350px;
+  width: 100%;
   padding: 19px 29px;
   flex-direction: column;
   align-items: flex-start;
@@ -19,10 +17,41 @@
 }
 
 .finished {
-  background-color: #cfcfcf;
+  background-color: var(--card-finish);
 }
 .ongoing {
-  background-color: var(--White-50, #fff);
+  background-color: var(--card-color);
+}
+.ongoing:hover {
+  background-color: var(--icon-button-hover);
+}
+
+.info {
+  width: 85%;
+}
+.info h3 {
+  color: var(--text-title) !important;
+}
+.info p {
+  color: var(--text-desc) !important;
+}
+
+.cardButton {
+  display: inline-block;
+  align-items: end;
+}
+
+.join-button {
+  background-color: var(--button-secondary) !important;
+}
+.join-button p {
+  color: var(--button-secondary-text) !important;
+}
+.finished .join-button {
+  background-color: transparent !important;
+}
+.finished .join-button p {
+  color: #a8a8a8 !important;
 }
 
 .list-container {
@@ -37,38 +66,70 @@
   width: 100%;
   padding: 14px 16px;
   align-items: center;
-
   border-radius: 15px;
 }
 
 /* SubSelectBox.css */
 .subTitle {
-  font-family: Poppins;
-  color: #202020;
+  color: var(--text-title);
   font-size: 36px;
   font-style: normal;
   font-weight: 500;
   line-height: 48px;
 }
 .subDesc {
-  font-family: Poppins;
-  color: #84818a;
+  color: var(--text-desc);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
 
-.button {
+.icon-button {
+  height: 40px;
+
   border-radius: 12px;
-  border: 1px solid #dcdbdd;
-  background: var(--White-50, #fff);
+  border: 1px solid var(--icon-button-border);
+  background: var(--icon-button);
 
   display: flex;
-  padding: 9px 16px;
+  padding: 9px;
   justify-content: center;
   align-items: center;
   gap: 10px;
+}
+.icon-button-name {
+  color: var(--text);
+  padding: 0 8px;
+}
+.icon-button:hover,
+.icon-button.active:hover {
+  background: var(--icon-button-hover);
+}
+
+.icon-button.active {
+  background: var(--button-active);
+}
+.icon-button.active span {
+  color: #009580;
+  font-weight: 600;
+}
+
+.icon-buttons {
+  display: flex;
+  border-radius: 12px;
+}
+.icon-buttons .icon-button {
+  border-radius: 0;
+}
+.icon-buttons .icon-button:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-right: 1px;
+}
+.icon-buttons .icon-button:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 /* GameSelectBox.css */
@@ -111,7 +172,7 @@
   right: 330px;
   width: 50px;
   height: 50px;
-  background-color: var(--Main-Color-1);
+  background-color: var(--color-primary);
   color: #fff;
   font-size: 24px;
   font-weight: bold;
@@ -167,6 +228,7 @@
 }
 
 .button {
+  margin-top: 10px;
   height: 60px;
 }
 /* CreateButton.css */

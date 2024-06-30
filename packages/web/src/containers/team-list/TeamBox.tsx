@@ -19,6 +19,7 @@ import FormLayout from '@/components/form/formLayout'
 import { defaultImage } from '@/store/defaultState'
 
 import styles from './teamList.module.css'
+import { useToast } from '@/components/Toast/toast-provider'
 
 const TeamBox = ({
   children,
@@ -76,6 +77,8 @@ const TeamCardItem = ({
   const router = useRouter()
   const { openModal, closeModal } = useContext(ModalContext)
 
+  const { showToast } = useToast()
+
   const initialState = {
     code: 0,
     message: '',
@@ -84,24 +87,47 @@ const TeamCardItem = ({
 
   const [state, formAction] = useFormState(joinTeamForm, initialState)
 
+  const handleToast = (message: string, type: 'info' | 'error') => {
+    showToast({
+      message: message,
+      type: type,
+      position: 'bottom',
+    })
+  }
+
   useEffect(() => {
+    if (state.code === 0) {
+      return
+    }
+    // 비번 맞?
     if (state.code === 200) {
       closeModal()
       router.push(`/dashboard/chat/group/${item.roomNumber}`)
     } else {
-      // TODO: 비번 틀림
-      // alert(state.message)
+      // 비번 틀림
+      handleToast(state.message, 'error')
+      closeModal()
     }
 
     return () => {}
   }, [state])
 
-  // TODO: 비번 입력 폼 => 비번이 같으면 입장 아니면 모달닫고, 에러 표시
-  const handleJoin = () => {
+  async function handleJoin() {
     if (item.isFinished) {
-      alert('꽉 찬 방')
-    } else if (item.isPassword) {
-      // 비번 입력 후 방 참가
+      handleToast('모집 완료된 방입니다.', 'error')
+      return
+    }
+    // TODO: 내가 속한 방인지 확인하는 API 요청
+    const isJoined = false
+    // 내가 속한 방이면, 바로 참가
+    if (isJoined) {
+      router.push(`/dashboard/chat/group/${item.roomNumber}`)
+      return
+    }
+
+    // 내가 속한 방이 아니면, 참가 시도
+    // 비번 있으면, 입력 후 방 참가
+    if (item.isPassword) {
       openModal(
         <div className={`relative h-full flex flex-col items-center`}>
           <FormLayout
@@ -112,13 +138,16 @@ const TeamCardItem = ({
               title="Join Team"
               description={`비밀번호를 입력해주세요.`}
             />
-            <form action={formAction}>
+            <form
+              action={formAction}
+              className="flex flex-col items-center justify-center"
+            >
               <input type="hidden" name="roomNumber" value={item.roomNumber} />
               <input type="hidden" name="isPassword" value={item.isPassword} />
               <Input
                 id="password"
                 label="비밀번호"
-                className="relative w-[335px] mb-4"
+                className="relative w-full mb-4"
               />
               <Button
                 type="submit"
@@ -132,9 +161,15 @@ const TeamCardItem = ({
           </FormLayout>
         </div>,
       )
-    } else {
-      joinTeam(item.roomNumber)
-      router.push(`/dashboard/chat/group/${item.roomNumber}`)
+    }
+    // 비번이 없으면, 채팅방 참가
+    else {
+      const res = await joinTeam(item.roomNumber)
+      if (res.result === null) {
+        handleToast(res.message ?? '다시 시도해주세요', 'error')
+      } else {
+        router.push(`/dashboard/chat/group/${item.roomNumber}`)
+      }
     }
   }
 
@@ -164,17 +199,19 @@ const TeamCardItem = ({
           {/* {users} */}
         </div>
         <TeamCardTitle
-          className="w-[85%]"
+          className={styles.info}
           imageUrl={item.gameData?.gameImage ?? defaultImage}
           title={item.roomName}
           description={item.memo}
         />
 
-        <div>
+        <div className={styles.cardButton}>
           <TeamCardJoinButton
             onClick={handleJoin}
             isLocked={item.isPassword}
             isFinished={item.isFinished}
+            iconFill="var(--button-secondary-text)"
+            className={styles['join-button']}
           />
         </div>
       </li>
@@ -184,7 +221,7 @@ const TeamCardItem = ({
     <li className={`${styles.list} ${styles[TYPE]}`}>
       <div className="w-[380px]">
         <TeamCardTitle
-          className="w-[85%]"
+          className={styles.info}
           imageUrl={item.gameData?.gameImage ?? defaultImage}
           title={item.roomName}
           description={item.memo}
@@ -206,6 +243,8 @@ const TeamCardItem = ({
             onClick={handleJoin}
             isLocked={item.isPassword}
             isFinished={item.isFinished}
+            iconFill="var(--button-secondary-text)"
+            className={styles['join-button']}
           />
         </div>
       </div>

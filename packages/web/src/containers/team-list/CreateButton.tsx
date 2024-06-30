@@ -19,6 +19,7 @@ import {
 
 import FormLayout from '@/components/form/formLayout'
 import { ModalContext } from '@/components/providers/modal-provider'
+import { useToast } from '@/components/Toast/toast-provider'
 
 import { createTeam } from '@/apis/createChat'
 import { GameTypes } from '@/types/type'
@@ -29,10 +30,9 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
   const router = useRouter()
 
   const { closeModal } = useContext(ModalContext)
+  const { showToast } = useToast()
 
-  const [isChecked, setIsChecked] = useReducer((state) => {
-    return !state
-  }, false)
+  const [isChecked, setIsChecked] = useReducer((state) => !state, false)
 
   const [selectGame, setSelectGame] = useState<string | number>('')
   const [selectMember, setSelectMember] = useState<string | number>('')
@@ -45,10 +45,23 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
 
   const [state, formAction] = useFormState(createTeam, initialState)
 
+  const handleToast = (message: string) => {
+    showToast({
+      message: message,
+      type: 'error',
+      position: 'top',
+      offsetY: 50,
+    })
+  }
+
   useEffect(() => {
-    if (state.code === 200) {
+    if (state.code === 0) {
+      return
+    } else if (state.code === 200) {
       closeModal()
       router.push(`/dashboard/chat/group/${state.result.roomNumber}`)
+    } else {
+      handleToast(state.message)
     }
   }, [state])
 
@@ -100,14 +113,14 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
             <SelectValue placeholder="인원" />
           </SelectTrigger>
 
-          <SelectContent className="relative z-[9999] w-full h-[230px] bg-[white] border-none ">
-            {Array.from({ length: 5 }, (_, i) => (
+          <SelectContent className="relative z-[9999] w-full bg-[white] border-none ">
+            {Array.from({ length: 4 }, (_, i) => (
               <SelectItem
-                key={i + 1}
-                value={(i + 1).toString()}
+                key={i + 2}
+                value={(i + 2).toString()}
                 className="text-base not-italic font-normal leading-[170%] bg-[none] m-0"
               >
-                {i + 1}
+                {i + 2}
               </SelectItem>
             ))}
           </SelectContent>
@@ -121,6 +134,7 @@ const CreateTeamForm = ({ games }: { games: GameTypes[] }) => {
         isChecked={isChecked}
         onChange={() => setIsChecked()}
       />
+
       {isChecked && (
         <Input
           id="password"

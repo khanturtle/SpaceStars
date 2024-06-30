@@ -2,7 +2,6 @@ import { getServerSession } from 'next-auth/next'
 
 import { getMbtiById } from '@/apis/getMbti'
 
-import BackGroundTextBox from '@/components/Background/BackGroundTextBox'
 import QueueLayout from '@/containers/queue/QueueLayout'
 
 import { getAllProfileData } from '@/lib/getAllProfileData'
@@ -29,9 +28,7 @@ export default async function page({
 
   return (
     // FIXME: 배경 수정
-    <div className="relative w-full h-full flex items-center justify-center bg-[#18243a]">
-      <BackGroundTextBox text="GAMER SEARCHING" />
-
+    <div className="relative flex items-center justify-center w-full h-full">
       <QueueLayout
         myData={myData ?? null}
         mbtiName={myMbtiName}

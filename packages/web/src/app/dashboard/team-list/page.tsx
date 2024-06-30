@@ -13,13 +13,13 @@ export default async function page({
 }) {
   const games = await getGames()
 
-  const teamList = await getTeamChatRooms()
+  const teamList = await getTeamChatRooms(searchParams)
   const teamListData = await getTeamListData(teamList)
 
   const teamListCount = teamList.length ?? 0
 
   return (
-    <section className="flex-1 px-[50px] py-[42px] h-[full] overflow-auto">
+    <div className="flex-1 px-[50px] py-[42px] h-[full] overflow-auto">
       <SelectBoxContainer
         searchParams={searchParams}
         games={games}
@@ -29,6 +29,6 @@ export default async function page({
       <TeamListWrapper searchParams={searchParams} Teams={teamListData} />
 
       <CreateButton games={games} />
-    </section>
+    </div>
   )
 }

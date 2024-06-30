@@ -35,7 +35,6 @@ export async function createOnetoOneChat(uuid: string) {
   }
 }
 
-// TODO: 유효성 검사 및 에러 알림
 /** 그룹 채팅방 생성하기 */
 export async function createTeam(prevState: unknown, formData: FormData) {
   const session = await getServerSession(options)
@@ -61,16 +60,20 @@ export async function createTeam(prevState: unknown, formData: FormData) {
       body: JSON.stringify(postFormData),
     }).then((r) => r.json())
 
-    // console.log(postFormData)
-    // console.log(res)
+    console.log(res)
 
     return { ...res }
   } catch (error) {
     console.error('createTeam:', error)
+    return {
+      code: -1,
+      message: '채팅방 생성에 실패했습니다. 다시 시도해주세요.',
+      result: null,
+    }
   }
 }
 
-/** 그룹 채팅방 입장하기 */
+/** 그룹 채팅방 입장하기 - 비밀번호 */
 export async function joinTeamForm(prevState: unknown, formData: FormData) {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken
@@ -91,13 +94,13 @@ export async function joinTeamForm(prevState: unknown, formData: FormData) {
       body: JSON.stringify(postFormData),
     }).then((r) => r.json())
 
-    console.log(res)
     return { ...res }
   } catch (error) {
     console.error('joinTeam:', error)
   }
 }
 
+/** 그룹 채팅방 입장하기 */
 export async function joinTeam(roomNumber: string) {
   const session = await getServerSession(options)
   const token = session?.user?.data.accessToken

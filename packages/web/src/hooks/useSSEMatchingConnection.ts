@@ -18,7 +18,7 @@ export const useSSEMatchingConnection = (
         import('event-source-polyfill')
           .then(({ EventSourcePolyfill }) => {
             const es = new EventSourcePolyfill(
-              `${process.env.NEXT_PUBLIC_API_URL_V1}/sse-quick?gameName=${gameName}`,
+              `${process.env.NEXT_PUBLIC_API_URL_V1}/sse-quick`,
               {
                 headers: {
                   UUID: uuid,
@@ -57,6 +57,7 @@ export const useSSEMatchingConnection = (
 
     return () => {
       if (eventSource) {
+        console.log('SSE closed')
         eventSource.close()
         setEventSource(null)
         setIsConnected(false)

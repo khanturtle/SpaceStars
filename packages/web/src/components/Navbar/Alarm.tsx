@@ -53,8 +53,8 @@ export const Alarm = () => {
   return (
     <div className="flex items-center">
       <div className="relative mr-8">
-        <button type="button" onClick={handleClick}>
-          <BellIcon size={40} stroke="white" strokeWidth={2} />
+        <button type="button" onClick={handleClick} className="mr-8">
+      <BellIcon size={28} stroke="var(--color-icon)" strokeWidth={2} />
           {hasNewNotification &&
             <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
           }

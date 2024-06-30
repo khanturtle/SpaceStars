@@ -11,10 +11,10 @@ import {
   getGroupChatInfo,
   getTeamChatRoomsMember,
 } from '@/apis/getGroupChatByClient'
+import { ModalContext } from '@/components/providers/modal-provider'
 import { GameType, GroupChatInfo } from '@/types/type'
 
 import styles from './chat.module.css'
-import { ModalContext } from '@/components/providers/modal-provider'
 
 export default function GroupChatHeader({
   roomNumber,

@@ -4,8 +4,6 @@ import { useRouter } from 'next/navigation'
 
 import { useContext, useEffect, useReducer } from 'react'
 
-import { EventSourcePolyfill } from 'event-source-polyfill'
-
 import { Button } from '@packages/ui'
 
 import { ModalContext } from '@/components/providers/modal-provider'
