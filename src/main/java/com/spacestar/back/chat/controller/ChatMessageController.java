@@ -79,5 +79,7 @@ public class ChatMessageController {
         return new ResponseEntity<>(ResponseSuccess.GET_CHATROOM_RECENT_MESSAGE_COUNT_SUCCESS, recentMessageCount);
     }
 
+    //테스트
+
 }
 
