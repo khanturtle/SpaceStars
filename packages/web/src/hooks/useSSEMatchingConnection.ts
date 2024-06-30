@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react'
 import { EventSourcePolyfill } from 'event-source-polyfill'
 
-export const useSSEMatchingConnection = (
-  uuid: string,
-  // token: string,
-  gameName: string,
-) => {
+export const useSSEMatchingConnection = (uuid: string, gameName: string) => {
   const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(
     null,
   )

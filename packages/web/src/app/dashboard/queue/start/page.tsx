@@ -2,10 +2,11 @@ import { getServerSession } from 'next-auth/next'
 
 import { getMbtiById } from '@/apis/getMbti'
 
+import { options } from '@/app/api/auth/[...nextauth]/options'
+
 import QueueLayout from '@/containers/queue/QueueLayout'
 
 import { getAllProfileData } from '@/lib/getAllProfileData'
-import { options } from '@/app/api/auth/[...nextauth]/options'
 
 export default async function page({
   searchParams,
@@ -25,7 +26,6 @@ export default async function page({
   }
 
   const connectedGame = searchParams.game
-
   return (
     <div className="relative flex items-center justify-center w-full h-full">
       <QueueLayout

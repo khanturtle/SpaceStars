@@ -62,3 +62,26 @@ export async function leftQueue() {
 }
 
 /** 큐 요청 수락 */
+export async function acceptQueue() {
+  const session = await getServerSession(options)
+  const token = session?.user?.data.accessToken
+
+  try {
+    const response = await fetch(`${BASE_URL}/accept`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed acceptQueue')
+    }
+
+    const data = await response.json()
+    return data
+  } catch (err) {
+    console.error(err)
+  }
+}
