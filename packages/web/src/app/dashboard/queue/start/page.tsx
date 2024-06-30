@@ -27,7 +27,6 @@ export default async function page({
   const connectedGame = searchParams.game
 
   return (
-    // FIXME: 배경 수정
     <div className="relative flex items-center justify-center w-full h-full">
       <QueueLayout
         myData={myData ?? null}

@@ -62,7 +62,7 @@
 .icons {
   display: flex;
 }
-.icons button,
+.icons > button,
 .back {
   width: 48px;
   height: 48px;
