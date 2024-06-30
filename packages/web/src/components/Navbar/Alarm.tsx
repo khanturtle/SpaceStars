@@ -57,7 +57,7 @@ export const Alarm = () => {
     <div className="flex items-center">
       <button type="button" onClick={handleClick} className="mr-8 relative">
         <BellIcon size={28} stroke="var(--color-icon)" strokeWidth={2} />
-        {!hasNewNotification && (
+        {hasNewNotification && (
           <span className="absolute top-0 right-[0px] h-3 w-3 bg-red-500 rounded-full" />
         )}
       </button>
