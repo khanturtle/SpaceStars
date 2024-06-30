@@ -1,4 +1,4 @@
-import { ApiResponseType, AlarmListType } from '@/types/type';
+import { AlarmListType } from '@/types/type';
 
 const ALARM_LIST_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/alarm/list`;
 const NICKNAME_URL = `${process.env.NEXT_PUBLIC_API_URL_V1}/auth/nickname/search`;

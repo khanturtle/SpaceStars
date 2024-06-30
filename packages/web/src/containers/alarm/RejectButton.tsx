@@ -1,28 +1,38 @@
 import { XCircle } from 'lucide-react';
-import { requestAlarmReject } from '@/apis/requestAlarm'
+import { requestAlarmReject } from '@/apis/requestAlarm';
+import { modifyAlamrState } from '@/apis/actionAlarm'
 
 interface RejectButtonProps {
     onClick: () => void;
-    token: string
-    friendUuid: string
+    token: string;
+    friendUuid: string;
+    checkStatus: string;
+    alarmId: string
 }
 
-const RejectButton = ({ onClick, token, friendUuid }: RejectButtonProps) => {
+const RejectButton = ({ onClick, token, friendUuid, checkStatus, alarmId }: RejectButtonProps) => {
     const handleReject = async () => {
-        try{
-            await requestAlarmReject(token, {friendUuid})
-            onClick()
-        }catch(error){
-            console.error('친구요청 거절 실패: ', error)
+        try {
+            await requestAlarmReject(token, { friendUuid })
+            await modifyAlamrState(token, alarmId, "REJECT")
+            onClick();
+        } catch (error) {
+            console.log('친구 요청 거절 실패: ', error);
         }
-    }
-    
+    };
+
+    const isUnread = checkStatus === 'UNREAD';
+
     return (
         <button
-            className="bg-pink-400 bg-opacity-60 rounded-full p-2 flex items-center justify-center hover:bg-pink-500 transition duration-300 ease-in-out"
-            onClick={onClick}
+            className={`rounded-full p-2 flex items-center justify-center transition duration-300 ease-in-out ${
+                isUnread
+                    ? 'bg-pink-600 bg-opacity-60 hover:bg-pink-700'
+                    : 'bg-gray-400'
+            }`}
+            onClick={isUnread ? handleReject : undefined}
         >
-            <XCircle className="text-white h-5 w-5" />
+            <XCircle className={`h-5 w-5 ${isUnread ? 'text-white' : 'text-gray-500'}`} />
         </button>
     );
 };

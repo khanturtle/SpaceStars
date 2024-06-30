@@ -130,4 +130,5 @@ export interface AlarmListType{
   content: string
   senderNickname: string
   senderProfileImage: string
+  alarmId: string
 }

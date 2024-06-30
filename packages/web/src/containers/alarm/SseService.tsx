@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import {closeSseConnection} from '@/apis/actionAlarm'
+import { closeSseConnection } from '@/apis/actionAlarm'
 
 // Message 타입 정의
 interface Message {
