@@ -18,7 +18,7 @@ public interface TeamChatRoomJpaRepository extends JpaRepository<TeamChatRoom, L
     int findCountMembersByTeamChatRoom(@Param("teamChatRoom") TeamChatRoom teamChatRoom);
 
     //roomnumber와 uuid로 속한방이 있는지 없는지 boolean
-    @Query("select count(t) > 0 from TeamChatMember t where t.teamChatRoom.roomNumber = :roomNumber and t.memberUuid = :memberUuid")
+    @Query("select count(t) > 0 from TeamChatMember t where t.teamChatRoom.roomNumber = :roomNumber and t.memberUuid = :memberUuid and t.teamParticipationType = 'JOINED'")
     boolean existsByRoomNumberAndMemberUuid(@Param("roomNumber") String roomNumber, @Param("memberUuid") String memberUuid);
 
 }
