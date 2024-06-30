@@ -76,6 +76,7 @@ export default function SwipeCardWrapper({
   const handleMouseLeave = () => {
     setHoveringIndex(-1)
   }
+
   return (
     <section className={styles['card-wrapper']}>
       <div className={styles.cards}>
