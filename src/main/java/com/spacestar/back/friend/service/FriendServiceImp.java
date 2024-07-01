@@ -129,7 +129,7 @@ public class FriendServiceImp implements FriendService {
                 .receiverUuid(uuid)
                 .content("친구 신청이 수락되었습니다.")
                 .build();
-        kafkaTemplate.send(TOPIC, friendMessage);
+        //kafkaTemplate.send(TOPIC, friendMessage);
 
     }
 
