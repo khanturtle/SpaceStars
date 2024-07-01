@@ -1,4 +1,5 @@
-![image](![image](https://github.com/6-dreaming-stars/.github/assets/108453365/404aa474-37ab-4510-aa24-dc3e7ecf30ce))
+![image](![image](![image](https://github.com/6-dreaming-stars/.github/assets/108453365/05582ec6-9c3d-4910-be09-bb4185aa23d8)
+))
 
 <div align= "center">
     <img src="https://capsule-render.vercel.app/api?type=waving&color=#b897ff&height=180&text=우주별%20:%20우리%20주변%20별별%20사람들&animation=&fontColor=000000&fontSize=60" />
