@@ -4,25 +4,23 @@ import Link from 'next/link'
 
 const Hero = () => {
   return (
-    <div className="pt-28 pb-20">
-      <div className="container mx-auto px-6 flex flex-col md:flex-row items-center">
-        <div className="mb-16">
-          <h2 className="text-5xl font-bold mb-6 animate-fadeIn text-purple-300">
-            우리 주변의 별별 사람들과 만나보세요
-          </h2>
-          <p className="text-xl mb-8 animate-fadeIn animation-delay-200 text-[color:var(--text-desc)]">
-            우주별에서 당신의 게임 스타일에 맞는 완벽한 게임 친구를 만나보세요.
-            함께 게임을 즐기고 우승을 향해 나아가세요!
-          </p>
-          <Link
-            href="/sign-up"
-            className="bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-500 transition duration-300 text-lg transform hover:scale-105"
-          >
-            게임 파티 찾기
-          </Link>
-        </div>
+    <section className="pb-20 text-white pt-28 bg-gradient-to-r from-blue-600 to-purple-600">
+      <div className="container px-6 mx-auto text-center">
+        <h2 className="mb-4 text-5xl font-bold">
+          우리 주변의 별별 사람들과 만나보세요
+        </h2>
+        <p className="mb-8 text-xl">
+          우주별에서 당신의 게임 스타일에 맞는 완벽한 게임 친구를 만나보세요.
+          친구를 만들고, 채팅하고, 게임을 즐기세요!
+        </p>
+        <Link
+          href="/sign-up"
+          className="px-8 py-3 font-bold text-blue-600 transition duration-300 bg-white rounded-full hover:bg-blue-100"
+        >
+          시작하기
+        </Link>
       </div>
-    </div>
+    </section>
   )
 }
 
@@ -30,7 +28,7 @@ const Features = () => {
   const features = [
     {
       title: '실시간 팀 채팅',
-      description: '빠르고 효율적인 커뮤니케이션으로 팀의 생산성을 높이세요.',
+      description: '다른 게이머들과 실시간으로 대화를 나눌 수 있습니다.',
     },
     {
       title: 'AI 기반 친구 추천',
@@ -43,26 +41,26 @@ const Features = () => {
   ]
 
   return (
-    <div className="py-20 bg-purple-900 bg-opacity-50">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center text-purple-300 mb-16">
-          우주별의 특별한 기능
+    <section id="features" className="py-20 bg-gray-800">
+      <div className="container px-6 mx-auto">
+        <h2 className="mb-8 text-3xl font-bold text-center text-[#9c88ff]">
+          주요 기능
         </h2>
-        <div className="grid md:grid-cols-3 gap-12">
+        <div className="grid gap-12 md:grid-cols-3">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-purple-800 bg-opacity-50 rounded-xl shadow-lg p-8 text-center transform hover:scale-105 transition duration-300"
+              className="p-8 text-center transition duration-300 transform bg-gray-700 bg-opacity-50 shadow-lg rounded-xl hover:scale-105"
             >
-              <h3 className="text-2xl font-semibold mb-4 text-purple-200">
+              <h3 className="mb-4 text-2xl font-semibold text-[#9c88ff]">
                 {feature.title}
               </h3>
-              <p className="text-gray-300">{feature.description}</p>
+              <p className="text-[#b3b3b3]">{feature.description}</p>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

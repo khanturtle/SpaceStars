@@ -71,23 +71,23 @@ export default function TestimonialsSlider() {
   }, [testimonials])
 
   return (
-    <div className="py-20 bg-purple-800 bg-opacity-30">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center text-purple-300 mb-16">
+    <section className="py-20 bg-[#1a1a1a]">
+      <div className="container px-6 mx-auto">
+        <h2 className="text-4xl font-bold text-center text-[#9c88ff] mb-16">
           게이머들의 이야기
         </h2>
-        <div className="testimonial-container overflow-hidden">
-          <div className="testimonial-slider flex" ref={sliderRef}>
+        <div className="overflow-hidden testimonial-container">
+          <div className="flex testimonial-slider" ref={sliderRef}>
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="testimonial-item flex-shrink-0 w-1/3 px-2"
+                className="flex-shrink-0 w-1/3 px-2 testimonial-item"
               >
-                <div className="bg-purple-900 bg-opacity-50 rounded-xl shadow-lg p-6 h-full">
-                  <p className="text-gray-300 italic mb-4">
+                <div className="h-full p-6 transition duration-300 bg-gray-800 bg-opacity-50 shadow-lg rounded-xl backdrop-blur-sm hover:bg-opacity-70">
+                  <p className="text-[#b3b3b3] italic mb-4">
                     "{testimonial.quote}"
                   </p>
-                  <p className="text-purple-200 font-semibold">
+                  <p className="text-[#9c88ff] font-semibold">
                     {testimonial.author}
                   </p>
                 </div>
@@ -96,6 +96,6 @@ export default function TestimonialsSlider() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

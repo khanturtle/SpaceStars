@@ -12,7 +12,7 @@ export const Search = () => {
   const [value, setValue] = useState<string>('')
 
   const handleSearch = () => {
-    console.log(value)
+    // console.log(value)
   }
 
   return (
