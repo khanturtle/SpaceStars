@@ -80,15 +80,17 @@ public class SwipeController {
 
     @Operation(summary = "요청 수락하기")
     @PatchMapping("/agree")
-    public ResponseEntity<Void> agreeSwipe(@RequestHeader("UUID") String uuid) {
-        swipeService.agreeSwipe(uuid);
+    public ResponseEntity<Void> agreeSwipe(@RequestHeader("UUID") String uuid,
+                                           @RequestParam("fromMemberUuid") String fromMemberUuid) {
+        swipeService.agreeSwipe(uuid,fromMemberUuid);
         return new ResponseEntity<>(ResponseSuccess.SWIPE_AGREE_SUCCESS);
     }
 
     @Operation(summary = "요처 거절하기")
     @PatchMapping("/reject")
-    public ResponseEntity<Void> rejectSwipe(@RequestHeader("UUID") String uuid) {
-        swipeService.rejectSwipe(uuid);
+    public ResponseEntity<Void> rejectSwipe(@RequestHeader("UUID") String uuid,
+                                            @RequestParam("fromMemberUuid") String fromMemberUuid) {
+        swipeService.rejectSwipe(uuid,fromMemberUuid);
         return new ResponseEntity<>(ResponseSuccess.SWIPE_REJECT_SUCCESS);
     }
 

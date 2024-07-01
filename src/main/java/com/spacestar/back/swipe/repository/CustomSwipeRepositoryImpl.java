@@ -46,18 +46,18 @@ public class CustomSwipeRepositoryImpl implements CustomSwipeRepository {
 
     @Transactional
     @Override
-    public void agreeRequest(String uuid) {
+    public void agreeRequest(String uuid, String fromMemberUuid) {
         query.update(swipe)
-                .where(swipe.matchToMember.eq(uuid))
+                .where(swipe.matchToMember.eq(uuid).and(swipe.matchFromMember.eq(fromMemberUuid)))
                 .set(swipe.status, AGREE)
                 .execute();
     }
 
     @Transactional
     @Override
-    public void rejectRequest(String uuid) {
+    public void rejectRequest(String uuid, String fromMemberUuid) {
         query.update(swipe)
-                .where(swipe.matchToMember.eq(uuid))
+                .where(swipe.matchToMember.eq(uuid).and(swipe.matchFromMember.eq(fromMemberUuid)))
                 .set(swipe.status, REJECT)
                 .execute();
     }
