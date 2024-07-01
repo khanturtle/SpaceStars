@@ -2,6 +2,7 @@
 
 <div align= "center">
     <img src="https://capsule-render.vercel.app/api?type=waving&color=#b897ff&height=180&text=우주별%20:%20우리%20주변%20별별%20사람들&animation=&fontColor=000000&fontSize=60" />
+    우주별 : 우리 주변 별별 사람들 
     </div>
 <!--     <div style="text-align: left;">  -->
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">우주별 </h2>  
