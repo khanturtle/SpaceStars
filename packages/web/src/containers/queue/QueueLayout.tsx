@@ -1,24 +1,27 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
-import { useContext, useEffect, useReducer } from 'react'
-
-import { EventSourcePolyfill } from 'event-source-polyfill'
+import { useContext, useEffect, useReducer, useState } from 'react'
 
 import { Button } from '@packages/ui'
 
+import { enteredQueue, leftQueue } from '@/apis/actionQueue'
+import { getMbtiById } from '@/apis/getMbti'
+
 import { ModalContext } from '@/components/providers/modal-provider'
 import FormLayout from '@/components/form/formLayout'
+import { useToast } from '@/components/Toast/toast-provider'
+
+import { useSSEMatchingConnection } from '@/hooks/useSSEMatchingConnection'
+import { getQueueDataByUuid } from '@/lib/getQueueDataByClient'
 
 import QueueButton from './QueueButton'
 import QueueCardWrapper from './QueueCardWrapper'
 import QueueDescription from './QueueDescription'
 
 import styles from './queue.module.css'
-import { useSSEMatchingConnection } from '@/hooks/useSSEMatchingConnection'
-import { useToast } from '@/components/Toast/toast-provider'
-import { enteredQueue } from '@/apis/actionQueue'
 
 const QuitModal = () => {
   const { closeModal } = useContext(ModalContext)
@@ -26,9 +29,10 @@ const QuitModal = () => {
   const router = useRouter()
 
   /** 큐를 퇴장하고 페이지 이동 */
-  const handleClick = () => {
+  const handleClick = async () => {
     // 큐 퇴장
-
+    await leftQueue()
+    // 모달 닫기
     closeModal()
     router.replace('/dashboard/queue')
   }
@@ -49,7 +53,6 @@ const QuitModal = () => {
   )
 }
 
-// TODO: 여기서 SSE, 큐 연결
 export default function QueueLayout({
   myData,
   mbtiName,
@@ -61,38 +64,59 @@ export default function QueueLayout({
   connectedGame: string
   uuid: string
 }) {
+  // SSE 연결
+  const { eventSource, isConnected, showErrorModal, setShowErrorModal } =
+    useSSEMatchingConnection(uuid, connectedGame)
+
   // 매칭 완료면 true, 매칭 중이면 false
   const [isMatching, setIsMatching] = useReducer((state) => !state, false)
 
   const { openModal } = useContext(ModalContext)
+  const { showToast } = useToast()
+  const { data: session } = useSession()
+
+  const [matchUuid, setMatchUuid] = useState('lmn456')
+  const [matchData, setMatchData] = useState<any>()
+  const [matchMbti, setMatchMbti] = useState<string>('')
+
+  const router = useRouter()
 
   /** 큐를 취소하고 이전 페이지로 */
   const handleRestart = () => {
     openModal(<QuitModal />, { isClose: false })
   }
 
-  const { eventSource, isConnected, showErrorModal, setShowErrorModal } =
-    useSSEMatchingConnection(uuid, connectedGame)
-  const { showToast } = useToast()
-  const router = useRouter()
-
+  // 오류 모달 표시
   useEffect(() => {
-    // 오류 모달 표시
     if (showErrorModal) {
       showToast({
         message: '서버 에러가 발생했습니다. 잠시후 다시 시도해주세요.',
         type: 'error',
         position: 'bottom',
       })
+      leftQueue()
       router.replace('/dashboard/queue')
     }
   }, [showErrorModal])
 
   useEffect(() => {
-    if (eventSource) {
-      const enteredGame = async () => {
-        await enteredQueue(connectedGame)
+    const actionQueue = async () => {
+      const res = await enteredQueue(connectedGame)
+      if (!res) {
+        showToast({
+          message: '서버 에러가 발생했습니다. 잠시후 다시 시도해주세요.',
+          type: 'error',
+          position: 'bottom',
+        })
+        router.replace('/dashboard/queue')
       }
+    }
+    actionQueue()
+  }, [])
+
+  useEffect(() => {
+    if (eventSource) {
+      const enteredGame = async () => {}
       enteredGame()
 
       return () => {
@@ -102,6 +126,34 @@ export default function QueueLayout({
     return undefined
   }, [eventSource])
 
+  /** 5초 뒤 전환 */
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setIsMatching()
+  //   }, 5000)
+
+  //   return () => clearInterval(interval)
+  // }, [])
+
+  /** 상대방 정보 */
+  useEffect(() => {
+    if (!session) return
+    const fetchData = async () => {
+      const token = session?.user?.data.accessToken
+
+      const res = await getQueueDataByUuid(matchUuid, token)
+      if (res) {
+        setMatchData(res)
+      }
+      if (res.profileInfo?.mbtiId) {
+        const mbti = await getMbtiById(res.profileInfo.mbtiId)
+        setMatchMbti(mbti?.mbtiName ?? '')
+      }
+    }
+
+    fetchData()
+  }, [isMatching])
+
   return (
     <div className={styles.layout}>
       <QueueCardWrapper>
@@ -110,8 +162,7 @@ export default function QueueLayout({
 
         {/* 상대방 카드 */}
         {isMatching ? (
-          // TODO: 잡힌 상대방 정보
-          <QueueCardWrapper.FrontCard data={null} mbtiName={''} />
+          <QueueCardWrapper.FrontCard data={matchData} mbtiName={matchMbti} />
         ) : (
           <QueueCardWrapper.MatchingCard />
         )}

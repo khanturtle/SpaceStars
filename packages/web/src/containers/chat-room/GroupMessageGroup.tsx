@@ -9,9 +9,9 @@ import { getProfileByUuid } from '@/apis/getAuth'
 
 import { ChatMessageType } from '@/types/ChatType'
 import { getConvertToKoreanHM } from '@/hooks/convertToLocaleTime'
+import { defaultImage } from '@/store/defaultState'
 
 import styles from './chat.module.css'
-import { defaultImage } from '@/store/defaultState'
 
 const UserProfile = ({ uuid }: { uuid: string }) => {
   const { data: session } = useSession()
@@ -35,13 +35,13 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
   return (
     <div className={styles.profile}>
       <Image
-        className="rounded-full"
+        className="rounded-full mr-1"
         src={profileImage}
         alt={uuid}
         width={36}
         height={36}
       />
-      <p>{nickname}</p>
+      <p className="text-[color:var(--text)]">{nickname}</p>
     </div>
   )
 }

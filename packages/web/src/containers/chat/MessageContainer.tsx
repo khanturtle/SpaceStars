@@ -2,9 +2,9 @@ import FriendsWrapper from '@/components/Friends/FriendsWrapper'
 import { friendsWithBasicDataType } from '@/lib/getFriendsData'
 
 import MessageItem from './MessageItem'
+import GroupMessageItem from './GroupMessageItem'
 
 import styles from './chat.module.css'
-import GroupMessageItem from './GroupMessageItem'
 
 const MessageWrapper = ({
   title,
@@ -17,7 +17,7 @@ const MessageWrapper = ({
 }) => {
   return (
     <section className="mb-9">
-      <h3 className="text-[#161616] text-lg not-italic font-medium leading-[normal] mb-6">
+      <h3 className="text-[color:var(--text-title)] text-lg not-italic font-medium leading-[normal] mb-6">
         {title}
       </h3>
 
@@ -41,7 +41,7 @@ const GroupMessageWrapper = ({
 }) => {
   return (
     <section className="mb-9">
-      <h3 className="text-[#161616] text-lg not-italic font-medium leading-[normal] mb-6">
+      <h3 className="text-[color:var(--text-title)] text-lg not-italic font-medium leading-[normal] mb-6">
         {title}
       </h3>
 
@@ -66,18 +66,24 @@ export default function MessageContainer({
   token: string
 }) {
   return (
-    <div className={styles['messages-container']}>
-      <FriendsWrapper friendsList={friendsList} />
-      <MessageWrapper
-        title="Messages"
-        chatRoomList={oneToOneChatRooms}
-        token={token}
-      />
-      <GroupMessageWrapper
-        title="Group Messages"
-        roomList={groupChatRooms}
-        token={token}
-      />
+    <div className={`${styles['messages-container']} message-container`}>
+      {friendsList.length > 0 && <FriendsWrapper friendsList={friendsList} />}
+
+      {oneToOneChatRooms.length > 0 && (
+        <MessageWrapper
+          title="Messages"
+          chatRoomList={oneToOneChatRooms}
+          token={token}
+        />
+      )}
+
+      {groupChatRooms.length > 0 && (
+        <GroupMessageWrapper
+          title="Group Messages"
+          roomList={groupChatRooms}
+          token={token}
+        />
+      )}
     </div>
   )
 }

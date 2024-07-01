@@ -40,7 +40,7 @@ const InputItem = ({
       onSubmit={handleSubmit}
     >
       <input
-        className="input-reset flex-1 bg-[color:var(--White-50,#fff)] text-[#161616] text-sm not-italic font-normal leading-[normal] px-5 py-2 chat-placeholder"
+        className="input-reset flex-1 bg-transparent text-[color:var(--text)] text-sm not-italic font-normal leading-[normal] px-5 py-2 chat-placeholder"
         type="text"
         placeholder="Write a message..."
         value={chat}
@@ -73,7 +73,7 @@ export default function ChatInputBox({
   UUID: string
 }) {
   return (
-    <div className="bg-[color:var(--White-50,#fff)] w-full h-[90px] flex items-center relative px-[50px] py-4">
+    <div className="bg-[color:var(--nav-color)] w-full h-[90px] flex items-center relative px-[50px] py-4">
       {children}
 
       <InputItem roomNumber={roomNumber} UUID={UUID} />

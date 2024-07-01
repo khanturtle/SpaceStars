@@ -11,7 +11,7 @@ export default function TeamListWrapper({
 }) {
   const viewType = searchParams.view === 'list' ? 'list' : 'card'
   return (
-    <TeamBox className="pt-[40px] flex">
+    <TeamBox className="pt-[40px] overflow-auto">
       <TeamBox.TeamCardList items={Teams} type={viewType} />
     </TeamBox>
   )

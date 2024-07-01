@@ -37,7 +37,7 @@ export default function ChatLogList({
 
   return (
     <section
-      className="flex flex-col w-full h-[calc(100%_-_90px)] overflow-y-scroll bg-[#f8f8f9] px-[50px] py-[24px]"
+      className="flex flex-col w-full h-[calc(100%_-_90px)] overflow-y-scroll px-[50px] py-[24px]"
       ref={chatLogRef}
     >
       {groupedMessages.map((messages, index) => (

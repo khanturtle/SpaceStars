@@ -14,6 +14,7 @@ import { LoginButton, ThemeButton } from './NavbarItem'
 import Gutter from '../Gutter'
 import SearchBox from '../search/SearchBox'
 import { Alarm } from './Alarm'
+import TitleHeader from './TitleHeader'
 
 const NavRightBox = ({ children }: { children?: React.ReactNode }) => {
   return <div className="flex max-w-[328px] pl-[50px]">{children}</div>
@@ -27,6 +28,7 @@ export default function Navbar({
   profileImageUrl: string | null | undefined
 }) {
   const pathName = usePathname()
+  const isChatPath = pathName.startsWith('/dashboard/chat')
   const noSearchBoxPage = [
     '/dashboard/swipe',
     '/dashboard/queue',
@@ -34,8 +36,8 @@ export default function Navbar({
   ]
 
   return (
-    <header className="bg-[color:var(--nav-color)] border-b-[color:var(--nav-border)] border-b border-solid">
-      <nav className="h-[100px] w-full flex flex-row items-center sticky z-[1000] px-[54px] py-5  left-0 top-0">
+    <header className="h-[100px] nav sticky top-0 z-[1000]">
+      <nav className="w-full flex flex-row items-center sticky px-[54px] py-5  left-0 top-0">
         {/* Left */}
         <div className="w-[210px]">
           <Link
@@ -50,9 +52,44 @@ export default function Navbar({
           </Link>
         </div>
 
-        {!noSearchBoxPage.includes(pathName) && <SearchBox />}
+        {!noSearchBoxPage.includes(pathName) &&
+          !isChatPath &&
+          !pathName.includes('friends-list') && (
+            <>
+              <SearchBox />
+              <Gutter className="flex-1" />
+            </>
+          )}
 
-        <Gutter className="flex-1" />
+        {isChatPath && (
+          <>
+            <TitleHeader title="Chat" type="CHAT" />
+            <Gutter className="flex-1" />
+          </>
+        )}
+
+        {pathName.includes('swipe') && (
+          <TitleHeader
+            title="SWIPE"
+            description="게임을 같이 할 나의 친구를 찾아드려요!"
+            type="DESC"
+          />
+        )}
+
+        {pathName.includes('queue') && (
+          <TitleHeader
+            title="QUEUE"
+            description="게임을 같이 할 나의 친구를 찾아드려요!"
+            type="DESC"
+          />
+        )}
+
+        {pathName.includes('friends-list') && (
+          <>
+            <TitleHeader title="Friends" type="CHAT" />
+            <Gutter className="flex-1" />
+          </>
+        )}
 
         {/* Right */}
         <NavRightBox>

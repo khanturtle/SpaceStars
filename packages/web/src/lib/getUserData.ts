@@ -11,7 +11,7 @@ export async function getBasicUserData(uuid: string) {
     Promise.all([profileImageData, authProfileData]).then(
       ([profileImage, authProfile]) => ({
         profileImageUrl: profileImage?.result.profileImageUrl ?? defaultImage,
-        nickname: authProfile?.result.nickname ?? '',
+        nickname: authProfile?.result?.nickname ?? '',
       }),
     ),
   ])

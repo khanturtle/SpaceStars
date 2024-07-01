@@ -39,11 +39,25 @@ export const SubButton = ({
 }) => {
   const router = useRouter()
 
+  const isActive =
+    queryKey &&
+    queryValue &&
+    searchParams &&
+    searchParams[queryKey] === queryValue
+
   const handleQueryUpdate = () => {
     if (!queryKey || !queryValue) return
 
     const currentParams = new URLSearchParams(searchParams)
-    currentParams.set(queryKey, queryValue)
+
+    if (isActive) {
+      // 쿼리 파라미터 삭제
+      currentParams.delete(queryKey)
+    } else {
+      // 새로운 쿼리 파라미터 추가
+      currentParams.set(queryKey, queryValue)
+    }
+
     router.push(`?${currentParams.toString()}`)
   }
 
@@ -51,10 +65,10 @@ export const SubButton = ({
     <button
       type="button"
       onClick={onClick ?? handleQueryUpdate}
-      className={styles.button}
+      className={`${styles['icon-button']} ${isActive && styles.active}`}
     >
       {icon && icon}
-      {name}
+      {name && <span className={styles['icon-button-name']}>{name}</span>}
     </button>
   )
 }
@@ -74,24 +88,22 @@ export const ViewToggle = ({
   }
 
   return (
-    <div className={styles.button}>
+    <div className={styles['icon-buttons']}>
       <button
+        className={styles['icon-button']}
         type="button"
         aria-label="Card View"
         onClick={() => handleToggle('card')}
       >
-        <i>
-          <ViewCardIcon fill={view ? '#009580' : '#84818A'} />
-        </i>
+        <ViewCardIcon fill={view ? '#009580' : '#84818A'} />
       </button>
       <button
+        className={styles['icon-button']}
         type="button"
         aria-label="List View"
         onClick={() => handleToggle('list')}
       >
-        <i>
-          <ViewListIcon fill={view ? '#84818A' : '#009580'} />
-        </i>
+        <ViewListIcon fill={view ? '#84818A' : '#009580'} />
       </button>
     </div>
   )

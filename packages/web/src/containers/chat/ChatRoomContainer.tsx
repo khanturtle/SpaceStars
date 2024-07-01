@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { EmojiIcon, FileIcon } from '@packages/ui'
 
@@ -8,10 +8,11 @@ import { getReadMessage, getUnreadMessage } from '@/apis/getPrevChatByClient'
 import { useWebSocket } from '@/components/providers/socket-provider'
 import { ChatMessageType } from '@/types/ChatType'
 
-import styles from './chat.module.css'
-import ChatInputBox from './ChatInputBox'
-
 import ChatLogList from '../chat-room/ChatLogList'
+import ChatInputBox from './ChatInputBox'
+import ChatHeader from './ChatHeader'
+
+import styles from './chat.module.css'
 
 export default function ChatRoomContainer({
   roomNumber,
@@ -79,10 +80,9 @@ export default function ChatRoomContainer({
     return undefined
   }, [stompClient])
 
-
   return (
     <div className={styles.chatroom}>
-      {/* <div className={styles.header}>ㅇㅅㅇ</div> */}
+      <ChatHeader roomNumber={roomNumber} token={token} UUID={UUID} />
 
       <ChatLogList msgLog={msgLog} UUID={UUID} />
 
