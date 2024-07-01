@@ -5,7 +5,6 @@
     <div style="text-align: left;"> 
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">  </h2>  
     <div style="font-weight: 700; font-size: 15px; text-align: left; color: #282d33;"> 우리 주변 별별 사람들의 줄임말로 게임 성향에 맞는 게임 메이트 추천 및 게임 소통 커뮤니티입니다. </div> 
-
     </div>
     <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🛠️ Tech Stacks </h2> <br> 
@@ -36,4 +35,5 @@
     <div style="text-align: left;">  </div>  <br> 
     <div style="text-align: left;">  </div> 
     </div>
+    
     
