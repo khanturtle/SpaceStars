@@ -130,7 +130,7 @@ export default function GroupMessageItem({
             {recentMessage?.lastChatMessage ?? ''}
           </p>
           {unReadCount > 0 && (
-            <div className="w-[23px] h-6 bg-[color:var(----danger)] flex items-center justify-center rounded-lg">
+            <div className="w-[23px] h-6 bg-[color:var(--danger)] flex items-center justify-center rounded-lg">
               <p className="text-[color:var(--White-50,#fff)] text-xs not-italic font-semibold leading-[normal]">
                 {unReadCount}
               </p>
