@@ -247,3 +247,6 @@ select:focus {
     @apply border-border;
   }
 }
+.d {
+  @apply text-[#b779ff] text-sm not-italic font-semibold leading-[normal];
+}

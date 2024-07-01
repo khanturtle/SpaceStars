@@ -1,14 +1,14 @@
-import ApproveButton from './ApproveButton';
-import RejectButton from './RejectButton';
+import ApproveButton from './ApproveButton'
+import RejectButton from './RejectButton'
 
 interface AlarmListItemProps {
-  senderProfileImage: string;
-  senderNickname: string;
-  alarmType: string;
-  content: string;
-  token: string;
-  senderUuid: string;
-  checkStatus: string;
+  senderProfileImage: string
+  senderNickname: string
+  alarmType: string
+  content: string
+  token: string
+  senderUuid: string
+  checkStatus: string
   alarmId: string
 }
 
@@ -20,14 +20,14 @@ const AlarmListItem = ({
   token,
   senderUuid,
   checkStatus,
-  alarmId
+  alarmId,
 }: AlarmListItemProps) => {
-  const isUnread = checkStatus === 'UNREAD';
+  const isUnread = checkStatus === 'UNREAD'
 
   const handleAction = () => {
-    console.log('Action completed');
+    // console.log('Action completed');
     // 추가적인 액션을 수행할 수 있습니다.
-  };
+  }
 
   return (
     <div
@@ -37,34 +37,43 @@ const AlarmListItem = ({
       style={{ width: '550px', maxWidth: '600px' }}
     >
       <div className="flex items-center">
-        <img src={senderProfileImage} alt="Profile" className="w-12 h-12 rounded-full mr-4" />
+        <img
+          src={senderProfileImage}
+          alt="Profile"
+          className="w-12 h-12 mr-4 rounded-full"
+        />
         <div className={isUnread ? '' : 'text-gray-500'}>
           <p className="font-semibold">
-            {senderNickname}님이 <span className={isUnread ? 'text-purple-500' : 'text-gray-500'}> {alarmType}</span>을 보냈습니다.
+            {senderNickname}님이{' '}
+            <span className={isUnread ? 'text-purple-500' : 'text-gray-500'}>
+              {' '}
+              {alarmType}
+            </span>
+            을 보냈습니다.
           </p>
           {alarmType !== '친구요청' && <p>{content}</p>}
         </div>
       </div>
       <div className="flex space-x-2">
-        <ApproveButton 
-          onClick={handleAction} 
-          token={token} 
-          friendUuid={senderUuid} 
-          checkStatus={checkStatus} 
+        <ApproveButton
+          onClick={handleAction}
+          token={token}
+          friendUuid={senderUuid}
+          checkStatus={checkStatus}
           alarmId={alarmId}
           alarmType={alarmType}
         />
-        <RejectButton 
-          onClick={handleAction} 
-          token={token} 
-          friendUuid={senderUuid} 
-          checkStatus={checkStatus} 
+        <RejectButton
+          onClick={handleAction}
+          token={token}
+          friendUuid={senderUuid}
+          checkStatus={checkStatus}
           alarmId={alarmId}
           alarmType={alarmType}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AlarmListItem;
+export default AlarmListItem

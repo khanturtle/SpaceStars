@@ -149,15 +149,18 @@ const TeamCardItem = ({
       return
     }
 
-    // TODO: 내가 속한 방인지 확인하는 API 요청
-    const res = await getIsEnteredRoom(session?.user?.data.accessToken, item.roomNumber)
-    console.log(res)
-    // const isJoined = false
-    // 내가 속한 방이면, 바로 참가
-    // if (isJoined) {
-    //   router.push(`/dashboard/chat/group/${item.roomNumber}`)
-    //   return
-    // }
+    const res = await getIsEnteredRoom(
+      session?.user?.data.accessToken,
+      item.roomNumber,
+    )
+    if (res) {
+      const isJoined = res.memberStatus
+      // 내가 속한 방이면, 바로 참가
+      if (isJoined) {
+        router.push(`/dashboard/chat/group/${item.roomNumber}`)
+        return
+      }
+    }
 
     // 내가 속한 방이 아니면, 참가 시도
     // 비번 있으면, 입력 후 방 참가
@@ -198,12 +201,12 @@ const TeamCardItem = ({
     }
     // 비번이 없으면, 채팅방 참가
     else {
-      // const res = await joinTeam(item.roomNumber)
-      // if (res.result === null) {
-      //   handleToast(res.message ?? '다시 시도해주세요', 'error')
-      // } else {
-      //   router.push(`/dashboard/chat/group/${item.roomNumber}`)
-      // }
+      const res = await joinTeam(item.roomNumber)
+      if (res.result === null) {
+        handleToast(res.message ?? '다시 시도해주세요', 'error')
+      } else {
+        router.push(`/dashboard/chat/group/${item.roomNumber}`)
+      }
     }
   }
 
@@ -244,7 +247,9 @@ const TeamCardItem = ({
             onClick={handleJoin}
             isLocked={item.isPassword}
             isFinished={item.isFinished}
-            iconFill="var(--button-secondary-text)"
+            iconFill={
+              item.isFinished ? '#a8a8a8' : 'var(--button-secondary-text)'
+            }
             className={styles['join-button']}
           />
         </div>
@@ -277,7 +282,9 @@ const TeamCardItem = ({
             onClick={handleJoin}
             isLocked={item.isPassword}
             isFinished={item.isFinished}
-            iconFill="var(--button-secondary-text)"
+            iconFill={
+              item.isFinished ? '#a8a8a8' : 'var(--button-secondary-text)'
+            }
             className={styles['join-button']}
           />
         </div>

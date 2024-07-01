@@ -36,7 +36,7 @@ export default function SelectBoxContainer({
         <SubSelectBox.SubButton
           name="모집중"
           queryKey="isFinished"
-          queryValue="true"
+          queryValue="false"
           searchParams={searchParams}
         />
 

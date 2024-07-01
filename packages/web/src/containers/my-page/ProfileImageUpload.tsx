@@ -17,7 +17,7 @@ export default function ProfileImageUpload() {
     // console.log(file)
     if (selectedFile) {
       const s3ImageUrl = await uploadToS3(selectedFile, selectedFile.name)
-      console.log('S3 Image URL:', s3ImageUrl)
+      // console.log('S3 Image URL:', s3ImageUrl)
       return s3ImageUrl
     }
   }
@@ -41,7 +41,7 @@ export default function ProfileImageUpload() {
   return (
     <div>
       <input type="file" onChange={handleFileChange} />
-      <button onClick={handleClick}>프로필 추가88</button>
+      <button onClick={handleClick}>프로필 추가</button>
     </div>
   )
 }

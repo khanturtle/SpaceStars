@@ -1,0 +1,111 @@
+/* card */
+.queue-cards {
+  display: flex;
+  justify-content: center;
+  gap: 250px;
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+.matching-card {
+  display: flex;
+  width: 250px;
+  height: 400px;
+  padding: 172px 23px;
+  flex-direction: column;
+  align-items: center;
+  gap: 21px;
+  flex-shrink: 0;
+
+  border-radius: 1rem;
+  border: 1px solid #d6b8fb;
+  background: rgba(125, 18, 255, 0.4);
+  backdrop-filter: saturate(180%) blur(8px);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.matching-card:hover {
+  background: rgba(125, 18, 255, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(214, 184, 251, 0.5);
+}
+
+.matching-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.matching-text {
+  color: var(--White-50, #fff);
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  transition: all 0.3s ease;
+}
+.matching-card:hover .matching-text {
+  transform: scale(1.1);
+}
+/* card */
+
+/* Games */
+.outerContainer {
+  display: inline-block;
+  max-width: 100%;
+  background-color: var(--bg-primary);
+  border-radius: 10px;
+  padding: 10px;
+  transition: all 0.3s ease;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  grid-template-rows: repeat(2, auto);
+  gap: 20px;
+}
+
+.gameButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.gameButton:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.gameIcon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+
+.gameName {
+  font-size: 12px;
+  text-align: center;
+  word-break: break-word;
+  color: var(--text-primary);
+}

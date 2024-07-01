@@ -165,7 +165,7 @@ export default function AdditionalInfoForm() {
   /** 닉네임 중복검사 */
   const handleCheckNickname = async () => {
     const isNicknameAvailable = await checkNickname(nickname)
-    console.log(isNicknameAvailable)
+    // console.log(isNicknameAvailable)
 
     if (!isNicknameAvailable) {
       showToast('다시 시도해주세요.', 'error')

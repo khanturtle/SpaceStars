@@ -1,120 +1,116 @@
-import { getServerSession } from 'next-auth'
+import Image from 'next/image'
 
-import { options } from '@/app/api/auth/[...nextauth]/options'
+import { getExp, getLevel, getLevelInfo } from '@/apis/getLevel'
+import { getMbtiById } from '@/apis/getMbti'
+import ProfileButton from '@/containers/my-page/profileButton'
 
+import { fetchPlayGames } from '@/lib/fetchGamesData'
 import { getAllProfileData } from '@/lib/getAllProfileData'
 
 export default async function page() {
-  const session = await getServerSession(options)
-  const { accessToken } = session?.user?.data || {}
-
   const allProfileData = await getAllProfileData()
-
   const data = allProfileData
 
-  // TODO:
+  const level = (await getLevel()) ?? 0
+  const exp = (await getExp()) ?? 0
+  const levelInfo = (await getLevelInfo(level.level)) ?? null
+
+  const expWidth = (exp.levelExp / levelInfo?.levelTotalExp) * 100
+
+  const mbtiData =
+    (await getMbtiById(data.profileInfo.mbtiId as number)) ?? null
+
+  const gameData = await fetchPlayGames(data.playGames ?? [])
+
   return (
-    <section className="flex-1 px-[50px] py-[42px] h-full overflow-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="relative py-4">
+    <section className="flex-1">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="relative h-[33vh]">
           <img
-            src="https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/BackGround/Swimming-Kirby.png" // Replace with your banner image URL
+            src="https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/BackGround/Swimming-Kirby.png"
             alt="Banner"
-            className="absolute inset-0 w-full h-full object-cover opacity-50"
+            className="absolute inset-0 object-cover w-full h-full opacity-50"
           />
+          <div className="absolute bottom-[10px] flex flex-col w-full px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center mb-4 space-x-6">
+              <ProfileButton image={data?.mainProfileImage ?? ''} />
 
-          {/* Profile Section */}
-
-          <div
-            className="relative z-10 flex items-center justify-between py-4 border-b border-gray-700
-          style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)' }}"
-          >
-            <div className="flex items-center space-x-6">
-              <img
-                src={data.mainProfileImage}
-                alt="Profile"
-                className="w-[200px] h-[200px] rounded-[15px] ml-4"
-              />
-              {/* badge */}
               <div className="flex-row">
                 <div className="relative flex">
-                  <span className="absolute bottom-1 left-[0px] bg-pink-400 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  <span className="px-2 py-1 mr-2 text-xs font-bold text-white bg-pink-400 rounded-full">
                     {data.authProfile.gender}
                   </span>
-                  <span className="absolute bottom-1 left-[70px] bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    {data.profileInfo.mbtiId}
+                  <span className="px-2 py-1 mr-2 text-xs font-bold text-white bg-pink-500 rounded-full">
+                    {mbtiData?.mbtiName}
                   </span>
-                  <span className="absolute bottom-1 left-[100px] bg-pink-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">
+                  <span className="px-2 py-1 text-xs font-bold text-white bg-pink-600 rounded-full whitespace-nowrap">
                     {data.authProfile.birth}
                   </span>
                 </div>
-
                 <div>
                   <h2 className="text-2xl font-bold">
                     {data.authProfile.nickname}
                   </h2>
+
                   <p className="text-sm text-gray-400">
                     {data.profileInfo.introduction}
                   </p>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Level Indicator */}
-        <div className="mt-6">
-          <div className="flex items-center justify-between">
-            <p className="text-sm">LV 25</p>
-            <p className="text-sm">9 / 20</p>
-          </div>
-          <div className="w-full bg-gray-700 rounded-full h-2.5 mt-1">
-            <div
-              className="bg-pink-600 h-2.5 rounded-full"
-              style={{ width: '45%' }}
-            ></div>
-          </div>
-        </div>
-
-        {/* Game List */}
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {data.playGames?.map((game, index) => (
-            <>
-              {/* Game 1 */}
-              <div className="bg-gray-800 rounded-lg p-4 flex items-center space-x-4">
-                <img
-                  src="/league-image-url"
-                  alt="League of Legends"
-                  className="w-1/3 h-40 object-cover rounded-lg"
-                />
-                <div className="w-2/3">
-                  <p className="text-lg font-semibold">{game.gameId}</p>
-                  <p className="mt-2">서버 - {game.serverId}</p>
-                  <p className="text-sm text-gray-400">티어 - {game.tierId}</p>
-                </div>
+            <div className="p-4 bg-black bg-opacity-50 rounded-lg">
+              <div className="flex items-center justify-between text-white">
+                <p className="text-sm">LV {level.level}</p>
+                <p className="text-sm">
+                  {exp.levelExp} / {levelInfo?.levelTotalExp ?? 0}
+                </p>
               </div>
-            </>
-          ))}
+              <div className="w-full bg-gray-700 rounded-full h-2.5 mt-1">
+                <div
+                  className="bg-pink-600 h-2.5 rounded-full"
+                  style={{ width: expWidth }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div className="p-[32px] grid grid-cols-1 gap-6 mt-6 lg:grid-cols-2">
+        {gameData?.map((game, index) => (
+          <div key={index}>
+            <div className="w-[398px] h-[103px] flex items-center p-4 space-x-4 bg-gray-800 border rounded-[0px_12px_12px_12px] border-solid border-[rgba(255,250,243,0.5)] relative">
+              <Image
+                src={game?.gameInfo?.gameImage ?? ''}
+                alt={game?.gameInfo?.gameName ?? ''}
+                fill
+                className="object-cover w-1/3 h-40 rounded-lg"
+              />
+            </div>
+
+            <div className="w-2/3 mt-[4px] ml-[4px]">
+              <p className="text-lg font-semibold text-[color:var(--text-title)]">
+                {game.gameInfo?.gameNameKor}
+              </p>
+              <div className="flex gap-[8px]">
+                {game.optionInfo.map((info, index) => (
+                  <div key={index} className="flex">
+                    <img
+                      src={info?.image ?? ''}
+                      alt={info?.id ?? ''}
+                      className="w-[20px] h-[20px] mr-1"
+                    />
+                    <p className="text-[#b779ff] text-sm not-italic font-semibold leading-[normal]">
+                      {info?.nameKor ?? ''}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   )
 }
-  /*
-{
- </div>
-    <div>
-      {JSON.stringify(allProfileData)}
-      <hr />
-      <div>
-        프로필 추가 테스트
-        <ProfileImageUpload />
-      </div>
-
-      <div>
-        회원 찾기 테스트
-        <SearchUserContainer accessToken={accessToken} />
-      </div>
-}
- */

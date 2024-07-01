@@ -119,6 +119,14 @@ body {
 
   --button-secondary: #fff;
   --button-secondary-text: #7d12ff;
+
+  --bg-primary: #fff;
+  --bg-secondary: #ffffff;
+  --border-color: #e0e0e0;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --button-hover: #f0f0f0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 body[data-theme='dark'] {
@@ -171,4 +179,12 @@ body[data-theme='dark'] {
 
   --button-secondary: #7d12ff;
   --button-secondary-text: #fff;
+
+  --bg-primary: rgba(26, 26, 26, 0.5);
+  --bg-secondary: #2c2c2c;
+  --border-color: #444444;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --button-hover: #3a3a3a;
+  --shadow-color: rgba(255, 255, 255, 0.1);
 }
