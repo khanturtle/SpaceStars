@@ -1,0 +1,123 @@
+/* card */
+.queue-cards {
+  display: flex;
+  justify-content: center;
+  gap: 250px;
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+.matching-card {
+  display: flex;
+  width: 250px;
+  height: 400px;
+  padding: 172px 23px;
+  flex-direction: column;
+  align-items: center;
+  gap: 21px;
+  flex-shrink: 0;
+
+  border-radius: 1rem;
+  border: 1px solid #d6b8fb;
+  background: rgba(125, 18, 255, 0.4);
+  backdrop-filter: saturate(180%) blur(8px);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.matching-card:hover {
+  background: rgba(125, 18, 255, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(214, 184, 251, 0.5);
+}
+
+.matching-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.matching-text {
+  color: var(--White-50, #fff);
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  transition: all 0.3s ease;
+}
+.matching-card:hover .matching-text {
+  transform: scale(1.1);
+}
+/* card */
+
+/* Games */
+.container {
+  width: 100%;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.scrollContainer {
+  display: flex;
+  padding: 10px 0;
+  gap: 20px;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+
+.gameButton {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  width: 120px;
+  height: 120px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.gameButton:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.gameIcon {
+  width: 50px; /* 아이콘 크기 조정 */
+  height: 50px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.gameName {
+  font-size: 0.9rem;
+  text-align: center;
+  color: white;
+  font-weight: 500;
+}
