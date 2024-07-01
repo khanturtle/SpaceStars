@@ -18,14 +18,14 @@ export default function UserProfile({
           <img
             src="https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/BackGround/Swimming-Kirby.png"
             alt="Banner"
-            className="absolute inset-0 w-full h-full object-cover opacity-50"
+            className="absolute inset-0 object-cover w-full h-full opacity-50"
           />
           <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center space-x-6 mb-4">
+            <div className="flex items-center mb-4 space-x-6">
               <img
                 src={data.mainProfileImage}
                 alt="Profile"
-                className="w-20 h-20 rounded-full object-cover border-2 border-white"
+                className="object-cover w-20 h-20 border-2 border-white rounded-full"
               />
               <div>
                 <h2 className="text-2xl font-bold text-[color:var(--text-title)]">
@@ -37,7 +37,7 @@ export default function UserProfile({
               </div>
             </div>
 
-            <div className="bg-black bg-opacity-50 p-4 rounded-lg">
+            <div className="p-4 bg-black bg-opacity-50 rounded-lg">
               <div className="flex items-center justify-between text-white">
                 <p className="text-sm">LV {level}</p>
                 <p className="text-sm">

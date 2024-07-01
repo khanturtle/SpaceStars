@@ -1,34 +1,39 @@
-import { getServerSession } from 'next-auth'
-
-import { options } from '@/app/api/auth/[...nextauth]/options'
-
+import { getExp, getLevel, getLevelInfo } from '@/apis/getLevel'
+import { getMbtiById } from '@/apis/getMbti'
 import { getAllProfileData } from '@/lib/getAllProfileData'
 
 export default async function page() {
-  const session = await getServerSession(options)
-  const { accessToken } = session?.user?.data || {}
-
   const allProfileData = await getAllProfileData()
-
   const data = allProfileData
 
-  // TODO:
+  const level = (await getLevel()) ?? 0
+  const exp = (await getExp()) ?? 0
+  const levelInfo = (await getLevelInfo(level.level)) ?? null
+
+  const expWidth = (exp.levelExp / levelInfo?.levelTotalExp) * 100
+
+  const mbtiData =
+    (await getMbtiById(data.profileInfo.mbtiId as number)) ?? null
+
   return (
     <section className="flex-1 px-[50px] py-[42px] h-full overflow-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header Section */}
-        <div className="relative py-4">
+        <div className="relative">
           <img
-            src="https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/BackGround/Swimming-Kirby.png" // Replace with your banner image URL
+            src="https://space-star-bucket.s3.ap-northeast-2.amazonaws.com/BackGround/Swimming-Kirby.png"
             alt="Banner"
-            className="absolute inset-0 w-full h-full object-cover opacity-50"
+            className="inset-0 object-cover w-full h-full opacity-50 "
           />
 
           {/* Profile Section */}
-
           <div
-            className="relative z-10 flex items-center justify-between py-4 border-b border-gray-700
-          style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)' }}"
+            className="relative z-10 flex items-center justify-between py-4 "
+            style={{
+              position: 'absolute',
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }}
           >
             <div className="flex items-center space-x-6">
               <img
@@ -43,7 +48,7 @@ export default async function page() {
                     {data.authProfile.gender}
                   </span>
                   <span className="absolute bottom-1 left-[70px] bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    {data.profileInfo.mbtiId}
+                    {mbtiData?.mbtiName}
                   </span>
                   <span className="absolute bottom-1 left-[100px] bg-pink-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">
                     {data.authProfile.birth}
@@ -65,28 +70,32 @@ export default async function page() {
 
         {/* Level Indicator */}
         <div className="mt-6">
-          <div className="flex items-center justify-between">
-            <p className="text-sm">LV 25</p>
-            <p className="text-sm">9 / 20</p>
+          <div className="flex items-center justify-between text-[color:var(--text-title)]">
+            <p className="text-sm">LV {level.level}</p>
+            <p className="text-sm">
+              {exp.levelExp} / {levelInfo?.levelTotalExp ?? 0}
+            </p>
           </div>
           <div className="w-full bg-gray-700 rounded-full h-2.5 mt-1">
             <div
               className="bg-pink-600 h-2.5 rounded-full"
-              style={{ width: '45%' }}
+              style={{ width: expWidth }}
             ></div>
           </div>
         </div>
 
         {/* Game List */}
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 mt-6 lg:grid-cols-2">
           {data.playGames?.map((game, index) => (
             <>
-              {/* Game 1 */}
-              <div className="bg-gray-800 rounded-lg p-4 flex items-center space-x-4">
+              <div
+                className="flex items-center p-4 space-x-4 bg-gray-800 rounded-lg"
+                key={index}
+              >
                 <img
                   src="/league-image-url"
                   alt="League of Legends"
-                  className="w-1/3 h-40 object-cover rounded-lg"
+                  className="object-cover w-1/3 h-40 rounded-lg"
                 />
                 <div className="w-2/3">
                   <p className="text-lg font-semibold">{game.gameId}</p>
@@ -101,20 +110,10 @@ export default async function page() {
     </section>
   )
 }
-  /*
-{
- </div>
-    <div>
-      {JSON.stringify(allProfileData)}
-      <hr />
+/*
       <div>
         프로필 추가 테스트
         <ProfileImageUpload />
       </div>
 
-      <div>
-        회원 찾기 테스트
-        <SearchUserContainer accessToken={accessToken} />
-      </div>
-}
  */
