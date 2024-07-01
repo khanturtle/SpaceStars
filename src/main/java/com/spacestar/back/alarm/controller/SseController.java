@@ -30,14 +30,14 @@ public class SseController {
 
 	private final AlarmServiceImpl alarmService;
 	@GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://localhost:3000", "https://spacestars.kr", "https://dev.spacestars.kr"})
 	@Operation(summary = "실시간 알림 SSE 입장")
 	public Flux<Message> connectSse(@RequestHeader("UUID") String uuid) {
 		return alarmService.connectToSse(uuid);
 	}
 
 	@DeleteMapping
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://localhost:3000", "https://spacestars.kr", "https://dev.spacestars.kr"})
 	@Operation(summary = "SSE 연결 종료")
 	public ResponseEntity<Void> disconnectSse(@RequestHeader("UUID") String uuid){
 
