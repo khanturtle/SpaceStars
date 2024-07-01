@@ -41,6 +41,7 @@ export default async function page() {
                 alt="Profile"
                 className="w-[200px] h-[200px] rounded-[15px] ml-4"
               />
+
               {/* badge */}
               <div className="flex-row">
                 <div className="relative flex">
