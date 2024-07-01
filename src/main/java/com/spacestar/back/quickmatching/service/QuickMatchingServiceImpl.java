@@ -1,7 +1,6 @@
 package com.spacestar.back.quickmatching.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spacestar.back.feignClient.dto.res.AuthResDto;
 import com.spacestar.back.feignClient.dto.res.ProfileResDto;
 import com.spacestar.back.feignClient.service.FeignClientService;
 import com.spacestar.back.global.GlobalException;
@@ -102,6 +101,7 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             // Set을 List로 변환
             List<ZSetOperations.TypedTuple<String>> waitingMembersList = new ArrayList<>(waitingMembers);
 
+            log.info("for문 진입 전");
             // 마지막 인덱스를 제외하고 순회
             for (int i = 0; i < waitingMembersList.size() - 1; i++) {
                 ZSetOperations.TypedTuple<String> tuple = waitingMembersList.get(i);
@@ -137,8 +137,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 
         ProfileResDto myProfile = feignClientService.getProfile(matchFromMember);
         ProfileResDto yourProfile = feignClientService.getProfile(matchToMember);
-        AuthResDto myAuth = feignClientService.getAuth(matchFromMember);
-        AuthResDto yourAuth = feignClientService.getAuth(matchToMember);
+//        AuthResDto myAuth = feignClientService.getAuth(matchFromMember);
+//        AuthResDto yourAuth = feignClientService.getAuth(matchToMember);
         //각각 메인게임 ID, 게임성향ID, MBTI ID가 존재할 때만 연산해서 점수 더해줌
         if (myProfile.getMainGameId() != null && yourProfile.getMainGameId() != null) {
             score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
@@ -149,8 +149,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
         if (myProfile.getMbtiId() != null && yourProfile.getMbtiId() != null)
             score += mbtiScore(myProfile.getMbtiId(), yourProfile.getMbtiId());
 
-        score += ageScore(myAuth.getAge(), yourAuth.getAge());
-        score += genderScore(myAuth.getGender(), yourAuth.getGender());
+//        score += ageScore(myAuth.getAge(), yourAuth.getAge());
+//        score += genderScore(myAuth.getGender(), yourAuth.getGender());
 
         //신고 당한 횟수 만큼 점수 깎기
         score -= (myProfile.getReportCount() + yourProfile.getReportCount());
