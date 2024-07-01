@@ -1,10 +1,133 @@
-import { DevModalOpen } from '@/containers/additional-details/AdditionalDetailsLayout'
+import { getServerSession } from 'next-auth'
 
-export default function page() {
+import { options } from '../api/auth/[...nextauth]/options'
+
+import { DevModalOpen } from '@/containers/additional-details/AdditionalDetailsLayout'
+import {
+  RecommendedFriends,
+  MyChatRooms,
+} from '@/containers/dashboard/components'
+import { getAllProfileData } from '@/lib/getAllProfileData'
+import UserProfile from '@/containers/dashboard/UserProfile'
+import Card from '@/containers/dashboard/Card'
+import GameSelector from '@/containers/dashboard/Games'
+import { getGames } from '@/apis/getGame'
+
+/** 레벨 조회 */
+async function getLevel() {
+  const session = await getServerSession(options)
+  const { accessToken } = session?.user?.data || {}
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_V1}/rate`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to getLevel')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (error) {
+    console.error(error)
+    return
+  }
+}
+
+/** 레벨 조회 */
+async function getExp() {
+  const session = await getServerSession(options)
+  const { accessToken } = session?.user?.data || {}
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL_V1}/rate/exp`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: accessToken,
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getLevel')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (error) {
+    console.error(error)
+    return
+  }
+}
+
+async function getLevelInfo(level: number) {
+  const session = await getServerSession(options)
+  const { accessToken } = session?.user?.data || {}
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL_V1}/rate/info?level=${level}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: accessToken,
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to getLevelInfo')
+    }
+
+    const data = await response.json()
+    return data.result
+  } catch (error) {
+    console.error(error)
+    return
+  }
+}
+
+export default async function page() {
+  const session = await getServerSession(options)
+  const { accessToken } = session?.user?.data || {}
+
+  const allProfileData = await getAllProfileData()
+
+  const level = (await getLevel()) ?? 0
+  const exp = (await getExp()) ?? 0
+  const levelInfo = (await getLevelInfo(level.level)) ?? null
+
+  const games = await getGames()
+
   return (
     <>
-      <section className="flex-1 pl-[20px]">
-        {/* 기타 등등 컴포넌트들 */}
+      <section className="flex-1 overflow-y-scroll">
+        <UserProfile
+          data={allProfileData}
+          level={level.level}
+          exp={exp.levelExp}
+          levelInfo={levelInfo}
+        />
+
+        <div className="flex flex-col lg:flex-row mt-8 gap-8 px-5">
+          <div className="w-full lg:w-auto">
+            <Card />
+          </div>
+
+          <div className="flex-1">
+            <GameSelector games={games} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <MyChatRooms />
+              <RecommendedFriends />
+            </div>
+          </div>
+        </div>
       </section>
 
       <DevModalOpen />
