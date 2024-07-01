@@ -41,7 +41,7 @@ export default function ProfileImageUpload() {
   return (
     <div>
       <input type="file" onChange={handleFileChange} />
-      <button onClick={handleClick}>프로필 추가88</button>
+      <button onClick={handleClick}>프로필 추가</button>
     </div>
   )
 }
