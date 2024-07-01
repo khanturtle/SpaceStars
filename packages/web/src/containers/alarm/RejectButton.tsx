@@ -1,5 +1,5 @@
 import { XCircle } from 'lucide-react';
-import { requestAlarmReject } from '@/apis/requestAlarm';
+import { requestAlarmReject, requestMatchingReject} from '@/apis/requestAlarm';
 import { modifyAlamrState } from '@/apis/actionAlarm'
 
 interface RejectButtonProps {
@@ -8,18 +8,25 @@ interface RejectButtonProps {
     friendUuid: string;
     checkStatus: string;
     alarmId: string
+    alarmType: string
 }
 
-const RejectButton = ({ onClick, token, friendUuid, checkStatus, alarmId }: RejectButtonProps) => {
+const RejectButton = ({ onClick, token, friendUuid, checkStatus, alarmId, alarmType }: RejectButtonProps) => {
     const handleReject = async () => {
         try {
-            await requestAlarmReject(token, { friendUuid })
-            await modifyAlamrState(token, alarmId, "REJECT")
+            console.log(alarmType)
+            if (alarmType === '친구요청') {
+                await requestAlarmReject(token, { friendUuid });
+            } else if (alarmType === '매칭요청') {
+                await requestMatchingReject(token, friendUuid);
+            }
+            await modifyAlamrState(token, alarmId, "REJECT");
             onClick();
         } catch (error) {
-            console.log('친구 요청 거절 실패: ', error);
+            console.log('요청 처리 실패: ', error);
         }
     };
+    
 
     const isUnread = checkStatus === 'UNREAD';
 

@@ -52,6 +52,7 @@ const AlarmListItem = ({
           friendUuid={senderUuid} 
           checkStatus={checkStatus} 
           alarmId={alarmId}
+          alarmType={alarmType}
         />
         <RejectButton 
           onClick={handleAction} 
@@ -59,6 +60,7 @@ const AlarmListItem = ({
           friendUuid={senderUuid} 
           checkStatus={checkStatus} 
           alarmId={alarmId}
+          alarmType={alarmType}
         />
       </div>
     </div>
