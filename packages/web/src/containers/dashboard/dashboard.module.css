@@ -57,67 +57,64 @@
 /* card */
 
 /* Games */
-.container {
-  width: 100%;
+.outerContainer {
+  display: inline-block;
+  max-width: 100%;
+  background-color: var(--bg-primary);
+  border-radius: 10px;
+  padding: 10px;
+  transition: all 0.3s ease;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 20px;
-  overflow: hidden;
 }
 
-.scrollContainer {
-  display: flex;
-  padding: 10px 0;
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  grid-template-rows: repeat(2, auto);
   gap: 20px;
-  overflow-x: hidden;
-  white-space: nowrap;
 }
 
-.scrollContainer::-webkit-scrollbar {
-  height: 6px;
-}
-
-.scrollContainer::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 3px;
-}
+/* .verticalContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 80vh; 
+  overflow-y: auto; 
+} 
+*/
 
 .gameButton {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 15px;
-  width: 120px;
-  height: 120px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
+  width: 100%;
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .gameButton:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.2);
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 .gameIcon {
-  width: 50px; /* 아이콘 크기 조정 */
+  width: 50px;
   height: 50px;
   object-fit: contain;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .gameName {
-  font-size: 0.9rem;
+  font-size: 12px;
   text-align: center;
-  color: white;
-  font-weight: 500;
+  word-break: break-word;
+  color: var(--text-primary);
 }

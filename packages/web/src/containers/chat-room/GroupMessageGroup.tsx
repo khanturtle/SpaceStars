@@ -26,7 +26,7 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
         const profileImage = await getMainProfileImageByUuid(uuid, token)
 
         setNickname(profileData?.result.nickname ?? 'user')
-        setProfileImage(profileImage?.result.profileImageUrl ?? defaultImage)
+        setProfileImage(profileImage?.result?.profileImageUrl ?? defaultImage)
       }
     }
     fetchData()
@@ -35,7 +35,7 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
   return (
     <div className={styles.profile}>
       <Image
-        className="rounded-full mr-1"
+        className="mr-1 rounded-full"
         src={profileImage}
         alt={uuid}
         width={36}

@@ -44,13 +44,13 @@ export default async function page() {
               {/* badge */}
               <div className="flex-row">
                 <div className="relative flex">
-                  <span className="absolute bottom-1 left-[0px] bg-pink-400 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  <span className="px-2 py-1 mr-2 text-xs font-bold text-white bg-pink-400 rounded-full">
                     {data.authProfile.gender}
                   </span>
-                  <span className="absolute bottom-1 left-[70px] bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  <span className="px-2 py-1 mr-2 text-xs font-bold text-white bg-pink-500 rounded-full">
                     {mbtiData?.mbtiName}
                   </span>
-                  <span className="absolute bottom-1 left-[100px] bg-pink-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">
+                  <span className="px-2 py-1 text-xs font-bold text-white bg-pink-600 rounded-full  whitespace-nowrap">
                     {data.authProfile.birth}
                   </span>
                 </div>
