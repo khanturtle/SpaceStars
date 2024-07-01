@@ -28,7 +28,7 @@ export default function ProfileButton({ image }: { image: string }) {
 
   const handleUpload = async (file: File) => {
     const s3ImageUrl = await uploadToS3(file, file.name)
-    console.log('S3 Image URL:', s3ImageUrl)
+    // console.log('S3 Image URL:', s3ImageUrl)
     return s3ImageUrl
   }
 

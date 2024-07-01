@@ -17,7 +17,7 @@ export default function ProfileImageUpload() {
     // console.log(file)
     if (selectedFile) {
       const s3ImageUrl = await uploadToS3(selectedFile, selectedFile.name)
-      console.log('S3 Image URL:', s3ImageUrl)
+      // console.log('S3 Image URL:', s3ImageUrl)
       return s3ImageUrl
     }
   }

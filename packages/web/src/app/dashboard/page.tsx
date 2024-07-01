@@ -95,8 +95,6 @@ async function getLevelInfo(level: number) {
   }
 }
 
-/** 스와이프 2명 */
-
 export default async function page() {
   const session = await getServerSession(options)
   const { accessToken } = session?.user?.data || {}
@@ -121,7 +119,6 @@ export default async function page() {
     }),
   )
 
-  console.log(profileDataList)
   return (
     <>
       <section className="flex-1 overflow-y-scroll">
