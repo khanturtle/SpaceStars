@@ -2,96 +2,19 @@ import { getServerSession } from 'next-auth'
 
 import { options } from '../api/auth/[...nextauth]/options'
 
+import { getGames } from '@/apis/getGame'
+import { getExp, getLevel, getLevelInfo } from '@/apis/getLevel'
+
 import { DevModalOpen } from '@/containers/additional-details/AdditionalDetailsLayout'
 import {
   RecommendedFriends,
   MyChatRooms,
 } from '@/containers/dashboard/components'
-import { getAllProfileData } from '@/lib/getAllProfileData'
 import UserProfile from '@/containers/dashboard/UserProfile'
 import Card from '@/containers/dashboard/Card'
 import GameSelector from '@/containers/dashboard/Games'
-import { getGames } from '@/apis/getGame'
 
-/** 레벨 조회 */
-async function getLevel() {
-  const session = await getServerSession(options)
-  const { accessToken } = session?.user?.data || {}
-
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_V1}/rate`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken,
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to getLevel')
-    }
-
-    const data = await response.json()
-    return data.result
-  } catch (error) {
-    console.error(error)
-    return
-  }
-}
-
-/** 레벨 조회 */
-async function getExp() {
-  const session = await getServerSession(options)
-  const { accessToken } = session?.user?.data || {}
-
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL_V1}/rate/exp`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: accessToken,
-        },
-      },
-    )
-
-    if (!response.ok) {
-      throw new Error('Failed to getLevel')
-    }
-
-    const data = await response.json()
-    return data.result
-  } catch (error) {
-    console.error(error)
-    return
-  }
-}
-
-async function getLevelInfo(level: number) {
-  const session = await getServerSession(options)
-  const { accessToken } = session?.user?.data || {}
-
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL_V1}/rate/info?level=${level}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: accessToken,
-        },
-      },
-    )
-
-    if (!response.ok) {
-      throw new Error('Failed to getLevelInfo')
-    }
-
-    const data = await response.json()
-    return data.result
-  } catch (error) {
-    console.error(error)
-    return
-  }
-}
+import { getAllProfileData } from '@/lib/getAllProfileData'
 
 export default async function page() {
   const session = await getServerSession(options)
@@ -115,14 +38,14 @@ export default async function page() {
           levelInfo={levelInfo}
         />
 
-        <div className="flex flex-col lg:flex-row mt-8 gap-8 px-5">
+        <div className="flex flex-col gap-8 px-5 mt-8 lg:flex-row">
           <div className="w-full lg:w-auto">
             <Card />
           </div>
 
           <div className="flex-1">
             <GameSelector games={games} />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               <MyChatRooms />
               <RecommendedFriends />
             </div>
