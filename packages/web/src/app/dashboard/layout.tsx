@@ -18,6 +18,10 @@ export default async function layout({
   // 내 친구 리스트
   const friendsList = await getFriendsDataList()
 
+  if (!session) {
+    return <div></div>
+  }
+
   return (
     <main className="flex w-full h-[calc(100vh_-_100px)] overflow-hidden mx-auto my-0">
       <Sidebar />

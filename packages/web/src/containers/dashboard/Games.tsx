@@ -7,6 +7,7 @@ import styles from './dashboard.module.css'
 
 const GameSelector = ({ games }: { games: GameTypes[] }) => {
   const router = useRouter()
+
   const handleClick = (game: GameTypes) => {
     router.push(`/dashboard/team-list?game=${game.gameId}`)
   }
@@ -32,12 +33,17 @@ const GameSelector = ({ games }: { games: GameTypes[] }) => {
     }
   }, [])
 
-  // TODO: 라이트모드 색 수정
   return (
-    <div className={styles.container} ref={containerRef}>
-      <div className={styles.scrollContainer}>
-        {visibleGames.map((game) => (
-          <button key={game.index} className={styles.gameButton}>
+    <div className={`${styles.outerContainer} shadow-md`}>
+      <h2 className="text-[color:var(--text-title)] mb-4">게임 팀원 모집</h2>
+      <div className={styles.gridContainer}>
+        {games.slice(0, 6).map((game) => (
+          <button
+            type="button"
+            key={game.index}
+            className={styles.gameButton}
+            onClick={() => handleClick(game)}
+          >
             <img
               src={game.gameLogoImage}
               alt={game.gameName}

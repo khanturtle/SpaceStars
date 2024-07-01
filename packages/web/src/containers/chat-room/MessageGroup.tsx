@@ -9,9 +9,9 @@ import { getProfileByUuid } from '@/apis/getAuth'
 
 import { ChatMessageType } from '@/types/ChatType'
 import { getConvertToKoreanHM } from '@/hooks/convertToLocaleTime'
+import { defaultImage } from '@/store/defaultState'
 
 import styles from './chat.module.css'
-import { defaultImage } from '@/store/defaultState'
 
 const UserProfile = ({ uuid }: { uuid: string }) => {
   const { data: session } = useSession()
@@ -26,7 +26,7 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
         const profileImage = await getMainProfileImageByUuid(uuid, token)
 
         setNickname(profileData?.result.nickname ?? 'user')
-        setProfileImage(profileImage?.result.profileImageUrl ?? defaultImage)
+        setProfileImage(profileImage?.result?.profileImageUrl ?? defaultImage)
       }
     }
     fetchData()

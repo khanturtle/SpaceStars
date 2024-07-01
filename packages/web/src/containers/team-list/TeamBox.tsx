@@ -149,14 +149,17 @@ const TeamCardItem = ({
       return
     }
 
-    const res = await getIsEnteredRoom(session?.user?.data.accessToken, item.roomNumber)
-    if(res) {
+    const res = await getIsEnteredRoom(
+      session?.user?.data.accessToken,
+      item.roomNumber,
+    )
+    if (res) {
       const isJoined = res.memberStatus
-    // 내가 속한 방이면, 바로 참가
+      // 내가 속한 방이면, 바로 참가
       if (isJoined) {
         router.push(`/dashboard/chat/group/${item.roomNumber}`)
-      return
-    }
+        return
+      }
     }
 
     // 내가 속한 방이 아니면, 참가 시도
@@ -244,7 +247,9 @@ const TeamCardItem = ({
             onClick={handleJoin}
             isLocked={item.isPassword}
             isFinished={item.isFinished}
-            iconFill="var(--button-secondary-text)"
+            iconFill={
+              item.isFinished ? '#a8a8a8' : 'var(--button-secondary-text)'
+            }
             className={styles['join-button']}
           />
         </div>
