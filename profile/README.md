@@ -194,6 +194,52 @@ https://spacestars.kr/
 |![알림](https://github.com/6-dreaming-stars/.github/assets/108453365/d08545e9-91fd-4f01-ae5f-65fd2e6d1bdb)|![팀리스트3](https://github.com/6-dreaming-stars/.github/assets/108453365/a4a585e1-9d99-456c-9718-b95eea72b869)|![팀리스트4](https://github.com/6-dreaming-stars/.github/assets/108453365/ddb34591-61a7-4b3d-9dbd-a11c6ce71549)|
 
     
+---
 
-    
+
+### 프로젝트 관련 문서
+
+<table>
+    <tr>
+        <td>
+        <b>구분</b>
+        </td>
+        <td>
+        <b>링크</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        포팅 매뉴얼
+        </td>
+        <td>
+        <a href="">포팅 매뉴얼 바로가기</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        DB 덤프 데이터
+        </td>
+        <td>
+        <a href="">DB 덤프 데이터 바로가기</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        시연 영상
+        </td>
+        <td>
+        <a href="">영상 바로가기</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        팀 노션
+        </td>
+        <td>
+        <a href="https://dreaming-stars.notion.site/bc4572ecbdb5444f92c8216292447883">팀 노션 바로가기</a>
+        </td>
+    </tr>
+</table>
+
     
