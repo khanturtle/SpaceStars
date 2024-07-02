@@ -77,7 +77,7 @@ export const FriendsItem = ({
   const handleClick = () => {
     if (isDrag) return
 
-    router.push(`/profile/${item.friendUuid}`)
+    // router.push(`/profile/${item.friendUuid}`)
   }
 
   return (

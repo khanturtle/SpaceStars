@@ -44,8 +44,8 @@ const UserItem = ({
 
   return (
     <li className="flex items-center mb-[18px]">
-      <Link
-        href={`/profile/${item.friendUuid}`}
+      <div
+        // href={`/profile/${item.friendUuid}`}
         className="flex items-center w-full"
       >
         <div
@@ -67,7 +67,7 @@ const UserItem = ({
         </div>
 
         {children}
-      </Link>
+      </div>
 
       {isVoice &&
         (isMute ? (
