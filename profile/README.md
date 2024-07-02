@@ -14,7 +14,6 @@
 <div style="text-align: center;">
     <h3 style="border-bottom: 1px  color: #282d33;"> FrontEnd </h3>
     <div style="margin: ; text-align: left;" "text-align: left;"> <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
-          <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=Flutter&logoColor=white">
           <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white">
           <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
           <img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&logo=Tailwind CSS&logoColor=white">
@@ -43,14 +42,21 @@
 <h3 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> Infra </h3>
     <div style="margin: ; text-align: left;" "text-align: left;">
 <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white">
-          <img src="https://img.shields.io/badge/Apache Tomcat-F8DC75?style=for-the-badge&logo=Apache Tomcat&logoColor=white">
           <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white">
           <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
           <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white">
           <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=Vercel&logoColor=white">
           <img src="https://img.shields.io/badge/Nginx-04B431?style=for-the-badge&logo=Nginx&logoColor=white">
     </div>
-</div>
+
+
+<h3 style="border-bottom: 1px  color: #282d33;"> 협업 </h3>
+<div style="margin: ; text-align: left;" "text-align: left;">
+    <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">
+    <img src="https://img.shields.io/badge/Git-94B431?style=for-the-badge&logo=Git&logoColor=white">
+    </div>
+    </div>
+<br>
 <br>
 <br>
 <br>
@@ -60,6 +66,9 @@
 
 
 
+<br>
+<br>
+<br>
 <br>
 
 --------
@@ -72,12 +81,15 @@
 - 팀원 모집 뿐만 아니라 개인 채팅에서도 채팅과 보이스를 사용할 수 있습니다. <br>
 
 <br>
+<br>
+<br>
+<br>
 
 ### 📅 프로젝트 기간
 
 전체 프로젝트 기간 : 2024-04-22 ~ 2024-07-03
 
-<br>
+
 <br>
 
 
