@@ -39,8 +39,10 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
           className="object-cover object-center mr-1 rounded-full"
           src={profileImage}
           alt={uuid}
-          fill
+          width={0}
+          height={0}
           sizes="100vw"
+          style={{ width: '100%', height: 'auto', aspectRatio: 1 }}
         />
       </div>
       <p className="text-[color:var(--text)]">{nickname}</p>
