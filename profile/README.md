@@ -95,7 +95,7 @@
 
 |**✔랜딩페이지**| **👤소셜로그인페이지**| **👤 아이디/비밀번호 찾기 페이지**|
 |:------------:|:-----------------:|:-------------:|
-|![메인페이지]([https://github.com/4-ComehereTeam/.github/assets/102746730/a7a72303-6629-41d0-aca4-236486743424](https://github.com/6-dreaming-stars/.github/assets/108453365/5a3dbd31-fffc-42ce-8dc6-1a2ad72c3c5a))|![로그인](https://github.com/4-ComehereTeam/.github/assets/102746730/dbf59607-f4b8-43e7-8ce6-882781e1f1a6)|![회원가입1](https://github.com/6-dreaming-stars/.github/assets/108453365/df581301-0f4b-4849-b72f-b90a75545365)
+|![메인페이지](https://github.com/6-dreaming-stars/.github/assets/108453365/5a3dbd31-fffc-42ce-8dc6-1a2ad72c3c5a)|![로그인](https://github.com/6-dreaming-stars/.github/assets/108453365/9c53f2df-c991-42ef-ade2-f70df1c022b9)|![회원가입1](https://github.com/6-dreaming-stars/.github/assets/108453365/df581301-0f4b-4849-b72f-b90a75545365)
 
 
 <table>
