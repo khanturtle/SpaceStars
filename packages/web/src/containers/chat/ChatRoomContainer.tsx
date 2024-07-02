@@ -31,7 +31,7 @@ export default function ChatRoomContainer({
   const message = {
     senderUuid: UUID,
   }
-
+  
   /** 이전 메시지 */
   useEffect(() => {
     const fetchData = async () => {
@@ -59,6 +59,7 @@ export default function ChatRoomContainer({
         },
         {},
       )
+
 
       /** 채팅방 입장 */
       stompClient.send(
