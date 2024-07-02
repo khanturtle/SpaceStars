@@ -125,8 +125,8 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             redisTemplate.opsForZSet().remove(gameName, uuid);
             redisTemplate.opsForZSet().remove(gameName, matchedMemberUuid);
             enterMatchQueue(uuid, matchedMemberUuid);
-            sendComment(uuid);
-            sendComment(matchedMemberUuid);
+            sendComment(uuid,matchedMemberUuid);
+            sendComment(matchedMemberUuid,uuid);
         }
     }
 
@@ -303,14 +303,14 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     }
 
     //매치 되었을 때 메세지 전송
-    public void sendComment(String uuid) {
+    public void sendComment(String uuid,String matchedMemberUuid) {
         Set<SseEmitter> sseEmitters;
         synchronized (container) {
             sseEmitters = new HashSet<>(container.getOrDefault(uuid, Collections.emptySet()));
         }
 
         final SseEmitter.SseEventBuilder sseEventBuilder = SseEmitter.event()
-                .data("매치 되었습니다.")
+                .data(matchedMemberUuid + "와 매치 되었습니다.")
                 .reconnectTime(30000L);
 
         sseEmitters.forEach(sseEmitter -> sendEvent(sseEmitter, sseEventBuilder));
