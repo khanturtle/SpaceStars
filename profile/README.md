@@ -1,16 +1,19 @@
 
+<!--
 <div align= "center">
-    <img src="https://capsule-render.vercel.app/api?type=waving&color=bfa0f8&height=180&text=우주별%20:%20우리%20주변%20별별%20사람들&animation=fadeIn&fontColor=ffffff&fontSize=40" />
-    </div>
-    <div align= "center">
-        <br>
-    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">  </h2>  
-    
+<img src="https://capsule-render.vercel.app/api?type=waving&color=bfa0f8&height=180&text=우주별%20:%20우리%20주변%20별별%20사람들&animation=fadeIn&fontColor=ffffff&fontSize=40" />
+</div>
+-->
 
-    
+![우주별 서비스 소개](https://github.com/6-dreaming-stars/.github/assets/122499570/b33fd8d6-3d3e-46ec-90b9-e7818e2f4daa)
+
+<div align= "center">
+    <br>
+<h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">  </h2>  
+
 ### 📢 Space Stars 보러가기
+
 https://spacestars.kr/
-<div style="font-weight: 700; font-size: 15px; text-align: left; color: #282d33;"> 우리 주변 별별 사람들의 줄임말로 게임 성향에 맞는 게임 메이트 추천 및 게임 소통 커뮤니티입니다. </div> 
 
 <br>
         <br>
@@ -181,12 +184,12 @@ https://spacestars.kr/
 </table>
 
 
-|**✔대시보드 **| **👤마이페이지**| **👤 친구 목록 페이지**|
+|**✔대시보드**| **👤마이페이지**| **👤 친구 목록 페이지**|
 |:------------:|:-----------------:|:-------------:|
 |![대시보드](https://github.com/6-dreaming-stars/.github/assets/108453365/53b3458b-25a3-4b7e-9ae2-82910875d50a)|![마이페이지](https://github.com/6-dreaming-stars/.github/assets/108453365/85af5471-e731-415c-9eac-e5500e71ecbf)|![친구](https://github.com/6-dreaming-stars/.github/assets/108453365/047a8003-7ca8-456d-8df2-2c3323c459be)|
 
 
-|**✔알림페이지 **| **👤라이트 모드**| **👤 라이트 모드**|
+|**✔알림페이지**| **👤라이트 모드**| **👤 라이트 모드**|
 |:------------:|:-----------------:|:-------------:|
 |![알림](https://github.com/6-dreaming-stars/.github/assets/108453365/d08545e9-91fd-4f01-ae5f-65fd2e6d1bdb)|![팀리스트3](https://github.com/6-dreaming-stars/.github/assets/108453365/a4a585e1-9d99-456c-9718-b95eea72b869)|![팀리스트4](https://github.com/6-dreaming-stars/.github/assets/108453365/ddb34591-61a7-4b3d-9dbd-a11c6ce71549)|
 
