@@ -40,7 +40,7 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
           src={profileImage}
           alt={uuid}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="100vw"
         />
       </div>
       <p className="text-[color:var(--text)]">{nickname}</p>
