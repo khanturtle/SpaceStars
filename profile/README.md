@@ -87,11 +87,6 @@
 
 ## 🖥 화면소개
 <a name="contents"></a>
-|**✔랜딩페이지**| **👤소셜로그인페이지**|
-|:------------:|:-----------------:|
-|<img src="https://github.com/6-dreaming-stars/.github/assets/108453365/5a3dbd31-fffc-42ce-8dc6-1a2ad72c3c5a" alt="랜딩페이지" width="450" height="300">|<img src="https://github.com/6-dreaming-stars/.github/assets/108453365/9c53f2df-c991-42ef-ade2-f70df1c022b9" alt="로그인" width="450" height="300">|
-
-
 
 |**✔랜딩페이지**| **👤소셜로그인페이지**| **👤 아이디/비밀번호 찾기 페이지**|
 |:------------:|:-----------------:|:-------------:|
@@ -149,28 +144,15 @@
 </table>
 
 
-<table>
-  <tr>
-    <th colspan="4"><b>🔡옵션선택 페이지</th>
-  </tr>
-  <tr>
-    <td width="300" bgcolor="#FFFFFF"><img src="https://github.com/4-ComehereTeam/.github/assets/102746730/acbf2937-e6eb-4434-8138-22b43078e9e3" alt="옵션선택">
-</td>
-    <td width="300" bgcolor="#FFFFFF"><img src="https://github.com/4-ComehereTeam/.github/assets/102746730/59644a73-17cf-47fb-83f1-7dd629346152" alt="옵션선택2"></td>
-    <td width="300" align="center" bgcolor="#FFFFFF"><img src="https://github.com/4-ComehereTeam/.github/assets/102746730/b0d9bdf2-6fcf-4ac5-8c51-d2a42fdffcfa" alt="옵션선택3"></td>
-  </tr>
-</table>
+|**✔대시보드 **| **👤마이페이지**| **👤 친구 목록 페이지**|
+|:------------:|:-----------------:|:-------------:|
+|![대시보드](https://github.com/6-dreaming-stars/.github/assets/108453365/53b3458b-25a3-4b7e-9ae2-82910875d50a)|![마이페이지](https://github.com/6-dreaming-stars/.github/assets/108453365/85af5471-e731-415c-9eac-e5500e71ecbf)|![친구](https://github.com/6-dreaming-stars/.github/assets/108453365/047a8003-7ca8-456d-8df2-2c3323c459be)|
 
-<table>
-  <tr>
-    <th colspan="4"><b>📍 카테고리</th>
-  </tr>
-  <tr>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/4-ComehereTeam/.github/assets/102746730/2e9772af-04bb-47e8-b42c-e4ade5b4e6ff" alt="카테고리">
-</td>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/4-ComehereTeam/.github/assets/102746730/a7e11ed1-7758-494c-8a8c-7f29a73c7e5b" alt="카테고리리2"></td>
-  </tr>
-</table>
+
+|**✔알림페이지 **| **👤라이트 모드**| **👤 라이트 모드**|
+|:------------:|:-----------------:|:-------------:|
+|![알림](https://github.com/6-dreaming-stars/.github/assets/108453365/d08545e9-91fd-4f01-ae5f-65fd2e6d1bdb)|![팀리스트3](https://github.com/6-dreaming-stars/.github/assets/108453365/a4a585e1-9d99-456c-9718-b95eea72b869)|![팀리스트4](https://github.com/6-dreaming-stars/.github/assets/108453365/ddb34591-61a7-4b3d-9dbd-a11c6ce71549)|
+
     
 
     
