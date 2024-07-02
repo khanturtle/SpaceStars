@@ -98,10 +98,10 @@
     <th colspan="4"><b>👤추가 정보 입력 페이지</th>
   </tr>
   <tr>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/dcb94354-df79-479a-ab49-de8499a25606" alt="대표게임">
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/dcb94354-df79-479a-ab49-de8499a25606" alt="대표게임">
 </td>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/f053edee-2d29-4876-af9f-de915ae41180"alt="대표게임 세부 정보"></td>
-    <td width="300" align="center" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/58049c69-c0ea-43da-be0a-707a9811d9ea"alt="mbti"></td>
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/f053edee-2d29-4876-af9f-de915ae41180"alt="대표게임 세부 정보"></td>
+    <td ><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/58049c69-c0ea-43da-be0a-707a9811d9ea"alt="mbti"></td>
   </tr>
 </table>
 
@@ -111,10 +111,10 @@
     <th colspan="4"><b>👤매칭 페이지</th>
   </tr>
   <tr>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/8455c5e7-61b6-44e1-a932-e014c00f1ba5" alt="대표게임">
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/8455c5e7-61b6-44e1-a932-e014c00f1ba5" alt="대표게임">
 </td>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/2b334750-c46d-4c87-b8a4-e13ced215727"alt="대표게임 세부 정보"></td>
-    <td width="300" align="center" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/d16a20ad-8a5c-4cf7-bffb-2a62be0ee184"alt="mbti"></td>
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/2b334750-c46d-4c87-b8a4-e13ced215727"alt="대표게임 세부 정보"></td>
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/d16a20ad-8a5c-4cf7-bffb-2a62be0ee184"alt="mbti"></td>
   </tr>
 </table>
 
@@ -123,10 +123,10 @@
     <th colspan="4"><b>👤추천 매칭 페이지</th>
   </tr>
   <tr>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/99a1cfee-6ef6-495e-b335-e31255447f77" alt="추천 매칭1">
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/99a1cfee-6ef6-495e-b335-e31255447f77" alt="추천 매칭1">
 </td>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/28837ff8-3fba-4443-8f67-5c10b7832ed4"alt="추천 매칭2"></td>
-    <td width="300" align="center" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/ee3ca2df-775e-40fd-8a92-5af17752998d"alt="추천 매칭3"></td>
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/28837ff8-3fba-4443-8f67-5c10b7832ed4"alt="추천 매칭2"></td>
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/ee3ca2df-775e-40fd-8a92-5af17752998d"alt="추천 매칭3"></td>
   </tr>
 </table>
 
@@ -136,10 +136,10 @@
     <th colspan="4"><b>👤팀원 모집 페이지</th>
   </tr>
   <tr>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/3265be4d-4da0-4162-95f6-a3d42d1f6eb2" alt="팀원 모집 1">
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/3265be4d-4da0-4162-95f6-a3d42d1f6eb2" alt="팀원 모집 1">
 </td>
-    <td width="300" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/7cdc1be6-897f-4170-90fc-58769388806d"alt="팀원 모집2"></td>
-    <td width="300" align="center" bgcolor=#FFFFFF><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/94b8adbd-218c-4f51-8da5-98d50ee5519a"alt="팀원 모집3"></td>
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/7cdc1be6-897f-4170-90fc-58769388806d"alt="팀원 모집2"></td>
+    <td><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/94b8adbd-218c-4f51-8da5-98d50ee5519a"alt="팀원 모집3"></td>
   </tr>
 </table>
 
