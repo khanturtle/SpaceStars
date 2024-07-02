@@ -35,7 +35,7 @@
         <img src="https://img.shields.io/badge/JPA-17219A?style=for-the-badge&logo=JPA&logoColor=white">
         <img src="https://img.shields.io/badge/QueryDSL-8A084B?style=for-the-badge&logo=QueryDSL&logoColor=white">
         <img src="https://img.shields.io/badge/WebSocket-FE642E?style=for-the-badge&logo=WebSocket&logoColor=white">
-        <img src="https://img.shields.io/badge/Kafka-CC2EFA?style=for-the-badge&logo=Kafka&logoColor=white">
+        <img src="https://img.shields.io/badge/Apache Kafka-CC2EFA?style=for-the-badge&logo=Apache Kafka&logoColor=white">
         <img src="https://img.shields.io/badge/Redis-FE2E2E?style=for-the-badge&logo=Redis&logoColor=white">
           </div>
 
