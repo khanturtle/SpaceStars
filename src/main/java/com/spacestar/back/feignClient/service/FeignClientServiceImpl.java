@@ -35,7 +35,6 @@ public class FeignClientServiceImpl implements FeignClientService {
         org.springframework.http.ResponseEntity<ResponseEntity<ProfileResDto>> response = profileClient.getProfile(memberUuid);
         ResponseEntity<ProfileResDto> body = response.getBody();
         if (body == null || body.result() == null) {
-            System.out.println("Profile data is missing or null for memberUuid: " + memberUuid);
             return new ProfileResDto();  // 기본값 반환
         }
         return body.result();
@@ -47,7 +46,6 @@ public class FeignClientServiceImpl implements FeignClientService {
         org.springframework.http.ResponseEntity<ResponseEntity<AuthResDto>> response = authClient.getAuth(memberUuid);
         ResponseEntity<AuthResDto> body = response.getBody();
         if (body == null || body.result() == null) {
-            System.out.println("Auth data is missing or null for memberUuid: " + memberUuid);
             return new AuthResDto();  // 기본값 반환
         }
         return body.result();

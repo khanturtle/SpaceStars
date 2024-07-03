@@ -100,7 +100,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             // Set을 List로 변환
             List<ZSetOperations.TypedTuple<String>> waitingMembersList = new ArrayList<>(waitingMembers);
 
-            log.info("for문 진입 전");
             // 마지막 인덱스를 제외하고 순회
             for (int i = 0; i < waitingMembersList.size() - 1; i++) {
                 ZSetOperations.TypedTuple<String> tuple = waitingMembersList.get(i);
@@ -114,13 +113,11 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                         matchedMemberUuid = matchMemberUuid;
                     }
                 }
-                log.info("score = " + score);
             }
         }
         //매치된 사람 있으면 대기큐에서 제거 후 수락큐로 진입
         //+ SSE로 매치 되었다고 알려줌
         if (matchedMemberUuid != null) {
-            log.info(uuid + "와 " + matchedMemberUuid + "가 매치되었습니다.");
             redisTemplate.opsForZSet().remove(gameName, uuid);
             redisTemplate.opsForZSet().remove(gameName, matchedMemberUuid);
             enterMatchQueue(uuid, matchedMemberUuid);
