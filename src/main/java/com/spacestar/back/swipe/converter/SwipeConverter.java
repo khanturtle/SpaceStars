@@ -1,6 +1,6 @@
 package com.spacestar.back.swipe.converter;
 
-import com.spacestar.back.swipe.SwipeStatus;
+import com.spacestar.back.swipe.domain.SwipeStatus;
 import com.spacestar.back.swipe.domain.Swipe;
 import com.spacestar.back.swipe.dto.req.SwipeReqDto;
 

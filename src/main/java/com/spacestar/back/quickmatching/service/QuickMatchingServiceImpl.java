@@ -36,7 +36,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     private final FeignClientService feignClientService;
     //SSE
     private final ConcurrentHashMap<String, Set<SseEmitter>> container = new ConcurrentHashMap<>();
-
     private final long tenSecBefore = System.currentTimeMillis() - 10000;
 
     //대기큐진입
@@ -101,7 +100,6 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
             // Set을 List로 변환
             List<ZSetOperations.TypedTuple<String>> waitingMembersList = new ArrayList<>(waitingMembers);
 
-            log.info("for문 진입 전");
             // 마지막 인덱스를 제외하고 순회
             for (int i = 0; i < waitingMembersList.size() - 1; i++) {
                 ZSetOperations.TypedTuple<String> tuple = waitingMembersList.get(i);
@@ -111,17 +109,15 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
                 score += (int) (System.currentTimeMillis() - tuple.getScore()) / 10000;
                 if (score > maxScore) {
                     maxScore = score;
-                    if (maxScore >= 10) {
+                    if (maxScore >= 50) {
                         matchedMemberUuid = matchMemberUuid;
                     }
                 }
-                log.info("score = " + score);
             }
         }
         //매치된 사람 있으면 대기큐에서 제거 후 수락큐로 진입
         //+ SSE로 매치 되었다고 알려줌
         if (matchedMemberUuid != null) {
-            log.info(uuid + "와 " + matchedMemberUuid + "가 매치되었습니다.");
             redisTemplate.opsForZSet().remove(gameName, uuid);
             redisTemplate.opsForZSet().remove(gameName, matchedMemberUuid);
             enterMatchQueue(uuid, matchedMemberUuid);
@@ -133,7 +129,11 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
     //사용자 간에 매치 점수 계산
     //매칭 우선 순위 : 내가 하는 게임 >>>> 게임 성향 >> 연령대 >>>> mbti >>>>>>>성별
     private int calculateScore(String matchFromMember, String matchToMember) {
-        int score = 0;
+        float score = 0;
+        float mbtiWeight = 1.8F;
+        float ageWeight = 1.6F;
+        float genderWeight = 1.4F;
+        float mainGameWeight = 1.2F;
 
         ProfileResDto myProfile = feignClientService.getProfile(matchFromMember);
         ProfileResDto yourProfile = feignClientService.getProfile(matchToMember);
@@ -141,20 +141,21 @@ public class QuickMatchingServiceImpl implements QuickMatchingService {
 //        AuthResDto yourAuth = feignClientService.getAuth(matchToMember);
         //각각 메인게임 ID, 게임성향ID, MBTI ID가 존재할 때만 연산해서 점수 더해줌
         if (myProfile.getMainGameId() != null && yourProfile.getMainGameId() != null) {
-            score += mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId());
+            score += ((mainGameScore(myProfile.getMainGameId(), myProfile.getMainGameId()))* mainGameWeight);
         }
         if (myProfile.getGamePreferenceId() != null && yourProfile.getGamePreferenceId() != null) {
             score += gamePreferenceScore(myProfile.getGamePreferenceId(), myProfile.getGamePreferenceId());
         }
         if (myProfile.getMbtiId() != null && yourProfile.getMbtiId() != null)
-            score += mbtiScore(myProfile.getMbtiId(), yourProfile.getMbtiId());
+            score += (mbtiScore(myProfile.getMbtiId(), yourProfile.getMbtiId())* mbtiWeight);
 
 //        score += ageScore(myAuth.getAge(), yourAuth.getAge());
 //        score += genderScore(myAuth.getGender(), yourAuth.getGender());
 
-        //신고 당한 횟수 만큼 점수 깎기
+        score = (score/(mbtiWeight + ageWeight + genderWeight + mainGameWeight)/4);
+
         score -= (myProfile.getReportCount() + yourProfile.getReportCount());
-        return score;
+        return (int)score;
     }
 
     //메인 게임이 같으면 10점 추가

@@ -50,13 +50,11 @@ public class SwipeServiceImpl implements SwipeService {
     @Override
     public void agreeSwipe(String uuid, String fromMemberUuid) {
         swipeRepository.agreeRequest(uuid,fromMemberUuid);
-        //Todo 수락시 채팅방 생성되어야 함
     }
 
     @Override
     public void rejectSwipe(String uuid, String fromMemberUuid) {
         swipeRepository.rejectRequest(uuid,fromMemberUuid);
-        //Todo 거절시 Redis에 해당 유저 저장해야함
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.spacestar.back.swipe.SwipeStatus.*;
+import static com.spacestar.back.swipe.domain.SwipeStatus.*;
 import static com.spacestar.back.swipe.domain.QSwipe.swipe;
 
 @Transactional(readOnly = true)
