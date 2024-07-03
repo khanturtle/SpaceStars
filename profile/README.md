@@ -204,14 +204,6 @@ https://spacestars.kr/
     </tr>
     <tr>
       <td>
-      DB 덤프 데이터
-      </td>
-      <td>
-      <a href="">DB 덤프 데이터 바로가기</a>
-      </td>
-    </tr>
-    <tr>
-      <td>
       시연 영상
       </td>
       <td>
@@ -232,6 +224,14 @@ https://spacestars.kr/
       </td>
       <td>
       <a href="https://github.com/6-dreaming-stars/.github/blob/main/profile/api_swagger.md">API 정의서 보기</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      DB 덤프 데이터
+      </td>
+      <td>
+      <a href="https://github.com/6-dreaming-stars/.github/tree/main/exec/dumps">DB 덤프 데이터 바로가기</a>
       </td>
     </tr>
 </table>
