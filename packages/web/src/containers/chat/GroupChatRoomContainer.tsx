@@ -85,7 +85,7 @@ export default function GroupChatRoomContainer({
 
   return (
     <div className={styles.chatroom}>
-      <GroupChatHeader roomNumber={roomNumber} token={token} />
+      <GroupChatHeader roomNumber={roomNumber} token={token} UUID={UUID}/>
 
       <GroupChatLogList msgLog={msgLog} UUID={UUID} />
 
