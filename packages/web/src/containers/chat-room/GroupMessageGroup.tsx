@@ -34,13 +34,17 @@ const UserProfile = ({ uuid }: { uuid: string }) => {
 
   return (
     <div className={styles.profile}>
-      <Image
-        className="mr-1 rounded-full"
-        src={profileImage}
-        alt={uuid}
-        width={36}
-        height={36}
-      />
+      <div className="relative w-[36px] h-[36px] rounded-full">
+        <Image
+          className="object-cover object-center mr-1 rounded-full"
+          src={profileImage}
+          alt={uuid}
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: '100%', height: 'auto', aspectRatio: 1 }}
+        />
+      </div>
       <p className="text-[color:var(--text)]">{nickname}</p>
     </div>
   )

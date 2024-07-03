@@ -441,7 +441,7 @@ export default function GroupChatHeader({
         </button>
 
         {isDropdownOpen && (
-          <div className="dropdown-container absolute top-full right-0 bg-white rounded-md shadow-lg z-10 w-40">
+          <div className="absolute right-0 z-10 w-40 bg-white rounded-md shadow-lg dropdown-container top-full">
             <div className="py-1">
               <button
                 onClick={() => {
@@ -454,7 +454,7 @@ export default function GroupChatHeader({
                   //   />,
                   // )
                 }}
-                className="block w-full text-left px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 truncate"
+                className="block w-full px-6 py-4 text-sm text-left text-gray-700 truncate hover:bg-gray-100"
               >
                 채팅방 정보
               </button>
@@ -465,7 +465,7 @@ export default function GroupChatHeader({
                     <QuitModal closeModal={closeModal} exitRoom={exitRoom} />,
                   )
                 }}
-                className="block w-full text-left px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 truncate"
+                className="block w-full px-6 py-4 text-sm text-left text-gray-700 truncate hover:bg-gray-100"
               >
                 채팅방 나가기
               </button>
@@ -519,12 +519,9 @@ const InfoModal = ({
   gameInfo: any
   memberInfo: any
 }) => {
-  console.log(roomInfo)
-  console.log(gameInfo)
-  console.log(memberInfo)
   return (
     <div className="relative flex flex-col items-center h-full px-[100px] pt-[50px] pb-[40px]">
-      <h2 className="text-2xl font-bold mb-4">채팅방 정보</h2>
+      <h2 className="mb-4 text-2xl font-bold">채팅방 정보</h2>
       <div className="mb-4">
         <h3 className="text-lg font-semibold">이름</h3>
         <p>{roomInfo.roomName}</p>
@@ -533,8 +530,31 @@ const InfoModal = ({
         <h3 className="text-lg font-semibold">설명</h3>
         <p>{roomInfo.memo}</p>
       </div>
-      <h3 className="text-lg font-semibold mb-2">참가자 목록</h3>
+      {/* {isAdmin && (
+          <button
+            onClick={onEdit}
+            className="px-4 py-2 mb-4 text-white bg-blue-500 rounded hover:bg-blue-600"
+          >
+            정보 수정
+          </button>
+        )} */}
+      <h3 className="mb-2 text-lg font-semibold">참가자 목록</h3>
       <ul>
+        {/* {users.map((user) => (
+            <li
+              key={user.id}
+              className="flex items-center justify-between mb-2"
+            >
+              <span>{user.name}</span>
+              {isAdmin && (
+                <button
+                  onClick={() => onKickUser(user.id)}
+                  className="px-2 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600"
+                >
+                  강퇴
+                </button>
+              )}
+            </li>
       </ul>
       <Button label="닫기" onClick={closeModal} primary />
     </div>

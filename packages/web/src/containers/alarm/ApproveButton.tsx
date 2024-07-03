@@ -1,5 +1,6 @@
 import { CheckCircle } from 'lucide-react';
-import { requestAlarmApprove } from '@/apis/requestAlarm';
+import { requestAlarmApprove, requestMatchingApprove } from '@/apis/requestAlarm';
+import { createOnetoOneChat } from '@/apis/createChat';
 import { modifyAlamrState } from '@/apis/actionAlarm'
 
 interface ApproveButtonProps {
@@ -8,16 +9,22 @@ interface ApproveButtonProps {
     friendUuid: string;
     checkStatus: string;
     alarmId: string
+    alarmType: string
 }
 
-const ApproveButton = ({ onClick, token, friendUuid, checkStatus, alarmId }: ApproveButtonProps) => {
+const ApproveButton = ({ onClick, token, friendUuid, checkStatus, alarmId, alarmType }: ApproveButtonProps) => {
     const handleApprove = async () => {
         try {
-            await requestAlarmApprove(token, { friendUuid });
+            if(alarmType === '친구요청'){
+                await requestAlarmApprove(token, {friendUuid})
+            } else if(alarmType === '매칭요청'){
+                await requestMatchingApprove(token, friendUuid)
+                await createOnetoOneChat(friendUuid)
+            }
             await modifyAlamrState(token, alarmId, "APPROVE")
             onClick();
         } catch (error) {
-            console.log('친구 요청 수락 실패: ', error);
+            console.log('요청 처리 실패: ', error);
         }
     };
 

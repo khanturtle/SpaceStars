@@ -82,7 +82,7 @@ const SearchResultItem = ({ result }: { result: any }) => {
   const handleClick = () => {
     // 회원이면, 프로필 모달
     if (status === 'authenticated') {
-      router.push(`/profile/${result.uuid}`)
+      // router.push(`/profile/${result.uuid}`)
     } else {
       // 비회원이면, 회원가입
       router.push('/sign-up')

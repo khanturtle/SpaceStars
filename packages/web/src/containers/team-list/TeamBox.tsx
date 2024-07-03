@@ -282,7 +282,9 @@ const TeamCardItem = ({
             onClick={handleJoin}
             isLocked={item.isPassword}
             isFinished={item.isFinished}
-            iconFill="var(--button-secondary-text)"
+            iconFill={
+              item.isFinished ? '#a8a8a8' : 'var(--button-secondary-text)'
+            }
             className={styles['join-button']}
           />
         </div>

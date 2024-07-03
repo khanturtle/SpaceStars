@@ -12,6 +12,8 @@ import UserProfile from '@/containers/dashboard/UserProfile'
 import Card from '@/containers/dashboard/Card'
 import GameSelector from '@/containers/dashboard/Games'
 import { getGames } from '@/apis/getGame'
+import { getSwipeList } from '@/apis/getSwipe'
+import { getBasicUserData } from '@/lib/getUserData'
 
 /** 레벨 조회 */
 async function getLevel() {
@@ -105,6 +107,18 @@ export default async function page() {
 
   const games = await getGames()
 
+  const swipeData = await getSwipeList(2, 0)
+  const profileDataList = await Promise.all(
+    swipeData?.memberUuidList.map(async (uuid: string) => {
+      try {
+        return await getBasicUserData(uuid)
+      } catch (error) {
+        console.error(`Error getSwipeList: ${uuid}`, error)
+        return null
+      }
+    }),
+  )
+
   return (
     <>
       <section className="flex-1 overflow-y-scroll">
@@ -123,7 +137,7 @@ export default async function page() {
           <div className="lg:w-1/2">
             <div className="flex flex-col gap-8">
               <MyChatRooms />
-              <RecommendedFriends />
+              <RecommendedFriends profileDataList={profileDataList} />
             </div>
           </div>
 

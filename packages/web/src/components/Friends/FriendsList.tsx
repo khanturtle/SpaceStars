@@ -44,8 +44,8 @@ const UserItem = ({
 
   return (
     <li className="flex items-center mb-[18px]">
-      <Link
-        href={`/profile/${item.friendUuid}`}
+      <div
+        // href={`/profile/${item.friendUuid}`}
         className="flex items-center w-full"
       >
         <div
@@ -55,6 +55,7 @@ const UserItem = ({
             src={item.profileImageUrl}
             alt={item.nickname}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover object-center rounded-full"
           />
         </div>
@@ -66,7 +67,7 @@ const UserItem = ({
         </div>
 
         {children}
-      </Link>
+      </div>
 
       {isVoice &&
         (isMute ? (

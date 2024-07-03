@@ -69,9 +69,6 @@ export default function SearchUserContainer({
     }
   }
 
-  /** 친구 모달 띄우기 */
-  const handleOpenProfile = () => {}
-
   return (
     <div className="h-14 mx-0 my-[26px]">
       <form className="flex" action="" onSubmit={searchUserByNickname}>
@@ -86,7 +83,9 @@ export default function SearchUserContainer({
       <div>
         {message}
         결과: <br />
-        <Link href={`/profile/${targetUuid}`} onClick={handleOpenProfile}>
+        <div
+        // href={`/profile/${targetUuid}`}
+        >
           {targetProfile && (
             <Image
               src={targetProfile}
@@ -96,7 +95,7 @@ export default function SearchUserContainer({
             />
           )}
           {targetNickname && targetNickname}
-        </Link>
+        </div>
       </div>
     </div>
   )

@@ -1,20 +1,29 @@
-const RecommendedFriends = () => {
+import Link from 'next/link'
+
+const RecommendedFriends = ({
+  profileDataList,
+}: {
+  profileDataList: {
+    profileImageUrl: string
+    nickname: string
+  }[]
+}) => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">추천 친구</h2>
+    <div className="p-6  bg-[color:var(--bg-primary)] text-[color:var(--text-title)] rounded-lg shadow-md">
+      <h2 className="mb-4 text-xl font-semibold">추천 친구</h2>
       <ul className="space-y-2">
-        <li className="flex justify-between items-center">
-          <span>홍길동</span>
-          <button className="bg-green-500 text-white px-3 py-1 rounded">
-            친구 추가
-          </button>
-        </li>
-        <li className="flex justify-between items-center">
-          <span>김철수</span>
-          <button className="bg-green-500 text-white px-3 py-1 rounded">
-            친구 추가
-          </button>
-        </li>
+        {profileDataList &&
+          profileDataList.map((item) => (
+            <li className="flex items-center justify-between">
+              <span>{item.nickname ?? ''}</span>
+              <Link
+                href="/dashboard/swipe"
+                className="px-3 py-1 text-white bg-green-500 rounded"
+              >
+                친구 요청
+              </Link>
+            </li>
+          ))}
       </ul>
     </div>
   )
@@ -22,18 +31,18 @@ const RecommendedFriends = () => {
 
 const MyChatRooms = () => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">내 채팅방</h2>
+    <div className="p-6 bg-[color:var(--bg-primary)] text-[color:var(--text-title)] rounded-lg shadow-md">
+      <h2 className="mb-4 text-xl font-semibold">내 채팅방</h2>
       <ul className="space-y-2">
-        <li className="flex justify-between items-center">
-          <span>프로젝트 논의방</span>
-          <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
+        <li className="flex items-center justify-between">
+          <span>개인 채팅방</span>
+          <span className="px-2 py-1 text-xs text-white bg-red-500 rounded-full">
             2
           </span>
         </li>
-        <li className="flex justify-between items-center">
+        <li className="flex items-center justify-between">
           <span>팀 채팅방</span>
-          <span className="text-xs bg-gray-300 text-gray-800 px-2 py-1 rounded-full">
+          <span className="px-2 py-1 text-xs text-gray-800 bg-gray-300 rounded-full">
             0
           </span>
         </li>
@@ -41,6 +50,5 @@ const MyChatRooms = () => {
     </div>
   )
 }
-
 
 export { RecommendedFriends, MyChatRooms }
