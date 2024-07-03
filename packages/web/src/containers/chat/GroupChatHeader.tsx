@@ -52,7 +52,9 @@ export default function GroupChatHeader({
   const remoteAudioContainerRef = useRef<HTMLDivElement>(null)
   const remoteAudioRefs = useRef<Map<string, HTMLAudioElement>>(new Map())
   const [localStream, setLocalStream] = useState<MediaStream | null>(null)
-  const [peerInfo, setPeerInfo] = useState<Map<string, RTCPeerConnection>>(new Map())
+  const [peerInfo, setPeerInfo] = useState<Map<string, RTCPeerConnection>>(
+    new Map(),
+  )
   const [otherKeyList, setOtherKeyList] = useState<string[]>([])
   const [myKey, setMyKey] = useState<string>(UUID)
   const stompClient = useRef<Client | null>(null)
@@ -116,7 +118,10 @@ export default function GroupChatHeader({
     }
   }, [isDropdownOpen])
 
-  const onIceCandidate = (iceEvent: RTCPeerConnectionIceEvent, otherKey: string) => {
+  const onIceCandidate = (
+    iceEvent: RTCPeerConnectionIceEvent,
+    otherKey: string,
+  ) => {
     if (iceEvent.candidate) {
       console.log(`Sending ICE candidate to ${otherKey}`, iceEvent.candidate)
       if (stompClient.current && stompClient.current.connected) {
@@ -159,7 +164,9 @@ export default function GroupChatHeader({
     }
   }
 
-  const createPeerConnection = async (otherKey: string): Promise<RTCPeerConnection> => {
+  const createPeerConnection = async (
+    otherKey: string,
+  ): Promise<RTCPeerConnection> => {
     console.log(`Creating peer connection for ${otherKey}`)
     const pc = new RTCPeerConnection(config)
     pc.addEventListener('icecandidate', (event) => {
@@ -177,7 +184,10 @@ export default function GroupChatHeader({
     return pc
   }
 
-  const setLocalAndSendMessage = (pc: RTCPeerConnection, sessionDescription: RTCSessionDescriptionInit) => {
+  const setLocalAndSendMessage = (
+    pc: RTCPeerConnection,
+    sessionDescription: RTCSessionDescriptionInit,
+  ) => {
     pc.setLocalDescription(sessionDescription)
     console.log('Local description set and sent', sessionDescription)
   }
@@ -285,15 +295,18 @@ export default function GroupChatHeader({
           }
         })
 
-        stompClient.current?.subscribe(`/sub/send/key/${roomNumber}`, async (message) => {
-          console.log('Received send key message')
-          const { key } = JSON.parse(message.body)
-          if (myKey !== key && !otherKeyList.includes(key)) {
-            setOtherKeyList((prev) => [...prev, key])
-            const pc = await createPeerConnection(key)
-            sendOffer(pc, key)
-          }
-        })
+        stompClient.current?.subscribe(
+          `/sub/send/key/${roomNumber}`,
+          async (message) => {
+            console.log('Received send key message')
+            const { key } = JSON.parse(message.body)
+            if (myKey !== key && !otherKeyList.includes(key)) {
+              setOtherKeyList((prev) => [...prev, key])
+              const pc = await createPeerConnection(key)
+              sendOffer(pc, key)
+            }
+          },
+        )
 
         // 모든 클라이언트에게 새로운 클라이언트의 참여를 알림
         if (stompClient.current && stompClient.current.connected) {
@@ -336,7 +349,7 @@ export default function GroupChatHeader({
       console.log('Publishing call key request')
       stompClient.current.publish({
         destination: `/pub/call/key/${roomNumber}`,
-        body: JSON.stringify({ roomNumber, key: myKey }),  // 방 번호와 키를 메시지 본문에 포함
+        body: JSON.stringify({ roomNumber, key: myKey }), // 방 번호와 키를 메시지 본문에 포함
       })
       setTimeout(() => {
         otherKeyList.forEach(async (key) => {
@@ -433,7 +446,7 @@ export default function GroupChatHeader({
 
       <div className={`${styles.icons} relative`}>
         <button type="button" onClick={handleCall}>
-          <Phone stroke={isConnected ? "red" : "green"} />
+          <Phone stroke={isConnected ? 'red' : 'green'} />
         </button>
 
         <button type="button" onClick={() => setIsDropdownOpen()}>
@@ -554,7 +567,7 @@ const InfoModal = ({
                   강퇴
                 </button>
               )}
-            </li>
+            </li> */}
       </ul>
       <Button label="닫기" onClick={closeModal} primary />
     </div>
