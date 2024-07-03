@@ -1,4 +1,3 @@
-
 <!--
 <div align= "center">
 <img src="https://capsule-render.vercel.app/api?type=waving&color=bfa0f8&height=180&text=우주별%20:%20우리%20주변%20별별%20사람들&animation=fadeIn&fontColor=ffffff&fontSize=40" />
@@ -9,7 +8,7 @@
 
 <div align= "center">
     <br>
-<h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">  </h2>  
+<h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">  </h2>
 
 ### 📢 Space Stars 보러가기
 
@@ -59,7 +58,6 @@ https://spacestars.kr/
           <img src="https://img.shields.io/badge/Nginx-04B431?style=for-the-badge&logo=Nginx&logoColor=white">
     </div>
 
-
 <h3 style="border-bottom: 1px  color: #282d33;"> 협업 </h3>
 <div style="margin: ; text-align: left;" "text-align: left;">
     <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">
@@ -72,17 +70,16 @@ https://spacestars.kr/
 <br>
 
 ### 📢 서비스 아키텍처
+
 ![image](https://github.com/6-dreaming-stars/.github/assets/108453365/8151de7c-91d5-4573-a620-9d69ebcc47d7)
 
-
-
 <br>
 <br>
 <br>
 <br>
-
 
 ### 📢 ERD
+
 ![image](https://github.com/6-dreaming-stars/.github/assets/108453365/84f15fca-abbe-4ed0-91bc-ca96aa8f6ca2)
 
 <br>
@@ -90,13 +87,13 @@ https://spacestars.kr/
 <br>
 <br>
 
+---
 
-
---------
 ### 📢 프로젝트 소개
+
 - 레벨,mbti, 연령대, 내가 하는 메인 게임을 기준으로 자신의 성향이 비슷한 사람들과 실시간으로 매칭을 시켜줍니다. <br>
   - 레벨이란 ? <br>
-  -> 1대1 매칭, 추천 매칭, 팀원 모집 등 우리 서비스를 이용하는 동안에는 함께 서비스를 즐긴 사람들에게 평가를 매기는데 이 레벨이 높을수록 좋은 유저를 나타내는 지표입니다.
+    -> 1대1 매칭, 추천 매칭, 팀원 모집 등 우리 서비스를 이용하는 동안에는 함께 서비스를 즐긴 사람들에게 평가를 매기는데 이 레벨이 높을수록 좋은 유저를 나타내는 지표입니다.
 - 위와 같이 자신의 성향과 비슷한 사람들을 추천 매칭창에 띄워줍니다. <br>
 - 팀원 모집 탭에서는 각 게임 별로 최대 5명까지 팀원을 모집하여 그곳에서 채팅과 보이스 서비스를 이용할 수 있습니다.<br>
 - 팀원 모집 뿐만 아니라 개인 채팅에서도 채팅과 보이스를 사용할 수 있습니다. <br>
@@ -110,28 +107,23 @@ https://spacestars.kr/
 
 전체 프로젝트 기간 : 2024-04-22 ~ 2024-07-03
 
-
 <br>
 
-
-
-
-|   **Name**   |구희영|김가민|김현진|신다혜|조준호|
-| :----------: | :-----: | :-----: | :-----: | :-----: | :-----:|
-| **Position** |Frontend|BackEnd|BackEnd|Infra <br/> BackEnd|Leader <br/> BackEnd|
-|   **Git**    |[hi9900](https://github.com/hi9900)|[22gamin](https://github.com/22gamin)|[myonjin](https://github.com/myonjin)|[Dahye73](https://github.com/Dahye73)|[khanturtle](https://github.com/khanturtle)|
-
+|   **Name**   |               구희영                |                김가민                 |                김현진                 |                신다혜                 |                   조준호                    |
+| :----------: | :---------------------------------: | :-----------------------------------: | :-----------------------------------: | :-----------------------------------: | :-----------------------------------------: |
+| **Position** |              Frontend               |                BackEnd                |                BackEnd                |          Infra <br/> BackEnd          |            Leader <br/> BackEnd             |
+|   **Git**    | [hi9900](https://github.com/hi9900) | [22gamin](https://github.com/22gamin) | [myonjin](https://github.com/myonjin) | [Dahye73](https://github.com/Dahye73) | [khanturtle](https://github.com/khanturtle) |
 
 <br>
 <br>
 
 ## 🖥 화면소개
+
 <a name="contents"></a>
 
-|**✔랜딩페이지**| **👤소셜로그인페이지**| **👤 아이디/비밀번호 찾기 페이지**|
-|:------------:|:-----------------:|:-------------:|
-|![메인페이지](https://github.com/6-dreaming-stars/.github/assets/108453365/5a3dbd31-fffc-42ce-8dc6-1a2ad72c3c5a)|![로그인](https://github.com/6-dreaming-stars/.github/assets/108453365/9c53f2df-c991-42ef-ade2-f70df1c022b9)|![회원가입1](https://github.com/6-dreaming-stars/.github/assets/108453365/df581301-0f4b-4849-b72f-b90a75545365)
-
+|                                                 **✔랜딩페이지**                                                  |                                            **👤소셜로그인페이지**                                            |                                       **👤 아이디/비밀번호 찾기 페이지**                                        |
+| :--------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: |
+| ![메인페이지](https://github.com/6-dreaming-stars/.github/assets/108453365/5a3dbd31-fffc-42ce-8dc6-1a2ad72c3c5a) | ![로그인](https://github.com/6-dreaming-stars/.github/assets/108453365/9c53f2df-c991-42ef-ade2-f70df1c022b9) | ![회원가입1](https://github.com/6-dreaming-stars/.github/assets/108453365/df581301-0f4b-4849-b72f-b90a75545365) |
 
 <table>
   <tr>
@@ -144,7 +136,6 @@ https://spacestars.kr/
     <td ><img src="https://github.com/6-dreaming-stars/.github/assets/108453365/58049c69-c0ea-43da-be0a-707a9811d9ea"alt="mbti"></td>
   </tr>
 </table>
-
 
 <table>
   <tr>
@@ -170,7 +161,6 @@ https://spacestars.kr/
   </tr>
 </table>
 
-
 <table>
   <tr>
     <th colspan="4"><b>👤팀원 모집 페이지</th>
@@ -183,19 +173,15 @@ https://spacestars.kr/
   </tr>
 </table>
 
+|                                                 **✔대시보드**                                                  |                                                 **👤마이페이지**                                                 |                                          **👤 친구 목록 페이지**                                           |
+| :------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
+| ![대시보드](https://github.com/6-dreaming-stars/.github/assets/108453365/53b3458b-25a3-4b7e-9ae2-82910875d50a) | ![마이페이지](https://github.com/6-dreaming-stars/.github/assets/108453365/85af5471-e731-415c-9eac-e5500e71ecbf) | ![친구](https://github.com/6-dreaming-stars/.github/assets/108453365/047a8003-7ca8-456d-8df2-2c3323c459be) |
 
-|**✔대시보드**| **👤마이페이지**| **👤 친구 목록 페이지**|
-|:------------:|:-----------------:|:-------------:|
-|![대시보드](https://github.com/6-dreaming-stars/.github/assets/108453365/53b3458b-25a3-4b7e-9ae2-82910875d50a)|![마이페이지](https://github.com/6-dreaming-stars/.github/assets/108453365/85af5471-e731-415c-9eac-e5500e71ecbf)|![친구](https://github.com/6-dreaming-stars/.github/assets/108453365/047a8003-7ca8-456d-8df2-2c3323c459be)|
+|                                              **✔알림페이지**                                               |                                                **👤라이트 모드**                                                |                                               **👤 라이트 모드**                                                |
+| :--------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: |
+| ![알림](https://github.com/6-dreaming-stars/.github/assets/108453365/d08545e9-91fd-4f01-ae5f-65fd2e6d1bdb) | ![팀리스트3](https://github.com/6-dreaming-stars/.github/assets/108453365/a4a585e1-9d99-456c-9718-b95eea72b869) | ![팀리스트4](https://github.com/6-dreaming-stars/.github/assets/108453365/ddb34591-61a7-4b3d-9dbd-a11c6ce71549) |
 
-
-|**✔알림페이지**| **👤라이트 모드**| **👤 라이트 모드**|
-|:------------:|:-----------------:|:-------------:|
-|![알림](https://github.com/6-dreaming-stars/.github/assets/108453365/d08545e9-91fd-4f01-ae5f-65fd2e6d1bdb)|![팀리스트3](https://github.com/6-dreaming-stars/.github/assets/108453365/a4a585e1-9d99-456c-9718-b95eea72b869)|![팀리스트4](https://github.com/6-dreaming-stars/.github/assets/108453365/ddb34591-61a7-4b3d-9dbd-a11c6ce71549)|
-
-    
 ---
-
 
 ### 프로젝트 관련 문서
 
@@ -208,7 +194,7 @@ https://spacestars.kr/
         <b>링크</b>
         </td>
     </tr>
-    <tr>
+    <!-- <tr>
         <td>
         포팅 매뉴얼
         </td>
@@ -217,29 +203,35 @@ https://spacestars.kr/
         </td>
     </tr>
     <tr>
-        <td>
-        DB 덤프 데이터
-        </td>
-        <td>
-        <a href="">DB 덤프 데이터 바로가기</a>
-        </td>
+      <td>
+      DB 덤프 데이터
+      </td>
+      <td>
+      <a href="">DB 덤프 데이터 바로가기</a>
+      </td>
     </tr>
     <tr>
-        <td>
-        시연 영상
-        </td>
-        <td>
-        <a href="">영상 바로가기</a>
-        </td>
+      <td>
+      시연 영상
+      </td>
+      <td>
+      <a href="">영상 바로가기</a>
+      </td>
+    </tr> -->
+    <tr>
+      <td>
+      팀 노션
+      </td>
+      <td>
+      <a href="https://dreaming-stars.notion.site/bc4572ecbdb5444f92c8216292447883">팀 노션 바로가기</a>
+      </td>
     </tr>
     <tr>
-        <td>
-        팀 노션
-        </td>
-        <td>
-        <a href="https://dreaming-stars.notion.site/bc4572ecbdb5444f92c8216292447883">팀 노션 바로가기</a>
-        </td>
+      <td>
+      API 정의서
+      </td>
+      <td>
+      <a href="https://github.com/6-dreaming-stars/.github/blob/main/profile/api_swagger.md">API 정의서 보기</a>
+      </td>
     </tr>
 </table>
-
-    
