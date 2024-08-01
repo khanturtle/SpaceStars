@@ -1,0 +1,13 @@
+node_modules
+.next
+.github
+.husky
+.git
+.gitignore
+.vscode
+
+.env.*
+.prettier.json
+.eslintignore
+.eslintrc.json
+README.md
