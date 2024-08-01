@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "target": "es2016",
+    "module": "esnext",
+    "baseUrl": ".",
+    "paths": {},
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "incremental": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "packages/ui"
+    },
+    {
+      "path": "packages/web"
+    }
+  ],
+  "exclude": ["packages/**/dist/**"]
+}

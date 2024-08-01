@@ -1,0 +1,48 @@
+.search-result-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-result-item:hover {
+  background-color: var(--hover-color);
+}
+.search-result-item .image {
+  border-radius: 9999px;
+  margin-right: 8px;
+}
+.search-result-item .nickname {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-desc);
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.search-result-item:hover .nickname {
+  color: var(--text);
+}
+
+.search-input {
+  border-radius: 12px;
+  border: 1px solid var(--input-border);
+  background: var(--input-color);
+  color: var(--text);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+}
+
+.search-input input {
+  all: unset;
+  display: flex;
+}

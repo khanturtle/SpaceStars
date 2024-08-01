@@ -1,0 +1,56 @@
+.button {
+  display: inline-flex;
+  padding: 15px 0px 14px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.button--primary {
+  color: white;
+  background-color: var(--color-primary, #7d12ff);
+}
+.button--secondary {
+  color: #333;
+  background-color: transparent;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
+}
+
+.button--rect {
+  border-radius: 0px;
+}
+.button--rounded {
+  border-radius: 10px;
+}
+.button--oval {
+  border-radius: 9999px;
+}
+
+.button--small {
+  width: 110px;
+}
+.button--medium {
+  width: 184px;
+}
+.button--large {
+  width: 335px;
+}
+.button--full {
+  width: 100%;
+}
+
+.button--shadow {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* KakaoButton */
+.button--kakao {
+  border-radius: 6px;
+  background-color: var(--kakao-bg, #fee500);
+}
+.button--kakao p {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22.5px;
+}

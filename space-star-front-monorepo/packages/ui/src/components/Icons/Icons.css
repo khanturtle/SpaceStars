@@ -1,0 +1,24 @@
+/* Close  */
+.close-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.3s ease,
+    fill 0.3s ease;
+
+  &:hover {
+    transition:
+      transform 0.3s ease,
+      fill 0.3s ease;
+    transform: rotate(90deg);
+
+    path {
+      fill: var(--color-primary);
+    }
+  }
+}

@@ -1,0 +1,238 @@
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 350px);
+  gap: 24px 30px;
+  justify-content: center;
+  max-width: 1440px;
+  margin-bottom: 10px;
+}
+
+.card {
+  display: flex;
+  width: 100%;
+  padding: 19px 29px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  border-radius: 12px;
+
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.card:hover {
+  background-color: var(--card-hover);
+}
+.finished {
+  background-color: var(--card-finish);
+}
+.ongoing {
+  background: var(--card-color);
+}
+
+.info {
+  width: 85%;
+}
+.info h3 {
+  color: var(--text-title) !important;
+}
+.info p {
+  color: var(--text-desc) !important;
+}
+
+.cardButton {
+  display: inline-block;
+  align-items: end;
+}
+
+.join-button {
+  background-color: var(--button-secondary) !important;
+}
+.join-button p {
+  color: var(--button-secondary-text) !important;
+}
+.finished .join-button {
+  background-color: transparent !important;
+}
+.finished .join-button p {
+  color: #a8a8a8 !important;
+}
+
+.list-container {
+  width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.list {
+  display: flex;
+  width: 100%;
+  padding: 14px 16px;
+  align-items: center;
+  border-radius: 15px;
+}
+
+/* SubSelectBox.css */
+.subTitle {
+  color: var(--text-title);
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 48px;
+}
+.subDesc {
+  color: var(--text-desc);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.icon-button {
+  height: 40px;
+
+  border-radius: 12px;
+  border: 1px solid var(--icon-button-border);
+  background: var(--icon-button);
+
+  display: flex;
+  padding: 9px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.icon-button-name {
+  color: var(--text);
+  padding: 0 8px;
+}
+.icon-button:hover,
+.icon-button.active:hover {
+  background: var(--icon-button-hover);
+}
+
+.icon-button.active {
+  background: var(--button-active);
+}
+.icon-button.active span {
+  color: #009580;
+  font-weight: 600;
+}
+
+.icon-buttons {
+  display: flex;
+  border-radius: 12px;
+}
+.icon-buttons .icon-button {
+  border-radius: 0;
+}
+.icon-buttons .icon-button:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-right: 1px;
+}
+.icon-buttons .icon-button:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* GameSelectBox.css */
+.gameList {
+  height: 68px;
+  padding: 4px 0;
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  overflow-y: unset;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.gameList {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
+}
+.gameList img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+/* GameSelectBox.css */
+
+/* CreateButton.css */
+.create-button {
+  position: fixed;
+  bottom: 50px;
+  right: 330px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+@media screen and (max-width: 1600px) {
+  .create-button {
+    right: 50px;
+  }
+}
+.create-button:hover {
+  transform: scale(1.1);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.name-input {
+  width: 335px;
+}
+.input-group {
+  display: flex;
+  gap: 9px;
+}
+/* .input-group */
+
+.input-group > .input {
+  flex: 1;
+}
+
+.checkbox-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.password-input {
+  display: flex;
+  width: 335px;
+}
+
+.memo-input {
+  width: 335px;
+}
+
+.button {
+  margin-top: 10px;
+  height: 60px;
+}
+/* CreateButton.css */

@@ -1,0 +1,165 @@
+/* GameButton.css */
+.game-button-container {
+  --color-click: #7d12ff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  display: inline-block;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  font-family: inherit;
+  text-align: center;
+
+  .button-image {
+    position: relative;
+    display: flex;
+    width: 100px;
+    height: 100px;
+    padding: auto;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    border-radius: 15px;
+    background-color: var(--White-50, #fff);
+
+    z-index: 10;
+  }
+
+  .image-container {
+    position: relative;
+    width: 80px;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .button-bottom {
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    height: 62px;
+    flex-shrink: 0;
+
+    border-radius: 15px;
+    background-color: var(--Alto-400, #adadad);
+    z-index: 5;
+
+    text-align: end;
+  }
+
+  .button-text {
+    position: relative;
+    color: var(--White-50, #fff);
+    text-align: center;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-top: 3px;
+    z-index: 10;
+  }
+
+  &:active .button-image {
+    top: 16px;
+  }
+  &:hover .button-bottom,
+  &:active .button-bottom {
+    background-color: var(--color-click, #7d12ff);
+  }
+}
+.game-button-container.clicked {
+  .button-image {
+    top: 16px;
+  }
+  .button-bottom {
+    background-color: var(--color-click, #7d12ff);
+  }
+}
+.button-clicked {
+  position: absolute;
+  top: 0;
+  right: -10px;
+
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background-color: var(--color-click, #7d12ff);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* GameOption.css */
+.game-option-container {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  width: 335px;
+  height: 80px;
+  padding: 14px 24px;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+
+  border-radius: 15px;
+  border: 1px solid #bb86fc;
+
+  background-color: var(--White-50, #fff);
+}
+
+/* GameListButton.css */
+.game-list-button {
+  border-radius: 12px;
+  border: 2px solid var(--White-50, #fff);
+  width: 164px;
+  height: 58px;
+  opacity: 0.6;
+
+  .game-logo {
+    width: 100%;
+    height: 100%;
+    padding: 11px 42px;
+  }
+  .game-logo > img {
+    filter: invert(100%) brightness(10000%);
+  }
+}
+
+.game-list-button:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+.game-list-button:active {
+  transform: scale(0.95);
+  transition:
+    opacity 0.3s ease,
+    transform 0.1s ease;
+}
+
+.game-list-button.clicked {
+  opacity: 1;
+
+  .game-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .checked {
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--White-50, #fff);
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-plugin-simple-import-sort",
+    "unused-imports",
+    "import",
+    "prettier"
+  ],
+  "parserOptions": {
+    "project": ["./tsconfig.base.json", "./packages/**/tsconfig.json"],
+    "createDefaultProgram": true
+  },
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "ignorePatterns": ["node_modules/", "dist/"],
+  // 공통 규칙
+  "rules": {
+    // 0 off, 1 warn, 2 error
+    "prettier/prettier": [2, { "endOfLine": "auto" }],
+    "linebreak-style": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
+    "no-unused-vars": [
+      2,
+      { "vars": "all", "args": "none", "ignoreRestSiblings": false }
+    ],
+    "unused-imports/no-unused-imports-ts": [2],
+    "comma-spacing": [2, { "before": false, "after": true }],
+    "react/require-default-props": 0,
+    "react/jsx-props-no-spreading": 0,
+    "import/extensions": [
+      0,
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["packages/web/**/*.ts?(x)", "packages/web/**/*.js?(x)"],
+      "settings": {
+        "import/resolver": {
+          "typescript": {
+            "project": "./packages/web/tsconfig.json"
+          }
+        }
+      },
+      "rules": {
+        "import/order": [
+          "error",
+          {
+            "groups": [
+              "builtin",
+              "external",
+              "internal",
+              ["sibling", "parent"],
+              "index",
+              "object",
+              "type"
+            ],
+            "pathGroups": [
+              {
+                "pattern": "next/**",
+                "group": "external",
+                "position": "before"
+              },
+              {
+                "pattern": "next",
+                "group": "external",
+                "position": "before"
+              },
+              {
+                "pattern": "react",
+                "group": "external",
+                "position": "before"
+              },
+              {
+                "pattern": "use*",
+                "group": "internal",
+                "position": "before"
+              },
+              {
+                "pattern": "@components/**",
+                "group": "internal",
+                "position": "after"
+              },
+              {
+                "pattern": "@containers/**",
+                "group": "internal",
+                "position": "after"
+              },
+              {
+                "pattern": "@utils/**",
+                "group": "internal",
+                "position": "after"
+              },
+              {
+                "pattern": "@apis/**",
+                "group": "internal",
+                "position": "after"
+              }
+            ],
+            "pathGroupsExcludedImportTypes": ["react"],
+            "newlines-between": "always",
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            }
+          }
+        ],
+        "react/function-component-definition": "off",
+        "import/no-extraneous-dependencies": "off",
+        "import/prefer-default-export": "off"
+      }
+    },
+    {
+      "files": ["packages/ui/**/*.ts?(x)", "packages/ui/**/*.js?(x)"],
+      "settings": {
+        "import/resolver": {
+          "typescript": {
+            "project": "./packages/ui/tsconfig.json"
+          }
+        }
+      }
+    }
+  ]
+}

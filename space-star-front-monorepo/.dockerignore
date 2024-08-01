@@ -1,0 +1,28 @@
+node_modules
+# .next
+.github
+.husky
+.git
+.gitignore
+.vscode
+
+.env.*
+.prettier.json
+.eslintignore
+.eslintrc.json
+README.md
+
+.editorconfig
+
+packages/ui/.storybook/
+packages/ui/src/components/**/*.stories.ts
+
+packages/ui/README.md
+
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+# !.yarn/cache

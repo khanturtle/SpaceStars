@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --Alto-50: #f7f7f7;
+  --Alto-100: #ededed;
+  --Alto-200: #d9d9d9;
+  --Alto-300: #c8c8c8;
+  --Alto-400: #adadad;
+  --Alto-500: #999999;
+  --Alto-600: #888888;
+  --Alto-700: #7b7b7b;
+  --Alto-800: #676767;
+  --Alto-900: #545454;
+  --Alto-950: #363636;
+
+  --Black-50: #f6f6f6;
+  --Black-100: #e7e7e7;
+  --Black-200: #d1d1d1;
+  --Black-300: #b0b0b0;
+  --Black-400: #888888;
+  --Black-500: #6d6d6d;
+  --Black-600: #5d5d5d;
+  --Black-700: #4f4f4f;
+  --Black-800: #454545;
+  --Black-900: #3d3d3d;
+  --Black-950: #000000;
+
+  --White-50: #ffffff;
+  --White-100: #efefef;
+  --White-200: #dcdcdc;
+  --White-300: #bdbdbd;
+  --White-400: #989898;
+  --White-500: #7c7c7c;
+  --White-600: #656565;
+  --White-700: #525252;
+  --White-800: #464646;
+  --White-900: #3d3d3d;
+  --White-950: #292929;
+}
+
+:root {
+  --Main-Color-1: #6a64e9;
+
+  --secondary-text: #666;
+  --body-text: #333333;
+  --main-text: #111111;
+  --sub-text: #626262;
+  --point-text: #7d12ff;
+
+  --btn-primary: #202020;
+  --btn-secondary: #bb86fc;
+  --btn-secondary-border: #7d12ff;
+
+  --black: #000000;
+  --quite-black: #23272a;
+  --dark-black: #2c2f33;
+  --greyple: #99aab5;
+}
+:root {
+  --color-primary: #7d12ff;
+  --grey-text: #869aa9;
+
+  --online: #3bcd23;
+  --offline: #dddddd;
+
+  --danger: #f15c45;
+
+  --nav-title: #7d12ff;
+}
+body {
+  --background-color: #f8f8f9;
+
+  --text: #000;
+  --text-title: #202020;
+  --text-desc: #333;
+  --text-sub: #f1674a;
+
+  --sidebar-inner: #fff;
+
+  --sidebar: #fff;
+  --sidebar-text: #9c9cab;
+  --sidebar-text-active: #6a64e9;
+  --sidebar-title: #1a1a1a;
+
+  --nav-color: #fff;
+  --nav-border: #ddd;
+  --nav-color-rgba: rgba(255, 255, 255, 1);
+  --nav-color-rgba2: rgba(255, 255, 255, 0);
+
+  --button-color: #f2f2f2;
+  --button-text: #4b5057;
+  --button-border: #d0d0d0;
+  --button-hover: #e6e6e6;
+  --button-hover-text: #565b62;
+  --button-active: #d0d0d0;
+  --button-active-text: #3e4349;
+
+  --input-color: #fff;
+  --input-border: #dcdbdd;
+
+  --hover-color: #e0e0e0;
+
+  --color-icon: #869aa9;
+
+  --icon-button: #fff;
+  --icon-button-border: #dcdbdd;
+  --icon-button-hover: #e6e6e6;
+  --icon-button-text: #e6e6e6;
+
+  --scrollbar-background: #f1f1f1;
+  --scrollbar-color: #888;
+  --scrollbar-hover: #555;
+
+  --card-color: #fff;
+  --card-finish: #cfcfcf;
+  --card-hover: rgba(30, 31, 34, 0.2);
+
+  --button-secondary: #fff;
+  --button-secondary-text: #7d12ff;
+
+  --bg-primary: #fff;
+  --bg-secondary: #ffffff;
+  --border-color: #e0e0e0;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --button-hover: #f0f0f0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme='dark'] {
+  --background-color: #313338;
+
+  --text: #dbdee1;
+  --text-title: #ffffff;
+  --text-desc: #949ba4;
+  --text-sub: #ed4245;
+
+  --sidebar-inner: #2b2d31;
+
+  --sidebar: #1e1f22;
+  --sidebar-text: #9c9cab;
+  --sidebar-text-active: #6a64e9;
+  --sidebar-title: #dbdee1;
+
+  --nav-color: #1e1f22;
+  --nav-border: #363b40;
+  --nav-color-rgba: rgba(30, 31, 34, 1);
+  --nav-color-rgba2: rgba(30, 31, 34, 0);
+
+  --button-color: #4b5057;
+  --button-text: #f2f2f2;
+  --button-border: #363b40;
+  --button-hover: #565b62;
+  --button-hover-text: #ffffff;
+  --button-active: #3e4349;
+  --button-active-text: #ffffff;
+
+  --input-color: #1e1f22;
+  --input-border: #2c2f33;
+
+  --hover-color: #35373c;
+
+  --color-icon: #dbdee1;
+
+  --icon-button: #111;
+  --icon-button-border: #272727;
+  --icon-button-hover: #404040;
+  --icon-button-text: #f1f1f1;
+
+  --scrollbar-background: #2b2d31;
+  --scrollbar-color: #1a1b1e;
+  --scrollbar-hover: #000;
+
+  --card-color: rgba(30, 31, 34, 0.3);
+  --card-hover: rgba(30, 31, 34, 0.5);
+  --card-finish: rgba(17, 18, 20, 0.15);
+
+  --button-secondary: #7d12ff;
+  --button-secondary-text: #fff;
+
+  --bg-primary: rgba(26, 26, 26, 0.5);
+  --bg-secondary: #2c2c2c;
+  --border-color: #444444;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --button-hover: #3a3a3a;
+  --shadow-color: rgba(255, 255, 255, 0.1);
+}

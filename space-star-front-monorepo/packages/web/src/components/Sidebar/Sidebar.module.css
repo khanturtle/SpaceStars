@@ -1,0 +1,160 @@
+/* Sidebar.css */
+.left-side {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 260px;
+  margin-right: 1px;
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s;
+  overflow: auto;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 1280px) {
+  .left-side.active {
+    z-index: 4;
+  }
+  .left-side.active > *:not(.logo) {
+    opacity: 1;
+    transition: 0.3s 0.2s;
+  }
+  .left-side.active .left-side-button svg:first-child {
+    opacity: 0;
+  }
+  .left-side.active .left-side-button svg:last-child {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  .left-side:not(.active) {
+    width: 56px;
+    overflow: hidden;
+  }
+  .left-side:not(.active) > *:not(.logo):not(.left-side-button) {
+    opacity: 0;
+  }
+}
+
+.side-wrapper {
+  padding: 30px;
+}
+
+.side-title {
+  margin-bottom: 20px;
+  color: var(--sidebar-title);
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 160%;
+}
+.side-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.side-title .more {
+  color: var(--Text-50, #9c9c9c);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  white-space: nowrap;
+  margin-bottom: 30px;
+}
+.side-menu svg {
+  margin-right: 16px;
+  width: 24px;
+}
+.side-menu .link {
+  display: flex;
+  align-items: center;
+}
+.side-menu .link:hover {
+  color: var(--sidebar-text-active);
+}
+.side-menu .link:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.left-side-button {
+  display: none;
+}
+@media screen and (max-width: 1280px) {
+  .left-side-button {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    height: 60px;
+    border: 0;
+    padding: 0;
+    line-height: 0;
+    color: var(--White-50);
+  }
+  .left-side-button svg {
+    transition: 0.2s;
+    width: 24px;
+  }
+  .left-side-button svg:last-child {
+    position: absolute;
+    left: 50%;
+    transform: translate(100%, -50%);
+    top: 50%;
+    opacity: 0;
+  }
+}
+
+/* RightSidebar.css */
+.right-side {
+  width: 280px;
+  flex-shrink: 0;
+  margin-left: auto;
+  overflow: auto;
+  background-color: var(--sidebar);
+  box-shadow: -1px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s;
+}
+@media screen and (max-width: 1600px) {
+  .right-side {
+    position: fixed;
+    right: 0;
+    top: 100px;
+    transition: 0.3s;
+    height: 100%;
+    transform: translateX(280px);
+    z-index: 4;
+  }
+  .right-side.active {
+    transform: translateX(0);
+  }
+}
+
+/* 오른쪽 친구 */
+.friend {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.friend-title {
+  color: var(--text-title);
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.friend-text {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.2857142857142858;
+  font-weight: 400;
+}

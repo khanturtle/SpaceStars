@@ -1,0 +1,27 @@
+.ul {
+  max-height: 74px;
+  display: flex;
+  gap: 16px;
+  align-content: flex-start;
+  justify-content: flex-start;
+
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+/* TODO: 스크롤바 커스텀 */
+.ul::-webkit-scrollbar {
+  display: none;
+}
+.ul {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.ul img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
